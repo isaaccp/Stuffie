@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8kraijhonpsy"]
+[gd_scene load_steps=8 format=3 uid="uid://c8kraijhonpsy"]
 
 [ext_resource type="Script" path="res://Gameplay.gd" id="1_ilsc8"]
+[ext_resource type="PackedScene" uid="uid://dslbnf6t451ec" path="res://character.tscn" id="2_rexnp"]
 [ext_resource type="Texture2D" uid="uid://dbmafuxsgowln" path="res://resources/kenney_tinydungeon/Tiles/tile_0087.png" id="2_rka6x"]
 [ext_resource type="Texture2D" uid="uid://dpalmrtkhm60k" path="res://resources/kenney_tinydungeon/Tiles/tile_0084.png" id="3_ywmde"]
 [ext_resource type="Texture2D" uid="uid://c12iwcxqcjb4h" path="res://resources/kenney_tinydungeon/Tilemap/tilemap.png" id="4_nhapv"]
@@ -153,12 +154,14 @@ script = ExtResource("1_ilsc8")
 
 [node name="Party" type="Node" parent="Gameplay/World"]
 
-[node name="Lead" type="Sprite2D" parent="Gameplay/World/Party"]
-position = Vector2(7, -8)
+[node name="Lead" parent="Gameplay/World/Party" instance=ExtResource("2_rexnp")]
+
+[node name="Sprite2D" parent="Gameplay/World/Party/Lead" index="0"]
 texture = ExtResource("2_rka6x")
 
-[node name="Minion" type="Sprite2D" parent="Gameplay/World/Party"]
-position = Vector2(22, -7)
+[node name="Helper" parent="Gameplay/World/Party" instance=ExtResource("2_rexnp")]
+
+[node name="Sprite2D" parent="Gameplay/World/Party/Helper" index="0"]
 texture = ExtResource("3_ywmde")
 
 [node name="TileMap" type="TileMap" parent="Gameplay/World"]
@@ -169,5 +172,22 @@ format = 2
 [node name="UI" type="Node" parent="Gameplay"]
 
 [node name="EndTurnButton" type="Button" parent="Gameplay/UI"]
-offset_right = 8.0
-offset_bottom = 8.0
+anchors_preset = -1
+anchor_right = 0.02
+anchor_bottom = 0.038
+offset_left = 1046.0
+offset_top = 595.0
+offset_right = 1100.96
+offset_bottom = 601.376
+text = "End Turn"
+
+[node name="TurnState" type="RichTextLabel" parent="Gameplay/UI"]
+offset_left = 929.0
+offset_top = 12.0
+offset_right = 1131.0
+offset_bottom = 62.0
+
+[connection signal="pressed" from="Gameplay/UI/EndTurnButton" to="Gameplay" method="_on_end_turn_button_pressed"]
+
+[editable path="Gameplay/World/Party/Lead"]
+[editable path="Gameplay/World/Party/Helper"]
