@@ -37,16 +37,9 @@ texture = ExtResource("4_a8gm6")
 
 [node name="TileMap" parent="Gameplay/World" instance=ExtResource("7_xmlt0")]
 
-[node name="UI" type="Control" parent="Gameplay"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="UI" type="CanvasLayer" parent="Gameplay"]
 
 [node name="EndTurnButton" type="Button" parent="Gameplay/UI"]
-layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -59,7 +52,6 @@ grow_vertical = 0
 text = "End Turn"
 
 [node name="TurnState" type="RichTextLabel" parent="Gameplay/UI"]
-layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -68,13 +60,19 @@ offset_bottom = 50.0
 grow_horizontal = 0
 
 [node name="CharacterState" type="HBoxContainer" parent="Gameplay/UI"]
-layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -150.0
 offset_right = 204.0
 grow_vertical = 0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(125, 70)
+current = true
+zoom = Vector2(4, 4)
+limit_left = 0
+limit_top = 0
 
 [connection signal="pressed" from="Gameplay/UI/EndTurnButton" to="Gameplay" method="_on_end_turn_button_pressed"]
 
