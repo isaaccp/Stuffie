@@ -1,11 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://c8kraijhonpsy"]
+[gd_scene load_steps=5 format=3 uid="uid://c8kraijhonpsy"]
 
 [ext_resource type="Script" path="res://Gameplay.gd" id="1_ilsc8"]
-[ext_resource type="PackedScene" uid="uid://dslbnf6t451ec" path="res://character.tscn" id="2_rexnp"]
-[ext_resource type="Texture2D" uid="uid://dbmafuxsgowln" path="res://resources/kenney_tinydungeon/Tiles/tile_0087.png" id="2_rka6x"]
-[ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_pxv63"]
-[ext_resource type="Texture2D" uid="uid://dpalmrtkhm60k" path="res://resources/kenney_tinydungeon/Tiles/tile_0084.png" id="3_ywmde"]
-[ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="4_a8gm6"]
+[ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_e8ku1"]
+[ext_resource type="PackedScene" uid="uid://dvhxmiqckixoy" path="res://wizard.tscn" id="3_s40gy"]
 [ext_resource type="PackedScene" uid="uid://dnhwgcldvx1c8" path="res://tilemap.tscn" id="7_xmlt0"]
 
 [node name="Stuffie" type="Node"]
@@ -17,23 +14,9 @@ script = ExtResource("1_ilsc8")
 
 [node name="Party" type="Node" parent="Gameplay/World"]
 
-[node name="Lead" parent="Gameplay/World/Party" instance=ExtResource("2_rexnp")]
-position = Vector2(24, 24)
+[node name="Warrior" parent="Gameplay/World/Party" instance=ExtResource("2_e8ku1")]
 
-[node name="Sprite" parent="Gameplay/World/Party/Lead" index="0"]
-texture = ExtResource("2_rka6x")
-
-[node name="Portrait" parent="Gameplay/World/Party/Lead" index="1"]
-texture = ExtResource("3_pxv63")
-
-[node name="Helper" parent="Gameplay/World/Party" instance=ExtResource("2_rexnp")]
-position = Vector2(41, 40)
-
-[node name="Sprite" parent="Gameplay/World/Party/Helper" index="0"]
-texture = ExtResource("3_ywmde")
-
-[node name="Portrait" parent="Gameplay/World/Party/Helper" index="1"]
-texture = ExtResource("4_a8gm6")
+[node name="Wizard" parent="Gameplay/World/Party" instance=ExtResource("3_s40gy")]
 
 [node name="TileMap" parent="Gameplay/World" instance=ExtResource("7_xmlt0")]
 navigation_visibility_mode = 1
@@ -78,6 +61,3 @@ limit_left = 0
 limit_top = 0
 
 [connection signal="pressed" from="Gameplay/UI/EndTurnButton" to="Gameplay" method="_on_end_turn_button_pressed"]
-
-[editable path="Gameplay/World/Party/Lead"]
-[editable path="Gameplay/World/Party/Helper"]

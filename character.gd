@@ -56,3 +56,4 @@ func set_id_position(id_pos: Vector2i):
 	
 func get_id_position() -> Vector2i:
 	return id_position
+

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvhxmiqckixoy"]
+
+[ext_resource type="PackedScene" uid="uid://dslbnf6t451ec" path="res://character.tscn" id="1_k72kc"]
+[ext_resource type="Texture2D" uid="uid://dpalmrtkhm60k" path="res://resources/kenney_tinydungeon/Tiles/tile_0084.png" id="2_paw55"]
+[ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
+
+[node name="Wizard" instance=ExtResource("1_k72kc")]
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource("2_paw55")
+
+[node name="Portrait" parent="." index="1"]
+texture = ExtResource("3_qxto0")
