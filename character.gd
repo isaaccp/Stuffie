@@ -14,6 +14,8 @@ var tile_size: int = 16
 var portrait: CharacterPortrait
 var id_position: Vector2i
 
+@export var deck: Deck
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

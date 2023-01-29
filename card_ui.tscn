@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2wg8gqprp7pc"]
+
+[ext_resource type="Script" path="res://card_ui.gd" id="1_h04yd"]
+
+[node name="CardUI" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h04yd")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CardTop" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBox/CardTop"]
+layout_mode = 2
+
+[node name="Cost" type="Label" parent="VBox/CardTop"]
+layout_mode = 2
+
+[node name="Image" type="TextureRect" parent="VBox"]
+layout_mode = 2
+
+[node name="Description" type="RichTextLabel" parent="VBox"]
+layout_mode = 2
+fit_content = true

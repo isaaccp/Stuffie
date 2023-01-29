@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Deck" load_steps=3 format=3 uid="uid://cvsjkf03h2d8e"]
+
+[ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://cards/wizard/magic_missile.tres" id="1_6vdks"]
+[ext_resource type="Script" path="res://deck.gd" id="1_o7flb"]
+
+[resource]
+resource_name = "wizard"
+script = ExtResource("1_o7flb")
+cards = [ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks")]

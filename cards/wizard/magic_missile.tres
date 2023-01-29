@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://dfuxoy21you0f"]
+
+[ext_resource type="Script" path="res://card.gd" id="1_h8ay4"]
+[ext_resource type="Texture2D" uid="uid://1ufyrassqksd" path="res://resources/magic_missile.jpg" id="2_r3cv0"]
+
+[resource]
+script = ExtResource("1_h8ay4")
+card_name = "Magic Missile"
+description = "Casts a magic projectile ({damage}dmg) at one enemy"
+cost = 1
+damage = 5
+texture = ExtResource("2_r3cv0")

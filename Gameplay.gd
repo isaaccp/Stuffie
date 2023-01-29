@@ -21,7 +21,7 @@ enum HumanTurnState {
 }
 
 var portrait_scene = preload("res://character_portrait.tscn")
-
+var card_ui_scene = preload("res://card_ui.tscn")
 var active_character: Character
 
 var state: GameState
@@ -85,10 +85,18 @@ func _on_character_portrait_pressed(index: int):
 	
 func set_active_character(index: int):
 	var i = 0
+	for child in $UI/Hand.get_children():
+		child.queue_free()
+		
 	for character in $World/Party.get_children():
 		if i == index:
 			active_character = $World/Party.get_child(i)
 			active_character.set_active(true)
+			if active_character.deck:
+				for card in active_character.deck.cards:
+					var new_card = card_ui_scene.instantiate() as CardUI
+					new_card.initialize(card)
+					$UI/Hand.add_child(new_card)
 		else:
 			character.set_active(false)
 			character.clear_pending_move_cost()
