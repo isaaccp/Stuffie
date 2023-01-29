@@ -22,9 +22,11 @@ func _ready():
 	var i = 0
 	for character in $World/Party.get_children():
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
-		# Add portraits in UI
+		# Add portraits in UI.
 		$UI/CharacterState.add_child(character_portrait)
+		# Set portrait on character so it can update when e.g. move points change
 		character.set_portrait(character_portrait)
+		# Hook character selection.
 		character_portrait.get_node('Portrait').pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
 	set_active_character(0)
