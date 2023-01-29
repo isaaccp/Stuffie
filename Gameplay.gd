@@ -10,14 +10,30 @@ var state_text = {
 	GameState.CPU_TURN: "Enemy turn",
 }
 
+enum HumanTurnState {
+	# Waiting for move or action to be chosen.
+	# During this move we show move paths based on mouse pointer.
+	WAITING,
+	# Executing a move. No actions can be chosen, no character change, etc
+	MOVING,
+	# An action has been chosen and we are waiting to choose a target.
+	ACTION_TARGET,
+}
+
 var portrait_scene = preload("res://character_portrait.tscn")
 
 var active_character: Character
 
-var state
+var state: GameState
+var human_turn_state: HumanTurnState
 var cpu_turn_start = -1
-var a_star
-var path
+var a_star: AStarGrid2D
+var current_path: PackedVector2Array = PackedVector2Array()
+var valid_path: bool = false
+var too_long_path: bool = false
+
+# Move somewhere where it can be used from anywhere or figure out how to pass.
+var tile_size: int = 16
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,25 +44,20 @@ func _ready():
 		$UI/CharacterState.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
 		character.set_portrait(character_portrait)
+		character.set_id_position(Vector2i(i, i))
 		# Hook character selection.
 		character_portrait.get_node('Portrait').pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
 	set_active_character(0)
 	change_state(GameState.HUMAN_TURN)
 	build_a_star()
-	path = a_star.get_point_path(Vector2i(3, 3), Vector2i(32, 20))
-	print_debug(path)
-	for point in path:
-		$World/Line2D.add_point(point+Vector2(8,8))
 	
 func build_a_star():
 	a_star = AStarGrid2D.new()
 	var map_rect = $World/TileMap.get_used_rect()
 	a_star.size = map_rect.size
-	a_star.cell_size = Vector2(16, 16)
-	a_star.diagonal_mode = a_star.DIAGONAL_MODE_NEVER
-	a_star.set_default_estimate_heuristic(AStarGrid2D.HEURISTIC_CHEBYSHEV)
-	a_star.set_default_compute_heuristic(AStarGrid2D.HEURISTIC_CHEBYSHEV)
+	a_star.cell_size = Vector2(tile_size, tile_size)
+	a_star.diagonal_mode = a_star.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE 
 	a_star.update()
 	for i in map_rect.size[0]:
 		for j in map_rect.size[1]:
@@ -59,7 +70,8 @@ func build_a_star():
 		a_star.set_point_solid(pos)
 
 func _on_character_portrait_pressed(index: int):
-	if state != GameState.HUMAN_TURN:
+	# Only allow to change active character during human turn on waiting state.
+	if state != GameState.HUMAN_TURN or human_turn_state != HumanTurnState.WAITING:
 		return
 	# add some sub-state/bool for any actions being in progress
 	set_active_character(index)
@@ -72,11 +84,52 @@ func set_active_character(index: int):
 			active_character.set_active(true)
 		else:
 			character.set_active(false)
+			character.clear_pending_move_cost()
 		i += 1
 	
+func convert_mouse_pos_to_tile(absolute_mouse_pos: Vector2) -> Vector2:
+	var transform = get_viewport().get_canvas_transform().affine_inverse()
+	var mouse_pos = transform.basis_xform(absolute_mouse_pos)
+	return $World/TileMap.local_to_map(mouse_pos)
+	
+func path_cost(path: PackedVector2Array) -> float:
+	var cost = 0.0
+	for i in path.size()-1:
+		var path_diff = path[i+1] - path[i]
+		if path_diff[0] == 0 or path_diff[1] == 0:
+			cost += 1.0
+		else:
+			cost += 1.5
+	return cost
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
+		if human_turn_state == HumanTurnState.WAITING:
+			# Active charater position
+			var pos = active_character.get_id_position()
+			# Calculate mouse pointer position on the tilemap
+			var absolute_mouse_pos = get_viewport().get_mouse_position()
+			var tile_map_pos = convert_mouse_pos_to_tile(absolute_mouse_pos)
+			current_path = a_star.get_id_path(pos, tile_map_pos)
+			valid_path = !current_path.is_empty()
+			var cost = path_cost(current_path)
+			too_long_path = (cost > active_character.move_points)
+			# Update prospective cost in character.
+			if !valid_path or too_long_path:
+				active_character.clear_pending_move_cost()
+			else:
+				active_character.set_pending_move_cost(cost)
+			# Draw path.
+			if valid_path:
+				if too_long_path:
+					$World/Line2D.default_color = Color(1, 0, 0, 1)
+				else:
+					$World/Line2D.default_color = Color(1, 1, 1, 1)
+				var half_tile = Vector2(tile_size/2, tile_size/2)
+				$World/Line2D.clear_points()
+				for point in current_path:
+					$World/Line2D.add_point(point*tile_size+half_tile)
 		# wait for human to finish turn
 		pass
 	else:
@@ -93,9 +146,25 @@ func change_state(new_state):
 	if state == GameState.HUMAN_TURN:
 		for character in $World/Party.get_children():
 			character.begin_turn()
+		human_turn_state = HumanTurnState.WAITING
 	
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
+
+func handle_move(mouse_pos: Vector2):
+	# Current path is empty, so we can't move. Do nothing.
+	if !valid_path or too_long_path:
+		return
+	var tile_map_pos = convert_mouse_pos_to_tile(mouse_pos)
+	# Handle move "animation".
+	active_character.reduce_move(path_cost(current_path))
+	active_character.set_id_position(tile_map_pos)
 	
-func _on_character_button_pressed():
-	pass
+func _unhandled_input(event):
+	if event is InputEventMouseButton:
+		var mouse_event = event as InputEventMouseButton
+		# left click
+		if mouse_event.button_index == 1 and mouse_event.pressed:
+			# move
+			if state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING:
+				handle_move(mouse_event.position)

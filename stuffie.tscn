@@ -18,7 +18,7 @@ script = ExtResource("1_ilsc8")
 [node name="Party" type="Node" parent="Gameplay/World"]
 
 [node name="Lead" parent="Gameplay/World/Party" instance=ExtResource("2_rexnp")]
-position = Vector2(24, 23)
+position = Vector2(24, 24)
 
 [node name="Sprite" parent="Gameplay/World/Party/Lead" index="0"]
 texture = ExtResource("2_rka6x")
