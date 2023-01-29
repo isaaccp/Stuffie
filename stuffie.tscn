@@ -36,6 +36,9 @@ texture = ExtResource("3_ywmde")
 texture = ExtResource("4_a8gm6")
 
 [node name="TileMap" parent="Gameplay/World" instance=ExtResource("7_xmlt0")]
+navigation_visibility_mode = 1
+
+[node name="Line2D" type="Line2D" parent="Gameplay/World"]
 
 [node name="UI" type="CanvasLayer" parent="Gameplay"]
 
