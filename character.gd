@@ -15,6 +15,7 @@ var portrait: CharacterPortrait
 var id_position: Vector2i
 
 @export var deck: Deck
+var hand: Hand = Hand.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,8 +28,19 @@ func _process(_delta):
 func begin_turn():
 	action_points = total_action_points
 	move_points = total_move_points
+	draw_cards()
 	refresh_portrait()
 
+func draw_cards():
+	# For now, just add all cards in deck to hand
+	hand.clear()
+	if deck:
+		for card in deck.cards:
+			hand.add_card(card)
+
+func get_hand():
+	return hand
+	
 func set_portrait(character_portrait: CharacterPortrait):
 	portrait = character_portrait
 	refresh_portrait()

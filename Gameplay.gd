@@ -48,8 +48,8 @@ func _ready():
 		# Hook character selection.
 		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
-	set_active_character(0)
 	change_state(GameState.HUMAN_TURN)
+	set_active_character(0)
 	build_a_star()
 	
 func build_a_star():
@@ -92,11 +92,10 @@ func set_active_character(index: int):
 		if i == index:
 			active_character = $World/Party.get_child(i)
 			active_character.set_active(true)
-			if active_character.deck:
-				for card in active_character.deck.cards:
-					var new_card = card_ui_scene.instantiate() as CardUI
-					new_card.initialize(card)
-					$UI/Hand.add_child(new_card)
+			for card in active_character.get_hand().cards:
+				var new_card = card_ui_scene.instantiate() as CardUI
+				new_card.initialize(card)
+				$UI/Hand.add_child(new_card)
 		else:
 			character.set_active(false)
 			character.clear_pending_move_cost()
