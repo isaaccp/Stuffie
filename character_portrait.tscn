@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlafd5e0038cv"]
+
+[ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
+
+[node name="CharacterPortrait" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qmac0")
+
+[node name="Portrait" type="TextureButton" parent="."]
+layout_mode = 2
+
+[node name="MovePoints" type="RichTextLabel" parent="."]
+layout_mode = 2
+fit_content = true
