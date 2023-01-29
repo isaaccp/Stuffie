@@ -7,5 +7,5 @@ script = ExtResource("1_4p8wa")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 
-[node name="Picture" type="Sprite2D" parent="."]
+[node name="Portrait" type="Sprite2D" parent="."]
 visible = false

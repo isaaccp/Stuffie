@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dlafd5e0038cv"]
+[gd_scene load_steps=3 format=3 uid="uid://dlafd5e0038cv"]
 
 [ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
+[ext_resource type="Texture2D" uid="uid://dcl7kkxhyedtp" path="res://icon.svg" id="2_s8pq6"]
 
 [node name="CharacterPortrait" type="VBoxContainer"]
 anchors_preset = 15
@@ -13,6 +14,13 @@ script = ExtResource("1_qmac0")
 [node name="Portrait" type="TextureButton" parent="."]
 layout_mode = 2
 
-[node name="MovePoints" type="RichTextLabel" parent="."]
+[node name="ActiveMarker" type="TextureRect" parent="Portrait"]
+visible = false
 layout_mode = 2
-fit_content = true
+offset_right = 128.0
+offset_bottom = 128.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_s8pq6")
+
+[node name="MovePoints" type="Label" parent="."]
+layout_mode = 2

@@ -162,7 +162,7 @@ position = Vector2(25, 33)
 [node name="Sprite" parent="Gameplay/World/Party/Lead" index="0"]
 texture = ExtResource("2_rka6x")
 
-[node name="Picture" parent="Gameplay/World/Party/Lead" index="1"]
+[node name="Portrait" parent="Gameplay/World/Party/Lead" index="1"]
 texture = ExtResource("3_pxv63")
 
 [node name="Helper" parent="Gameplay/World/Party" instance=ExtResource("2_rexnp")]
@@ -171,7 +171,7 @@ position = Vector2(41, 49)
 [node name="Sprite" parent="Gameplay/World/Party/Helper" index="0"]
 texture = ExtResource("3_ywmde")
 
-[node name="Picture" parent="Gameplay/World/Party/Helper" index="1"]
+[node name="Portrait" parent="Gameplay/World/Party/Helper" index="1"]
 texture = ExtResource("4_a8gm6")
 
 [node name="TileMap" type="TileMap" parent="Gameplay/World"]

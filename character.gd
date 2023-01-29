@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Character
+
 var total_ap: int = 5
 var total_mp: int = 10
 var ap: int
@@ -25,5 +27,8 @@ func set_portrait(character_portrait: CharacterPortrait):
 	refresh_portrait()
 
 func refresh_portrait():
-	portrait.set_portrait_texture($Picture.texture)
+	portrait.set_portrait_texture($Portrait.texture)
 	portrait.set_move_points(mp, total_mp)
+	
+func set_active(active: bool):
+	portrait.set_active(active)

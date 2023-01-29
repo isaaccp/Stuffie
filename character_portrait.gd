@@ -16,3 +16,6 @@ func set_portrait_texture(texture: Texture):
 	
 func set_move_points(move_points: int, total_move_points: int):
 	$MovePoints.text = "Mov: %d / %d" % [move_points, total_move_points]
+	
+func set_active(active: bool):
+	$Portrait/ActiveMarker.visible = active
