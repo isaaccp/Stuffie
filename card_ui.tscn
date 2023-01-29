@@ -10,21 +10,28 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h04yd")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
-[node name="CardTop" type="HBoxContainer" parent="VBox"]
+[node name="CardTop" type="HBoxContainer" parent="Margin/VBox"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="VBox/CardTop"]
+[node name="Name" type="Label" parent="Margin/VBox/CardTop"]
 layout_mode = 2
 
-[node name="Cost" type="Label" parent="VBox/CardTop"]
+[node name="Cost" type="Label" parent="Margin/VBox/CardTop"]
 layout_mode = 2
 
-[node name="Image" type="TextureRect" parent="VBox"]
+[node name="Image" type="TextureRect" parent="Margin/VBox"]
 layout_mode = 2
 
-[node name="Description" type="RichTextLabel" parent="VBox"]
+[node name="Description" type="RichTextLabel" parent="Margin/VBox"]
 layout_mode = 2
 fit_content = true

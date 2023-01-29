@@ -12,7 +12,7 @@ func _process(delta):
 	pass
 	
 func initialize(card: Card):
-	$VBox/CardTop/Name.text = card.card_name
-	$VBox/CardTop/Cost.text = card.get_cost_text()
-	$VBox/Image.texture = card.texture
-	$VBox/Description.text = card.get_description_text()
+	$Margin/VBox/CardTop/Name.text = card.card_name
+	$Margin/VBox/CardTop/Cost.text = card.get_cost_text()
+	$Margin/VBox/Image.texture = card.texture
+	$Margin/VBox/Description.text = card.get_description_text()

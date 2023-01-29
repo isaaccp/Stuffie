@@ -46,7 +46,7 @@ func _ready():
 		character.set_portrait(character_portrait)
 		character.set_id_position(Vector2i(i, i))
 		# Hook character selection.
-		character_portrait.get_node('Portrait').pressed.connect(_on_character_portrait_pressed.bind(i))
+		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
 	set_active_character(0)
 	change_state(GameState.HUMAN_TURN)

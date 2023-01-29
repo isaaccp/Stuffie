@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
 [ext_resource type="Texture2D" uid="uid://dcl7kkxhyedtp" path="res://icon.svg" id="2_s8pq6"]
 
-[node name="CharacterPortrait" type="VBoxContainer"]
+[node name="CharacterPortrait" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,10 +11,20 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qmac0")
 
-[node name="Portrait" type="TextureButton" parent="."]
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
-[node name="ActiveMarker" type="TextureRect" parent="Portrait"]
+[node name="Portrait" type="TextureButton" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="ActiveMarker" type="TextureRect" parent="Margin/VBox/Portrait"]
 visible = false
 layout_mode = 2
 offset_right = 128.0
@@ -22,7 +32,7 @@ offset_bottom = 128.0
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_s8pq6")
 
-[node name="MovePoints" type="RichTextLabel" parent="."]
+[node name="MovePoints" type="RichTextLabel" parent="Margin/VBox"]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true

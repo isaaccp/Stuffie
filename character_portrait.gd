@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends PanelContainer
 
 class_name CharacterPortrait
 
@@ -12,8 +12,11 @@ func _process(delta):
 	pass
 	
 func set_portrait_texture(texture: Texture):
-	$Portrait.texture_normal = texture
-	
+	$Margin/VBox/Portrait.texture_normal = texture
+
+func get_portrait_button() -> TextureButton:
+	return $Margin/VBox/Portrait
+		
 func set_move_points(pending_move_cost: float, move_points: float, total_move_points: int):
 	var color
 	var move_left
@@ -25,7 +28,7 @@ func set_move_points(pending_move_cost: float, move_points: float, total_move_po
 		move_left = move_points
 
 	var bb_code = "Mov: [color=%s]%0.1f[/color] / %d" % [color, move_left, total_move_points]
-	$MovePoints.parse_bbcode(bb_code)
+	$Margin/VBox/MovePoints.parse_bbcode(bb_code)
 	
 func set_active(active: bool):
-	$Portrait/ActiveMarker.visible = active
+	$Margin/VBox/Portrait/ActiveMarker.visible = active
