@@ -59,6 +59,8 @@ func build_a_star():
 	a_star.cell_size = Vector2(tile_size, tile_size)
 	a_star.diagonal_mode = a_star.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE 
 	a_star.update()
+	
+	# Base map.
 	for i in map_rect.size[0]:
 		for j in map_rect.size[1]:
 			var tile_data = $World/TileMap.get_cell_tile_data(0, Vector2i(i, j))
@@ -66,8 +68,13 @@ func build_a_star():
 			if solid:
 				a_star.set_point_solid(Vector2i(i, j))
 
+	# Obstacles layer.
 	for pos in $World/TileMap.get_used_cells(1):
 		a_star.set_point_solid(pos)
+		
+	# Characters.
+	for character in $World/Party.get_children():
+		a_star.set_point_solid(character.get_id_position())
 
 func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.
@@ -157,8 +164,10 @@ func handle_move(mouse_pos: Vector2):
 		return
 	var tile_map_pos = convert_mouse_pos_to_tile(mouse_pos)
 	# Handle move "animation".
+	a_star.set_point_solid(active_character.get_id_position(), false)
 	active_character.reduce_move(path_cost(current_path))
 	active_character.set_id_position(tile_map_pos)
+	a_star.set_point_solid(active_character.get_id_position())
 	
 func _unhandled_input(event):
 	if event is InputEventMouseButton:

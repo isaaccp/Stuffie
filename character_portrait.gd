@@ -25,7 +25,6 @@ func set_move_points(pending_move_cost: float, move_points: float, total_move_po
 		move_left = move_points
 
 	var bb_code = "Mov: [color=%s]%0.1f[/color] / %d" % [color, move_left, total_move_points]
-	print_debug(bb_code)
 	$MovePoints.parse_bbcode(bb_code)
 	
 func set_active(active: bool):
