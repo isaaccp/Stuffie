@@ -32,6 +32,10 @@ var current_path: PackedVector2Array = PackedVector2Array()
 var valid_path: bool = false
 var too_long_path: bool = false
 
+var current_card_index: int = -1
+var current_card: Card
+var target_mode: Card.TargetMode
+
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 16
 
@@ -85,6 +89,7 @@ func _on_character_portrait_pressed(index: int):
 	
 func set_active_character(index: int):
 	var i = 0
+	# Clear hand for prevoius character.
 	for child in $UI/Hand.get_children():
 		child.queue_free()
 		
@@ -92,14 +97,31 @@ func set_active_character(index: int):
 		if i == index:
 			active_character = $World/Party.get_child(i)
 			active_character.set_active(true)
-			for card in active_character.get_hand().cards:
+			for j in active_character.hand.cards.size():
+				var card = active_character.hand.cards[j]
 				var new_card = card_ui_scene.instantiate() as CardUI
-				new_card.initialize(card)
+				new_card.initialize(card, _on_card_pressed.bind(j))
 				$UI/Hand.add_child(new_card)
 		else:
 			character.set_active(false)
 			character.clear_pending_move_cost()
 		i += 1
+	
+func _on_card_pressed(index: int):
+	if state != GameState.HUMAN_TURN:
+		return
+	
+	if current_card_index != -1:
+		$UI/Hand.get_child(current_card_index).set_highlight(false)
+	
+	$UI/Hand.get_child(index).set_highlight(true)
+	current_card_index = index
+	current_card = active_character.hand.cards[index]
+	
+	# Possibly there are some 'target-less' cards that can take effect right away.
+	change_human_turn_state(HumanTurnState.ACTION_TARGET)
+	target_mode = current_card.target_mode
+	print_debug("Card clicked", index)
 	
 func convert_mouse_pos_to_tile(absolute_mouse_pos: Vector2) -> Vector2:
 	var transform = get_viewport().get_canvas_transform().affine_inverse()
@@ -116,36 +138,45 @@ func path_cost(path: PackedVector2Array) -> float:
 			cost += 1.5
 	return cost
 		
+
+func process_human_waiting():
+			# Active charater position
+	var pos = active_character.get_id_position()
+			# Calculate mouse pointer position on the tilemap
+	var absolute_mouse_pos = get_viewport().get_mouse_position()
+	var tile_map_pos = convert_mouse_pos_to_tile(absolute_mouse_pos)
+	current_path = a_star.get_id_path(pos, tile_map_pos)
+	valid_path = !current_path.is_empty()
+	var cost = path_cost(current_path)
+	too_long_path = (cost > active_character.move_points)
+			# Update prospective cost in character.
+	if !valid_path or too_long_path:
+		active_character.clear_pending_move_cost()
+	else:
+		active_character.set_pending_move_cost(cost)
+			# Draw path.
+	if valid_path:
+		if too_long_path:
+			$World/Line2D.default_color = Color(1, 0, 0, 1)
+		else:
+			$World/Line2D.default_color = Color(1, 1, 1, 1)
+		var half_tile = Vector2(tile_size/2, tile_size/2)
+		$World/Line2D.clear_points()
+		for point in current_path:
+			$World/Line2D.add_point(point*tile_size+half_tile)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
 		if human_turn_state == HumanTurnState.WAITING:
-			# Active charater position
-			var pos = active_character.get_id_position()
-			# Calculate mouse pointer position on the tilemap
-			var absolute_mouse_pos = get_viewport().get_mouse_position()
-			var tile_map_pos = convert_mouse_pos_to_tile(absolute_mouse_pos)
-			current_path = a_star.get_id_path(pos, tile_map_pos)
-			valid_path = !current_path.is_empty()
-			var cost = path_cost(current_path)
-			too_long_path = (cost > active_character.move_points)
-			# Update prospective cost in character.
-			if !valid_path or too_long_path:
-				active_character.clear_pending_move_cost()
-			else:
-				active_character.set_pending_move_cost(cost)
-			# Draw path.
-			if valid_path:
-				if too_long_path:
-					$World/Line2D.default_color = Color(1, 0, 0, 1)
-				else:
-					$World/Line2D.default_color = Color(1, 1, 1, 1)
-				var half_tile = Vector2(tile_size/2, tile_size/2)
-				$World/Line2D.clear_points()
-				for point in current_path:
-					$World/Line2D.add_point(point*tile_size+half_tile)
-		# wait for human to finish turn
-		pass
+			process_human_waiting()
+		elif human_turn_state == HumanTurnState.ACTION_TARGET:
+			if target_mode == Card.TargetMode.SELF:
+				pass
+			elif target_mode == Card.TargetMode.ENEMY:
+				pass
+			elif target_mode == Card.TargetMode.AREA:
+				pass
 	else:
 		if cpu_turn_start == -1:
 			cpu_turn_start = Time.get_ticks_msec()
@@ -161,6 +192,11 @@ func change_state(new_state):
 		for character in $World/Party.get_children():
 			character.begin_turn()
 		human_turn_state = HumanTurnState.WAITING
+
+func change_human_turn_state(new_state):
+	human_turn_state = new_state
+	current_path.clear()
+	$World/Line2D.clear_points()
 	
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
@@ -175,7 +211,16 @@ func handle_move(mouse_pos: Vector2):
 	active_character.reduce_move(path_cost(current_path))
 	active_character.set_id_position(tile_map_pos)
 	a_star.set_point_solid(active_character.get_id_position())
-	
+
+func _input(event):
+	if Input.is_action_pressed("ui_cancel"):
+		if state == GameState.HUMAN_TURN:
+			if human_turn_state == HumanTurnState.ACTION_TARGET:
+				$UI/Hand.get_child(current_card_index).set_highlight(false)
+				current_card_index = -1
+				current_card = null
+				change_human_turn_state(HumanTurnState.WAITING)
+		
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		var mouse_event = event as InputEventMouseButton

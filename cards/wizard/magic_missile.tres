@@ -10,3 +10,4 @@ description = "Casts a magic projectile ({damage}dmg) at one enemy"
 cost = 1
 damage = 5
 texture = ExtResource("2_r3cv0")
+target_mode = 1

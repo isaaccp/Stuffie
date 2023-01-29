@@ -2,8 +2,10 @@ extends Resource
 
 class_name Card
 
-enum CardType {
-	Attack,
+enum TargetMode {
+	SELF,
+	ENEMY,
+	AREA,
 }
 
 @export var card_name: String
@@ -11,6 +13,7 @@ enum CardType {
 @export var cost: int
 @export var damage: int
 @export var texture: Texture2D
+@export var target_mode: TargetMode
 
 func get_description_text() -> String:
 	var format_vars = {

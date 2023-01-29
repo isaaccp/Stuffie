@@ -20,6 +20,11 @@ theme_override_constants/margin_bottom = 5
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
+[node name="Playing" type="Label" parent="Margin/VBox"]
+visible = false
+layout_mode = 2
+text = "Playing"
+
 [node name="CardTop" type="HBoxContainer" parent="Margin/VBox"]
 layout_mode = 2
 
