@@ -43,3 +43,8 @@ func info_text() -> String:
 		"total_hit_points": total_hit_points,
 	}
 	return "[b]{name}[/b]\nHP: {hit_points}/{total_hit_points}".format(format_vars)
+
+func apply_damage(damage: int):
+	hit_points -= damage
+	if hit_points <= 0:
+		queue_free()

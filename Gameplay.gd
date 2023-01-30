@@ -31,6 +31,8 @@ var a_star: AStarGrid2D
 var current_path: PackedVector2Array = PackedVector2Array()
 var valid_path: bool = false
 var too_long_path: bool = false
+# Whether the current tile is a valid target (in ACTION_TARGET mode).
+var valid_target: bool = false
 var tile_map_pos: Vector2i = Vector2i(0, 0)
 
 var current_card_index: int = -1
@@ -61,7 +63,6 @@ func _ready():
 	for child in $World/Enemies.get_children():
 		var enemy = child as Enemy
 		enemy_locs[enemy.get_id_position()] = enemy
-	print_debug(enemy_locs)
 	
 func build_a_star():
 	a_star = AStarGrid2D.new()
@@ -96,22 +97,25 @@ func _on_character_portrait_pressed(index: int):
 		return
 	# add some sub-state/bool for any actions being in progress
 	set_active_character(index)
-	
-func set_active_character(index: int):
-	var i = 0
-	# Clear hand for prevoius character.
+
+func draw_hand():
+	# Clear hand.
 	for child in $UI/Hand.get_children():
 		child.queue_free()
+	for j in active_character.hand.cards.size():
+		var card = active_character.hand.cards[j]
+		var new_card = card_ui_scene.instantiate() as CardUI
+		new_card.initialize(card, _on_card_pressed.bind(j))
+		$UI/Hand.add_child(new_card)
+
+func set_active_character(index: int):
+	var i = 0
 		
 	for character in $World/Party.get_children():
 		if i == index:
 			active_character = $World/Party.get_child(i)
 			active_character.set_active(true)
-			for j in active_character.hand.cards.size():
-				var card = active_character.hand.cards[j]
-				var new_card = card_ui_scene.instantiate() as CardUI
-				new_card.initialize(card, _on_card_pressed.bind(j))
-				$UI/Hand.add_child(new_card)
+			draw_hand()
 		else:
 			character.set_active(false)
 			character.clear_pending_move_cost()
@@ -124,13 +128,18 @@ func _on_card_pressed(index: int):
 	if current_card_index != -1:
 		$UI/Hand.get_child(current_card_index).set_highlight(false)
 		target_cursor.queue_free()
-	$UI/Hand.get_child(index).set_highlight(true)
-	current_card_index = index
-	current_card = active_character.hand.cards[index]
 	
-	# Possibly there are some 'target-less' cards that can take effect right away.
-	change_human_turn_state(HumanTurnState.ACTION_TARGET)
+	var card = active_character.hand.cards[index]
+	if card.cost <= active_character.action_points:
+		$UI/Hand.get_child(index).set_highlight(true)
+		current_card_index = index
+		current_card = card
 	
+		change_human_turn_state(HumanTurnState.ACTION_TARGET)
+	else:
+		# Not enough action points to play card, throw back to WAITING state.
+		change_human_turn_state(HumanTurnState.WAITING)
+		
 func create_cursor(card: Card):
 	var target_mode = card.target_mode
 	if target_mode == Card.TargetMode.SELF:
@@ -253,15 +262,33 @@ func update_enemy_info(enemy: Enemy):
 			
 func clear_enemy_info():
 	$UI/InfoPanel/VBox/EnemyInfo.text = ""
-	
+
+func play_card():
+	if current_card.target_mode == Card.TargetMode.ENEMY:
+		var enemy = enemy_locs[tile_map_pos]
+		enemy.apply_damage(current_card.damage)
+		active_character.action_points -= current_card.cost
+		active_character.hand.remove_card(current_card_index)
+		# TODO: Move card to discard pile.
+	draw_hand()
+	# Consider wrapping all this into a method.
+	current_card_index = -1
+	current_card = null
+	target_cursor.queue_free()
+	change_human_turn_state(HumanTurnState.WAITING)
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		var mouse_event = event as InputEventMouseButton
 		# left click
 		if mouse_event.button_index == 1 and mouse_event.pressed:
 			# move
-			if state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING:
-				handle_move(mouse_event.position)
+			if state == GameState.HUMAN_TURN:
+				if human_turn_state == HumanTurnState.WAITING:
+					handle_move(mouse_event.position)
+				elif human_turn_state == HumanTurnState.ACTION_TARGET:
+					if valid_target:
+						play_card()
 	elif event is InputEventMouseMotion:
 		var new_tile_map_pos = convert_mouse_pos_to_tile(event.position)
 		# Handle enemy mouseover. It seems like it's fine to allow this
@@ -277,9 +304,13 @@ func _unhandled_input(event):
 				if human_turn_state == HumanTurnState.WAITING:
 					calculate_path(new_tile_map_pos)
 				elif human_turn_state == HumanTurnState.ACTION_TARGET:
-					target_cursor.global_position = new_tile_map_pos*tile_size
-					if enemy_locs.has(new_tile_map_pos):
-						target_cursor.default_color = Color(1, 0, 0, 1)
-					else:
-						target_cursor.default_color = Color(1, 1, 1, 1)
+					valid_target = false
+					if current_card.target_mode == Card.TargetMode.ENEMY:
+						target_cursor.global_position = new_tile_map_pos*tile_size
+						# Update this code so it takes into account card distance.
+						if enemy_locs.has(new_tile_map_pos):
+							target_cursor.default_color = Color(1, 0, 0, 1)
+							valid_target = true
+						else:
+							target_cursor.default_color = Color(1, 1, 1, 1)
 		tile_map_pos = new_tile_map_pos
