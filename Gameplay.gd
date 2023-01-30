@@ -34,7 +34,8 @@ var too_long_path: bool = false
 
 var current_card_index: int = -1
 var current_card: Card
-var target_mode: Card.TargetMode
+var enemy_locs: Dictionary
+var target_cursor: Line2D
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 16
@@ -55,6 +56,11 @@ func _ready():
 	change_state(GameState.HUMAN_TURN)
 	set_active_character(0)
 	build_a_star()
+	# Move this where appropriate once we have some fancier way to control enemies.
+	for child in $World/Enemies.get_children():
+		var enemy = child as Enemy
+		enemy_locs[enemy.get_id_position()] = enemy
+	print_debug(enemy_locs)
 	
 func build_a_star():
 	a_star = AStarGrid2D.new()
@@ -79,6 +85,9 @@ func build_a_star():
 	# Characters.
 	for character in $World/Party.get_children():
 		a_star.set_point_solid(character.get_id_position())
+	# Enemies
+	for enemy in $World/Enemies.get_children():
+		a_star.set_point_solid(enemy.get_id_position())
 
 func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.
@@ -120,13 +129,35 @@ func _on_card_pressed(index: int):
 	
 	# Possibly there are some 'target-less' cards that can take effect right away.
 	change_human_turn_state(HumanTurnState.ACTION_TARGET)
-	target_mode = current_card.target_mode
 	print_debug("Card clicked", index)
 	
-func convert_mouse_pos_to_tile(absolute_mouse_pos: Vector2) -> Vector2:
+func create_cursor(card: Card):
+	var target_mode = card.target_mode
+	if target_mode == Card.TargetMode.SELF:
+		# create hardcoded, unmovable cursor on character
+		# just waiting for click
+		pass
+	elif target_mode == Card.TargetMode.ENEMY:
+		# create single tile cursor controlled by mouse,
+		# that can only be clicked on top of monsters
+		target_cursor = Line2D.new()
+		target_cursor.width = 2
+		target_cursor.add_point(Vector2(0, 0))
+		target_cursor.add_point(Vector2(0, 16))
+		target_cursor.add_point(Vector2(16, 16))
+		target_cursor.add_point(Vector2(16, 0))
+		target_cursor.add_point(Vector2(0, 0))
+		var tile_map_pos = get_current_mouse_tile_map_pos()
+		target_cursor.global_position = tile_map_pos * tile_size
+		print_debug("Created single enemy cursor")
+		$World.add_child(target_cursor)
+	elif target_mode == Card.TargetMode.ENEMY:
+		pass
+		
+func convert_mouse_pos_to_tile(absolute_mouse_pos: Vector2) -> Vector2i:
 	var transform = get_viewport().get_canvas_transform().affine_inverse()
 	var mouse_pos = transform.basis_xform(absolute_mouse_pos)
-	return $World/TileMap.local_to_map(mouse_pos)
+	return Vector2i($World/TileMap.local_to_map(mouse_pos))
 	
 func path_cost(path: PackedVector2Array) -> float:
 	var cost = 0.0
@@ -139,12 +170,15 @@ func path_cost(path: PackedVector2Array) -> float:
 	return cost
 		
 
-func process_human_waiting():
-			# Active charater position
-	var pos = active_character.get_id_position()
-			# Calculate mouse pointer position on the tilemap
+func get_current_mouse_tile_map_pos():
 	var absolute_mouse_pos = get_viewport().get_mouse_position()
-	var tile_map_pos = convert_mouse_pos_to_tile(absolute_mouse_pos)
+	return convert_mouse_pos_to_tile(absolute_mouse_pos)
+	
+func process_human_waiting():
+	# Active charater position
+	var pos = active_character.get_id_position()
+	# Calculate mouse pointer position on the tilemap
+	var tile_map_pos = get_current_mouse_tile_map_pos()
 	current_path = a_star.get_id_path(pos, tile_map_pos)
 	valid_path = !current_path.is_empty()
 	var cost = path_cost(current_path)
@@ -171,12 +205,7 @@ func _process(delta):
 		if human_turn_state == HumanTurnState.WAITING:
 			process_human_waiting()
 		elif human_turn_state == HumanTurnState.ACTION_TARGET:
-			if target_mode == Card.TargetMode.SELF:
-				pass
-			elif target_mode == Card.TargetMode.ENEMY:
-				pass
-			elif target_mode == Card.TargetMode.AREA:
-				pass
+			pass
 	else:
 		if cpu_turn_start == -1:
 			cpu_turn_start = Time.get_ticks_msec()
@@ -187,7 +216,7 @@ func _process(delta):
 
 func change_state(new_state):
 	state = new_state
-	$UI/TurnState.text = state_text[state]
+	$UI/InfoPanel/VBox/TurnState.text = state_text[state]
 	if state == GameState.HUMAN_TURN:
 		for character in $World/Party.get_children():
 			character.begin_turn()
@@ -197,6 +226,8 @@ func change_human_turn_state(new_state):
 	human_turn_state = new_state
 	current_path.clear()
 	$World/Line2D.clear_points()
+	if new_state == HumanTurnState.ACTION_TARGET:
+		create_cursor(current_card)
 	
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
@@ -220,7 +251,13 @@ func _input(event):
 				current_card_index = -1
 				current_card = null
 				change_human_turn_state(HumanTurnState.WAITING)
-		
+
+func update_enemy_info(enemy: Enemy):
+	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
+			
+func clear_enemy_info():
+	$UI/InfoPanel/VBox/EnemyInfo.text = ""
+	
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		var mouse_event = event as InputEventMouseButton
@@ -229,3 +266,16 @@ func _unhandled_input(event):
 			# move
 			if state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING:
 				handle_move(mouse_event.position)
+	elif event is InputEventMouseMotion:
+		var absolute_pos = event.position
+		var tile_map_pos = convert_mouse_pos_to_tile(absolute_pos)
+		if enemy_locs.has(tile_map_pos):
+			update_enemy_info(enemy_locs[tile_map_pos])
+		else:
+			clear_enemy_info()
+		if state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.ACTION_TARGET:
+			target_cursor.global_position = tile_map_pos*tile_size
+			if enemy_locs.has(tile_map_pos):
+				target_cursor.default_color = Color(1, 0, 0, 1)
+			else:
+				target_cursor.default_color = Color(1, 1, 1, 1)

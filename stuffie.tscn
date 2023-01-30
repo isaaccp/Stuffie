@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8kraijhonpsy"]
+[gd_scene load_steps=6 format=3 uid="uid://c8kraijhonpsy"]
 
 [ext_resource type="Script" path="res://Gameplay.gd" id="1_ilsc8"]
 [ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_e8ku1"]
 [ext_resource type="PackedScene" uid="uid://dvhxmiqckixoy" path="res://wizard.tscn" id="3_s40gy"]
+[ext_resource type="PackedScene" uid="uid://6hkwrwqi6i6a" path="res://enemy.tscn" id="4_oh824"]
 [ext_resource type="PackedScene" uid="uid://dnhwgcldvx1c8" path="res://tilemap.tscn" id="7_xmlt0"]
 
 [node name="Stuffie" type="Node"]
@@ -15,8 +16,20 @@ script = ExtResource("1_ilsc8")
 [node name="Party" type="Node" parent="Gameplay/World"]
 
 [node name="Wizard" parent="Gameplay/World/Party" instance=ExtResource("3_s40gy")]
+total_action_points = null
+total_move_points = null
+total_hit_points = null
 
 [node name="Warrior" parent="Gameplay/World/Party" instance=ExtResource("2_e8ku1")]
+total_action_points = null
+total_move_points = null
+total_hit_points = null
+
+[node name="Enemies" type="Node" parent="Gameplay/World"]
+
+[node name="Enemy2" parent="Gameplay/World/Enemies" instance=ExtResource("4_oh824")]
+initial_position = Vector2i(8, 3)
+enemy_name = "ghost"
 
 [node name="TileMap" parent="Gameplay/World" instance=ExtResource("7_xmlt0")]
 navigation_visibility_mode = 1
@@ -37,14 +50,6 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "End Turn"
 
-[node name="TurnState" type="RichTextLabel" parent="Gameplay/UI"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -202.0
-offset_bottom = 50.0
-grow_horizontal = 0
-
 [node name="CharacterState" type="HBoxContainer" parent="Gameplay/UI"]
 anchors_preset = 2
 anchor_top = 1.0
@@ -64,6 +69,25 @@ offset_top = -40.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="InfoPanel" type="PanelContainer" parent="Gameplay/UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="VBox" type="VBoxContainer" parent="Gameplay/UI/InfoPanel"]
+layout_mode = 2
+
+[node name="TurnState" type="Label" parent="Gameplay/UI/InfoPanel/VBox"]
+layout_mode = 2
+
+[node name="EnemyInfo" type="RichTextLabel" parent="Gameplay/UI/InfoPanel/VBox"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(125, 70)

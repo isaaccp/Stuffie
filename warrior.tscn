@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 
 [node name="Warrior" instance=ExtResource("1_kqt35")]
+total_hit_points = 50
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource("2_i5xr4")

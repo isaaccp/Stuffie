@@ -14,10 +14,12 @@ enum TargetMode {
 @export var damage: int
 @export var texture: Texture2D
 @export var target_mode: TargetMode
+@export var target_distance: int
 
 func get_description_text() -> String:
 	var format_vars = {
-		"damage": damage
+		"damage": damage,
+		"distance": target_distance,
 	}
 	return description.format(format_vars)
 	

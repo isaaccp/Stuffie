@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
 
 [node name="Wizard" instance=ExtResource("1_k72kc")]
+total_hit_points = 20
 deck = ExtResource("2_r0eug")
 
 [node name="Sprite" parent="." index="0"]

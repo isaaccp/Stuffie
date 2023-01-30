@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://6hkwrwqi6i6a"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_6o63w"]
+[ext_resource type="Texture2D" uid="uid://cacnum14vl6fi" path="res://resources/kenney_tinydungeon/Tiles/tile_0121.png" id="2_lai5h"]
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1_6o63w")
+total_action_points = 1
+total_move_points = 10
+total_hit_points = 5
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_lai5h")

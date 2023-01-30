@@ -2,10 +2,12 @@ extends Node2D
 
 class_name Character
 
-var total_action_points: int = 5
-var total_move_points: int = 10
+@export var total_action_points: int
+@export var total_move_points: int
+@export var total_hit_points: int
 var action_points: int
 var move_points: float
+var hit_points: int
 var pending_move_cost: float = -1.0
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
@@ -19,7 +21,7 @@ var hand: Hand = Hand.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	hit_points = total_hit_points
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
