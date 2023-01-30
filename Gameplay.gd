@@ -123,7 +123,7 @@ func _on_card_pressed(index: int):
 	
 	if current_card_index != -1:
 		$UI/Hand.get_child(current_card_index).set_highlight(false)
-	
+		target_cursor.queue_free()
 	$UI/Hand.get_child(index).set_highlight(true)
 	current_card_index = index
 	current_card = active_character.hand.cards[index]
