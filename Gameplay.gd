@@ -245,8 +245,8 @@ func _input(event):
 				$UI/Hand.get_child(current_card_index).set_highlight(false)
 				current_card_index = -1
 				current_card = null
+				target_cursor.queue_free()
 				change_human_turn_state(HumanTurnState.WAITING)
-				# TODO: Delete cursor.
 
 func update_enemy_info(enemy: Enemy):
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
