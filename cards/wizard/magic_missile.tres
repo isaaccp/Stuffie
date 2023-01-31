@@ -11,4 +11,4 @@ cost = 1
 damage = 5
 texture = ExtResource("2_r3cv0")
 target_mode = 1
-target_distance = 8
+target_distance = 5
