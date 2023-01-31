@@ -277,6 +277,37 @@ func play_card():
 	target_cursor.queue_free()
 	change_human_turn_state(HumanTurnState.WAITING)
 
+func distance(from: Vector2i, to: Vector2i):
+	return abs(from[0] - to[0]) + abs(from[1] - to[1])
+
+func update_target(new_tile_map_pos: Vector2i):
+	valid_target = false
+	if current_card.target_mode == Card.TargetMode.ENEMY:
+		target_cursor.global_position = new_tile_map_pos*tile_size
+		var distance = distance(active_character.get_id_position(), new_tile_map_pos) 
+		if distance > current_card.target_distance:
+			valid_target = false
+			target_cursor.default_color = Color(0, 0, 0, 1)
+		else:
+			if enemy_locs.has(new_tile_map_pos):
+				target_cursor.default_color = Color(1, 0, 0, 1)
+				valid_target = true
+			else:
+				target_cursor.default_color = Color(1, 1, 1, 1)
+
+func handle_tile_change(new_tile_map_pos: Vector2i):
+	if enemy_locs.has(new_tile_map_pos):
+		update_enemy_info(enemy_locs[new_tile_map_pos])
+	else:
+		clear_enemy_info()
+	# If targeting, there should be a cursor and the cursor can be move around.
+	# Likely this is only if target_mode is not SELF, will need to take that into account.
+	if state == GameState.HUMAN_TURN:
+		if human_turn_state == HumanTurnState.WAITING:
+			calculate_path(new_tile_map_pos)
+		elif human_turn_state == HumanTurnState.ACTION_TARGET:
+			update_target(new_tile_map_pos)
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		var mouse_event = event as InputEventMouseButton
@@ -294,23 +325,5 @@ func _unhandled_input(event):
 		# Handle enemy mouseover. It seems like it's fine to allow this
 		# regardless of turn, etc.
 		if new_tile_map_pos != tile_map_pos:
-			if enemy_locs.has(new_tile_map_pos):
-				update_enemy_info(enemy_locs[new_tile_map_pos])
-			else:
-				clear_enemy_info()
-			# If targeting, there should be a cursor and the cursor can be move around.
-			# Likely this is only if target_mode is not SELF, will need to take that into account.
-			if state == GameState.HUMAN_TURN:
-				if human_turn_state == HumanTurnState.WAITING:
-					calculate_path(new_tile_map_pos)
-				elif human_turn_state == HumanTurnState.ACTION_TARGET:
-					valid_target = false
-					if current_card.target_mode == Card.TargetMode.ENEMY:
-						target_cursor.global_position = new_tile_map_pos*tile_size
-						# Update this code so it takes into account card distance.
-						if enemy_locs.has(new_tile_map_pos):
-							target_cursor.default_color = Color(1, 0, 0, 1)
-							valid_target = true
-						else:
-							target_cursor.default_color = Color(1, 1, 1, 1)
+			handle_tile_change(new_tile_map_pos)
 		tile_map_pos = new_tile_map_pos
