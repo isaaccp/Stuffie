@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_mr1ke")
 card_name = "Sprint"
-description = "Add {move_points} to self"
+description = "Add {move_points} move points to self"
 cost = null
 texture = ExtResource("2_50iua")
 target_mode = 0
