@@ -130,13 +130,15 @@ func _on_card_pressed(index: int):
 		$UI/Hand.get_child(current_card_index).set_highlight(false)
 		target_area.queue_free()
 		target_cursor.queue_free()
+		active_character.clear_pending_action_cost()
 	
 	var card = active_character.hand.cards[index]
 	if card.cost <= active_character.action_points:
 		$UI/Hand.get_child(index).set_highlight(true)
 		current_card_index = index
 		current_card = card
-	
+		# Update prospective cost in character.
+		active_character.set_pending_action_cost(current_card.cost)
 		change_human_turn_state(HumanTurnState.ACTION_TARGET)
 	else:
 		# Not enough action points to play card, throw back to WAITING state.
@@ -145,16 +147,16 @@ func _on_card_pressed(index: int):
 func create_cursor(card: Card):
 	var target_mode = card.target_mode
 	if target_mode == Card.TargetMode.SELF:
-		# create hardcoded, unmovable cursor on character
-		# just waiting for click
-		pass
+		target_cursor = draw_square(Vector2i(0, 0), 2)
+		target_cursor.global_position = active_character.get_id_position() * tile_size
+		$World.add_child(target_cursor)
 	elif target_mode == Card.TargetMode.ENEMY:
 		# create single tile cursor controlled by mouse,
 		# that can only be clicked on top of monsters
 		target_cursor = draw_square(Vector2i(0, 0), 2)
 		target_cursor.global_position = tile_map_pos * tile_size
 		$World.add_child(target_cursor)
-	elif target_mode == Card.TargetMode.ENEMY:
+	elif target_mode == Card.TargetMode.AREA:
 		pass
 
 func draw_square(pos: Vector2i, width: float) -> Line2D:
@@ -210,12 +212,12 @@ func calculate_path(tile_map_pos):
 	valid_path = !current_path.is_empty()
 	var cost = path_cost(current_path)
 	too_long_path = (cost > active_character.move_points)
-			# Update prospective cost in character.
+	# Update prospective cost in character.
 	if !valid_path or too_long_path:
 		active_character.clear_pending_move_cost()
 	else:
 		active_character.set_pending_move_cost(cost)
-			# Draw path.
+	# Draw path.
 	if valid_path:
 		if too_long_path:
 			$World/Path.default_color = Color(1, 0, 0, 1)
@@ -278,6 +280,7 @@ func _input(event):
 				current_card = null
 				target_cursor.queue_free()
 				target_area.queue_free()
+				active_character.clear_pending_action_cost()
 				change_human_turn_state(HumanTurnState.WAITING)
 
 func update_enemy_info(enemy: Enemy):
@@ -293,19 +296,22 @@ func handle_enemy_death(enemy: Enemy):
 	enemy.queue_free()
 	
 func play_card():
-	if current_card.target_mode == Card.TargetMode.ENEMY:
+	if current_card.target_mode == Card.TargetMode.SELF:
+		active_character.apply_card(current_card)
+	elif current_card.target_mode == Card.TargetMode.ENEMY:
 		var enemy = enemy_locs[tile_map_pos]
-		if enemy.apply_damage(current_card.damage):
+		if enemy.apply_card(current_card):
 			handle_enemy_death(enemy)
-		active_character.action_points -= current_card.cost
-		active_character.hand.remove_card(current_card_index)
-		# TODO: Move card to discard pile.
+	active_character.action_points -= current_card.cost
+	active_character.hand.remove_card(current_card_index)
+	# TODO: Move card to discard pile.
 	draw_hand()
 	# Consider wrapping all this into a method.
 	current_card_index = -1
 	current_card = null
 	target_area.queue_free()
 	target_cursor.queue_free()
+	active_character.clear_pending_action_cost()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func distance(from: Vector2i, to: Vector2i):
@@ -317,7 +323,10 @@ func distance(from: Vector2i, to: Vector2i):
 
 func update_target(new_tile_map_pos: Vector2i):
 	valid_target = false
-	if current_card.target_mode == Card.TargetMode.ENEMY:
+	# For target mode SELF, allow clicking anywhere.
+	if current_card.target_mode == Card.TargetMode.SELF:
+		valid_target = true
+	elif current_card.target_mode == Card.TargetMode.ENEMY:
 		target_cursor.global_position = new_tile_map_pos*tile_size
 		var distance = distance(active_character.get_id_position(), new_tile_map_pos) 
 		if distance > current_card.target_distance:

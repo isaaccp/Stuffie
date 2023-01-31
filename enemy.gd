@@ -45,8 +45,8 @@ func info_text() -> String:
 	return "[b]{name}[/b]\nHP: {hit_points}/{total_hit_points}".format(format_vars)
 
 # Returns true if enemy died.
-func apply_damage(damage: int) -> bool:
-	hit_points -= damage
+func apply_card(card: Card) -> bool:
+	hit_points -= card.damage
 	if hit_points <= 0:
 		return true
 	return false

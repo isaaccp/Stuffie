@@ -32,6 +32,11 @@ offset_bottom = 128.0
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_s8pq6")
 
+[node name="ActionPoints" type="RichTextLabel" parent="Margin/VBox"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
 [node name="MovePoints" type="RichTextLabel" parent="Margin/VBox"]
 layout_mode = 2
 bbcode_enabled = true

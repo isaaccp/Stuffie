@@ -8,6 +8,7 @@ class_name Character
 var action_points: int
 var move_points: float
 var hit_points: int
+var pending_action_cost: int = -1
 var pending_move_cost: float = -1.0
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
@@ -49,11 +50,20 @@ func set_portrait(character_portrait: CharacterPortrait):
 
 func refresh_portrait():
 	portrait.set_portrait_texture($Portrait.texture)
+	portrait.set_action_points(pending_action_cost, action_points, total_action_points)
 	portrait.set_move_points(pending_move_cost, move_points, total_move_points)
 	
 func set_active(active: bool):
 	portrait.set_active(active)
 
+func set_pending_action_cost(pending_cost: int):
+	pending_action_cost = pending_cost
+	refresh_portrait()
+	
+func clear_pending_action_cost():
+	pending_action_cost = -1
+	refresh_portrait()
+	
 func reduce_move(move_cost: float):
 	move_points -= move_cost
 	refresh_portrait()
@@ -72,4 +82,7 @@ func set_id_position(id_pos: Vector2i):
 	
 func get_id_position() -> Vector2i:
 	return id_position
-
+	
+func apply_card(card: Card):
+	if card.move_points > 0:
+		move_points += card.move_points
