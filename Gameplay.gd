@@ -57,8 +57,10 @@ func _ready():
 		# Hook character selection.
 		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
-	change_state(GameState.HUMAN_TURN)
+	# As of now, some bits of the game require active_character to be set,
+	# so set it now before changing state.
 	set_active_character(0)
+	change_state(GameState.HUMAN_TURN)
 	build_a_star()
 	# Move this where appropriate once we have some fancier way to control enemies.
 	for child in $World/Enemies.get_children():
@@ -103,8 +105,8 @@ func draw_hand():
 	# Clear hand.
 	for child in $UI/Hand.get_children():
 		child.queue_free()
-	for j in active_character.hand.cards.size():
-		var card = active_character.hand.cards[j]
+	for j in active_character.deck.hand.size():
+		var card = active_character.deck.hand[j]
 		var new_card = card_ui_scene.instantiate() as CardUI
 		new_card.initialize(card, _on_card_pressed.bind(j))
 		$UI/Hand.add_child(new_card)
@@ -132,7 +134,7 @@ func _on_card_pressed(index: int):
 		target_cursor.queue_free()
 		active_character.clear_pending_action_cost()
 	
-	var card = active_character.hand.cards[index]
+	var card = active_character.deck.hand[index]
 	if card.cost <= active_character.action_points:
 		$UI/Hand.get_child(index).set_highlight(true)
 		current_card_index = index
@@ -245,6 +247,7 @@ func change_state(new_state):
 	if state == GameState.HUMAN_TURN:
 		for character in $World/Party.get_children():
 			character.begin_turn()
+		draw_hand()
 		human_turn_state = HumanTurnState.WAITING
 
 func change_human_turn_state(new_state):
@@ -303,8 +306,7 @@ func play_card():
 		if enemy.apply_card(current_card):
 			handle_enemy_death(enemy)
 	active_character.action_points -= current_card.cost
-	active_character.hand.remove_card(current_card_index)
-	# TODO: Move card to discard pile.
+	active_character.deck.discard_card(current_card_index)
 	draw_hand()
 	# Consider wrapping all this into a method.
 	current_card_index = -1

@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://chh0sy5tad4lg"]
+[gd_scene load_steps=5 format=3 uid="uid://chh0sy5tad4lg"]
 
 [ext_resource type="PackedScene" uid="uid://dslbnf6t451ec" path="res://character.tscn" id="1_kqt35"]
+[ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://decks/wizard_deck.tres" id="2_66csg"]
 [ext_resource type="Texture2D" uid="uid://dbmafuxsgowln" path="res://resources/kenney_tinydungeon/Tiles/tile_0087.png" id="2_i5xr4"]
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 
 [node name="Warrior" instance=ExtResource("1_kqt35")]
 total_hit_points = 50
+deck = ExtResource("2_66csg")
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource("2_i5xr4")
