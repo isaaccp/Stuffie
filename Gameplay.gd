@@ -44,6 +44,8 @@ var target_area: Node2D
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 16
 
+@onready var hand_ui = $UI/CardAreaHBox/Hand
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var i = 0
@@ -103,13 +105,13 @@ func _on_character_portrait_pressed(index: int):
 
 func draw_hand():
 	# Clear hand.
-	for child in $UI/Hand.get_children():
+	for child in hand_ui.get_children():
 		child.queue_free()
 	for j in active_character.deck.hand.size():
 		var card = active_character.deck.hand[j]
 		var new_card = card_ui_scene.instantiate() as CardUI
 		new_card.initialize(card, _on_card_pressed.bind(j))
-		$UI/Hand.add_child(new_card)
+		hand_ui.add_child(new_card)
 
 func set_active_character(index: int):
 	var i = 0
@@ -129,14 +131,14 @@ func _on_card_pressed(index: int):
 		return
 	
 	if current_card_index != -1:
-		$UI/Hand.get_child(current_card_index).set_highlight(false)
+		hand_ui.get_child(current_card_index).set_highlight(false)
 		target_area.queue_free()
 		target_cursor.queue_free()
 		active_character.clear_pending_action_cost()
 	
 	var card = active_character.deck.hand[index]
 	if card.cost <= active_character.action_points:
-		$UI/Hand.get_child(index).set_highlight(true)
+		hand_ui.get_child(index).set_highlight(true)
 		current_card_index = index
 		current_card = card
 		# Update prospective cost in character.
@@ -278,7 +280,7 @@ func _input(event):
 	if Input.is_action_pressed("ui_cancel"):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
-				$UI/Hand.get_child(current_card_index).set_highlight(false)
+				hand_ui.get_child(current_card_index).set_highlight(false)
 				current_card_index = -1
 				current_card = null
 				target_cursor.queue_free()

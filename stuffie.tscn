@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8kraijhonpsy"]
+[gd_scene load_steps=7 format=3 uid="uid://c8kraijhonpsy"]
 
 [ext_resource type="Script" path="res://Gameplay.gd" id="1_ilsc8"]
 [ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_e8ku1"]
 [ext_resource type="PackedScene" uid="uid://dvhxmiqckixoy" path="res://wizard.tscn" id="3_s40gy"]
 [ext_resource type="PackedScene" uid="uid://6hkwrwqi6i6a" path="res://enemy.tscn" id="4_oh824"]
+[ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="6_a34cw"]
 [ext_resource type="PackedScene" uid="uid://dnhwgcldvx1c8" path="res://tilemap.tscn" id="7_xmlt0"]
 
 [node name="Stuffie" type="Node"]
@@ -58,7 +59,8 @@ offset_top = -150.0
 offset_right = 204.0
 grow_vertical = 0
 
-[node name="Hand" type="HBoxContainer" parent="Gameplay/UI"]
+[node name="CardAreaControl" type="Control" parent="Gameplay/UI"]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -66,7 +68,8 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -20.0
 offset_top = -40.0
-offset_right = 20.0
+offset_right = 980.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -88,6 +91,34 @@ layout_mode = 2
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
+
+[node name="CardAreaHBox" type="HBoxContainer" parent="Gameplay/UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -92.5
+offset_top = -200.0
+offset_right = 92.5
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Hand" type="HBoxContainer" parent="Gameplay/UI/CardAreaHBox"]
+layout_mode = 2
+
+[node name="Deck" type="MarginContainer" parent="Gameplay/UI/CardAreaHBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="CardBack" type="TextureRect" parent="Gameplay/UI/CardAreaHBox/Deck"]
+layout_mode = 2
+texture = ExtResource("6_a34cw")
+expand_mode = 3
+
+[node name="Discard" type="PanelContainer" parent="Gameplay/UI/CardAreaHBox"]
+layout_mode = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(125, 70)
