@@ -30,6 +30,7 @@ total_hit_points = null
 
 [node name="Enemy2" parent="Gameplay/World/Enemies" instance=ExtResource("4_oh824")]
 initial_position = Vector2i(8, 3)
+total_move_points = 6
 enemy_name = "ghost"
 
 [node name="TileMap" parent="Gameplay/World" instance=ExtResource("7_xmlt0")]

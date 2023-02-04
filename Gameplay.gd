@@ -155,8 +155,9 @@ func create_cursor(card: Card):
 	elif target_mode == Card.TargetMode.AREA:
 		pass
 
-func draw_square(pos: Vector2i, width: float) -> Line2D:
+func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D:
 	var line = Line2D.new()
+	line.default_color = color
 	line.width = width
 	line.add_point(pos * tile_size)
 	line.add_point(pos * tile_size + Vector2i(0, tile_size))
@@ -182,8 +183,9 @@ func create_target_area(card: Card):
 
 func create_move_area(positions: Array):
 	enemy_move_area  = Node2D.new()
+	var red = Color(1, 0, 0, 1)
 	for pos in positions:
-		var new_line = draw_square(pos, 0.5)
+		var new_line = draw_square(pos, 0.5, red)
 		enemy_move_area.add_child(new_line)
 	# move_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(enemy_move_area)
