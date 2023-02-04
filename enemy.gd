@@ -1,4 +1,4 @@
-extends Node2D
+extends WorldEntity
 
 class_name Enemy
 
@@ -11,11 +11,6 @@ var move_points: float
 var hit_points: int
 var done: bool
 @export var enemy_name: String
-
-var id_position: Vector2i
-
-# Move somewhere where it can be used from anywhere or figure out how to pass.
-var tile_size: int = 16
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,13 +29,6 @@ func begin_turn():
 
 func do_turn():
 	done = true
-
-func set_id_position(id_pos: Vector2i):
-	id_position = id_pos
-	position = id_position * tile_size + Vector2i(tile_size/2, tile_size/2)
-	
-func get_id_position() -> Vector2i:
-	return id_position
 
 func info_text() -> String:
 	var format_vars = {

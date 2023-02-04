@@ -1,4 +1,4 @@
-extends Node2D
+extends WorldEntity
 
 class_name Character
 
@@ -11,11 +11,7 @@ var hit_points: int
 var pending_action_cost: int = -1
 var pending_move_cost: float = -1.0
 
-# Move somewhere where it can be used from anywhere or figure out how to pass.
-var tile_size: int = 16
-
 var portrait: CharacterPortrait
-var id_position: Vector2i
 
 @export var deck: Deck
 
@@ -68,13 +64,6 @@ func set_pending_move_cost(pending_cost: float):
 func clear_pending_move_cost():
 	pending_move_cost = -1.0
 	refresh_portrait()
-	
-func set_id_position(id_pos: Vector2i):
-	id_position = id_pos
-	position = id_position * tile_size + Vector2i(tile_size/2, tile_size/2)
-	
-func get_id_position() -> Vector2i:
-	return id_position
 	
 func apply_card(card: Card):
 	if card.move_points > 0:
