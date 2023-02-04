@@ -26,7 +26,7 @@ var active_character: Character
 
 var state: GameState
 var human_turn_state: HumanTurnState
-var a_star_manager = AStarManager.new()
+var map_manager = MapManager.new()
 var current_path: PackedVector2Array = PackedVector2Array()
 var valid_path: bool = false
 var too_long_path: bool = false
@@ -36,8 +36,6 @@ var tile_map_pos: Vector2i = Vector2i(0, 0)
 
 var current_card_index: int = -1
 var current_card: Card
-var character_locs: Dictionary
-var enemy_locs: Dictionary
 var target_cursor: Line2D
 var target_area: Node2D
 
@@ -69,19 +67,14 @@ func _ready():
 	# so set it now before changing state.
 	set_active_character(0)
 	change_state(GameState.HUMAN_TURN)
-	build_a_star()
-	for child in $World/Party.get_children():
-		var character = child as Character
-		character_locs[character.get_id_position()] = character
-	# Move this where appropriate once we have some fancier way to control enemies.
-	for child in $World/Enemies.get_children():
-		var enemy = child as Enemy
-		enemy_locs[enemy.get_id_position()] = enemy
+	initialize_map_manager()
 	
-func build_a_star():
-	a_star_manager.initialize($World/TileMap)
-	a_star_manager.add($World/Party.get_children())
-	a_star_manager.add($World/Enemies.get_children())
+func initialize_map_manager():
+	map_manager.initialize($World/TileMap)
+	map_manager.set_party($World/Party.get_children())
+	map_manager.set_enemies($World/Enemies.get_children())
+	map_manager.initialize_a_star()
+	enemy_turn.initialize(map_manager)
 
 func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.
@@ -200,7 +193,6 @@ func path_cost(path: PackedVector2Array) -> float:
 		else:
 			cost += 1.5
 	return cost
-		
 
 func get_current_mouse_tile_map_pos():
 	var absolute_mouse_pos = get_viewport().get_mouse_position()
@@ -210,7 +202,7 @@ func calculate_path(tile_map_pos):
 	# Active character position
 	var pos = active_character.get_id_position()
 	# Calculate mouse pointer position on the tilemap
-	current_path = a_star_manager.a_star.get_id_path(pos, tile_map_pos)
+	current_path = map_manager.get_path(pos, tile_map_pos)
 	valid_path = !current_path.is_empty()
 	var cost = path_cost(current_path)
 	too_long_path = (cost > active_character.move_points)
@@ -259,7 +251,7 @@ func change_state(new_state):
 		for enemy in $World/Enemies.get_children():
 			enemy.begin_turn()
 		enemy_turn_calculated = false
-		enemy_turn.prepare_turn($World/TileMap, character_locs.values(), enemy_locs.values(), $World/TileMap)
+		enemy_turn.prepare_turn()
 		enemy_turn_thread.start(_async_enemy_turn)
 		
 
@@ -280,10 +272,10 @@ func handle_move(mouse_pos: Vector2):
 		return
 	var tile_map_pos = convert_mouse_pos_to_tile(mouse_pos)
 	# Handle move "animation".
-	a_star_manager.a_star.set_point_solid(active_character.get_id_position(), false)
+	var old_pos = active_character.get_id_position()
 	active_character.reduce_move(path_cost(current_path))
 	active_character.set_id_position(tile_map_pos)
-	a_star_manager.a_star.set_point_solid(active_character.get_id_position())
+	map_manager.move_character(old_pos, tile_map_pos)
 	current_path.clear()
 	$World/Path.clear_points()
 	
@@ -307,15 +299,14 @@ func clear_enemy_info():
 
 func handle_enemy_death(enemy: Enemy):
 	var pos = enemy.get_id_position()
-	enemy_locs.erase(pos)
-	a_star_manager.a_star.set_point_solid(pos, false)
+	map_manager.remove_enemy(pos)
 	enemy.queue_free()
 	
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		active_character.apply_card(current_card)
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		var enemy = enemy_locs[tile_map_pos]
+		var enemy = map_manager.enemy_locs[tile_map_pos]
 		if enemy.apply_card(current_card):
 			handle_enemy_death(enemy)
 	active_character.action_points -= current_card.cost
@@ -348,15 +339,15 @@ func update_target(new_tile_map_pos: Vector2i):
 			valid_target = false
 			target_cursor.default_color = Color(0, 0, 0, 1)
 		else:
-			if enemy_locs.has(new_tile_map_pos):
+			if map_manager.enemy_locs.has(new_tile_map_pos):
 				target_cursor.default_color = Color(1, 0, 0, 1)
 				valid_target = true
 			else:
 				target_cursor.default_color = Color(1, 1, 1, 1)
 
 func handle_tile_change(new_tile_map_pos: Vector2i):
-	if enemy_locs.has(new_tile_map_pos):
-		update_enemy_info(enemy_locs[new_tile_map_pos])
+	if map_manager.enemy_locs.has(new_tile_map_pos):
+		update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
 	else:
 		clear_enemy_info()
 	# If targeting, there should be a cursor and the cursor can be move around.
