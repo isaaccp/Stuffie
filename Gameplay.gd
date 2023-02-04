@@ -181,9 +181,10 @@ func create_target_area(card: Card):
 	target_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(target_area)
 
-func create_move_area(positions: Array):
-
-	enemy_move_area  = Node2D.new()
+func update_move_area(positions: Array):
+	if is_instance_valid(enemy_move_area):
+		enemy_move_area.queue_free()
+	enemy_move_area = Node2D.new()
 	var red = Color(1, 0, 0, 1)
 	for pos in positions:
 		var new_line = draw_square(pos, 0.5, red)
@@ -247,7 +248,10 @@ func _process(delta):
 			change_state(GameState.HUMAN_TURN)
 
 func _async_enemy_turn():
+	var start = Time.get_ticks_msec()
 	enemy_turn.calculate_moves()
+	var end = Time.get_ticks_msec()
+	print_debug("Enemy turn time ", end-start)
 	call_deferred("_wait_enemy_turn_completed")
 
 func _wait_enemy_turn_completed():
@@ -308,7 +312,7 @@ func _input(event):
 func update_enemy_info(enemy: Enemy):
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
 	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
-	create_move_area(walkable_cells)
+	update_move_area(walkable_cells)
 			
 func clear_enemy_info():
 	$UI/InfoPanel/VBox/EnemyInfo.text = ""
