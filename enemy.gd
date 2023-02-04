@@ -16,7 +16,7 @@ var done: bool
 func _ready():
 	hit_points = total_hit_points
 	set_id_position(initial_position)
-	done = true
+	begin_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -25,10 +25,6 @@ func _process(delta):
 func begin_turn():
 	action_points = total_action_points
 	move_points = total_move_points
-	done = false
-
-func do_turn():
-	done = true
 
 func info_text() -> String:
 	var format_vars = {

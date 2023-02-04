@@ -38,6 +38,7 @@ var current_card_index: int = -1
 var current_card: Card
 var target_cursor: Line2D
 var target_area: Node2D
+var enemy_move_area: Node2D
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 16
@@ -171,13 +172,21 @@ func create_target_area(card: Card):
 	while i <= card.target_distance:
 		var j = -card.target_distance
 		while j <= card.target_distance:
-			if distance(center, Vector2i(i, j)) <= card.target_distance:
+			if map_manager.distance(center, Vector2i(i, j)) <= card.target_distance:
 				var new_line = draw_square(Vector2(i, j), 0.5)
 				target_area.add_child(new_line)
 			j += 1
 		i += 1
 	target_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(target_area)
+
+func create_move_area(positions: Array):
+	enemy_move_area  = Node2D.new()
+	for pos in positions:
+		var new_line = draw_square(pos, 0.5)
+		enemy_move_area.add_child(new_line)
+	# move_area.global_position = active_character.get_id_position() * tile_size
+	$World.add_child(enemy_move_area)
 	
 func convert_mouse_pos_to_tile(absolute_mouse_pos: Vector2) -> Vector2i:
 	var transform = get_viewport().get_canvas_transform().affine_inverse()
@@ -270,12 +279,12 @@ func handle_move(mouse_pos: Vector2):
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
 		return
-	var tile_map_pos = convert_mouse_pos_to_tile(mouse_pos)
+	var new_pos = convert_mouse_pos_to_tile(mouse_pos)
 	# Handle move "animation".
 	var old_pos = active_character.get_id_position()
 	active_character.reduce_move(path_cost(current_path))
-	active_character.set_id_position(tile_map_pos)
-	map_manager.move_character(old_pos, tile_map_pos)
+	active_character.set_id_position(new_pos)
+	map_manager.move_character(old_pos, new_pos)
 	current_path.clear()
 	$World/Path.clear_points()
 	
@@ -293,9 +302,13 @@ func _input(event):
 
 func update_enemy_info(enemy: Enemy):
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
+	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
+	create_move_area(walkable_cells)
 			
 func clear_enemy_info():
 	$UI/InfoPanel/VBox/EnemyInfo.text = ""
+	if is_instance_valid(enemy_move_area):
+		enemy_move_area.queue_free()
 
 func handle_enemy_death(enemy: Enemy):
 	var pos = enemy.get_id_position()
@@ -320,13 +333,6 @@ func play_card():
 	active_character.clear_pending_action_cost()
 	change_human_turn_state(HumanTurnState.WAITING)
 
-func distance(from: Vector2i, to: Vector2i):
-	var h_dist = abs(from[0] - to[0])
-	var v_dist = abs(from[1] - to[1])
-	var min_dist = min(h_dist, v_dist)
-	var max_dist = max(h_dist, v_dist)
-	return min_dist * 1.5 + (max_dist - min_dist)
-
 func update_target(new_tile_map_pos: Vector2i):
 	valid_target = false
 	# For target mode SELF, allow clicking anywhere.
@@ -334,7 +340,7 @@ func update_target(new_tile_map_pos: Vector2i):
 		valid_target = true
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
 		target_cursor.global_position = new_tile_map_pos*tile_size
-		var distance = distance(active_character.get_id_position(), new_tile_map_pos) 
+		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
 		if distance > current_card.target_distance:
 			valid_target = false
 			target_cursor.default_color = Color(0, 0, 0, 1)
