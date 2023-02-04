@@ -45,6 +45,8 @@ var target_area: Node2D
 var tile_size: int = 16
 
 @onready var hand_ui = $UI/CardAreaHBox/Hand
+@onready var deck_ui = $UI/CardAreaHBox/Deck
+@onready var discard_ui = $UI/CardAreaHBox/Discard
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -112,6 +114,13 @@ func draw_hand():
 		var new_card = card_ui_scene.instantiate() as CardUI
 		new_card.initialize(card, _on_card_pressed.bind(j))
 		hand_ui.add_child(new_card)
+	# Clear discard.
+	for child in discard_ui.get_children():
+		child.queue_free()
+	if not active_character.deck.discard.is_empty():
+		var new_card = card_ui_scene.instantiate() as CardUI
+		new_card.initialize(active_character.deck.discard.back(), Callable())
+		discard_ui.add_child(new_card)
 
 func set_active_character(index: int):
 	var i = 0

@@ -25,5 +25,6 @@ func set_highlight(highlight: bool):
 func _gui_input(event):
 		if event is InputEventMouseButton:
 			if event.button_index == 1 and event.pressed:
-				cb.call()
+				if cb.is_valid():
+					cb.call()
 				accept_event()
