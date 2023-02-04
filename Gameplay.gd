@@ -117,11 +117,15 @@ func draw_hand():
 	# Clear discard.
 	for child in discard_ui.get_children():
 		child.queue_free()
+	# Display last discarded card.
 	if not active_character.deck.discard.is_empty():
 		var new_card = card_ui_scene.instantiate() as CardUI
 		new_card.initialize(active_character.deck.discard.back(), Callable())
 		discard_ui.add_child(new_card)
-
+		new_card.tooltip_text = "%d cards on discard pile" % active_character.deck.discard.size()
+	# Set deck tooltip.
+	deck_ui.tooltip_text = "%d cards on deck" % active_character.deck.cards.size()
+	
 func set_active_character(index: int):
 	var i = 0
 		
