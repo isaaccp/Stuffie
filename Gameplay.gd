@@ -182,6 +182,7 @@ func create_target_area(card: Card):
 	$World.add_child(target_area)
 
 func create_move_area(positions: Array):
+
 	enemy_move_area  = Node2D.new()
 	var red = Color(1, 0, 0, 1)
 	for pos in positions:
@@ -239,7 +240,10 @@ func _process(delta):
 		pass
 	elif state == GameState.CPU_TURN:
 		if enemy_turn_calculated:
-			# Update to perform moves.
+			for move in enemy_turn.enemy_moves:
+				var enemy = move[0]
+				var loc = move[1]
+				enemy.set_id_position(loc)
 			change_state(GameState.HUMAN_TURN)
 
 func _async_enemy_turn():
@@ -262,7 +266,6 @@ func change_state(new_state):
 		for enemy in $World/Enemies.get_children():
 			enemy.begin_turn()
 		enemy_turn_calculated = false
-		enemy_turn.prepare_turn()
 		enemy_turn_thread.start(_async_enemy_turn)
 		
 
