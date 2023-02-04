@@ -26,7 +26,6 @@ var active_character: Character
 
 var state: GameState
 var human_turn_state: HumanTurnState
-var cpu_turn_start = -1
 var a_star: AStarGrid2D
 var current_path: PackedVector2Array = PackedVector2Array()
 var valid_path: bool = false
@@ -43,6 +42,9 @@ var target_area: Node2D
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 16
+
+var enemy_turn_thread = Thread.new()
+var enemy_turn_calculated = false
 
 @onready var hand_ui = $UI/CardAreaHBox/Hand
 @onready var deck_ui = $UI/CardAreaHBox/Deck
@@ -249,12 +251,18 @@ func calculate_path(tile_map_pos):
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
 		pass
-	else:
-		if cpu_turn_start == -1:
-			cpu_turn_start = Time.get_ticks_msec()
-		if Time.get_ticks_msec() - cpu_turn_start > 1000:
+	elif state == GameState.CPU_TURN:
+		if enemy_turn_calculated:
+			# Update to perform moves.
 			change_state(GameState.HUMAN_TURN)
-			cpu_turn_start = -1
+
+func _async_enemy_turn():
+	OS.delay_msec(1000)
+	call_deferred("_wait_enemy_turn_completed")
+
+func _wait_enemy_turn_completed():
+	var results = enemy_turn_thread.wait_to_finish()
+	enemy_turn_calculated = true
 
 func change_state(new_state):
 	state = new_state
@@ -264,6 +272,12 @@ func change_state(new_state):
 			character.begin_turn()
 		draw_hand()
 		human_turn_state = HumanTurnState.WAITING
+	elif state == GameState.CPU_TURN:
+		for enemy in $World/Enemies.get_children():
+			enemy.begin_turn()
+		enemy_turn_calculated = false
+		enemy_turn_thread.start(_async_enemy_turn)
+		
 
 func change_human_turn_state(new_state):
 	human_turn_state = new_state

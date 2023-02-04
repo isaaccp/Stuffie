@@ -9,6 +9,7 @@ class_name Enemy
 var action_points: int
 var move_points: float
 var hit_points: int
+var done: bool
 @export var enemy_name: String
 
 var id_position: Vector2i
@@ -20,6 +21,7 @@ var tile_size: int = 16
 func _ready():
 	hit_points = total_hit_points
 	set_id_position(initial_position)
+	done = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -28,6 +30,10 @@ func _process(delta):
 func begin_turn():
 	action_points = total_action_points
 	move_points = total_move_points
+	done = false
+
+func do_turn():
+	done = true
 
 func set_id_position(id_pos: Vector2i):
 	id_position = id_pos
