@@ -377,14 +377,25 @@ func handle_character_death(character: Character):
 		set_active_character(0)
 	else:
 		print_debug("Game over!")
-		
+
+func transformed_effect_area():
+	var effect_area = current_card.effect_area()
+	var new_effect_area = []
+	var angle = Vector2.RIGHT.angle_to(direction)
+	for pos in effect_area:
+		new_effect_area.append(Vector2i(pos.rotated(angle)))
+	return new_effect_area
+	
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		active_character.apply_card(current_card)
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		var enemy = map_manager.enemy_locs[tile_map_pos]
-		if enemy.apply_card(current_card):
-			handle_enemy_death(enemy)
+		var affected_tiles = transformed_effect_area()
+		for tile_offset in affected_tiles:
+			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
+				var enemy = map_manager.enemy_locs[tile_map_pos + tile_offset]
+				if enemy.apply_card(current_card):
+					handle_enemy_death(enemy)
 	active_character.action_points -= current_card.cost
 	active_character.deck.discard_card(current_card_index)
 	draw_hand()
