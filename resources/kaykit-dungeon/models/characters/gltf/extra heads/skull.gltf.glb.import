@@ -1,0 +1,31 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://bmbgowgxhappu"
+path="res://.godot/imported/skull.gltf.glb-4db9be65a564ad1946ffc9845a1f9522.scn"
+
+[deps]
+
+source_file="res://resources/kaykit-dungeon/models/characters/gltf/extra heads/skull.gltf.glb"
+dest_files=["res://.godot/imported/skull.gltf.glb-4db9be65a564ad1946ffc9845a1f9522.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+import_script/path=""
+_subresources={}
+meshes/handle_gltf_embedded_images=1
