@@ -15,18 +15,28 @@ func calculate_moves():
 	enemy_moves.clear()
 	for enemy in map_manager.enemy_locs.values():
 		var move_options = get_enemy_walkable_cells(enemy)
-		var top_move = top_move_option(enemy, move_options)
-		enemy_moves.append([enemy, top_move])
+		var result = top_move_option(enemy, move_options)
+		var top_move = result[0]
+		var targets = result[1]
+		enemy_moves.append([enemy, top_move, targets])
 		# Need to this now so we calculate moves correctly.
 		# I guess it would be neat if this was an "overlay" over the real state
 		# and then we would update all the "real" stuff at the same time, but
 		# as long as we update the nodes right after this it should be fine.
 		map_manager.move_enemy(enemy.get_id_position(), top_move)
 
+func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
+	var ret = []
+	for cloc in character_locs:
+		ret.append([cloc, map_manager.distance(loc, cloc)])
+	ret.sort_custom(func(a, b): return a[1] < b[1])
+	return ret
+	
 func top_move_option(enemy: Enemy, move_options: Array):
 	# For now, let's just say the closer to a character the better.
 	var character_locs = map_manager.character_locs.keys()
 	var best_move = null
+	var best_target = null
 	var min_distance = 100000
 	for move in move_options:
 		for loc in character_locs:
@@ -34,4 +44,6 @@ func top_move_option(enemy: Enemy, move_options: Array):
 			if distance < min_distance:
 				min_distance = distance
 				best_move = move
-	return best_move
+	# For selected move, return characters sorted by distance.
+	# We'll attack closest, but if they die, continue to next one.
+	return [best_move, _characters_with_distance(best_move, character_locs)]

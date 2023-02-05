@@ -6,6 +6,8 @@ class_name Enemy
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
+@export var damage = 5
+@export var attack_range = 1
 var action_points: int
 var move_points: float
 var hit_points: int

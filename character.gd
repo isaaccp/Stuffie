@@ -41,7 +41,8 @@ func refresh_portrait():
 	portrait.set_portrait_texture($Portrait.texture)
 	portrait.set_action_points(pending_action_cost, action_points, total_action_points)
 	portrait.set_move_points(pending_move_cost, move_points, total_move_points)
-	
+	portrait.set_hit_points(hit_points, total_hit_points)
+
 func set_active(active: bool):
 	portrait.set_active(active)
 
@@ -65,6 +66,16 @@ func clear_pending_move_cost():
 	pending_move_cost = -1.0
 	refresh_portrait()
 	
+# Apply effect of card to this character.
 func apply_card(card: Card):
 	if card.move_points > 0:
 		move_points += card.move_points
+	refresh_portrait()
+
+# Apply attack from enemy to this character.
+func apply_attack(enemy: Enemy):
+	print_debug("In apply_attack for ", name)
+	hit_points -= enemy.damage
+	if hit_points <= 0:
+		return true
+	refresh_portrait()

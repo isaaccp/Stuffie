@@ -65,6 +65,10 @@ func remove_enemy(from: Vector2i):
 	enemy_locs.erase(from)
 	a_star.set_point_solid(from, false)
 
+func remove_character(from: Vector2i):
+	character_locs.erase(from)
+	a_star.set_point_solid(from, false)
+	
 func get_path(from: Vector2i, to: Vector2i):
 	return a_star.get_id_path(from, to)
 	

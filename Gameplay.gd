@@ -242,9 +242,32 @@ func _process(delta):
 	elif state == GameState.CPU_TURN:
 		if enemy_turn_calculated:
 			for move in enemy_turn.enemy_moves:
+				print_debug(move)
+				# Move enemy.
 				var enemy = move[0]
 				var loc = move[1]
+				var targets = move[2]
 				enemy.set_id_position(loc)
+				# Find first target which is not dead yet.
+				var chosen_target = null
+				var target_character = null
+				for target_distance in targets:
+					var target = target_distance[0]
+					if map_manager.character_locs.has(target):
+						chosen_target = target_distance
+						target_character = map_manager.character_locs[target]
+						break
+				# If no targets, continue.
+				if chosen_target == null:
+					continue
+				print_debug("Chosen target ", chosen_target, " Character ", target_character.name)
+				# If target beyond attack range, continue.
+				print_debug("Enemy attack range ", enemy.attack_range)
+				if chosen_target[1] > enemy.attack_range:
+					continue
+				# We found a target within range, attack and destroy character if it died.
+				if target_character.apply_attack(enemy):
+					handle_character_death(target_character)
 			change_state(GameState.HUMAN_TURN)
 
 func _async_enemy_turn():
@@ -324,6 +347,17 @@ func handle_enemy_death(enemy: Enemy):
 	map_manager.remove_enemy(pos)
 	enemy.queue_free()
 	
+func handle_character_death(character: Character):
+	var pos = character.get_id_position()
+	map_manager.remove_character(pos)
+	# Handle this in a fancier way, update portrait to show
+	# character is dead, but don't remove from screen, etc.
+	character.queue_free()
+	if not $World/Party.get_children().is_empty():
+		set_active_character(0)
+	else:
+		print_debug("Game over!")
+		
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		active_character.apply_card(current_card)

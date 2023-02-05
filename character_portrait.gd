@@ -42,6 +42,16 @@ func set_action_points(pending_action_cost: int, action_points: int, total_actio
 
 	var bb_code = "AP: [color=%s]%d[/color] / %d" % [color, actions_left, total_action_points]
 	$Margin/VBox/ActionPoints.parse_bbcode(bb_code)
+
+func set_hit_points(hit_points: int, total_hit_points: int):
+	var color
+	if hit_points / total_hit_points < 0.5:
+		color = "red"
+	else:
+		color = "white"
+
+	var bb_code = "HP: [color=%s]%d[/color] / %d" % [color, hit_points, total_hit_points]
+	$Margin/VBox/HitPoints.parse_bbcode(bb_code)
 	
 func set_active(active: bool):
 	$Margin/VBox/Portrait/ActiveMarker.visible = active
