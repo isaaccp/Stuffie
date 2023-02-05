@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Deck" load_steps=3 format=3 uid="uid://dg87ld45td40x"]
+
+[ext_resource type="Resource" uid="uid://0n0j1moqf5bb" path="res://cards/warrior/lunge.tres" id="1_bscbw"]
+[ext_resource type="Script" path="res://deck.gd" id="2_g2rny"]
+
+[resource]
+script = ExtResource("2_g2rny")
+cards = [ExtResource("1_bscbw"), ExtResource("1_bscbw")]

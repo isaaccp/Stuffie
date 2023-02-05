@@ -23,7 +23,9 @@ enum HumanTurnState {
 var portrait_scene = preload("res://character_portrait.tscn")
 var card_ui_scene = preload("res://card_ui.tscn")
 var active_character: Character
-
+# Direction of mouse position respect active character.
+# E.g. Vector2.right if it's more to the right than up/down.
+var direction: Vector2
 var state: GameState
 var human_turn_state: HumanTurnState
 var map_manager = MapManager.new()
@@ -36,12 +38,13 @@ var tile_map_pos: Vector2i = Vector2i(0, 0)
 
 var current_card_index: int = -1
 var current_card: Card
-var target_cursor: Line2D
+var target_cursor: Node2D
 var target_area: Node2D
 var enemy_move_area: Node2D
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 16
+var half_tile = Vector2(tile_size/2, tile_size/2)
 
 var enemy_turn_thread = Thread.new()
 var enemy_turn_calculated = false
@@ -139,31 +142,43 @@ func _on_card_pressed(index: int):
 	else:
 		# Not enough action points to play card, throw back to WAITING state.
 		change_human_turn_state(HumanTurnState.WAITING)
-		
+
+func change_cursor_color(color: Color):
+	for line in target_cursor.get_children():
+		line.default_color = color
+
+func create_target_cursor(card: Card):
+	var cursor = Node2D.new()
+	for pos in card.effect_area():
+		var new_line = draw_square(pos, 2, Color(1, 1, 1, 1), Vector2(-tile_size/2, -tile_size/2))
+		cursor.add_child(new_line)
+	return cursor
+	
 func create_cursor(card: Card):
 	var target_mode = card.target_mode
 	if target_mode == Card.TargetMode.SELF:
-		target_cursor = draw_square(Vector2i(0, 0), 2)
-		target_cursor.global_position = active_character.get_id_position() * tile_size
+		target_cursor = create_target_cursor(card)
+		target_cursor.global_position = active_character.get_id_position() * tile_size + half_tile
 		$World.add_child(target_cursor)
 	elif target_mode == Card.TargetMode.ENEMY:
-		# create single tile cursor controlled by mouse,
+		# create tile cursor controlled by mouse,
 		# that can only be clicked on top of monsters
-		target_cursor = draw_square(Vector2i(0, 0), 2)
-		target_cursor.global_position = tile_map_pos * tile_size
+		target_cursor = create_target_cursor(card)
+		target_cursor.global_position = Vector2(tile_map_pos * tile_size) # + half_tile
 		$World.add_child(target_cursor)
 	elif target_mode == Card.TargetMode.AREA:
 		pass
 
-func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D:
+func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1), offset=Vector2(0, 0)) -> Line2D:
 	var line = Line2D.new()
 	line.default_color = color
 	line.width = width
-	line.add_point(pos * tile_size)
-	line.add_point(pos * tile_size + Vector2i(0, tile_size))
-	line.add_point(pos * tile_size + Vector2i(tile_size, tile_size))
-	line.add_point(pos * tile_size + Vector2i(tile_size, 0))
-	line.add_point(pos * tile_size)
+	var start = offset + Vector2(pos * tile_size)
+	line.add_point(start)
+	line.add_point(start + Vector2(0, tile_size))
+	line.add_point(start + Vector2(tile_size, tile_size))
+	line.add_point(start + Vector2(tile_size, 0))
+	line.add_point(start)
 	return line
 
 func create_target_area(card: Card):
@@ -191,10 +206,16 @@ func update_move_area(positions: Array):
 		enemy_move_area.add_child(new_line)
 	# move_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(enemy_move_area)
-	
-func convert_mouse_pos_to_tile(absolute_mouse_pos: Vector2) -> Vector2i:
+
+func convert_mouse_to_tile_pos(absolute_mouse_pos: Vector2) -> Vector2i:
+	var canvas_pos = convert_mouse_to_canvas(absolute_mouse_pos)
+	return convert_canvas_pos_to_tile(canvas_pos)
+
+func convert_mouse_to_canvas(absolute_mouse_pos: Vector2) -> Vector2:
 	var transform = get_viewport().get_canvas_transform().affine_inverse()
-	var mouse_pos = transform.basis_xform(absolute_mouse_pos)
+	return transform.basis_xform(absolute_mouse_pos)
+
+func convert_canvas_pos_to_tile(mouse_pos: Vector2) -> Vector2i:
 	return Vector2i($World/TileMap.local_to_map(mouse_pos))
 	
 func path_cost(path: PackedVector2Array) -> float:
@@ -209,7 +230,7 @@ func path_cost(path: PackedVector2Array) -> float:
 
 func get_current_mouse_tile_map_pos():
 	var absolute_mouse_pos = get_viewport().get_mouse_position()
-	return convert_mouse_pos_to_tile(absolute_mouse_pos)
+	return convert_mouse_to_tile_pos(absolute_mouse_pos)
 	
 func calculate_path(tile_map_pos):
 	# Active character position
@@ -230,7 +251,6 @@ func calculate_path(tile_map_pos):
 			$World/Path.default_color = Color(1, 0, 0, 1)
 		else:
 			$World/Path.default_color = Color(1, 1, 1, 1)
-		var half_tile = Vector2(tile_size/2, tile_size/2)
 		$World/Path.clear_points()
 		for point in current_path:
 			$World/Path.add_point(point*tile_size+half_tile)
@@ -311,7 +331,7 @@ func handle_move(mouse_pos: Vector2):
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
 		return
-	var new_pos = convert_mouse_pos_to_tile(mouse_pos)
+	var new_pos = convert_mouse_to_tile_pos(mouse_pos)
 	# Handle move "animation".
 	var old_pos = active_character.get_id_position()
 	active_character.reduce_move(path_cost(current_path))
@@ -336,7 +356,7 @@ func update_enemy_info(enemy: Enemy):
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
 	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
 	update_move_area(walkable_cells)
-			
+
 func clear_enemy_info():
 	$UI/InfoPanel/VBox/EnemyInfo.text = ""
 	if is_instance_valid(enemy_move_area):
@@ -376,36 +396,57 @@ func play_card():
 	active_character.clear_pending_action_cost()
 	change_human_turn_state(HumanTurnState.WAITING)
 
-func update_target(new_tile_map_pos: Vector2i):
+func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	valid_target = false
 	# For target mode SELF, allow clicking anywhere.
 	if current_card.target_mode == Card.TargetMode.SELF:
 		valid_target = true
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		target_cursor.global_position = new_tile_map_pos*tile_size
+		target_cursor.global_position = Vector2(new_tile_map_pos * tile_size) + half_tile
+		target_cursor.rotation = Vector2.RIGHT.angle_to(new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
 		if distance > current_card.target_distance:
 			valid_target = false
-			target_cursor.default_color = Color(0, 0, 0, 1)
+			change_cursor_color(Color(0, 0, 0, 1))
 		else:
 			if map_manager.enemy_locs.has(new_tile_map_pos):
-				target_cursor.default_color = Color(1, 0, 0, 1)
+				change_cursor_color(Color(1, 0, 0, 1))
 				valid_target = true
 			else:
-				target_cursor.default_color = Color(1, 1, 1, 1)
+				change_cursor_color(Color(1, 1, 1, 1))
 
-func handle_tile_change(new_tile_map_pos: Vector2i):
-	if map_manager.enemy_locs.has(new_tile_map_pos):
-		update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
-	else:
-		clear_enemy_info()
-	# If targeting, there should be a cursor and the cursor can be move around.
-	# Likely this is only if target_mode is not SELF, will need to take that into account.
-	if state == GameState.HUMAN_TURN:
-		if human_turn_state == HumanTurnState.WAITING:
-			calculate_path(new_tile_map_pos)
-		elif human_turn_state == HumanTurnState.ACTION_TARGET:
-			update_target(new_tile_map_pos)
+func snap_to_direction(vector: Vector2) -> Vector2:
+	var min_distance = null
+	var direction = null
+	for v in [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT]:
+		var distance = vector.distance_squared_to(v)
+		if min_distance == null:
+			min_distance = distance
+			direction = v
+		else:
+			if distance < min_distance:
+				min_distance = distance
+				direction = v
+	return direction
+
+func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
+	var tile_changed = tile_map_pos != new_tile_map_pos
+	var direction_changed = direction != new_direction
+	
+	if tile_changed:
+		if map_manager.enemy_locs.has(new_tile_map_pos):
+			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
+		else:
+			clear_enemy_info()
+		# If targeting, there should be a cursor and the cursor can be move around.
+		# Likely this is only if target_mode is not SELF, will need to take that into account.
+		if state == GameState.HUMAN_TURN:
+			if human_turn_state == HumanTurnState.WAITING:
+				calculate_path(new_tile_map_pos)
+	if tile_changed or direction_changed:
+		if state == GameState.HUMAN_TURN:
+			if human_turn_state == HumanTurnState.ACTION_TARGET:
+				update_target(new_tile_map_pos, new_direction)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -420,9 +461,14 @@ func _unhandled_input(event):
 					if valid_target:
 						play_card()
 	elif event is InputEventMouseMotion:
-		var new_tile_map_pos = convert_mouse_pos_to_tile(event.position)
+		var canvas_pos = convert_mouse_to_canvas(event.position)
+		var new_tile_map_pos = convert_canvas_pos_to_tile(canvas_pos)
+		var offset = canvas_pos - active_character.position
+		var new_direction = snap_to_direction(offset)
 		# Handle enemy mouseover. It seems like it's fine to allow this
 		# regardless of turn, etc.
-		if new_tile_map_pos != tile_map_pos:
-			handle_tile_change(new_tile_map_pos)
+		if new_tile_map_pos != tile_map_pos or new_direction != direction:
+			handle_tile_change(new_tile_map_pos, new_direction)
 		tile_map_pos = new_tile_map_pos
+		direction = new_direction
+		
