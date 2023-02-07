@@ -151,7 +151,7 @@ func change_cursor_color(color: Color):
 func create_target_cursor(pos: Vector2i, direction: Vector2):
 	var cursor = Node2D.new()
 	for effect_pos in transformed_effect_area(direction):
-		var new_line = draw_square(pos + effect_pos, 2, Color(1, 1, 1, 1))
+		var new_line = draw_square(pos + effect_pos, 4, Color(1, 1, 1, 1))
 		cursor.add_child(new_line)
 	return cursor
 	
@@ -192,7 +192,7 @@ func create_target_area(pos: Vector2i):
 		var j = -current_card.target_distance
 		while j <= current_card.target_distance:
 			if map_manager.distance(center, Vector2i(i, j)) <= current_card.target_distance:
-				var new_line = draw_square(pos + Vector2i(i, j), 0.5)
+				var new_line = draw_square(pos + Vector2i(i, j), 1)
 				target_area.add_child(new_line)
 			j += 1
 		i += 1
@@ -204,9 +204,8 @@ func update_move_area(positions: Array):
 	enemy_move_area = Node2D.new()
 	var red = Color(1, 0, 0, 1)
 	for pos in positions:
-		var new_line = draw_square(pos, 0.5, red)
+		var new_line = draw_square(pos, 1, red)
 		enemy_move_area.add_child(new_line)
-	# move_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(enemy_move_area)
 	
 func path_cost(path: PackedVector2Array) -> float:
