@@ -1,16 +1,19 @@
 [gd_scene load_steps=5 format=3 uid="uid://dvhxmiqckixoy"]
 
-[ext_resource type="PackedScene" uid="uid://dslbnf6t451ec" path="res://character.tscn" id="1_k72kc"]
-[ext_resource type="Texture2D" uid="uid://dpalmrtkhm60k" path="res://resources/kenney_tinydungeon/Tiles/tile_0084.png" id="2_paw55"]
+[ext_resource type="Script" path="res://character.gd" id="1_i4i62"]
 [ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://decks/wizard_deck.tres" id="2_r0eug"]
 [ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
+[ext_resource type="PackedScene" uid="uid://ddsimr8wumis7" path="res://resources/kaykit-dungeon/models/characters/gltf/character_mage.gltf" id="4_e1b5r"]
 
-[node name="Wizard" instance=ExtResource("1_k72kc")]
+[node name="Wizard" type="Node3D"]
+script = ExtResource("1_i4i62")
+total_action_points = 2
+total_move_points = 10
 total_hit_points = 20
 deck = ExtResource("2_r0eug")
 
-[node name="Sprite" parent="." index="0"]
-texture = ExtResource("2_paw55")
-
-[node name="Portrait" parent="." index="1"]
+[node name="Portrait" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("3_qxto0")
+
+[node name="character_mage" parent="." instance=ExtResource("4_e1b5r")]

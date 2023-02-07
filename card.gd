@@ -53,5 +53,5 @@ func effect_area():
 		var width_idx = (area_width-1)/2
 		for i in range(area_length):
 			for j in range(-width_idx, width_idx+1):
-				tiles.push_back(Vector2(i, j))
+				tiles.push_back(Vector2i(i, j))
 	return tiles

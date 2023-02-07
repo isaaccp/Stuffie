@@ -43,9 +43,9 @@ var target_area: Node2D
 var enemy_move_area: Node2D
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
-var tile_size: int = 16
-var half_tile = Vector2(tile_size/2, tile_size/2)
-
+var tile_size: int = 2
+var half_tile2 = Vector2(tile_size/2, tile_size/2)
+var half_tile3 = Vector3(tile_size/2, 0, tile_size/2)
 var enemy_turn_thread = Thread.new()
 var enemy_turn_calculated = false
 var enemy_turn = EnemyTurn.new()
@@ -53,6 +53,7 @@ var enemy_turn = EnemyTurn.new()
 @onready var hand_ui = $UI/CardAreaHBox/Hand
 @onready var deck_ui = $UI/CardAreaHBox/Deck
 @onready var discard_ui = $UI/CardAreaHBox/Discard
+@onready var camera = $Pivot/Camera3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -63,7 +64,7 @@ func _ready():
 		$UI/CharacterState.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
 		character.set_portrait(character_portrait)
-		character.set_id_position(Vector2i(i, i))
+		character.set_id_position(Vector2i(i+2, i+2))
 		# Hook character selection.
 		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
@@ -74,7 +75,7 @@ func _ready():
 	initialize_map_manager()
 	
 func initialize_map_manager():
-	map_manager.initialize($World/TileMap)
+	map_manager.initialize($World/GridMap)
 	map_manager.set_party($World/Party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())
 	map_manager.initialize_a_star()
@@ -147,53 +148,54 @@ func change_cursor_color(color: Color):
 	for line in target_cursor.get_children():
 		line.default_color = color
 
-func create_target_cursor(card: Card):
+func create_target_cursor(pos: Vector2i, direction: Vector2):
 	var cursor = Node2D.new()
-	for pos in card.effect_area():
-		var new_line = draw_square(pos, 2, Color(1, 1, 1, 1), Vector2(-tile_size/2, -tile_size/2))
+	for effect_pos in transformed_effect_area(direction):
+		var new_line = draw_square(pos + effect_pos, 2, Color(1, 1, 1, 1))
 		cursor.add_child(new_line)
 	return cursor
 	
-func create_cursor(card: Card):
-	var target_mode = card.target_mode
+func create_cursor(pos: Vector2i, direction: Vector2):
+	var target_mode = current_card.target_mode
 	if target_mode == Card.TargetMode.SELF:
-		target_cursor = create_target_cursor(card)
-		target_cursor.global_position = active_character.get_id_position() * tile_size + half_tile
+		target_cursor = create_target_cursor(pos, direction)
 		$World.add_child(target_cursor)
 	elif target_mode == Card.TargetMode.ENEMY:
 		# create tile cursor controlled by mouse,
 		# that can only be clicked on top of monsters
-		target_cursor = create_target_cursor(card)
-		target_cursor.global_position = Vector2(tile_map_pos * tile_size) # + half_tile
+		target_cursor = create_target_cursor(pos, direction)
 		$World.add_child(target_cursor)
 	elif target_mode == Card.TargetMode.AREA:
 		pass
 
-func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1), offset=Vector2(0, 0)) -> Line2D:
+func add_unprojected_point(line: Line2D, world_pos: Vector3):
+	var unprojected = camera.unproject_position(world_pos)
+	line.add_point(unprojected)
+	
+func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D:
 	var line = Line2D.new()
 	line.default_color = color
 	line.width = width
-	var start = offset + Vector2(pos * tile_size)
-	line.add_point(start)
-	line.add_point(start + Vector2(0, tile_size))
-	line.add_point(start + Vector2(tile_size, tile_size))
-	line.add_point(start + Vector2(tile_size, 0))
-	line.add_point(start)
+	var start = map_manager.get_world_position_corner(pos)
+	add_unprojected_point(line, start)
+	add_unprojected_point(line, start + Vector3(tile_size, 0, 0))
+	add_unprojected_point(line, start + Vector3(tile_size, 0, tile_size))
+	add_unprojected_point(line, start + Vector3(0, 0, tile_size))
+	add_unprojected_point(line, start)
 	return line
 
-func create_target_area(card: Card):
+func create_target_area(pos: Vector2i):
 	target_area = Node2D.new()
 	var center = Vector2i(0, 0)
-	var i = -card.target_distance
-	while i <= card.target_distance:
-		var j = -card.target_distance
-		while j <= card.target_distance:
-			if map_manager.distance(center, Vector2i(i, j)) <= card.target_distance:
-				var new_line = draw_square(Vector2(i, j), 0.5)
+	var i = -current_card.target_distance
+	while i <= current_card.target_distance:
+		var j = -current_card.target_distance
+		while j <= current_card.target_distance:
+			if map_manager.distance(center, Vector2i(i, j)) <= current_card.target_distance:
+				var new_line = draw_square(pos + Vector2i(i, j), 0.5)
 				target_area.add_child(new_line)
 			j += 1
 		i += 1
-	target_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(target_area)
 
 func update_move_area(positions: Array):
@@ -206,17 +208,6 @@ func update_move_area(positions: Array):
 		enemy_move_area.add_child(new_line)
 	# move_area.global_position = active_character.get_id_position() * tile_size
 	$World.add_child(enemy_move_area)
-
-func convert_mouse_to_tile_pos(absolute_mouse_pos: Vector2) -> Vector2i:
-	var canvas_pos = convert_mouse_to_canvas(absolute_mouse_pos)
-	return convert_canvas_pos_to_tile(canvas_pos)
-
-func convert_mouse_to_canvas(absolute_mouse_pos: Vector2) -> Vector2:
-	var transform = get_viewport().get_canvas_transform().affine_inverse()
-	return transform.basis_xform(absolute_mouse_pos)
-
-func convert_canvas_pos_to_tile(mouse_pos: Vector2) -> Vector2i:
-	return Vector2i($World/TileMap.local_to_map(mouse_pos))
 	
 func path_cost(path: PackedVector2Array) -> float:
 	var cost = 0.0
@@ -227,10 +218,6 @@ func path_cost(path: PackedVector2Array) -> float:
 		else:
 			cost += 1.5
 	return cost
-
-func get_current_mouse_tile_map_pos():
-	var absolute_mouse_pos = get_viewport().get_mouse_position()
-	return convert_mouse_to_tile_pos(absolute_mouse_pos)
 	
 func calculate_path(tile_map_pos):
 	# Active character position
@@ -253,7 +240,8 @@ func calculate_path(tile_map_pos):
 			$World/Path.default_color = Color(1, 1, 1, 1)
 		$World/Path.clear_points()
 		for point in current_path:
-			$World/Path.add_point(point*tile_size+half_tile)
+			var location = map_manager.get_world_position(point)
+			add_unprojected_point($World/Path, location)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -321,8 +309,8 @@ func change_human_turn_state(new_state):
 	current_path.clear()
 	$World/Path.clear_points()
 	if new_state == HumanTurnState.ACTION_TARGET:
-		create_target_area(current_card)
-		create_cursor(current_card)
+		create_target_area(active_character.get_id_position())
+		create_cursor(tile_map_pos, Vector2.RIGHT)
 	
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
@@ -331,12 +319,11 @@ func handle_move(mouse_pos: Vector2):
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
 		return
-	var new_pos = convert_mouse_to_tile_pos(mouse_pos)
 	# Handle move "animation".
 	var old_pos = active_character.get_id_position()
 	active_character.reduce_move(path_cost(current_path))
-	active_character.set_id_position(new_pos)
-	map_manager.move_character(old_pos, new_pos)
+	active_character.set_id_position(tile_map_pos)
+	map_manager.move_character(old_pos, tile_map_pos)
 	current_path.clear()
 	$World/Path.clear_points()
 	
@@ -378,19 +365,19 @@ func handle_character_death(character: Character):
 	else:
 		print_debug("Game over!")
 
-func transformed_effect_area():
+func transformed_effect_area(direction: Vector2):
 	var effect_area = current_card.effect_area()
 	var new_effect_area = []
 	var angle = Vector2.RIGHT.angle_to(direction)
 	for pos in effect_area:
-		new_effect_area.append(Vector2i(pos.rotated(angle)))
+		new_effect_area.append(Vector2i(Vector2(pos).rotated(angle)))
 	return new_effect_area
 	
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		active_character.apply_card(current_card)
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		var affected_tiles = transformed_effect_area()
+		var affected_tiles = transformed_effect_area(direction)
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
 				var enemy = map_manager.enemy_locs[tile_map_pos + tile_offset]
@@ -413,8 +400,9 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	if current_card.target_mode == Card.TargetMode.SELF:
 		valid_target = true
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		target_cursor.global_position = Vector2(new_tile_map_pos * tile_size) + half_tile
-		target_cursor.rotation = Vector2.RIGHT.angle_to(new_direction)
+		if is_instance_valid(target_cursor):
+			target_cursor.queue_free()
+		create_cursor(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
 		if distance > current_card.target_distance:
 			valid_target = false
@@ -439,6 +427,21 @@ func snap_to_direction(vector: Vector2) -> Vector2:
 				min_distance = distance
 				direction = v
 	return direction
+
+func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
+	var camera_from = camera.project_ray_origin(mouse_pos)
+	var camera_to = camera.project_ray_normal(mouse_pos)
+	var n = Vector3(0, 1, 0) # plane normal
+	var p = camera_from
+	var v = camera_to
+	# distance from plane
+	var d = -2
+	var t = - (n.dot(p) + d) / n.dot(v)
+	var position = p + t * v
+	return position
+	
+func plane_pos_to_tile_pos(plane_pos: Vector3) -> Vector2i:
+	return Vector2i(floor(plane_pos.x / tile_size), floor(plane_pos.z / tile_size))
 
 func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	var tile_changed = tile_map_pos != new_tile_map_pos
@@ -472,14 +475,11 @@ func _unhandled_input(event):
 					if valid_target:
 						play_card()
 	elif event is InputEventMouseMotion:
-		var canvas_pos = convert_mouse_to_canvas(event.position)
-		var new_tile_map_pos = convert_canvas_pos_to_tile(canvas_pos)
-		var offset = canvas_pos - active_character.position
-		var new_direction = snap_to_direction(offset)
-		# Handle enemy mouseover. It seems like it's fine to allow this
-		# regardless of turn, etc.
+		var plane_pos = mouse_pos_to_plane_pos(event.position)
+		var new_tile_map_pos = plane_pos_to_tile_pos(plane_pos)
+		var offset = plane_pos - active_character.get_position()
+		var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
 		if new_tile_map_pos != tile_map_pos or new_direction != direction:
 			handle_tile_change(new_tile_map_pos, new_direction)
 		tile_map_pos = new_tile_map_pos
 		direction = new_direction
-		

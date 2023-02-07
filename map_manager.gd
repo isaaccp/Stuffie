@@ -5,31 +5,68 @@ class_name MapManager
 var a_star = AStarGrid2D.new()
 var base_solid_locations: Dictionary
 var map_rect: Rect2i
-var tile_size: Vector2i
+var cell_size: Vector3
 var character_locs: Dictionary
 var enemy_locs: Dictionary
 
-func initialize(map: TileMap):
+func initialize(map: GridMap):
+	cell_size = map.cell_size
+	
+	var block_items = Dictionary()
+	for item in [
+		["wall", [[-1, 0], [0, 0], [1, 0]]],
+		["wallCorner", [[1, 0], [0, 0], [0, -1]]],
+		["wallSplit", [[1, 0], [0, 0], [-1, 0], [0, -1]]],
+		["wall_door", [[1, 0], [-1, 0]]],
+	]:
+		var item_name = item[0]
+		var item_cells = item[1]
+		var item_id = map.mesh_library.find_item_by_name(item_name)
+		block_items[item_id] = item_cells
+		
 	# Base map.
-	map_rect = map.get_used_rect()
-	tile_size = map.tile_set.tile_size
-	for i in map_rect.size[0]:
-		for j in map_rect.size[1]:
-			var tile_data = map.get_cell_tile_data(0, Vector2i(i, j))
-			var solid = tile_data.get_custom_data("Solid") as bool
-			if solid:
-				base_solid_locations[Vector2(i, j)] = true
+	var min_x = 10000000
+	var min_z = 10000000
+	var max_x = -10000000
+	var max_z = -10000000
+	
+	for cell in map.get_used_cells():
+		if cell.x < min_x:
+			min_x = cell.x
+		if cell.z < min_z:
+			min_z = cell.z
+		if cell.x > max_x:
+			max_x = cell.x
+		if cell.z > max_z:
+			max_z = cell.z
+		var item = map.get_cell_item(cell) 
+		if item in block_items:
+			var basis = map.get_cell_item_basis(cell)
+			var item_cells = block_items[item]
+			for item_cell in item_cells:
+				var cell3 = Vector3(item_cell[0], 0, item_cell[1])
+				var xform_cell = cell3 * basis
+				var map_tile = Vector2i(cell.x + xform_cell.x, cell.z + xform_cell.z)
+				base_solid_locations[map_tile] = true
+				
+	assert(min_x == 0)
+	assert(min_z == 0)
+	
+	map_rect = Rect2i(Vector2i(0, 0), Vector2(max_x, max_z))
 
-	# Obstacles layer.
-	for pos in map.get_used_cells(1):
-		base_solid_locations[pos] = true
-
+# Unused, but keeping just in case.
+func _mesh_size_from_aabb(aabb: AABB) -> Vector2i:
+	var mesh_size: Vector2i
+	mesh_size.x = int((aabb.size.x-0.1) / cell_size.x) + 1
+	mesh_size.y = int((aabb.size.z-0.1) / cell_size.z) + 1
+	return mesh_size
+	
 # Needs to be called after set_characters and set_enemies.
 # Think about something better once it's clear how we'll use it.
 func initialize_a_star():
 	a_star.clear()
 	a_star.size = map_rect.size
-	a_star.cell_size = tile_size
+	a_star.cell_size = Vector2(cell_size.x, cell_size.z)
 	a_star.diagonal_mode = a_star.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE 
 	a_star.update()
 	for loc in base_solid_locations.keys():
@@ -137,3 +174,12 @@ func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 			# This is where we extend the stack.
 			stack.append([neighbor, cost + distance(pos, neighbor)])
 	return reachable_cost.keys()
+
+func get_world_position(pos: Vector2i) -> Vector3:
+	return Vector3(
+		pos[0] * cell_size.x + cell_size.x/2,
+		1.5,
+		pos[1] * cell_size.z + cell_size.z/2)
+
+func get_world_position_corner(pos: Vector2i) -> Vector3:
+	return Vector3(pos[0] * cell_size.x, 1.5, pos[1] * cell_size.z)

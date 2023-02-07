@@ -1,0 +1,141 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4wys3k0r7so3"]
+
+[ext_resource type="Script" path="res://Gameplay.gd" id="1_f0764"]
+[ext_resource type="PackedScene" uid="uid://dvhxmiqckixoy" path="res://wizard.tscn" id="2_k3u5k"]
+[ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="3_ui73x"]
+[ext_resource type="PackedScene" uid="uid://6hkwrwqi6i6a" path="res://enemy.tscn" id="4_sg8y2"]
+[ext_resource type="MeshLibrary" uid="uid://d38atikp62fhy" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="5_uxnbx"]
+[ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="6_38qla"]
+
+[node name="Stuffie3D" type="Node3D"]
+
+[node name="Gameplay" type="Node" parent="."]
+script = ExtResource("1_f0764")
+
+[node name="World" type="Node" parent="Gameplay"]
+
+[node name="Party" type="Node" parent="Gameplay/World"]
+
+[node name="Wizard" parent="Gameplay/World/Party" instance=ExtResource("2_k3u5k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.5, 7)
+total_action_points = null
+total_move_points = null
+total_hit_points = null
+
+[node name="Warrior" parent="Gameplay/World/Party" instance=ExtResource("3_ui73x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.5, 5)
+total_action_points = null
+total_move_points = null
+total_hit_points = null
+
+[node name="Enemies" type="Node" parent="Gameplay/World"]
+
+[node name="Enemy" parent="Gameplay/World/Enemies" instance=ExtResource("4_sg8y2")]
+initial_position = Vector2i(5, 3)
+total_move_points = 6
+enemy_name = "ghost"
+
+[node name="Path" type="Line2D" parent="Gameplay/World"]
+
+[node name="GridMap" type="GridMap" parent="Gameplay/World"]
+mesh_library = ExtResource("5_uxnbx")
+cell_size = Vector3(2, 1, 2)
+data = {
+"cells": PackedInt32Array(0, 2, 153, 0, 3, 153, 0, 4, 153, 0, 5, 153, 0, 6, 153, 0, 7, 153, 0, 8, 153, 0, 9, 153, 0, 10, 153, 0, 11, 153, 0, 12, 153, 0, 13, 153, 0, 14, 153, 0, 15, 153, 0, 16, 153, 0, 17, 153, 0, 18, 153, 1, 2, 153, 1, 3, 153, 1, 4, 153, 1, 5, 153, 2, 5, 153, 2, 6, 153, 1, 6, 153, 2, 7, 153, 2, 8, 153, 2, 9, 153, 2, 10, 153, 2, 11, 153, 2, 12, 153, 2, 13, 153, 2, 14, 153, 2, 15, 153, 1, 15, 153, 1, 16, 153, 1, 17, 153, 1, 18, 153, 2, 18, 153, 3, 18, 153, 4, 18, 153, 4, 17, 153, 5, 17, 153, 6, 17, 153, 6, 18, 153, 7, 18, 153, 8, 18, 153, 10, 18, 153, 11, 18, 153, 6, 16, 153, 7, 16, 153, 7, 15, 153, 7, 14, 153, 8, 14, 153, 8, 13, 153, 8, 12, 153, 9, 11, 153, 9, 10, 153, 10, 9, 153, 10, 8, 153, 10, 7, 153, 10, 6, 153, 5, 18, 153, 11, 17, 153, 11, 16, 153, 12, 15, 153, 12, 14, 153, 12, 12, 153, 12, 16, 153, 12, 17, 153, 12, 18, 153, 12, 11, 153, 12, 10, 153, 12, 9, 153, 12, 8, 153, 11, 8, 153, 11, 7, 153, 11, 6, 153, 12, 6, 153, 12, 5, 153, 12, 4, 153, 12, 3, 153, 12, 7, 153, 2, 2, 153, 3, 2, 153, 4, 2, 153, 5, 2, 153, 6, 2, 153, 6, 3, 153, 7, 2, 153, 7, 3, 153, 8, 3, 153, 8, 2, 153, 9, 3, 153, 10, 3, 153, 11, 3, 153, 9, 2, 153, 10, 2, 153, 11, 2, 153, 12, 2, 153, 3, 6, 153, 1, 14, 153, 1, 13, 153, 1, 12, 153, 1, 11, 153, 1, 10, 153, 1, 9, 153, 1, 8, 153, 1, 7, 153, 5, 6, 153, 6, 6, 153, 7, 6, 153, 8, 6, 153, 7, 7, 153, 6, 8, 153, 6, 9, 153, 5, 10, 153, 5, 11, 153, 4, 11, 153, 4, 12, 153, 5, 12, 153, 6, 11, 153, 7, 11, 153, 8, 10, 153, 9, 9, 153, 9, 8, 153, 8, 8, 153, 7, 9, 153, 6, 10, 153, 5, 14, 153, 6, 14, 153, 6, 13, 153, 7, 13, 153, 7, 12, 153, 6, 12, 153, 4, 14, 153, 3, 15, 153, 3, 16, 153, 3, 17, 153, 4, 16, 153, 2, 16, 153, 3, 14, 153, 2, 17, 153, 5, 16, 153, 5, 15, 153, 6, 15, 153, 4, 15, 153, 7, 17, 153, 8, 17, 153, 9, 16, 153, 8, 16, 153, 8, 15, 153, 9, 15, 153, 11, 12, 153, 11, 11, 153, 11, 10, 153, 11, 9, 153, 10, 10, 153, 10, 11, 153, 10, 12, 153, 9, 13, 153, 9, 14, 153, 10, 13, 153, 10, 14, 153, 9, 12, 153, 8, 11, 153, 7, 10, 153, 3, 12, 153, 3, 13, 153, 4, 13, 153, 4, 10, 153, 4, 9, 153, 5, 8, 153, 5, 7, 153, 4, 6, 153, 4, 7, 153, 4, 8, 153, 3, 11, 153, 3, 7, 153, 3, 8, 153, 3, 9, 153, 3, 10, 153, 4, 5, 153, 4, 4, 153, 4, 3, 153, 3, 3, 153, 2, 3, 153, 3, 5, 153, 3, 4, 153, 5, 3, 153, 6, 4, 153, 6, 5, 153, 7, 5, 153, 8, 5, 153, 8, 4, 153, 7, 4, 153, 5, 4, 153, 5, 5, 153, 5, 9, 153, 6, 7, 153, 9, 5, 153, 9, 6, 153, 9, 7, 153, 8, 9, 153, 8, 7, 153, 9, 4, 153, 10, 5, 153, 7, 8, 153, 10, 4, 153, 11, 4, 153, 11, 5, 153, 2, 4, 153, 65542, 4, 19, 5, 13, 153, 12, 13, 153, 11, 13, 153, 11, 14, 153, 11, 15, 153, 10, 15, 153, 10, 16, 153, 10, 17, 153, 9, 17, 153, 9, 18, 153, 65548, 18, 1441953, 65548, 16, 1441952, 65548, 14, 1441952, 65548, 12, 1441952, 65548, 10, 1441966, 65546, 10, 655520, 65544, 10, 655536, 65542, 10, 655520, 65540, 10, 655520, 65538, 10, 655520, 65536, 10, 1048750, 65546, 18, 160, 65544, 18, 160, 65542, 18, 160, 65540, 18, 160, 65538, 18, 160, 65536, 18, 655521, 65536, 16, 1048736, 65536, 14, 1048736, 65536, 12, 1048736, 65536, 8, 1048736, 65536, 6, 1048736, 65536, 4, 1048736, 65548, 8, 1441952, 65548, 6, 1441952, 65548, 4, 1441952, 0, 1, 655513, 0, 0, 655513, 1, 0, 655513, 2, 0, 655513, 3, 0, 655513, 4, 0, 655513, 5, 0, 655513, 6, 0, 655513, 7, 0, 655513, 8, 0, 655513, 9, 0, 655513, 10, 0, 655513, 11, 0, 655513, 12, 0, 655513, 12, 1, 655513, 11, 1, 655513, 10, 1, 655513, 9, 1, 655513, 8, 1, 655513, 7, 1, 655513, 6, 1, 655513, 5, 1, 655513, 4, 1, 655513, 3, 1, 655513, 2, 1, 655513, 1, 1, 655513, 65548, 2, 1048736, 65536, 2, 1048736, 65546, 0, 160, 65544, 0, 160, 65542, 0, 160, 65540, 0, 160, 65538, 0, 160, 65536, 0, 1048737, 65548, 0, 161)
+}
+metadata/_editor_floor_ = Vector3(0, 1, 0)
+
+[node name="UI" type="CanvasLayer" parent="Gameplay"]
+
+[node name="EndTurnButton" type="Button" parent="Gameplay/UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -78.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "End Turn"
+
+[node name="CharacterState" type="HBoxContainer" parent="Gameplay/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_right = 204.0
+grow_vertical = 0
+
+[node name="CardAreaControl" type="Control" parent="Gameplay/UI"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 980.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InfoPanel" type="PanelContainer" parent="Gameplay/UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="VBox" type="VBoxContainer" parent="Gameplay/UI/InfoPanel"]
+layout_mode = 2
+
+[node name="TurnState" type="Label" parent="Gameplay/UI/InfoPanel/VBox"]
+layout_mode = 2
+
+[node name="EnemyInfo" type="RichTextLabel" parent="Gameplay/UI/InfoPanel/VBox"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="CardAreaHBox" type="HBoxContainer" parent="Gameplay/UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -92.5
+offset_top = -200.0
+offset_right = 92.5
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Hand" type="HBoxContainer" parent="Gameplay/UI/CardAreaHBox"]
+layout_mode = 2
+
+[node name="Deck" type="MarginContainer" parent="Gameplay/UI/CardAreaHBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="CardBack" type="TextureRect" parent="Gameplay/UI/CardAreaHBox/Deck"]
+layout_mode = 2
+texture = ExtResource("6_38qla")
+expand_mode = 3
+
+[node name="Discard" type="PanelContainer" parent="Gameplay/UI/CardAreaHBox"]
+layout_mode = 2
+
+[node name="Pivot" type="Node" parent="Gameplay"]
+
+[node name="Camera3D" type="Camera3D" parent="Gameplay/Pivot"]
+transform = Transform3D(-0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107, 0.353553, -0.612372, -3, 15, -3)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 10, 5)
+light_energy = 15.0
+omni_range = 100.0
+
+[connection signal="pressed" from="Gameplay/UI/EndTurnButton" to="Gameplay" method="_on_end_turn_button_pressed"]
