@@ -42,6 +42,9 @@ var target_cursor: Node2D
 var target_area: Node2D
 var enemy_move_area: Node2D
 
+var camera_panning_speed = 12
+var camera_rotation_speed = 100
+
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 2
 var half_tile2 = Vector2(tile_size/2, tile_size/2)
@@ -245,7 +248,32 @@ func calculate_path(tile_map_pos):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
-		pass
+		var camera_move = delta * camera_panning_speed
+		var camera_rotate = delta * camera_rotation_speed
+		var camera_forward = -camera.transform.basis.z
+		camera_forward.y = 0
+		var forward = camera_forward.normalized() * camera_move
+		var camera_modified = false
+		if Input.is_action_pressed("ui_right"):
+			camera.position += forward.cross(Vector3.UP)
+			camera_modified = true
+		if Input.is_action_pressed("ui_left"):
+			camera.position -= forward.cross(Vector3.UP)
+			camera_modified = true
+		if Input.is_action_pressed("ui_up"):
+			camera.position += forward
+			camera_modified = true
+		if Input.is_action_pressed("ui_down"):
+			camera.position -= forward
+			camera_modified = true
+		if Input.is_action_pressed("ui_rotate_left"):
+			camera.rotate_y(camera_rotate*delta)
+			camera_modified = true
+		if Input.is_action_pressed("ui_rotate_right"):
+			camera.rotate_y(-camera_rotate*delta)
+			camera_modified = true
+		if camera_modified:
+			handle_tile_change(tile_map_pos, direction, true)
 	elif state == GameState.CPU_TURN:
 		if enemy_turn_calculated:
 			for move in enemy_turn.enemy_moves:
@@ -442,11 +470,11 @@ func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
 func plane_pos_to_tile_pos(plane_pos: Vector3) -> Vector2i:
 	return Vector2i(floor(plane_pos.x / tile_size), floor(plane_pos.z / tile_size))
 
-func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
+func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, camera_changed: bool):
 	var tile_changed = tile_map_pos != new_tile_map_pos
 	var direction_changed = direction != new_direction
 	
-	if tile_changed:
+	if tile_changed or camera_changed:
 		if map_manager.enemy_locs.has(new_tile_map_pos):
 			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
 		else:
@@ -456,7 +484,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.WAITING:
 				calculate_path(new_tile_map_pos)
-	if tile_changed or direction_changed:
+	if tile_changed or direction_changed or camera_changed:
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
@@ -479,6 +507,6 @@ func _unhandled_input(event):
 		var offset = plane_pos - active_character.get_position()
 		var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
 		if new_tile_map_pos != tile_map_pos or new_direction != direction:
-			handle_tile_change(new_tile_map_pos, new_direction)
+			handle_tile_change(new_tile_map_pos, new_direction, false)
 		tile_map_pos = new_tile_map_pos
 		direction = new_direction

@@ -131,7 +131,7 @@ layout_mode = 2
 [node name="Pivot" type="Node" parent="Gameplay"]
 
 [node name="Camera3D" type="Camera3D" parent="Gameplay/Pivot"]
-transform = Transform3D(-0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107, 0.353553, -0.612372, -3, 15, -3)
+transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819151, 0.573576, 0.707107, 0.40558, -0.579228, -3, 15, -3)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 10, 5)
