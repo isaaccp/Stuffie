@@ -189,6 +189,7 @@ func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D
 	return line
 
 func create_target_area(pos: Vector2i):
+	# Respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
 	target_area = Node2D.new()
