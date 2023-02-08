@@ -189,6 +189,8 @@ func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D
 	return line
 
 func create_target_area(pos: Vector2i):
+	if is_instance_valid(target_area):
+			target_area.queue_free()
 	target_area = Node2D.new()
 	var center = Vector2i(0, 0)
 	var i = -current_card.target_distance
@@ -498,6 +500,10 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 	var tile_changed = tile_map_pos != new_tile_map_pos
 	var direction_changed = direction != new_direction
 	
+	# Ideally instead of this long method we can make all those
+	# cursors, etc different objects, and have tile_changed,
+	# direction_changed, camera_changed signals and have them
+	# react to that on their own.
 	if tile_changed or camera_changed:
 		if map_manager.enemy_locs.has(new_tile_map_pos):
 			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
@@ -512,6 +518,10 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
+	if camera_changed:
+		if state == GameState.HUMAN_TURN:
+			if human_turn_state == HumanTurnState.ACTION_TARGET:
+				create_target_area(active_character.get_id_position())
 
 func update_position_direction(mouse_position: Vector2, camera_updated=false):
 	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
