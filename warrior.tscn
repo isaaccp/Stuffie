@@ -17,6 +17,7 @@ visible = false
 texture = ExtResource("3_yxpwm")
 
 [node name="character_barbarian" parent="." instance=ExtResource("4_3xu4p")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="Light" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.7, 0.5)

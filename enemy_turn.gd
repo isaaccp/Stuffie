@@ -19,7 +19,7 @@ func calculate_moves():
 		var top_move = result[0]
 		var targets = result[1]
 		enemy_moves.append([enemy, top_move, targets])
-		# Need to this now so we calculate moves correctly.
+		# Need to do this now so we calculate moves correctly.
 		# I guess it would be neat if this was an "overlay" over the real state
 		# and then we would update all the "real" stuff at the same time, but
 		# as long as we update the nodes right after this it should be fine.

@@ -51,6 +51,7 @@ var half_tile2 = Vector2(tile_size/2, tile_size/2)
 var half_tile3 = Vector3(tile_size/2, 0, tile_size/2)
 var enemy_turn_thread = Thread.new()
 var enemy_turn_calculated = false
+var enemy_moving = false
 var enemy_turn = EnemyTurn.new()
 
 @onready var hand_ui = $UI/CardAreaHBox/Hand
@@ -220,7 +221,7 @@ func path_cost(path: PackedVector2Array) -> float:
 		else:
 			cost += 1.5
 	return cost
-	
+
 func calculate_path(tile_map_pos):
 	# Active character position
 	var pos = active_character.get_id_position()
@@ -275,13 +276,20 @@ func _process(delta):
 		if camera_modified:
 			handle_tile_change(tile_map_pos, direction, true)
 	elif state == GameState.CPU_TURN:
-		if enemy_turn_calculated:
+		if enemy_turn_calculated and not enemy_moving:
+			# Consider adding a CpuTurnState if needed.
+			enemy_moving = true
 			for move in enemy_turn.enemy_moves:
-				print_debug(move)
 				# Move enemy.
 				var enemy = move[0]
 				var loc = move[1]
 				var targets = move[2]
+				var path = map_manager.get_enemy_path(enemy.get_id_position(), loc)
+				var curve = curve_from_path(path)
+				for point in curve.get_baked_points():
+					enemy.look_at(point)
+					enemy.position = point
+					await get_tree().create_timer(0.01).timeout
 				enemy.set_id_position(loc)
 				# Find first target which is not dead yet.
 				var chosen_target = null
@@ -295,14 +303,12 @@ func _process(delta):
 				# If no targets, continue.
 				if chosen_target == null:
 					continue
-				print_debug("Chosen target ", chosen_target, " Character ", target_character.name)
-				# If target beyond attack range, continue.
-				print_debug("Enemy attack range ", enemy.attack_range)
 				if chosen_target[1] > enemy.attack_range:
 					continue
 				# We found a target within range, attack and destroy character if it died.
 				if target_character.apply_attack(enemy):
 					handle_character_death(target_character)
+			enemy_moving = false
 			change_state(GameState.HUMAN_TURN)
 
 func _async_enemy_turn():
@@ -332,27 +338,45 @@ func change_state(new_state):
 		
 
 func change_human_turn_state(new_state):
-	human_turn_state = new_state
-	current_path.clear()
-	$World/Path.clear_points()
-	if new_state == HumanTurnState.ACTION_TARGET:
+	if new_state == HumanTurnState.WAITING:
+		current_path.clear()
+		$World/Path.clear_points()
+	elif new_state == HumanTurnState.ACTION_TARGET:
 		create_target_area(active_character.get_id_position())
 		create_cursor(tile_map_pos, Vector2.RIGHT)
+	elif new_state == HumanTurnState.MOVING:
+		pass
+	human_turn_state = new_state
 	
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
 
+func curve_from_path(path: PackedVector2Array) -> Curve3D:
+	var curve = Curve3D.new()
+	for pos in path:
+		var world_pos = map_manager.get_world_position(pos)
+		curve.add_point(world_pos)
+	return curve
+	
 func handle_move(mouse_pos: Vector2):
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
 		return
+	change_human_turn_state(HumanTurnState.MOVING)
 	# Handle move "animation".
-	var old_pos = active_character.get_id_position()
+	var curve = curve_from_path(current_path)
+	# Save final position as it may change while moving.
+	var final_pos = tile_map_pos
+	# Moving 1 "baked point" per 0.01 seconds, each point being
+	# at a distance of 0.2 from each other.
+	for point in curve.get_baked_points():
+		active_character.look_at(point)
+		active_character.position = point
+		await get_tree().create_timer(0.01).timeout	
 	active_character.reduce_move(path_cost(current_path))
-	active_character.set_id_position(tile_map_pos)
-	map_manager.move_character(old_pos, tile_map_pos)
-	current_path.clear()
-	$World/Path.clear_points()
+	map_manager.move_character(active_character.get_id_position(), final_pos)
+	active_character.set_id_position(final_pos)
+	change_human_turn_state(HumanTurnState.WAITING)
 	
 func _input(event):
 	if Input.is_action_pressed("ui_cancel"):

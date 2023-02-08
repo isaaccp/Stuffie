@@ -109,6 +109,15 @@ func remove_character(from: Vector2i):
 func get_path(from: Vector2i, to: Vector2i):
 	return a_star.get_id_path(from, to)
 	
+func get_enemy_path(from: Vector2i, to: Vector2i):
+	# When moving the enemy, we have already updated the map, so we need to
+	# clear the target position so it can move.
+	a_star.set_point_solid(to, false)
+	var path = a_star.get_id_path(from, to)
+	# Make position solid again.
+	a_star.set_point_solid(to)
+	return path
+	
 func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true):
 	if base_solid_locations.has(pos):
 		return true
