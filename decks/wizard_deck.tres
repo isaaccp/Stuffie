@@ -7,4 +7,4 @@
 [resource]
 resource_name = "wizard"
 script = ExtResource("1_o7flb")
-cards = [ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("2_vrqgq")]
+cards = Array[Resource("res://card.gd")]([ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("2_vrqgq")])

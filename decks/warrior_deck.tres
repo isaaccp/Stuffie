@@ -5,4 +5,4 @@
 
 [resource]
 script = ExtResource("2_g2rny")
-cards = [ExtResource("1_bscbw"), ExtResource("1_bscbw")]
+cards = Array[Resource("res://card.gd")]([ExtResource("1_bscbw"), ExtResource("1_bscbw")])

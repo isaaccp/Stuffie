@@ -274,7 +274,7 @@ func _process(delta):
 			camera.rotate_y(-camera_rotate*delta)
 			camera_modified = true
 		if camera_modified:
-			handle_tile_change(tile_map_pos, direction, true)
+			update_position_direction(get_viewport().get_mouse_position(), true)
 	elif state == GameState.CPU_TURN:
 		if enemy_turn_calculated and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
@@ -513,6 +513,16 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
 
+func update_position_direction(mouse_position: Vector2, camera_updated=false):
+	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
+	var new_tile_map_pos = plane_pos_to_tile_pos(plane_pos)
+	var offset = plane_pos - active_character.get_position()
+	var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
+	if new_tile_map_pos != tile_map_pos or new_direction != direction:
+		handle_tile_change(new_tile_map_pos, new_direction, camera_updated)
+	tile_map_pos = new_tile_map_pos
+	direction = new_direction
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		var mouse_event = event as InputEventMouseButton
@@ -526,11 +536,4 @@ func _unhandled_input(event):
 					if valid_target:
 						play_card()
 	elif event is InputEventMouseMotion:
-		var plane_pos = mouse_pos_to_plane_pos(event.position)
-		var new_tile_map_pos = plane_pos_to_tile_pos(plane_pos)
-		var offset = plane_pos - active_character.get_position()
-		var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
-		if new_tile_map_pos != tile_map_pos or new_direction != direction:
-			handle_tile_change(new_tile_map_pos, new_direction, false)
-		tile_map_pos = new_tile_map_pos
-		direction = new_direction
+		update_position_direction(event.position)
