@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://6hkwrwqi6i6a"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_6o63w"]
-[ext_resource type="PackedScene" uid="uid://bx0kejvtb44wv" path="res://resources/kaykit-dungeon/models/characters/gltf/character_knight.gltf" id="2_6im1e"]
+[ext_resource type="PackedScene" uid="uid://dm3exbag2fdec" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_warrior.gltf" id="2_bdlgj"]
 
 [node name="Enemy" type="Node3D"]
 script = ExtResource("1_6o63w")
@@ -9,5 +9,4 @@ total_action_points = 1
 total_move_points = 10
 total_hit_points = 5
 
-[node name="character_knight" parent="." instance=ExtResource("2_6im1e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0530908, 0, -0.0176277)
+[node name="character_skeleton_warrior" parent="." instance=ExtResource("2_bdlgj")]
