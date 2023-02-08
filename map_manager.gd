@@ -192,3 +192,6 @@ func get_world_position(pos: Vector2i) -> Vector3:
 
 func get_world_position_corner(pos: Vector2i) -> Vector3:
 	return Vector3(pos[0] * cell_size.x, 1.5, pos[1] * cell_size.z)
+
+func in_bounds(pos: Vector2i):
+	return map_rect.has_point(pos)

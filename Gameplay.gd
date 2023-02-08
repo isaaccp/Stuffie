@@ -193,13 +193,17 @@ func create_target_area(pos: Vector2i):
 			target_area.queue_free()
 	target_area = Node2D.new()
 	var center = Vector2i(0, 0)
+	var target_type = current_card.target_mode 
 	var i = -current_card.target_distance
 	while i <= current_card.target_distance:
 		var j = -current_card.target_distance
 		while j <= current_card.target_distance:
-			if map_manager.distance(center, Vector2i(i, j)) <= current_card.target_distance:
-				var new_line = draw_square(pos + Vector2i(i, j), 1)
-				target_area.add_child(new_line)
+			var offset = Vector2i(i, j)
+			var new_pos = pos + offset
+			if map_manager.in_bounds(new_pos) and not map_manager.is_solid(new_pos, false, false):
+				if map_manager.distance(center, offset) <= current_card.target_distance:
+					var new_line = draw_square(new_pos, 1)
+					target_area.add_child(new_line)
 			j += 1
 		i += 1
 	$World.add_child(target_area)
@@ -528,7 +532,7 @@ func update_position_direction(mouse_position: Vector2, camera_updated=false):
 	var new_tile_map_pos = plane_pos_to_tile_pos(plane_pos)
 	var offset = plane_pos - active_character.get_position()
 	var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
-	if new_tile_map_pos != tile_map_pos or new_direction != direction:
+	if new_tile_map_pos != tile_map_pos or new_direction != direction or camera_updated:
 		handle_tile_change(new_tile_map_pos, new_direction, camera_updated)
 	tile_map_pos = new_tile_map_pos
 	direction = new_direction
