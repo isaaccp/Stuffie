@@ -18,4 +18,9 @@ texture = ExtResource("3_yxpwm")
 
 [node name="character_barbarian" parent="." instance=ExtResource("4_3xu4p")]
 
-[editable path="character_barbarian"]
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.7, 0.5)
+light_color = Color(1, 0.705882, 0.235294, 1)
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 0.5
