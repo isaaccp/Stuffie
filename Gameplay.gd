@@ -99,6 +99,7 @@ func initialize_stage(stage_number: int):
 	$World.add_child(stage)
 	var i = 0
 	for character in $World/Party.get_children():
+		character.begin_stage()
 		character.set_id_position(stage.starting_positions[i])
 		i += 1
 	# As of now, some bits of the game require active_character to be set,

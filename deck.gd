@@ -2,25 +2,38 @@ extends Resource
 
 class_name Deck
 
+# Set of cards in the deck.
 @export var cards: Array[Card]
+# Current cards in deck during stage.
+var deck: Array[Card]
+# Current cards in hand during stage.
 var hand: Array[Card]
+# Current cards in discard pile during stage.
 var discard: Array[Card]
 
+func reset():
+	deck.clear()
+	hand.clear()
+	discard.clear()
+	for card in cards:
+		deck.push_back(card)
+	shuffle()
+	
 func shuffle():
-	cards.shuffle()
+	deck.shuffle()
 	
 func draw_card():
-	if cards.is_empty():
+	if deck.is_empty():
 		shuffle_discard()
-	hand.append(cards.pop_back())
+	hand.append(deck.pop_back())
 	
-func draw_cards(cards: int):
-	for i in cards:
+func draw_cards(num_cards: int):
+	for i in num_cards:
 		draw_card()
 
 func shuffle_discard():
 	while not discard.is_empty():
-		cards.append(discard.pop_back())
+		deck.append(discard.pop_back())
 	shuffle()
 	
 func discard_card(index: int):

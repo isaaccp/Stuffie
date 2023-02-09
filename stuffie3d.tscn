@@ -17,15 +17,9 @@ script = ExtResource("1_f0764")
 
 [node name="Wizard" parent="Gameplay/World/Party" instance=ExtResource("2_k3u5k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.5, 7)
-total_action_points = null
-total_move_points = null
-total_hit_points = null
 
 [node name="Warrior" parent="Gameplay/World/Party" instance=ExtResource("3_ui73x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.5, 5)
-total_action_points = null
-total_move_points = null
-total_hit_points = null
 
 [node name="Enemies" type="Node" parent="Gameplay/World"]
 

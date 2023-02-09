@@ -23,6 +23,9 @@ func _ready():
 func _process(_delta):
 	pass
 
+func begin_stage():
+	deck.reset()
+	
 func begin_turn():
 	action_points = total_action_points
 	move_points = total_move_points
