@@ -11,8 +11,8 @@ enum StageCompletionType {
 
 @export var gridmap: GridMap
 @export var starting_positions: Array
-# TODO: Display information about how to complete stage in UI.
 @export var stage_completion_type: StageCompletionType
+# TODO: Highlight this location in the gridmap.
 @export var reach_position_target: Vector2i
 @export var kill_n_enemies_target: int
 @export var survive_n_turns_target: int
@@ -25,6 +25,15 @@ signal stage_completed
 func complete_stage():
 	stage_complete = true
 	stage_completed.emit()
+
+func get_objective_string() -> String:
+	match stage_completion_type:
+		StageCompletionType.KILL_ALL_ENEMIES: return "Defeat all enemies"
+		StageCompletionType.REACH_POSITION: return "Reach the highlighted location"
+		StageCompletionType.KILL_N_ENEMIES: return "Kill %d enemies" % kill_n_enemies_target
+		StageCompletionType.SURVIVE_N_TURNS: return "Survive %d turns" % survive_n_turns_target
+	assert(false)
+	return "Unknown objective"
 	
 func enemy_died_handler():
 	if stage_complete:

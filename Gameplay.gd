@@ -106,6 +106,8 @@ func initialize_stage(stage_number: int):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager()
+	$UI/InfoPanel/VBox/Stage.text = "Stage: %d" % (stage_number + 1)
+	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
 	change_state(GameState.HUMAN_TURN)
 
 func next_stage():
@@ -366,7 +368,6 @@ func _wait_enemy_turn_completed():
 
 func change_state(new_state):
 	state = new_state
-	$UI/InfoPanel/VBox/TurnState.text = state_text[state]
 	if state == GameState.HUMAN_TURN:
 		turn_number += 1
 		for character in $World/Party.get_children():
@@ -379,7 +380,7 @@ func change_state(new_state):
 			enemy.begin_turn()
 		enemy_turn_calculated = false
 		enemy_turn_thread.start(_async_enemy_turn)
-		
+	$UI/InfoPanel/VBox/TurnState.text = "%s: %d" % [state_text[state], turn_number]
 
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:

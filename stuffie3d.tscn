@@ -77,6 +77,12 @@ grow_horizontal = 0
 [node name="VBox" type="VBoxContainer" parent="Gameplay/UI/InfoPanel"]
 layout_mode = 2
 
+[node name="Stage" type="Label" parent="Gameplay/UI/InfoPanel/VBox"]
+layout_mode = 2
+
+[node name="Objective" type="Label" parent="Gameplay/UI/InfoPanel/VBox"]
+layout_mode = 2
+
 [node name="TurnState" type="Label" parent="Gameplay/UI/InfoPanel/VBox"]
 layout_mode = 2
 
