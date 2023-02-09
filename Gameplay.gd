@@ -77,6 +77,16 @@ signal new_turn_started(turn: int)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	stage_number = 0
+	var i = 0
+	for character in $World/Party.get_children():
+		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
+		# Add portraits in UI.
+		$UI/CharacterState.add_child(character_portrait)
+		# Set portrait on character so it can update when e.g. move points change
+		character.set_portrait(character_portrait)
+		# Hook character selection.
+		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
+		i += 1
 	initialize_stage(stage_number)
 
 func initialize_stage(stage_number: int):
@@ -89,14 +99,7 @@ func initialize_stage(stage_number: int):
 	$World.add_child(stage)
 	var i = 0
 	for character in $World/Party.get_children():
-		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
-		# Add portraits in UI.
-		$UI/CharacterState.add_child(character_portrait)
-		# Set portrait on character so it can update when e.g. move points change
-		character.set_portrait(character_portrait)
 		character.set_id_position(stage.starting_positions[i])
-		# Hook character selection.
-		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
 	# As of now, some bits of the game require active_character to be set,
 	# so set it now before changing state.
