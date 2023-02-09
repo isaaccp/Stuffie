@@ -20,6 +20,7 @@ enum HumanTurnState {
 	ACTION_TARGET,
 }
 
+var turn_number = 0
 var portrait_scene = preload("res://character_portrait.tscn")
 var card_ui_scene = preload("res://card_ui.tscn")
 var active_character: Character
@@ -62,9 +63,18 @@ var enemy_turn = EnemyTurn.new()
 var stages = [preload("res://stage1.tscn")]
 var stage: Stage
 
+signal enemy_died
+signal character_moved(pos: Vector2i)
+signal all_enemies_died
+signal new_turn_started(turn: int)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	stage = stages[0].instantiate() as Stage
+	connect("enemy_died", stage.enemy_died_handler)
+	connect("character_moved", stage.character_moved_handler)
+	connect("all_enemies_died", stage.all_enemies_died_handler)
+	connect("new_turn_started", stage.new_turn_started_handler)
 	$World.add_child(stage)
 	var i = 0
 	for character in $World/Party.get_children():
@@ -338,10 +348,12 @@ func change_state(new_state):
 	state = new_state
 	$UI/InfoPanel/VBox/TurnState.text = state_text[state]
 	if state == GameState.HUMAN_TURN:
+		turn_number += 1
 		for character in $World/Party.get_children():
 			character.begin_turn()
 		draw_hand()
 		human_turn_state = HumanTurnState.WAITING
+		emit("new_turn_started", turn_number)
 	elif state == GameState.CPU_TURN:
 		for enemy in $World/Enemies.get_children():
 			enemy.begin_turn()
@@ -388,6 +400,7 @@ func handle_move(mouse_pos: Vector2):
 	active_character.reduce_move(path_cost(current_path))
 	map_manager.move_character(active_character.get_id_position(), final_pos)
 	active_character.set_id_position(final_pos)
+	character_moved.emit(final_pos)
 	change_human_turn_state(HumanTurnState.WAITING)
 	
 func _input(event):
@@ -416,6 +429,9 @@ func handle_enemy_death(enemy: Enemy):
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
 	enemy.queue_free()
+	enemy_died.emit()
+	if map_manager.enemy_locs.is_empty():
+		all_enemies_died.emit()
 	
 func handle_character_death(character: Character):
 	var pos = character.get_id_position()
