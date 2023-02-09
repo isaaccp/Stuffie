@@ -59,8 +59,13 @@ var enemy_turn = EnemyTurn.new()
 @onready var discard_ui = $UI/CardAreaHBox/Discard
 @onready var camera = $Pivot/Camera3D
 
+var stages = [preload("res://stage1.tscn")]
+var stage: Stage
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	stage = stages[0].instantiate() as Stage
+	$World.add_child(stage)
 	var i = 0
 	for character in $World/Party.get_children():
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
@@ -68,7 +73,7 @@ func _ready():
 		$UI/CharacterState.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
 		character.set_portrait(character_portrait)
-		character.set_id_position(Vector2i(i+2, i+2))
+		character.set_id_position(stage.starting_positions[i])
 		# Hook character selection.
 		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
@@ -79,7 +84,7 @@ func _ready():
 	initialize_map_manager()
 	
 func initialize_map_manager():
-	map_manager.initialize($World/GridMap)
+	map_manager.initialize(stage.gridmap)
 	map_manager.set_party($World/Party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())
 	map_manager.initialize_a_star()
