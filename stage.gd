@@ -11,6 +11,7 @@ enum StageCompletionType {
 
 @export var gridmap: GridMap
 @export var starting_positions: Array
+# TODO: Display information about how to complete stage in UI.
 @export var stage_completion_type: StageCompletionType
 @export var reach_position_target: Vector2i
 @export var kill_n_enemies_target: int
@@ -22,9 +23,8 @@ var killed_enemies = 0
 signal stage_completed
 
 func complete_stage():
-	print_debug("Stage completed")
 	stage_complete = true
-	emit(stage_completed)
+	stage_completed.emit()
 	
 func enemy_died_handler():
 	if stage_complete:

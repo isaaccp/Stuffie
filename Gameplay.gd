@@ -3,9 +3,11 @@ extends Node
 enum GameState {
   HUMAN_TURN,
   CPU_TURN,
+  NEW_STAGE,
 }
 
 var state_text = {
+	GameState.NEW_STAGE: "New stage",
 	GameState.HUMAN_TURN: "Your turn",
 	GameState.CPU_TURN: "Enemy turn",
 }
@@ -60,8 +62,12 @@ var enemy_turn = EnemyTurn.new()
 @onready var discard_ui = $UI/CardAreaHBox/Discard
 @onready var camera = $Pivot/Camera3D
 
-var stages = [preload("res://stage1.tscn")]
+var stages = [
+	preload("res://stage1.tscn"),
+	preload("res://stage2.tscn"),
+]
 var stage: Stage
+var stage_number: int
 
 signal enemy_died
 signal character_moved(pos: Vector2i)
@@ -70,11 +76,16 @@ signal new_turn_started(turn: int)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	stage = stages[0].instantiate() as Stage
+	stage_number = 0
+	initialize_stage(stage_number)
+
+func initialize_stage(stage_number: int):
+	stage = stages[stage_number].instantiate() as Stage
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
 	connect("new_turn_started", stage.new_turn_started_handler)
+	stage.connect("stage_completed", next_stage)
 	$World.add_child(stage)
 	var i = 0
 	for character in $World/Party.get_children():
@@ -90,9 +101,14 @@ func _ready():
 	# As of now, some bits of the game require active_character to be set,
 	# so set it now before changing state.
 	set_active_character(0)
-	change_state(GameState.HUMAN_TURN)
 	initialize_map_manager()
-	
+	change_state(GameState.HUMAN_TURN)
+
+func next_stage():
+	stage_number += 1
+	change_state(GameState.NEW_STAGE)
+	initialize_stage(stage_number)
+
 func initialize_map_manager():
 	map_manager.initialize(stage.gridmap)
 	map_manager.set_party($World/Party.get_children())
@@ -353,7 +369,7 @@ func change_state(new_state):
 			character.begin_turn()
 		draw_hand()
 		human_turn_state = HumanTurnState.WAITING
-		emit("new_turn_started", turn_number)
+		new_turn_started.emit(turn_number)
 	elif state == GameState.CPU_TURN:
 		for enemy in $World/Enemies.get_children():
 			enemy.begin_turn()
@@ -560,16 +576,16 @@ func update_position_direction(mouse_position: Vector2, camera_updated=false):
 	direction = new_direction
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton:
-		var mouse_event = event as InputEventMouseButton
-		# left click
-		if mouse_event.button_index == 1 and mouse_event.pressed:
-			# move
-			if state == GameState.HUMAN_TURN:
+	if state == GameState.HUMAN_TURN:
+		if event is InputEventMouseButton:
+			var mouse_event = event as InputEventMouseButton
+			# left click
+			if mouse_event.button_index == 1 and mouse_event.pressed:
+				# move
 				if human_turn_state == HumanTurnState.WAITING:
 					handle_move(mouse_event.position)
 				elif human_turn_state == HumanTurnState.ACTION_TARGET:
 					if valid_target:
 						play_card()
-	elif event is InputEventMouseMotion:
-		update_position_direction(event.position)
+		elif event is InputEventMouseMotion:
+			update_position_direction(event.position)
