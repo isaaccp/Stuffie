@@ -42,7 +42,7 @@ var tile_map_pos: Vector2i = Vector2i(0, 0)
 var current_card_index: int = -1
 var current_card: Card
 var target_cursor: Node2D
-var target_area: Node2D
+var target_area: Highlight
 var enemy_move_area: Node2D
 
 var camera_panning_speed = 12
@@ -106,6 +106,8 @@ func initialize_stage(stage_number: int):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager()
+	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
+		pass
 	$UI/InfoPanel/VBox/Stage.text = "Stage: %d" % (stage_number + 1)
 	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
 	change_state(GameState.HUMAN_TURN)
@@ -229,21 +231,8 @@ func create_target_area(pos: Vector2i):
 	# Respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
-	target_area = Node2D.new()
-	var center = Vector2i(0, 0)
-	var target_type = current_card.target_mode 
-	var i = -current_card.target_distance
-	while i <= current_card.target_distance:
-		var j = -current_card.target_distance
-		while j <= current_card.target_distance:
-			var offset = Vector2i(i, j)
-			var new_pos = pos + offset
-			if map_manager.in_bounds(new_pos) and not map_manager.is_solid(new_pos, false, false):
-				if map_manager.distance(center, offset) <= current_card.target_distance:
-					var new_line = draw_square(new_pos, 1)
-					target_area.add_child(new_line)
-			j += 1
-		i += 1
+	target_area = Highlight.new()
+	target_area.initialize_area_distance_cursor(map_manager, camera, pos, current_card.target_distance)
 	$World.add_child(target_area)
 
 func update_move_area(positions: Array):
@@ -568,7 +557,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 	if camera_changed:
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
-				create_target_area(active_character.get_id_position())
+				target_area.refresh()
 
 func update_position_direction(mouse_position: Vector2, camera_updated=false):
 	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
