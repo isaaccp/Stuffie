@@ -267,6 +267,14 @@ func calculate_path(tile_map_pos):
 			var location = map_manager.get_world_position(point)
 			add_unprojected_point($World/Path, location)
 
+func refresh_cursors():
+	if state == GameState.HUMAN_TURN:
+		if is_instance_valid(enemy_move_area):
+			enemy_move_area.refresh()
+		if human_turn_state == HumanTurnState.ACTION_TARGET:
+			target_cursor.refresh()
+			target_area.refresh()
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
@@ -295,7 +303,8 @@ func _process(delta):
 			camera.rotate_y(-camera_rotate*delta)
 			camera_modified = true
 		if camera_modified:
-			update_position_direction(get_viewport().get_mouse_position(), true)
+			update_position_direction(get_viewport().get_mouse_position())
+			refresh_cursors()
 	elif state == GameState.CPU_TURN:
 		if enemy_turn_calculated and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
@@ -510,7 +519,7 @@ func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
 func plane_pos_to_tile_pos(plane_pos: Vector3) -> Vector2i:
 	return Vector2i(floor(plane_pos.x / tile_size), floor(plane_pos.z / tile_size))
 
-func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, camera_changed: bool):
+func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	var tile_changed = tile_map_pos != new_tile_map_pos
 	var direction_changed = direction != new_direction
 	
@@ -532,21 +541,14 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
-	if camera_changed:
-		if state == GameState.HUMAN_TURN:
-			if is_instance_valid(enemy_move_area):
-				enemy_move_area.refresh()
-			if human_turn_state == HumanTurnState.ACTION_TARGET:
-				target_cursor.refresh()
-				target_area.refresh()
 
-func update_position_direction(mouse_position: Vector2, camera_updated=false):
+func update_position_direction(mouse_position: Vector2):
 	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
 	var new_tile_map_pos = plane_pos_to_tile_pos(plane_pos)
 	var offset = plane_pos - active_character.get_position()
 	var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
-	if new_tile_map_pos != tile_map_pos or new_direction != direction or camera_updated:
-		handle_tile_change(new_tile_map_pos, new_direction, camera_updated)
+	if new_tile_map_pos != tile_map_pos or new_direction != direction:
+		handle_tile_change(new_tile_map_pos, new_direction)
 	tile_map_pos = new_tile_map_pos
 	direction = new_direction
 
