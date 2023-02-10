@@ -188,9 +188,12 @@ func _on_card_pressed(index: int):
 		change_human_turn_state(HumanTurnState.WAITING)
 	
 func create_cursor(pos: Vector2i, direction: Vector2):
-	target_cursor = new_highlight()
+	var cursor_pos = pos
+	if current_card.target_mode == Card.TargetMode.SELF:
+		cursor_pos = active_character.get_id_position()
+	target_cursor = CardTargetHighlight.new(map_manager, camera, cursor_pos, direction, current_card)
 	target_cursor.set_width(3)
-	target_cursor.create_card_target_cursor(pos, direction, current_card)
+	target_cursor.refresh()
 	$World.add_child(target_cursor)
 
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
@@ -209,15 +212,12 @@ func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D
 	add_unprojected_point(line, start)
 	return line
 
-func new_highlight():
-	return Highlight.new(map_manager, camera)
-	
 func create_target_area(pos: Vector2i):
 	# Respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
-	target_area = new_highlight()
-	target_area.create_area_distance_cursor(pos, current_card.target_distance)
+	target_area = AreaDistanceHighlight.new(map_manager, camera, pos, current_card.target_distance)
+	target_area.refresh()
 	$World.add_child(target_area)
 
 func update_move_area(positions: Array):
@@ -362,7 +362,7 @@ func change_human_turn_state(new_state):
 		$World/Path.clear_points()
 	elif new_state == HumanTurnState.ACTION_TARGET:
 		create_target_area(active_character.get_id_position())
-		create_cursor(tile_map_pos, Vector2.RIGHT)
+		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
 		pass
 	human_turn_state = new_state
@@ -466,7 +466,7 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	if current_card.target_mode == Card.TargetMode.SELF:
 		valid_target = true
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		target_cursor.update_card_target_cursor(new_tile_map_pos, new_direction)
+		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
 		if distance > current_card.target_distance:
 			valid_target = false
