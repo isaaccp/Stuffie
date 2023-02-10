@@ -104,6 +104,7 @@ func initialize_stage(stage_number: int):
 		character.begin_stage()
 		character.set_id_position(stage.starting_positions[i])
 		i += 1
+	turn_number = 0
 	# As of now, some bits of the game require active_character to be set,
 	# so set it now before changing state.
 	set_active_character(0)

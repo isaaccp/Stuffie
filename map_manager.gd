@@ -77,10 +77,12 @@ func initialize_a_star():
 		a_star.set_point_solid(loc)
 	
 func set_party(characters: Array):
+	character_locs.clear()
 	for c in characters:
 		character_locs[c.get_id_position()] = c
 	
 func set_enemies(enemies: Array):
+	enemy_locs.clear()
 	for e in enemies:
 		enemy_locs[e.get_id_position()] = e
 	

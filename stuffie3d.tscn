@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4wys3k0r7so3"]
+[gd_scene load_steps=5 format=3 uid="uid://b4wys3k0r7so3"]
 
 [ext_resource type="Script" path="res://Gameplay.gd" id="1_f0764"]
-[ext_resource type="PackedScene" uid="uid://dvhxmiqckixoy" path="res://wizard.tscn" id="2_k3u5k"]
 [ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="3_ui73x"]
 [ext_resource type="PackedScene" uid="uid://6hkwrwqi6i6a" path="res://enemy.tscn" id="4_sg8y2"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="6_38qla"]
@@ -14,9 +13,6 @@ script = ExtResource("1_f0764")
 [node name="World" type="Node" parent="Gameplay"]
 
 [node name="Party" type="Node" parent="Gameplay/World"]
-
-[node name="Wizard" parent="Gameplay/World/Party" instance=ExtResource("2_k3u5k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.5, 7)
 
 [node name="Warrior" parent="Gameplay/World/Party" instance=ExtResource("3_ui73x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.5, 5)
