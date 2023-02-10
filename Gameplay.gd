@@ -41,7 +41,7 @@ var tile_map_pos: Vector2i = Vector2i(0, 0)
 
 var current_card_index: int = -1
 var current_card: Card
-var target_cursor: Node2D
+var target_cursor: Highlight
 var target_area: Highlight
 var enemy_move_area: Node2D
 
@@ -186,30 +186,12 @@ func _on_card_pressed(index: int):
 	else:
 		# Not enough action points to play card, throw back to WAITING state.
 		change_human_turn_state(HumanTurnState.WAITING)
-
-func change_cursor_color(color: Color):
-	for line in target_cursor.get_children():
-		line.default_color = color
-
-func create_target_cursor(pos: Vector2i, direction: Vector2):
-	var cursor = Node2D.new()
-	for effect_pos in transformed_effect_area(direction):
-		var new_line = draw_square(pos + effect_pos, 4, Color(1, 1, 1, 1))
-		cursor.add_child(new_line)
-	return cursor
 	
 func create_cursor(pos: Vector2i, direction: Vector2):
-	var target_mode = current_card.target_mode
-	if target_mode == Card.TargetMode.SELF:
-		target_cursor = create_target_cursor(pos, direction)
-		$World.add_child(target_cursor)
-	elif target_mode == Card.TargetMode.ENEMY:
-		# create tile cursor controlled by mouse,
-		# that can only be clicked on top of monsters
-		target_cursor = create_target_cursor(pos, direction)
-		$World.add_child(target_cursor)
-	elif target_mode == Card.TargetMode.AREA:
-		pass
+	target_cursor = new_highlight()
+	target_cursor.set_width(3)
+	target_cursor.create_card_target_cursor(pos, direction, current_card)
+	$World.add_child(target_cursor)
 
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
 	var unprojected = camera.unproject_position(world_pos)
@@ -227,12 +209,15 @@ func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D
 	add_unprojected_point(line, start)
 	return line
 
+func new_highlight():
+	return Highlight.new(map_manager, camera)
+	
 func create_target_area(pos: Vector2i):
 	# Respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
-	target_area = Highlight.new()
-	target_area.initialize_area_distance_cursor(map_manager, camera, pos, current_card.target_distance)
+	target_area = new_highlight()
+	target_area.create_area_distance_cursor(pos, current_card.target_distance)
 	$World.add_child(target_area)
 
 func update_move_area(positions: Array):
@@ -453,20 +438,12 @@ func handle_character_death(character: Character):
 		set_active_character(0)
 	else:
 		print_debug("Game over!")
-
-func transformed_effect_area(direction: Vector2):
-	var effect_area = current_card.effect_area()
-	var new_effect_area = []
-	var angle = Vector2.RIGHT.angle_to(direction)
-	for pos in effect_area:
-		new_effect_area.append(Vector2i(Vector2(pos).rotated(angle)))
-	return new_effect_area
 	
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		active_character.apply_card(current_card)
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		var affected_tiles = transformed_effect_area(direction)
+		var affected_tiles = current_card.effect_area(direction)
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
 				var enemy = map_manager.enemy_locs[tile_map_pos + tile_offset]
@@ -489,19 +466,17 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	if current_card.target_mode == Card.TargetMode.SELF:
 		valid_target = true
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
-		if is_instance_valid(target_cursor):
-			target_cursor.queue_free()
-		create_cursor(new_tile_map_pos, new_direction)
+		target_cursor.update_card_target_cursor(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
 		if distance > current_card.target_distance:
 			valid_target = false
-			change_cursor_color(Color(0, 0, 0, 1))
+			target_cursor.set_color(Color(0, 0, 0, 1))
 		else:
 			if map_manager.enemy_locs.has(new_tile_map_pos):
-				change_cursor_color(Color(1, 0, 0, 1))
+				target_cursor.set_color(Color(1, 0, 0, 1))
 				valid_target = true
 			else:
-				change_cursor_color(Color(1, 1, 1, 1))
+				target_cursor.set_color(Color(1, 1, 1, 1))
 
 func snap_to_direction(vector: Vector2) -> Vector2:
 	var min_distance = null

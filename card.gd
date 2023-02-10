@@ -47,11 +47,15 @@ func get_cost_text() -> String:
 # by card, with (0, 0) being the tile chosen by
 # human. We support basic area types through
 # properties, but a particular card could override.
-func effect_area():
+func effect_area(direction: Vector2):
 	var tiles = []
 	if area_type == AreaType.RECTANGLE:
 		var width_idx = (area_width-1)/2
 		for i in range(area_length):
 			for j in range(-width_idx, width_idx+1):
 				tiles.push_back(Vector2i(i, j))
-	return tiles
+	var new_effect_area = []
+	var angle = Vector2.RIGHT.angle_to(direction)
+	for pos in tiles:
+		new_effect_area.append(Vector2i(Vector2(pos).rotated(angle)))
+	return new_effect_area
