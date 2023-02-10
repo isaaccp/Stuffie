@@ -513,7 +513,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 	# cursors, etc different objects, and have tile_changed,
 	# direction_changed, camera_changed signals and have them
 	# react to that on their own.
-	if tile_changed or camera_changed:
+	if tile_changed:
 		if map_manager.enemy_locs.has(new_tile_map_pos):
 			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
 		else:
@@ -523,13 +523,16 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2, came
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.WAITING:
 				calculate_path(new_tile_map_pos)
-	if tile_changed or direction_changed or camera_changed:
+	if tile_changed or direction_changed:
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
 	if camera_changed:
 		if state == GameState.HUMAN_TURN:
+			if is_instance_valid(enemy_move_area):
+				enemy_move_area.refresh()
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
+				target_cursor.refresh()
 				target_area.refresh()
 
 func update_position_direction(mouse_position: Vector2, camera_updated=false):
