@@ -7,6 +7,7 @@ var camera: Camera3D
 var width = 1.0
 var color = Color(1, 1, 1, 1)
 var tiles: Array[Vector2i]
+var clear_on_refresh = true
 
 func _init(map_manager: MapManager, camera3d: Camera3D):
 	super()
@@ -22,7 +23,8 @@ func set_color(c: Color):
 	refresh()
 	
 func refresh():
-	tiles.clear()
+	if clear_on_refresh:
+		tiles.clear()
 	_refresh_tiles()
 	_draw_tiles()
 

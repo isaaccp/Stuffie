@@ -41,9 +41,9 @@ var tile_map_pos: Vector2i = Vector2i(0, 0)
 
 var current_card_index: int = -1
 var current_card: Card
-var target_cursor: Highlight
-var target_area: Highlight
-var enemy_move_area: Node2D
+var target_cursor: CardTargetHighlight
+var target_area: AreaDistanceHighlight
+var enemy_move_area: TilesHighlight
 
 var camera_panning_speed = 12
 var camera_rotation_speed = 100
@@ -223,11 +223,9 @@ func create_target_area(pos: Vector2i):
 func update_move_area(positions: Array):
 	if is_instance_valid(enemy_move_area):
 		enemy_move_area.queue_free()
-	enemy_move_area = Node2D.new()
-	var red = Color(1, 0, 0, 1)
-	for pos in positions:
-		var new_line = draw_square(pos, 1, red)
-		enemy_move_area.add_child(new_line)
+	enemy_move_area = TilesHighlight.new(map_manager, camera, positions)
+	enemy_move_area.set_color(Color(1, 0, 0, 1))
+	enemy_move_area.refresh()
 	$World.add_child(enemy_move_area)
 	
 func path_cost(path: PackedVector2Array) -> float:
