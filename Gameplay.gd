@@ -134,7 +134,6 @@ func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.
 	if state != GameState.HUMAN_TURN or human_turn_state != HumanTurnState.WAITING:
 		return
-	# add some sub-state/bool for any actions being in progress
 	set_active_character(index)
 
 func draw_hand():
