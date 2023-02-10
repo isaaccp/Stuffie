@@ -8,7 +8,7 @@ script = ExtResource("1_0bydp")
 gridmap = NodePath("GridMap")
 starting_positions = [Vector2i(4, 4), Vector2i(6, 4)]
 stage_completion_type = 1
-reach_position_target = Vector2i(10, 10)
+reach_position_target = Vector2i(8, 8)
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("2_p0mue")

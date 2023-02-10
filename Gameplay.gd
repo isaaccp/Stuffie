@@ -90,6 +90,8 @@ func _ready():
 	initialize_stage(stage_number)
 
 func initialize_stage(stage_number: int):
+	if is_instance_valid(stage):
+		stage.queue_free()
 	stage = stages[stage_number].instantiate() as Stage
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
@@ -107,7 +109,11 @@ func initialize_stage(stage_number: int):
 	set_active_character(0)
 	initialize_map_manager()
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
-		pass
+		var highlight = TilesHighlight.new(map_manager, camera, [stage.reach_position_target])
+		highlight.set_color(Color(0, 0, 1, 1))
+		highlight.set_width(4)
+		highlight.refresh()
+		stage.add_child(highlight)
 	$UI/InfoPanel/VBox/Stage.text = "Stage: %d" % (stage_number + 1)
 	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
 	change_state(GameState.HUMAN_TURN)
