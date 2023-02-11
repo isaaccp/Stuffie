@@ -6,6 +6,8 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -2104.0
+offset_bottom = -996.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h04yd")
@@ -35,7 +37,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Image" type="TextureRect" parent="Margin/VBox"]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
+expand_mode = 4
 
 [node name="Description" type="RichTextLabel" parent="Margin/VBox"]
 layout_mode = 2

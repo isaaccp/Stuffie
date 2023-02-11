@@ -46,3 +46,6 @@ fit_content = true
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
+
+[node name="Block" type="Label" parent="Margin/VBox"]
+layout_mode = 2

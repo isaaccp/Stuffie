@@ -26,6 +26,7 @@ enum AreaType {
 @export var target_mode: TargetMode
 @export var target_distance: int
 @export var damage: int
+@export var block: int
 @export var move_points: int
 @export var area_type: AreaType = AreaType.RECTANGLE
 @export var area_length: int = 1
@@ -37,6 +38,7 @@ func get_description_text() -> String:
 		"damage": damage,
 		"distance": target_distance,
 		"move_points": move_points,
+		"block": block,
 	}
 	return description.format(format_vars)
 	

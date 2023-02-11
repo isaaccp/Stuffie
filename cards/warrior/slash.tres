@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://bbqowimw5rf1n"]
+
+[ext_resource type="Script" path="res://card.gd" id="1_ucibj"]
+[ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="2_ssfuh"]
+
+[resource]
+script = ExtResource("1_ucibj")
+card_name = "Slash"
+description = "Attacks a single enemy for {damage}dmg"
+cost = 1
+texture = ExtResource("2_ssfuh")
+target_mode = 3
+target_distance = 1
+damage = 10
+block = 0
+move_points = 0
+area_type = 0
+area_length = 1
+area_width = 1

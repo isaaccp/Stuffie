@@ -53,5 +53,9 @@ func set_hit_points(hit_points: int, total_hit_points: int):
 	var bb_code = "HP: [color=%s]%d[/color] / %d" % [color, hit_points, total_hit_points]
 	$Margin/VBox/HitPoints.parse_bbcode(bb_code)
 	
+func set_block(block: int):
+	if block != 0:
+		$Margin/VBox/Block.text = "Block: %d" % block
+
 func set_active(active: bool):
 	$Margin/VBox/Portrait/ActiveMarker.visible = active
