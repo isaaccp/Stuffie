@@ -24,7 +24,11 @@ func change_state(new_state: MainGameState):
 		main_menu.connect("new_game_selected", start_run)
 	elif new_state == MainGameState.WITHIN_RUN:
 		var game_run = game_run_scene.instantiate()
+		game_run.connect("run_finished", finish_run)
 		add_child(game_run)
 		
 func start_run():
 	change_state(MainGameState.WITHIN_RUN)
+	
+func finish_run():
+	change_state(MainGameState.MAIN_MENU)

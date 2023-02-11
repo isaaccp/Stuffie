@@ -1,13 +1,11 @@
-extends Node
+extends Node3D
 
 enum GameState {
   HUMAN_TURN,
   CPU_TURN,
-  NEW_STAGE,
 }
 
 var state_text = {
-	GameState.NEW_STAGE: "New stage",
 	GameState.HUMAN_TURN: "Your turn",
 	GameState.CPU_TURN: "Enemy turn",
 }
@@ -57,10 +55,11 @@ var enemy_turn_calculated = false
 var enemy_moving = false
 var enemy_turn = EnemyTurn.new()
 
-@onready var hand_ui = $UI/CardAreaHBox/Hand
-@onready var deck_ui = $UI/CardAreaHBox/Deck
-@onready var discard_ui = $UI/CardAreaHBox/Discard
-@onready var camera = $Pivot/Camera3D
+@export var hand_ui: Control
+@export var deck_ui: Control
+@export var discard_ui: Control
+@export var character_state_ui: Control
+@export var camera: Camera3D
 
 var stages = [
 	preload("res://stage0.tscn"),
@@ -68,21 +67,25 @@ var stages = [
 	preload("res://stage2.tscn"),
 ]
 var stage: Stage
-var stage_number: int
+
 
 signal enemy_died
 signal character_moved(pos: Vector2i)
 signal all_enemies_died
 signal new_turn_started(turn: int)
 
+signal stage_done
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	stage_number = 0
+	pass
+	
+func initialize(stage_number: int):
 	var i = 0
 	for character in $World/Party.get_children():
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
 		# Add portraits in UI.
-		$UI/CharacterState.add_child(character_portrait)
+		character_state_ui.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
 		character.set_portrait(character_portrait)
 		# Hook character selection.
@@ -91,13 +94,9 @@ func _ready():
 	initialize_stage(stage_number)
 
 func initialize_stage(stage_number: int):
-	if is_instance_valid(stage):
-		stage.queue_free()
-	for enemy in $World/Enemies.get_children():
-		$World/Enemies.remove_child(enemy)
-		enemy.queue_free()
 	stage = stages[stage_number].instantiate() as Stage
 	stage.initialize($World/Enemies)
+	print_debug($World/Enemies.get_child(0).id_position)
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
@@ -125,11 +124,10 @@ func initialize_stage(stage_number: int):
 	change_state(GameState.HUMAN_TURN)
 
 func next_stage():
-	stage_number += 1
-	change_state(GameState.NEW_STAGE)
-	initialize_stage(stage_number)
+	stage_done.emit()
 
 func initialize_map_manager():
+	print_debug("In initialize_map_manager")
 	map_manager.initialize(stage.gridmap)
 	map_manager.set_party($World/Party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())

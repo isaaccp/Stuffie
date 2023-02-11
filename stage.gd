@@ -37,7 +37,7 @@ func _ready():
 func initialize(enemies_node: Node):
 	for enemy_position in enemies:
 		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
-		enemy.initial_position = enemy_position.position
+		enemy.initialize(enemy_position.position)
 		enemies_node.add_child(enemy)
 
 func complete_stage():

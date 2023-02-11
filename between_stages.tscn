@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://buhtt4n22qqga"]
+[gd_scene load_steps=2 format=3 uid="uid://buhtt4n22qqga"]
+
+[ext_resource type="Script" path="res://between_stages.gd" id="1_cjytp"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -7,3 +9,22 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_cjytp")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Between stages"
+horizontal_alignment = 1
+vertical_alignment = 1

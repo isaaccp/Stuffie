@@ -5,10 +5,13 @@
 
 [node name="Node" type="Node" node_paths=PackedStringArray("gridmap")]
 script = ExtResource("1_0bydp")
+enemies = null
 gridmap = NodePath("GridMap")
 starting_positions = Array[Vector2i]([Vector2i(4, 4), Vector2i(6, 4)])
 stage_completion_type = 1
 reach_position_target = Vector2i(8, 8)
+kill_n_enemies_target = null
+survive_n_turns_target = null
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("2_p0mue")

@@ -35,5 +35,5 @@ func _process(delta):
 					enemy.queue_free()
 				for enemy_position in stage.enemies:
 					var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
-					enemy.initial_position = enemy_position.position
+					enemy.initialize(enemy_position.position)
 					add_child(enemy)

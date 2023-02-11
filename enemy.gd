@@ -3,7 +3,6 @@ extends WorldEntity
 
 class_name Enemy
 
-@export var initial_position: Vector2i
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
@@ -17,14 +16,17 @@ var done: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	hit_points = total_hit_points
-	set_id_position(initial_position)
-	begin_turn()
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
+func initialize(pos: Vector2i):
+	hit_points = total_hit_points
+	set_id_position(pos)
+	begin_turn()
+	
 func begin_turn():
 	action_points = total_action_points
 	move_points = total_move_points

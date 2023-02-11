@@ -16,6 +16,9 @@ enemies = Array[ExtResource("2_p18wd")]([SubResource("Resource_juagn")])
 gridmap = NodePath("GridMap")
 starting_positions = Array[Vector2i]([Vector2i(6, 2), Vector2i(8, 2)])
 stage_completion_type = 0
+reach_position_target = null
+kill_n_enemies_target = null
+survive_n_turns_target = null
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("3_2fixd")
