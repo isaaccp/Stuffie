@@ -12,6 +12,7 @@ texture = ExtResource("2_r3cv0")
 target_mode = 3
 target_distance = 5
 damage = 5
+block = 0
 move_points = null
 area_type = 0
 area_length = 1

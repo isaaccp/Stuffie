@@ -63,6 +63,7 @@ var enemy_turn = EnemyTurn.new()
 @onready var camera = $Pivot/Camera3D
 
 var stages = [
+	preload("res://stage0.tscn"),
 	preload("res://stage1.tscn"),
 	preload("res://stage2.tscn"),
 ]
@@ -93,6 +94,7 @@ func initialize_stage(stage_number: int):
 	if is_instance_valid(stage):
 		stage.queue_free()
 	for enemy in $World/Enemies.get_children():
+		$World/Enemies.remove_child(enemy)
 		enemy.queue_free()
 	stage = stages[stage_number].instantiate() as Stage
 	stage.initialize($World/Enemies)
