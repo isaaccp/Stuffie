@@ -1,5 +1,4 @@
-@tool
-
+#@tool
 extends Node
 
 var stage: Stage

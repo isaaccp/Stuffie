@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends WorldEntity
 
 class_name Enemy
