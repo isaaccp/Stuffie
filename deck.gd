@@ -42,3 +42,6 @@ func discard_card(index: int):
 func discard_hand():
 	while not hand.is_empty():
 		discard.append(hand.pop_back())
+		
+func stage_deck_size():
+	return deck.size()
