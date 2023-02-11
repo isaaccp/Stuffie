@@ -32,10 +32,18 @@ func begin_turn():
 func info_text() -> String:
 	var format_vars = {
 		"name": enemy_name,
+		"damage": damage,
+		"attack_range": attack_range,
+		"move_points": move_points,
 		"hit_points": hit_points,
 		"total_hit_points": total_hit_points,
 	}
-	return "[b]{name}[/b]\nHP: {hit_points}/{total_hit_points}".format(format_vars)
+	return (
+		"[b]{name}[/b]\n" +
+		"HP: {hit_points}/{total_hit_points}\n" +
+		"Attack: {damage}\n" +
+		"Range: {attack_range}"
+	).format(format_vars)
 
 # Returns true if enemy died.
 func apply_card(card: Card) -> bool:
