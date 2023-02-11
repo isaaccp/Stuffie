@@ -96,7 +96,6 @@ func initialize(stage_number: int):
 func initialize_stage(stage_number: int):
 	stage = stages[stage_number].instantiate() as Stage
 	stage.initialize($World/Enemies)
-	print_debug($World/Enemies.get_child(0).id_position)
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
@@ -127,7 +126,6 @@ func next_stage():
 	stage_done.emit()
 
 func initialize_map_manager():
-	print_debug("In initialize_map_manager")
 	map_manager.initialize(stage.gridmap)
 	map_manager.set_party($World/Party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())

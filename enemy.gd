@@ -13,6 +13,7 @@ var move_points: float
 var hit_points: int
 var done: bool
 @export var enemy_name: String
+@export var health_bar: HealthDisplay3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -50,6 +51,7 @@ func info_text() -> String:
 # Returns true if enemy died.
 func apply_card(card: Card) -> bool:
 	hit_points -= card.damage
+	health_bar.update_health(hit_points, total_hit_points)
 	if hit_points <= 0:
 		return true
 	return false

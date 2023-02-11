@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_hojc0"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
-[node name="Gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera")]
+[node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera")]
 script = ExtResource("1_bqe1h")
 hand_ui = NodePath("UI/CardAreaHBox/Hand")
 deck_ui = NodePath("UI/CardAreaHBox/Deck")
