@@ -379,6 +379,8 @@ func change_human_turn_state(new_state):
 		current_path.clear()
 		$World/Path.clear_points()
 	elif new_state == HumanTurnState.ACTION_TARGET:
+		current_path.clear()
+		$World/Path.clear_points()
 		create_target_area(active_character.get_id_position())
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
