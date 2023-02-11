@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dj104xsf5urdk"]
+[gd_scene load_steps=3 format=3 uid="uid://dj104xsf5urdk"]
 
 [ext_resource type="Script" path="res://game_run.gd" id="1_0svbp"]
+[ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_33vft"]
 
-[node name="Node" type="Node"]
+[node name="GameRun" type="Node" node_paths=PackedStringArray("party", "stage_parent")]
 script = ExtResource("1_0svbp")
+party = NodePath("Party")
+stage_parent = NodePath("StageParent")
+
+[node name="Party" type="Node" parent="."]
+
+[node name="Warrior" parent="Party" instance=ExtResource("2_33vft")]
+
+[node name="StageParent" type="Node" parent="."]

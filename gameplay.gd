@@ -68,7 +68,7 @@ var stages = [
 	preload("res://stage1.tscn"),
 ]
 var stage: Stage
-
+var party: Node
 
 signal enemy_died
 signal character_moved(pos: Vector2i)
@@ -81,9 +81,10 @@ signal stage_done
 func _ready():
 	pass
 	
-func initialize(stage_number: int):
+func initialize(stage_number: int, character_party: Node):
+	party = character_party
 	var i = 0
-	for character in $World/Party.get_children():
+	for character in party.get_children():
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
 		# Add portraits in UI.
 		character_state_ui.add_child(character_portrait)
@@ -104,7 +105,7 @@ func initialize_stage(stage_number: int):
 	stage.connect("stage_completed", next_stage)
 	$World.add_child(stage)
 	var i = 0
-	for character in $World/Party.get_children():
+	for character in party.get_children():
 		character.begin_stage()
 		character.set_id_position(stage.starting_positions[i])
 		i += 1
@@ -128,7 +129,7 @@ func next_stage():
 
 func initialize_map_manager():
 	map_manager.initialize(stage.gridmap)
-	map_manager.set_party($World/Party.get_children())
+	map_manager.set_party(party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())
 	map_manager.initialize_a_star()
 	enemy_turn.initialize(map_manager)
@@ -163,9 +164,9 @@ func draw_hand():
 func set_active_character(index: int):
 	var i = 0
 		
-	for character in $World/Party.get_children():
+	for character in party.get_children():
 		if i == index:
-			active_character = $World/Party.get_child(i)
+			active_character = party.get_child(i)
 			active_character.set_active(true)
 			draw_hand()
 		else:
@@ -361,7 +362,7 @@ func change_state(new_state):
 	state = new_state
 	if state == GameState.HUMAN_TURN:
 		turn_number += 1
-		for character in $World/Party.get_children():
+		for character in party.get_children():
 			character.begin_turn()
 		draw_hand()
 		human_turn_state = HumanTurnState.WAITING
@@ -453,7 +454,7 @@ func handle_character_death(character: Character):
 	# Handle this in a fancier way, update portrait to show
 	# character is dead, but don't remove from screen, etc.
 	character.queue_free()
-	if not $World/Party.get_children().is_empty():
+	if not party.get_children().is_empty():
 		set_active_character(0)
 	else:
 		print_debug("Game over!")

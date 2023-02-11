@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2jwb32qeaom4"]
+[gd_scene load_steps=3 format=3 uid="uid://b2jwb32qeaom4"]
 
 [ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
-[ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_hojc0"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
 [node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera")]
@@ -13,11 +12,6 @@ character_state_ui = NodePath("UI/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 
 [node name="World" type="Node" parent="."]
-
-[node name="Party" type="Node" parent="World"]
-
-[node name="Warrior" parent="World/Party" instance=ExtResource("2_hojc0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.5, 5)
 
 [node name="Enemies" type="Node" parent="World"]
 

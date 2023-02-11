@@ -13,6 +13,9 @@ var between_stages_scene = preload("res://between_stages.tscn")
 var stage_number = 0
 var max_stage = 3
 
+@export var party: Node
+@export var stage_parent: Node
+
 signal run_finished
 
 func _ready():
@@ -21,16 +24,16 @@ func _ready():
 func change_state(new_state: RunState):
 	if state == new_state:
 		return
-	for node in get_children():
+	for node in stage_parent.get_children():
 		node.queue_free()
 	if new_state == RunState.WITHIN_STAGE:
 		var stage = stage_scene.instantiate()
-		stage.initialize(stage_number)
+		stage.initialize(stage_number, party)
 		stage.connect("stage_done", stage_finished)
-		add_child(stage)
+		stage_parent.add_child(stage)
 	elif new_state == RunState.BETWEEN_STAGES:
 		var between_stages = between_stages_scene.instantiate()
-		add_child(between_stages)
+		stage_parent.add_child(between_stages)
 		between_stages.connect("between_stages_done", next_stage)
 
 func stage_finished():
