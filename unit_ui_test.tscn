@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqcbgglqd7gap"]
+
+[ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="1_wsyik"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_x84md"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="HealthDisplay3D" parent="." instance=ExtResource("1_wsyik")]
+texture = SubResource("ViewportTexture_x84md")
+
+[editable path="HealthDisplay3D"]

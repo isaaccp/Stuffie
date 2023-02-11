@@ -14,10 +14,15 @@ var pending_move_cost: float = -1.0
 
 var portrait: CharacterPortrait
 
+@export var health_bar: HealthDisplay3D
+var is_ready = false
+
 @export var deck: Deck
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	is_ready = true
 	hit_points = total_hit_points
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,11 +48,13 @@ func set_portrait(character_portrait: CharacterPortrait):
 	refresh_portrait()
 
 func refresh_portrait():
-	portrait.set_portrait_texture($Portrait.texture)
-	portrait.set_action_points(pending_action_cost, action_points, total_action_points)
-	portrait.set_move_points(pending_move_cost, move_points, total_move_points)
-	portrait.set_hit_points(hit_points, total_hit_points)
-	portrait.set_block(block)
+	if is_ready:
+		portrait.set_portrait_texture($Portrait.texture)
+		portrait.set_action_points(pending_action_cost, action_points, total_action_points)
+		portrait.set_move_points(pending_move_cost, move_points, total_move_points)
+		portrait.set_hit_points(hit_points, total_hit_points)
+		portrait.set_block(block)
+		health_bar.update_health(hit_points, total_hit_points)
 
 func set_active(active: bool):
 	portrait.set_active(active)
