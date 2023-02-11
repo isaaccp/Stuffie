@@ -42,6 +42,7 @@ var current_card: Card
 var target_cursor: CardTargetHighlight
 var target_area: AreaDistanceHighlight
 var enemy_move_area: TilesHighlight
+var objective_highlight: TilesHighlight
 
 var camera_panning_speed = 12
 var camera_rotation_speed = 100
@@ -62,9 +63,9 @@ var enemy_turn = EnemyTurn.new()
 @export var camera: Camera3D
 
 var stages = [
+	preload("res://stage2.tscn"),
 	preload("res://stage0.tscn"),
 	preload("res://stage1.tscn"),
-	preload("res://stage2.tscn"),
 ]
 var stage: Stage
 
@@ -113,11 +114,11 @@ func initialize_stage(stage_number: int):
 	set_active_character(0)
 	initialize_map_manager()
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
-		var highlight = TilesHighlight.new(map_manager, camera, [stage.reach_position_target])
-		highlight.set_color(Color(0, 0, 1, 1))
-		highlight.set_width(4)
-		highlight.refresh()
-		stage.add_child(highlight)
+		objective_highlight = TilesHighlight.new(map_manager, camera, [stage.reach_position_target])
+		objective_highlight.set_color(Color(0, 0, 1, 1))
+		objective_highlight.set_width(4)
+		objective_highlight.call_deferred("refresh")
+		stage.add_child(objective_highlight)
 	$UI/InfoPanel/VBox/Stage.text = "Stage: %d" % (stage_number + 1)
 	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
 	change_state(GameState.HUMAN_TURN)
@@ -270,6 +271,8 @@ func calculate_path(tile_map_pos):
 			add_unprojected_point($World/Path, location)
 
 func refresh_cursors():
+	if is_instance_valid(objective_highlight):
+		objective_highlight.refresh()
 	if state == GameState.HUMAN_TURN:
 		if is_instance_valid(enemy_move_area):
 			enemy_move_area.refresh()
