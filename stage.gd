@@ -9,8 +9,17 @@ enum StageCompletionType {
 	SURVIVE_N_TURNS,
 }
 
+enum EnemyId {
+	SKELETON_WARRIOR,
+}
+
+var enemy_scenes = {
+	EnemyId.SKELETON_WARRIOR: preload("res://skeleton_warrior.tscn"),
+}
+
+@export var enemies: Array[EnemyPosition]
 @export var gridmap: GridMap
-@export var starting_positions: Array
+@export var starting_positions: Array[Vector2i]
 @export var stage_completion_type: StageCompletionType
 # TODO: Highlight this location in the gridmap.
 @export var reach_position_target: Vector2i
@@ -21,6 +30,15 @@ var stage_complete = false
 var killed_enemies = 0
 
 signal stage_completed
+
+func _ready():
+	pass
+
+func initialize(enemies_node: Node):
+	for enemy_position in enemies:
+		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
+		enemy.initial_position = enemy_position.position
+		enemies_node.add_child(enemy)
 
 func complete_stage():
 	stage_complete = true

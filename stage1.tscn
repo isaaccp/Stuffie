@@ -1,10 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://40cjemd0wba6"]
+[gd_scene load_steps=6 format=3 uid="uid://40cjemd0wba6"]
 
 [ext_resource type="MeshLibrary" uid="uid://d38atikp62fhy" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="1_a36fu"]
 [ext_resource type="Script" path="res://stage.gd" id="1_vu8kr"]
+[ext_resource type="Script" path="res://enemy_position.gd" id="2_hmsk3"]
+
+[sub_resource type="Resource" id="Resource_p644f"]
+script = ExtResource("2_hmsk3")
+enemy_id = 0
+position = Vector2i(8, 4)
+
+[sub_resource type="Resource" id="Resource_3h5jt"]
+script = ExtResource("2_hmsk3")
+enemy_id = 0
+position = Vector2i(8, 6)
 
 [node name="Node" type="Node" node_paths=PackedStringArray("gridmap")]
 script = ExtResource("1_vu8kr")
+enemies = Array[ExtResource("2_hmsk3")]([SubResource("Resource_p644f"), SubResource("Resource_3h5jt")])
 gridmap = NodePath("GridMap")
 starting_positions = [Vector2i(5, 2), Vector2i(7, 2)]
 stage_completion_type = 0

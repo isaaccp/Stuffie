@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://3634f7rkkxoo"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_pyj6g"]
+[ext_resource type="PackedScene" uid="uid://dm3exbag2fdec" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_warrior.gltf" id="2_nqrh5"]
+
+[node name="Enemy" type="Node3D"]
+script = ExtResource("1_pyj6g")
+total_action_points = 1
+total_move_points = 5
+total_hit_points = 5
+enemy_name = "Skeleton Warrior"
+
+[node name="character_skeleton_warrior" parent="." instance=ExtResource("2_nqrh5")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

@@ -92,7 +92,10 @@ func _ready():
 func initialize_stage(stage_number: int):
 	if is_instance_valid(stage):
 		stage.queue_free()
+	for enemy in $World/Enemies.get_children():
+		enemy.queue_free()
 	stage = stages[stage_number].instantiate() as Stage
+	stage.initialize($World/Enemies)
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)

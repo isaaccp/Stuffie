@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4wys3k0r7so3"]
+[gd_scene load_steps=4 format=3 uid="uid://b4wys3k0r7so3"]
 
 [ext_resource type="Script" path="res://Gameplay.gd" id="1_f0764"]
 [ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="3_ui73x"]
-[ext_resource type="PackedScene" uid="uid://6hkwrwqi6i6a" path="res://enemy.tscn" id="4_sg8y2"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="6_38qla"]
 
 [node name="Stuffie3D" type="Node3D"]
@@ -18,11 +17,6 @@ script = ExtResource("1_f0764")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.5, 5)
 
 [node name="Enemies" type="Node" parent="Gameplay/World"]
-
-[node name="Enemy" parent="Gameplay/World/Enemies" instance=ExtResource("4_sg8y2")]
-initial_position = Vector2i(5, 3)
-total_move_points = 6
-enemy_name = "ghost"
 
 [node name="Path" type="Line2D" parent="Gameplay/World"]
 
