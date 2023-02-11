@@ -7,7 +7,7 @@
 script = ExtResource("1_pyj6g")
 total_action_points = 1
 total_move_points = 5
-total_hit_points = 15
+total_hit_points = 10
 enemy_name = "Skeleton Warrior"
 
 [node name="character_skeleton_warrior" parent="." instance=ExtResource("2_nqrh5")]
