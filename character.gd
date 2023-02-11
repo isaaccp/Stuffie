@@ -77,7 +77,7 @@ func apply_card(card: Card):
 	if card.move_points > 0:
 		move_points += card.move_points
 	if card.block > 0:
-		block =+ card.block
+		block += card.block
 	refresh_portrait()
 
 # Apply attack from enemy to this character.
