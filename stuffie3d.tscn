@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://b4wys3k0r7so3"]
 
-[ext_resource type="Script" path="res://Gameplay.gd" id="1_f0764"]
+[ext_resource type="Script" path="res://gameplay.gd" id="1_52skc"]
 [ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="3_ui73x"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="6_38qla"]
 
 [node name="Stuffie3D" type="Node3D"]
 
 [node name="Gameplay" type="Node" parent="."]
-script = ExtResource("1_f0764")
+script = ExtResource("1_52skc")
 
 [node name="World" type="Node" parent="Gameplay"]
 
