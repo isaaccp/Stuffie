@@ -54,7 +54,9 @@ func set_hit_points(hit_points: int, total_hit_points: int):
 	$Margin/VBox/HitPoints.parse_bbcode(bb_code)
 	
 func set_block(block: int):
-	if block != 0:
+	if block == 0:
+		$Margin/VBox/Block.text = ""
+	else:
 		$Margin/VBox/Block.text = "Block: %d" % block
 
 func set_active(active: bool):
