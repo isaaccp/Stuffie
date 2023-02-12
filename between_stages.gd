@@ -9,11 +9,12 @@ enum BetweenStagesState {
 	DONE,
 }
 
+const num_cards_selection = 3
+
 var state = BetweenStagesState.NEW_CHARACTER
 var characters: Array[Character]
 var current_character = 0
 var current_cards: Array[Card]
-
 var card_ui_scene = preload("res://card_ui.tscn")
 
 signal between_stages_done
@@ -31,7 +32,7 @@ func _process(delta):
 			state = BetweenStagesState.DONE
 			return
 		var character = characters[current_character]
-		current_cards = character.extra_cards.choose(2)
+		current_cards = character.extra_cards.choose(num_cards_selection)
 		var i = 0
 		for card in current_cards:
 			var new_card = card_ui_scene.instantiate() as CardUI
