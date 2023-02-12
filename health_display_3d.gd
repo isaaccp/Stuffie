@@ -1,12 +1,13 @@
-extends Sprite3D
+extends Node3D
 
 class_name HealthDisplay3D
 
-@onready var health_display = $SubViewport/HealthDisplay
-@onready var viewport = $SubViewport
+@export var sprite: Sprite3D
+@export var health_display: HealthDisplay
+@export var viewport: SubViewport
 
 func _ready():
-	texture = viewport.get_texture()
+	sprite.texture = viewport.get_texture()
 
 func update_health(value, full):
 	health_display.update_health(value, full)

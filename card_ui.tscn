@@ -47,6 +47,7 @@ text = "3"
 [node name="PanelContainer" type="PanelContainer" parent="Margin/VBox"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
+mouse_filter = 1
 
 [node name="Image" type="TextureRect" parent="Margin/VBox/PanelContainer"]
 custom_minimum_size = Vector2(200, 200)

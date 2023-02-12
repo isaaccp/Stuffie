@@ -5,15 +5,21 @@
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8dci0"]
 
-[node name="HealthDisplay3D" type="Sprite3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+[node name="HealthDisplay3D" type="Node3D" node_paths=PackedStringArray("sprite", "health_display", "viewport")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+script = ExtResource("2_h06of")
+sprite = NodePath("Sprite3D")
+health_display = NodePath("Sprite3D/SubViewport/HealthDisplay")
+viewport = NodePath("Sprite3D/SubViewport")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_8dci0")
-script = ExtResource("2_h06of")
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(200, 26)
 
-[node name="HealthDisplay" parent="SubViewport" instance=ExtResource("3_01pk8")]
+[node name="HealthDisplay" parent="Sprite3D/SubViewport" instance=ExtResource("3_01pk8")]

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="5_stldu"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_le33p"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_jmuq7"]
 
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("health_bar")]
 script = ExtResource("1_rghne")
@@ -33,4 +33,5 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("5_stldu")]
-texture = SubResource("ViewportTexture_le33p")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+texture = SubResource("ViewportTexture_jmuq7")

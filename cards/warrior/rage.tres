@@ -6,25 +6,21 @@
 
 [sub_resource type="Resource" id="Resource_30j2d"]
 script = ExtResource("1_wj2am")
-damage = 0
 block = 0
 power = 1
+hit_points = 0
 move_points = 0
 action_points = 0
 
 [resource]
 script = ExtResource("1_6540g")
 card_name = "Rage"
-description = "Increases power by {power}"
 cost = 1
 texture = ExtResource("2_ny6qk")
 target_mode = 0
 target_distance = 0
-on_play_effect = SubResource("Resource_30j2d")
 damage = 0
-block = 0
-power = 1
-move_points = 0
+on_play_effect = SubResource("Resource_30j2d")
 area_type = 0
 area_length = 1
 area_width = 1

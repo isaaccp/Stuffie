@@ -6,7 +6,6 @@
 [resource]
 script = ExtResource("1_xdrgf")
 card_name = "Lunge"
-description = "Lunges into opponents, also damaging the enemy behind for {damage}dmg"
 cost = 2
 texture = ExtResource("2_3e4yq")
 target_mode = 3

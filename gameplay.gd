@@ -64,9 +64,9 @@ var enemy_turn = EnemyTurn.new()
 @export var camera_pivot: Node3D
 
 var stages = [
-	preload("res://stage2.tscn"),
 	preload("res://stage0.tscn"),
 	preload("res://stage1.tscn"),
+	preload("res://stage2.tscn"),
 ]
 var stage: Stage
 var party: Node
