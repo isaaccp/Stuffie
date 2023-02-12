@@ -1,7 +1,16 @@
-[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://cc1m880hp6tlk"]
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://cc1m880hp6tlk"]
 
 [ext_resource type="Script" path="res://card.gd" id="1_6540g"]
+[ext_resource type="Script" path="res://card_effect.gd" id="1_wj2am"]
 [ext_resource type="Texture2D" uid="uid://duyu517a4wjk6" path="res://resources/rage.png" id="2_ny6qk"]
+
+[sub_resource type="Resource" id="Resource_30j2d"]
+script = ExtResource("1_wj2am")
+damage = 0
+block = 0
+power = 1
+move_points = 0
+action_points = 0
 
 [resource]
 script = ExtResource("1_6540g")
@@ -11,6 +20,7 @@ cost = 1
 texture = ExtResource("2_ny6qk")
 target_mode = 0
 target_distance = 0
+on_play_effect = SubResource("Resource_30j2d")
 damage = 0
 block = 0
 power = 1

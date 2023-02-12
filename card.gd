@@ -26,9 +26,8 @@ enum AreaType {
 @export var target_mode: TargetMode
 @export var target_distance: int
 @export var damage: int
-@export var block: int
-@export var power: int
-@export var move_points: int
+@export var on_play_effect: CardEffect
+@export var on_kill_effect: CardEffect
 @export var area_type: AreaType = AreaType.RECTANGLE
 @export var area_length: int = 1
 # Area width should in general be odd.
@@ -51,18 +50,26 @@ func effect_area(direction: Vector2):
 		new_effect_area.append(Vector2i(Vector2(pos).rotated(angle)))
 	return new_effect_area
 
+func apply_effect(character: Character, effect: CardEffect):
+	if not effect:
+		return
+	if effect.move_points > 0:
+		character.move_points += effect.move_points
+	if effect.block > 0:
+		character.block += effect.block
+	if effect.power > 0:
+		character.power += effect.power
+	if effect.action_points > 0:
+		character.action_points += effect.action_points
+
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
-	if move_points > 0:
-		character.move_points += move_points
-	if block > 0:
-		character.block += block
-	if power > 0:
-		character.power += power
+	apply_effect(character, on_play_effect)
 	character.refresh()
 	
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
+	apply_effect(ally, on_play_effect)
 	
 func effective_damage(character: Character):
 	var new_damage = damage
@@ -75,5 +82,6 @@ func apply_enemy(character: Character, enemy: Enemy):
 	enemy.hit_points -= effective_damage(character)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
+		apply_effect(character, on_kill_effect)
 		return true
 	return false

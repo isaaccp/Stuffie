@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://brsdh2a7rnmdu"]
+
+[ext_resource type="Script" path="res://card_effect.gd" id="1_3tvwh"]
+[ext_resource type="Script" path="res://card.gd" id="2_ekyjs"]
+[ext_resource type="Texture2D" uid="uid://dyhf244xs7bqg" path="res://resources/cleave.png" id="3_qrakg"]
+
+[sub_resource type="Resource" id="Resource_113td"]
+script = ExtResource("1_3tvwh")
+block = 0
+power = 0
+move_points = 0
+action_points = 1
+
+[resource]
+script = ExtResource("2_ekyjs")
+card_name = "Cleave"
+description = "Attacks for {damage}dmg and recovers 1 AP on kill"
+cost = 1
+texture = ExtResource("3_qrakg")
+target_mode = 3
+target_distance = 1
+damage = 10
+on_kill_effect = SubResource("Resource_113td")
+area_type = 0
+area_length = 1
+area_width = 1

@@ -12,7 +12,6 @@ texture = ExtResource("2_3e4yq")
 target_mode = 3
 target_distance = 1
 damage = 10
-move_points = null
 area_type = 0
 area_length = 2
 area_width = 1

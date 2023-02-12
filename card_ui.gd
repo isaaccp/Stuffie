@@ -27,10 +27,11 @@ func get_description_text() -> String:
 	var format_vars = {
 		"damage": damage_text,
 		"distance": card.target_distance,
-		"move_points": card.move_points,
-		"block": card.block,
-		"power": card.power,
 	}
+	if card.on_play_effect:
+		format_vars["move_points"] = card.on_play_effect.move_points
+		format_vars["block"] = card.on_play_effect.block
+		format_vars["power"] = card.on_play_effect.power
 	return card.description.format(format_vars)
 	
 func get_cost_text() -> String:
