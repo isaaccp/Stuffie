@@ -37,6 +37,7 @@ func change_state(new_state: RunState):
 		var between_stages = between_stages_scene.instantiate()
 		var characters: Array[Character] = []
 		for character in party.get_children():
+			character.end_stage()
 			characters.push_back(character)
 		between_stages.initialize(characters)
 		stage_parent.add_child(between_stages)

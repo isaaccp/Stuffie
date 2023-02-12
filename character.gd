@@ -32,6 +32,9 @@ func _process(_delta):
 
 func begin_stage():
 	deck.reset()
+
+func end_stage():
+	power = 0
 	
 func begin_turn():
 	action_points = total_action_points
