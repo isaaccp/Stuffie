@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2wg8gqprp7pc"]
+[gd_scene load_steps=3 format=3 uid="uid://c2wg8gqprp7pc"]
 
 [ext_resource type="Script" path="res://card_ui.gd" id="1_h04yd"]
 
-[node name="CardUI" type="PanelContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8d27"]
+
+[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("description", "tooltip")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,6 +13,8 @@ offset_bottom = -996.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h04yd")
+description = NodePath("Margin/VBox/Description")
+tooltip = NodePath("Margin/Tooltip")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -45,3 +49,11 @@ expand_mode = 4
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
+
+[node name="Tooltip" type="Label" parent="Margin"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_i8d27")
+autowrap_mode = 2
+
+[connection signal="meta_hover_ended" from="Margin/VBox/Description" to="." method="_on_description_meta_hover_ended"]
+[connection signal="meta_hover_started" from="Margin/VBox/Description" to="." method="_on_description_meta_hover_started"]

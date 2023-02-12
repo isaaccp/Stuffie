@@ -5,10 +5,16 @@ class_name CardUI
 var cb: Callable
 var card: Card
 var character: Character
+var keyword_tooltips = {
+	"power": "If character has any power, damage +50%. Remove 1 power per turn"
+}
+
+@export var description: RichTextLabel
+@export var tooltip: Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	tooltip.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -27,7 +33,7 @@ func get_card_effect_description(effect: CardEffect) -> String:
 	if effect.block > 0:
 		effect_texts.push_back("adds %d block" % effect.block)
 	if effect.power > 0:
-		effect_texts.push_back("adds %d power" % effect.power)
+		effect_texts.push_back("adds %d [url]power[/url]" % effect.power)
 	if effect.move_points > 0:
 		effect_texts.push_back("adds %d MP" % effect.move_points)
 	if effect.action_points > 0:
@@ -63,6 +69,12 @@ func get_description_text() -> String:
 			var on_kill_text = get_card_effect_description(card.on_kill_effect)
 			description += "On Kill: %s" % on_kill_text
 	return description
+
+func tooltip_text(keyword: String) -> String:
+	if keyword_tooltips.has(keyword):
+		return keyword_tooltips[keyword]
+	else:
+		return "Unknown keyword, please file a bug"
 	
 func get_cost_text() -> String:
 	return "%d" % card.cost
@@ -71,7 +83,7 @@ func refresh():
 	$Margin/VBox/CardTop/Name.text = card.card_name
 	$Margin/VBox/CardTop/Cost.text = get_cost_text()
 	$Margin/VBox/Image.texture = card.texture
-	$Margin/VBox/Description.text = get_description_text()
+	description.text = get_description_text()
 
 func set_highlight(highlight: bool):
 	$Margin/VBox/Playing.visible = highlight
@@ -82,3 +94,12 @@ func _gui_input(event):
 				if cb.is_valid():
 					cb.call()
 				accept_event()
+
+func _on_description_meta_hover_started(meta):
+	var keyword = meta as String
+	tooltip.text = tooltip_text(keyword)
+	tooltip.show()
+
+
+func _on_description_meta_hover_ended(meta):
+	tooltip.hide()
