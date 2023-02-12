@@ -261,12 +261,12 @@ func calculate_path(tile_map_pos):
 	else:
 		active_character.set_pending_move_cost(cost)
 	# Draw path.
+	$World/Path.clear_points()
 	if valid_path:
 		if too_long_path:
 			$World/Path.default_color = Color(1, 0, 0, 1)
 		else:
 			$World/Path.default_color = Color(1, 1, 1, 1)
-		$World/Path.clear_points()
 		for point in current_path:
 			var location = map_manager.get_world_position(point)
 			add_unprojected_point($World/Path, location)
