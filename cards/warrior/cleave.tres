@@ -8,13 +8,13 @@
 script = ExtResource("1_3tvwh")
 block = 0
 power = 0
+hit_points = 0
 move_points = 0
 action_points = 1
 
 [resource]
 script = ExtResource("2_ekyjs")
 card_name = "Cleave"
-description = "Attacks for {damage}dmg and recovers 1 AP on kill"
 cost = 1
 texture = ExtResource("3_qrakg")
 target_mode = 3

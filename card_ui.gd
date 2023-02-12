@@ -20,19 +20,46 @@ func initialize(card: Card, character: Character, callback: Callable):
 	cb = callback
 	refresh()
 
+func get_card_effect_description(effect: CardEffect) -> String:
+	var effect_texts: PackedStringArray
+	if effect.hit_points > 0:
+		effect_texts.push_back("heals %d" % effect.hit_points)
+	if effect.block > 0:
+		effect_texts.push_back("adds %d block" % effect.block)
+	if effect.power > 0:
+		effect_texts.push_back("adds %d power" % effect.power)
+	if effect.move_points > 0:
+		effect_texts.push_back("adds %d MP" % effect.move_points)
+	if effect.action_points > 0:
+		effect_texts.push_back("adds %d AP" % effect.action_points)
+	if effect_texts.size() == 0:
+		return ""
+	return ", ".join(effect_texts)
+	
 func get_description_text() -> String:
-	var damage_text = "%d" % card.damage
-	if card.damage != card.effective_damage(character):
-		damage_text = "%d ([color=red]%d[/color])" % [card.damage, card.effective_damage(character)]
-	var format_vars = {
-		"damage": damage_text,
-		"distance": card.target_distance,
-	}
-	if card.on_play_effect:
-		format_vars["move_points"] = card.on_play_effect.move_points
-		format_vars["block"] = card.on_play_effect.block
-		format_vars["power"] = card.on_play_effect.power
-	return card.description.format(format_vars)
+	var description = ""
+	if card.target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
+		var target_text = ""
+		if card.target_mode == Card.TargetMode.SELF:
+			target_text = "character"
+		elif card.target_mode == Card.TargetMode.SELF_ALLY:
+			target_text = "character or ally"
+		elif card.target_mode == Card.TargetMode.ALLY:
+			target_text = "ally"
+		if card.on_play_effect:
+			var on_play_text = get_card_effect_description(card.on_play_effect)
+			if on_play_text:
+				description += "On Play: %s %s" % [target_text, on_play_text]
+	elif card.target_mode == Card.TargetMode.ENEMY:
+		if card.damage:
+			var damage_text = "%d" % card.damage
+			if card.damage != card.effective_damage(character):
+				damage_text = "%d ([color=red]%d[/color])" % [card.damage, card.effective_damage(character)]
+			description += "Attack for %s dmg\n" % damage_text
+		if card.on_kill_effect:
+			var on_kill_text = get_card_effect_description(card.on_kill_effect)
+			description += "On Kill: %s" % on_kill_text
+	return description
 	
 func get_cost_text() -> String:
 	return "%d" % card.cost

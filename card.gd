@@ -20,7 +20,6 @@ enum AreaType {
 }
 
 @export var card_name: String
-@export var description: String
 @export var cost: int
 @export var texture: Texture2D
 @export var target_mode: TargetMode
@@ -61,6 +60,10 @@ func apply_effect(character: Character, effect: CardEffect):
 		character.power += effect.power
 	if effect.action_points > 0:
 		character.action_points += effect.action_points
+	if effect.hit_points > 0:
+		character.hit_points += effect.hit_points
+		if character.hit_points > character.total_hit_points:
+			character.hit_points = character.total_hit_points
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
