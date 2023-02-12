@@ -9,7 +9,7 @@ var bar_yellow = preload("res://resources/ui/bar_horizontal_yellow.png")
 @onready var healthbar = $HealthBar
 
 func _ready():
-	pass
+	hide()
 
 func _process(delta):
 	global_rotation = 0
