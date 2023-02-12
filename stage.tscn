@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
-[node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot")]
+[node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "undo_button")]
 script = ExtResource("1_bqe1h")
 hand_ui = NodePath("UI/CardAreaHBox/Hand")
 deck_ui = NodePath("UI/CardAreaHBox/Deck")
@@ -11,6 +11,7 @@ discard_ui = NodePath("UI/CardAreaHBox/Discard")
 character_state_ui = NodePath("UI/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 camera_pivot = NodePath("Pivot")
+undo_button = NodePath("UI/InfoPanel/VBox/UndoButton")
 
 [node name="World" type="Node" parent="."]
 
@@ -21,13 +22,10 @@ camera_pivot = NodePath("Pivot")
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="EndTurnButton" type="Button" parent="UI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -78.0
-offset_top = -31.0
+offset_left = 2226.0
+offset_top = 1265.0
+offset_right = 2304.0
+offset_bottom = 1296.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "End Turn"
@@ -79,6 +77,10 @@ layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
+[node name="UndoButton" type="Button" parent="UI/InfoPanel/VBox"]
+layout_mode = 2
+text = "Undo"
+
 [node name="CardAreaHBox" type="HBoxContainer" parent="UI"]
 anchors_preset = 7
 anchor_left = 0.5
@@ -114,3 +116,4 @@ transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 20, 0, 20)
 
 [connection signal="pressed" from="UI/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="UI/InfoPanel/VBox/UndoButton" to="." method="_on_undo_button_pressed"]

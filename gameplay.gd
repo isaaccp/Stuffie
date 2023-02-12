@@ -62,6 +62,13 @@ var enemy_turn = EnemyTurn.new()
 @export var character_state_ui: Control
 @export var camera: Camera3D
 @export var camera_pivot: Node3D
+@export var undo_button: Button
+
+class UndoState:
+	var position
+	var move_points
+
+var undo_states: Dictionary
 
 var stages = [
 	preload("res://stage0.tscn"),
@@ -80,7 +87,7 @@ signal stage_done
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	undo_button.hide()
 	
 func initialize(stage_number: int, character_party: Node):
 	party = character_party
@@ -359,12 +366,29 @@ func _wait_enemy_turn_completed():
 	var results = enemy_turn_thread.wait_to_finish()
 	enemy_turn_calculated = true
 
+func reset_undo():
+	undo_button.hide()
+	for character in party.get_children():
+		var undo_state = UndoState.new()
+		undo_state.position = character.get_id_position()
+		undo_state.move_points = character.move_points
+		undo_states[character] = undo_state
+
+func apply_undo():
+	print_debug("On apply_undo")
+	for character in undo_states:
+		var undo_state = undo_states[character]
+		map_manager.move_character(character.get_id_position(), undo_state.position)
+		character.set_id_position(undo_state.position)
+		character.move_points = undo_state.move_points
+
 func change_state(new_state):
 	state = new_state
 	if state == GameState.HUMAN_TURN:
 		turn_number += 1
 		for character in party.get_children():
 			character.begin_turn()
+		reset_undo()
 		draw_hand()
 		human_turn_state = HumanTurnState.WAITING
 		new_turn_started.emit(turn_number)
@@ -417,6 +441,7 @@ func handle_move(mouse_pos: Vector2):
 	map_manager.move_character(active_character.get_id_position(), final_pos)
 	active_character.set_id_position(final_pos)
 	character_moved.emit(final_pos)
+	undo_button.show()
 	change_human_turn_state(HumanTurnState.WAITING)
 	
 func _input(event):
@@ -479,6 +504,7 @@ func play_card():
 	target_area.queue_free()
 	target_cursor.queue_free()
 	active_character.clear_pending_action_cost()
+	reset_undo()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
@@ -575,3 +601,7 @@ func _unhandled_input(event):
 						play_card()
 		elif event is InputEventMouseMotion:
 			update_position_direction(event.position)
+
+
+func _on_undo_button_pressed():
+	apply_undo()

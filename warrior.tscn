@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://chh0sy5tad4lg"]
+[gd_scene load_steps=7 format=3 uid="uid://chh0sy5tad4lg"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://decks/warrior_deck.tres" id="2_d5bu5"]
@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="5_stldu"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_jmuq7"]
 
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("health_bar")]
 script = ExtResource("1_rghne")
@@ -33,5 +31,3 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("5_stldu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
-texture = SubResource("ViewportTexture_jmuq7")
