@@ -18,7 +18,10 @@ func reset():
 	for card in cards:
 		deck.push_back(card)
 	shuffle()
-	
+
+func add_card(card: Card):
+	cards.push_back(card)
+
 func shuffle():
 	deck.shuffle()
 	

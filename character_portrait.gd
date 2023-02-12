@@ -59,5 +59,11 @@ func set_block(block: int):
 	else:
 		$Margin/VBox/Block.text = "Block: %d" % block
 
+func set_power(power: int):
+	if power == 0:
+		$Margin/VBox/Power.text = ""
+	else:
+		$Margin/VBox/Power.text = "Power: %d" % power
+		
 func set_active(active: bool):
 	$Margin/VBox/Portrait/ActiveMarker.visible = active

@@ -43,4 +43,5 @@ expand_mode = 4
 
 [node name="Description" type="RichTextLabel" parent="Margin/VBox"]
 layout_mode = 2
+bbcode_enabled = true
 fit_content = true

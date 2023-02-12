@@ -48,10 +48,5 @@ func info_text() -> String:
 		"Range: {attack_range}"
 	).format(format_vars)
 
-# Returns true if enemy died.
-func apply_card(card: Card) -> bool:
-	hit_points -= card.damage
+func refresh():
 	health_bar.update_health(hit_points, total_hit_points)
-	if hit_points <= 0:
-		return true
-	return false

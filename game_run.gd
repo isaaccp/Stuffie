@@ -11,7 +11,9 @@ var stage_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
 
 var stage_number = 0
-var max_stage = 3
+# This needs to be in sync with gameplay.gd number of stages,
+# but eventually it'll be reworked so it's fine for now.
+var max_stage = 2
 
 @export var party: Node
 @export var stage_parent: Node
@@ -33,15 +35,19 @@ func change_state(new_state: RunState):
 		stage_parent.add_child(stage)
 	elif new_state == RunState.BETWEEN_STAGES:
 		var between_stages = between_stages_scene.instantiate()
+		var characters: Array[Character] = []
+		for character in party.get_children():
+			characters.push_back(character)
+		between_stages.initialize(characters)
 		stage_parent.add_child(between_stages)
 		between_stages.connect("between_stages_done", next_stage)
-
+		
 func stage_finished():
-	change_state(RunState.BETWEEN_STAGES)
+	if stage_number == max_stage:
+		run_finished.emit()
+	else:
+		change_state(RunState.BETWEEN_STAGES)
 	
 func next_stage():
 	stage_number += 1
-	if stage_number < max_stage:
-		change_state(RunState.WITHIN_STAGE)
-	else:
-		run_finished.emit()
+	change_state(RunState.WITHIN_STAGE)

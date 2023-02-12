@@ -49,3 +49,6 @@ fit_content = true
 
 [node name="Block" type="Label" parent="Margin/VBox"]
 layout_mode = 2
+
+[node name="Power" type="Label" parent="Margin/VBox"]
+layout_mode = 2

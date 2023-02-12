@@ -1,12 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://chh0sy5tad4lg"]
+[gd_scene load_steps=8 format=3 uid="uid://chh0sy5tad4lg"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://decks/warrior_deck.tres" id="2_d5bu5"]
+[ext_resource type="Resource" uid="uid://cqfbo212r1n0g" path="res://decks/warrior_selections.tres" id="3_t8tph"]
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="5_stldu"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_rip46"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_le33p"]
 
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("health_bar")]
 script = ExtResource("1_rghne")
@@ -15,6 +16,7 @@ total_move_points = 6
 total_hit_points = 50
 health_bar = NodePath("HealthDisplay3D")
 deck = ExtResource("2_d5bu5")
+extra_cards = ExtResource("3_t8tph")
 
 [node name="Portrait" type="Sprite2D" parent="."]
 visible = false
@@ -31,4 +33,4 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("5_stldu")]
-texture = SubResource("ViewportTexture_rip46")
+texture = SubResource("ViewportTexture_le33p")

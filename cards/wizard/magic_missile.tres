@@ -13,6 +13,7 @@ target_mode = 3
 target_distance = 5
 damage = 5
 block = 0
+power = 0
 move_points = null
 area_type = 0
 area_length = 1

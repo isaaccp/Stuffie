@@ -147,7 +147,7 @@ func draw_hand():
 	for j in active_character.deck.hand.size():
 		var card = active_character.deck.hand[j]
 		var new_card = card_ui_scene.instantiate() as CardUI
-		new_card.initialize(card, _on_card_pressed.bind(j))
+		new_card.initialize(card, active_character, _on_card_pressed.bind(j))
 		hand_ui.add_child(new_card)
 	# Clear discard.
 	for child in discard_ui.get_children():
@@ -155,7 +155,7 @@ func draw_hand():
 	# Display last discarded card.
 	if not active_character.deck.discard.is_empty():
 		var new_card = card_ui_scene.instantiate() as CardUI
-		new_card.initialize(active_character.deck.discard.back(), Callable())
+		new_card.initialize(active_character.deck.discard.back(), active_character, Callable())
 		discard_ui.add_child(new_card)
 		new_card.tooltip_text = "%d cards on discard pile" % active_character.deck.discard.size()
 	# Set deck tooltip.
@@ -461,13 +461,13 @@ func handle_character_death(character: Character):
 	
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
-		active_character.apply_card(current_card)
+		current_card.apply_self(active_character)
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
 		var affected_tiles = current_card.effect_area(direction)
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
 				var enemy = map_manager.enemy_locs[tile_map_pos + tile_offset]
-				if enemy.apply_card(current_card):
+				if current_card.apply_enemy(active_character, enemy):
 					handle_enemy_death(enemy)
 	active_character.action_points -= current_card.cost
 	active_character.deck.discard_card(current_card_index)

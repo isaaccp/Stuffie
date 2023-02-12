@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="1_wsyik"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_krn00"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_tx2gm"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("1_wsyik")]
-texture = SubResource("ViewportTexture_krn00")
+texture = SubResource("ViewportTexture_tx2gm")
 
 [editable path="HealthDisplay3D"]
