@@ -6,11 +6,13 @@ var cb: Callable
 var card: Card
 var character: Character
 var keyword_tooltips = {
-	"power": "If character has any power, damage +50%. Remove 1 power per turn"
+	"power": "If character has any power, damage +50%.\nRemove 1 power per turn.",
+	"block": "If character has block, block is reduced before HP when receiving damage.\nAll block is removed at beginning of next turn.",
 }
 
 @export var description: RichTextLabel
 @export var tooltip: Label
+@export var image: TextureRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,7 +33,7 @@ func get_card_effect_description(effect: CardEffect) -> String:
 	if effect.hit_points > 0:
 		effect_texts.push_back("heals %d" % effect.hit_points)
 	if effect.block > 0:
-		effect_texts.push_back("adds %d block" % effect.block)
+		effect_texts.push_back("adds %d [url]block[/url]" % effect.block)
 	if effect.power > 0:
 		effect_texts.push_back("adds %d [url]power[/url]" % effect.power)
 	if effect.move_points > 0:
@@ -82,7 +84,7 @@ func get_cost_text() -> String:
 func refresh():
 	$Margin/VBox/CardTop/Name.text = card.card_name
 	$Margin/VBox/CardTop/Cost.text = get_cost_text()
-	$Margin/VBox/Image.texture = card.texture
+	image.texture = card.texture
 	description.text = get_description_text()
 
 func set_highlight(highlight: bool):
@@ -99,7 +101,9 @@ func _on_description_meta_hover_started(meta):
 	var keyword = meta as String
 	tooltip.text = tooltip_text(keyword)
 	tooltip.show()
+	image.hide()
 
 
 func _on_description_meta_hover_ended(meta):
 	tooltip.hide()
+	image.show()

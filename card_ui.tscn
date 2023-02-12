@@ -1,20 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2wg8gqprp7pc"]
+[gd_scene load_steps=4 format=3 uid="uid://c2wg8gqprp7pc"]
 
 [ext_resource type="Script" path="res://card_ui.gd" id="1_h04yd"]
+[ext_resource type="Texture2D" uid="uid://c52y4ijrrdkuh" path="res://resources/lunge.png" id="2_lr4w5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8d27"]
 
-[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("description", "tooltip")]
+[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("description", "tooltip", "image")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -2104.0
+offset_right = -2094.0
 offset_bottom = -996.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h04yd")
 description = NodePath("Margin/VBox/Description")
-tooltip = NodePath("Margin/Tooltip")
+tooltip = NodePath("Margin/VBox/PanelContainer/Tooltip")
+image = NodePath("Margin/VBox/PanelContainer/Image")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -36,24 +38,34 @@ layout_mode = 2
 
 [node name="Name" type="Label" parent="Margin/VBox/CardTop"]
 layout_mode = 2
+text = "Foo"
 
 [node name="Cost" type="Label" parent="Margin/VBox/CardTop"]
 layout_mode = 2
+text = "3"
 
-[node name="Image" type="TextureRect" parent="Margin/VBox"]
+[node name="PanelContainer" type="PanelContainer" parent="Margin/VBox"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
+
+[node name="Image" type="TextureRect" parent="Margin/VBox/PanelContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+texture = ExtResource("2_lr4w5")
 expand_mode = 4
+
+[node name="Tooltip" type="Label" parent="Margin/VBox/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_i8d27")
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Description" type="RichTextLabel" parent="Margin/VBox"]
 layout_mode = 2
 bbcode_enabled = true
+text = "Sample description"
 fit_content = true
-
-[node name="Tooltip" type="Label" parent="Margin"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8d27")
-autowrap_mode = 2
 
 [connection signal="meta_hover_ended" from="Margin/VBox/Description" to="." method="_on_description_meta_hover_ended"]
 [connection signal="meta_hover_started" from="Margin/VBox/Description" to="." method="_on_description_meta_hover_started"]
