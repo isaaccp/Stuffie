@@ -21,8 +21,6 @@ func _refresh_tiles():
 	var target_mode = card_target.target_mode
 	if target_mode == Card.TargetMode.SELF:
 		tiles.push_back(id_position)
-	elif target_mode == Card.TargetMode.ENEMY:
+	elif target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
 		for effect_pos in card_target.effect_area(direction):
 			tiles.push_back(id_position + effect_pos)
-	elif target_mode == Card.TargetMode.AREA:
-		pass

@@ -58,7 +58,7 @@ func get_description_text() -> String:
 			var on_play_text = get_card_effect_description(card.on_play_effect)
 			if on_play_text:
 				description += "On Play: %s %s" % [target_text, on_play_text]
-	elif card.target_mode == Card.TargetMode.ENEMY:
+	elif card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
 		var attack_text = "Attack"
 		if card.effect_area(Vector2.RIGHT).size() > 1:
 			attack_text += " enemies in area"
