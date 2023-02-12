@@ -44,7 +44,7 @@ var target_area: AreaDistanceHighlight
 var enemy_move_area: TilesHighlight
 var objective_highlight: TilesHighlight
 
-var camera_panning_speed = 12
+var camera_panning_speed = 15
 var camera_rotation_speed = 100
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
@@ -61,6 +61,7 @@ var enemy_turn = EnemyTurn.new()
 @export var discard_ui: Control
 @export var character_state_ui: Control
 @export var camera: Camera3D
+@export var camera_pivot: Node3D
 
 var stages = [
 	preload("res://stage2.tscn"),
@@ -286,27 +287,27 @@ func _process(delta):
 	if state == GameState.HUMAN_TURN:
 		var camera_move = delta * camera_panning_speed
 		var camera_rotate = delta * camera_rotation_speed
-		var camera_forward = -camera.transform.basis.z
+		var camera_forward = -camera_pivot.transform.basis.z
 		camera_forward.y = 0
 		var forward = camera_forward.normalized() * camera_move
 		var camera_modified = false
 		if Input.is_action_pressed("ui_right"):
-			camera.position += forward.cross(Vector3.UP)
+			camera_pivot.position += forward.cross(Vector3.UP)
 			camera_modified = true
 		if Input.is_action_pressed("ui_left"):
-			camera.position -= forward.cross(Vector3.UP)
+			camera_pivot.position -= forward.cross(Vector3.UP)
 			camera_modified = true
 		if Input.is_action_pressed("ui_up"):
-			camera.position += forward
+			camera_pivot.position += forward
 			camera_modified = true
 		if Input.is_action_pressed("ui_down"):
-			camera.position -= forward
+			camera_pivot.position -= forward
 			camera_modified = true
 		if Input.is_action_pressed("ui_rotate_left"):
-			camera.rotate_y(camera_rotate*delta)
+			camera_pivot.rotate_y(-camera_rotate*delta)
 			camera_modified = true
 		if Input.is_action_pressed("ui_rotate_right"):
-			camera.rotate_y(-camera_rotate*delta)
+			camera_pivot.rotate_y(camera_rotate*delta)
 			camera_modified = true
 		if camera_modified:
 			update_position_direction(get_viewport().get_mouse_position())
