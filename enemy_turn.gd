@@ -37,6 +37,23 @@ func top_move_option(enemy: Enemy, move_options: Array):
 	var character_locs = map_manager.character_locs.keys()
 	var best_move = null
 	var best_target = null
+	var max_distance_sum = 0
+	for move in move_options:
+		var reachable_targets = 0
+		var distance_sum = 0
+		for loc in character_locs:
+			var distance = map_manager.distance(move, loc)
+			if distance <= enemy.attack_range:
+				reachable_targets += 1
+			distance_sum += distance
+		if reachable_targets:
+			if distance_sum > max_distance_sum:
+				max_distance_sum = distance_sum
+				best_move = move
+	if best_move:
+		return [best_move, _characters_with_distance(best_move, character_locs)]
+	# If there are no tiles in which we can reach the character to attack,
+	# just get as close as possible.
 	var min_distance = 100000
 	for move in move_options:
 		for loc in character_locs:

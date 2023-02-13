@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://sdcngkgxapip"]
+[gd_scene load_steps=8 format=3 uid="uid://sdcngkgxapip"]
 
 [ext_resource type="Script" path="res://stage.gd" id="1_irs1y"]
 [ext_resource type="Script" path="res://enemy_position.gd" id="2_p18wd"]
@@ -13,11 +13,16 @@ position = Vector2i(6, 5)
 [sub_resource type="Resource" id="Resource_2eant"]
 script = ExtResource("2_p18wd")
 enemy_id = 1
-position = Vector2i(6, 8)
+position = Vector2i(5, 8)
+
+[sub_resource type="Resource" id="Resource_8aqve"]
+script = ExtResource("2_p18wd")
+enemy_id = 1
+position = Vector2i(7, 8)
 
 [node name="Node" type="Node" node_paths=PackedStringArray("gridmap")]
 script = ExtResource("1_irs1y")
-enemies = Array[ExtResource("2_p18wd")]([SubResource("Resource_juagn"), SubResource("Resource_2eant")])
+enemies = Array[ExtResource("2_p18wd")]([SubResource("Resource_juagn"), SubResource("Resource_2eant"), SubResource("Resource_8aqve")])
 gridmap = NodePath("GridMap")
 starting_positions = Array[Vector2i]([Vector2i(6, 2), Vector2i(8, 2)])
 stage_completion_type = 0
