@@ -40,28 +40,31 @@ func end_turn():
 		vulnerability -= 1
 
 func info_text() -> String:
+	var damage_text = "%s" % damage
+	if damage != effective_damage(null):
+		damage_text = "%s ([color=red]%s[/color])" % [damage, effective_damage(null)]
 	var format_vars = {
 		"name": enemy_name,
-		"damage": damage,
+		"damage": damage_text,
 		"attack_range": attack_range,
 		"move_points": move_points,
 		"hit_points": hit_points,
 		"total_hit_points": total_hit_points,
+		"weakness": weakness,
+		"vulnerability": vulnerability,
 	}
 	var text = (
 		"[b]{name}[/b]\n" +
 		"HP: {hit_points}/{total_hit_points}\n"
-	).format(format_vars)
-	var damage_text = "%s" % damage
-	if damage != effective_damage(null):
-		damage_text = "%s ([color=red]%s[/color])" % [damage, effective_damage(null)]
-	text += "Attack: %s\n" % damage_text
+	)
+	text += "Attack: {damage}\n"
 	text += "Range: {attack_range}\n"
 	if weakness > 0:
-		text += "[url]Weakness[/url]: %s\n" % weakness
+		text += "[url]Weakness[/url]: {weakness}\n"
 	if vulnerability > 0:
-		text += "[url]Vulnerability[/url]: %s\n" % vulnerability
-	return text
+		text += "[url]Vulnerability[/url]: {vulnerability}\n"
+	var formatted_text = text.format(format_vars)
+	return formatted_text
 
 func effective_damage(character: Character):
 	var new_damage = damage

@@ -11,10 +11,12 @@ enum StageCompletionType {
 
 enum EnemyId {
 	SKELETON_WARRIOR,
+	SKELETON_ARCHER,
 }
 
 var enemy_scenes = {
 	EnemyId.SKELETON_WARRIOR: preload("res://skeleton_warrior.tscn"),
+	EnemyId.SKELETON_ARCHER: preload("res://skeleton_archer.tscn"),
 }
 
 @export var enemies: Array[EnemyPosition]

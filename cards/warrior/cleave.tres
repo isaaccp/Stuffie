@@ -11,6 +11,8 @@ power = 0
 hit_points = 0
 move_points = 0
 action_points = 1
+weakness = 0
+vulnerability = 0
 
 [resource]
 script = ExtResource("2_ekyjs")
