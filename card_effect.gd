@@ -7,3 +7,5 @@ class_name CardEffect
 @export var hit_points: int
 @export var move_points: int
 @export var action_points: int
+@export var weakness: int
+@export var vulnerability: int

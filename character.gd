@@ -88,7 +88,7 @@ func clear_pending_move_cost():
 	
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):
-	var damage = enemy.damage
+	var damage = enemy.effective_damage(self)
 	if block > 0:
 		if damage <= block:
 			block -= damage

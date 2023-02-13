@@ -385,6 +385,8 @@ func apply_undo():
 func change_state(new_state):
 	state = new_state
 	if state == GameState.HUMAN_TURN:
+		for enemy in $World/Enemies.get_children():
+			enemy.end_turn()
 		turn_number += 1
 		for character in party.get_children():
 			character.begin_turn()
@@ -393,8 +395,6 @@ func change_state(new_state):
 		human_turn_state = HumanTurnState.WAITING
 		new_turn_started.emit(turn_number)
 	elif state == GameState.CPU_TURN:
-		for enemy in $World/Enemies.get_children():
-			enemy.begin_turn()
 		enemy_turn_calculated = false
 		enemy_turn_thread.start(_async_enemy_turn)
 	$UI/InfoPanel/VBox/TurnState.text = "%s: %d" % [state_text[state], turn_number]

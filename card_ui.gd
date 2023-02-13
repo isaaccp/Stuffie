@@ -8,6 +8,7 @@ var character: Character
 var keyword_tooltips = {
 	"power": "If character has any power, damage +50%.\nRemove 1 power per turn.",
 	"block": "If character has block, block is reduced before HP when receiving damage.\nAll block is removed at beginning of next turn.",
+	"weakness": "If character has weakness, attack damage is reduced to 50%.\nRemove 1 weakness per turn.",
 }
 
 @export var description: RichTextLabel
@@ -40,20 +41,28 @@ func get_card_effect_description(effect: CardEffect) -> String:
 		effect_texts.push_back("adds %d MP" % effect.move_points)
 	if effect.action_points > 0:
 		effect_texts.push_back("adds %d AP" % effect.action_points)
+	if effect.weakness > 0:
+		effect_texts.push_back("adds %d [url]weakness[/url]" % effect.weakness)
+	if effect.vulnerability > 0:
+		effect_texts.push_back("adds %d [url]vulnerability[/url]" % effect.vulnerability)
 	if effect_texts.size() == 0:
 		return ""
 	return ", ".join(effect_texts)
+
+func get_target_text() -> String:
+	var target_text = ""
+	if card.target_mode == Card.TargetMode.SELF:
+		target_text = "character"
+	elif card.target_mode == Card.TargetMode.SELF_ALLY:
+		target_text = "character or ally"
+	elif card.target_mode == Card.TargetMode.ALLY:
+		target_text = "ally"
+	return target_text
 	
 func get_description_text() -> String:
 	var description = ""
+	var target_text = get_target_text()
 	if card.target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
-		var target_text = ""
-		if card.target_mode == Card.TargetMode.SELF:
-			target_text = "character"
-		elif card.target_mode == Card.TargetMode.SELF_ALLY:
-			target_text = "character or ally"
-		elif card.target_mode == Card.TargetMode.ALLY:
-			target_text = "ally"
 		if card.on_play_effect:
 			var on_play_text = get_card_effect_description(card.on_play_effect)
 			if on_play_text:
@@ -67,6 +76,10 @@ func get_description_text() -> String:
 			if card.damage != card.effective_damage(character):
 				damage_text = "%d ([color=red]%d[/color])" % [card.damage, card.effective_damage(character)]
 			description += "%s for %s dmg\n" % [attack_text, damage_text]
+		if card.on_play_effect:
+			var on_play_text = get_card_effect_description(card.on_play_effect)
+			if on_play_text:
+				description += "On Play: %s %s" % [target_text, on_play_text]
 		if card.on_kill_effect:
 			var on_kill_text = get_card_effect_description(card.on_kill_effect)
 			description += "On Kill: %s" % on_kill_text

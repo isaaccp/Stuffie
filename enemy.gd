@@ -11,6 +11,9 @@ class_name Enemy
 var action_points: int
 var move_points: float
 var hit_points: int
+var weakness: int
+# TODO: Implement effect of this.
+var vulnerability: int
 var done: bool
 @export var enemy_name: String
 @export var health_bar: HealthDisplay3D
@@ -26,11 +29,15 @@ func _process(delta):
 func initialize(pos: Vector2i):
 	hit_points = total_hit_points
 	set_id_position(pos)
-	begin_turn()
+	end_turn()
 	
-func begin_turn():
+func end_turn():
 	action_points = total_action_points
 	move_points = total_move_points
+	if weakness > 0:
+		weakness -= 1
+	if vulnerability > 0:
+		vulnerability -= 1
 
 func info_text() -> String:
 	var format_vars = {
@@ -41,12 +48,26 @@ func info_text() -> String:
 		"hit_points": hit_points,
 		"total_hit_points": total_hit_points,
 	}
-	return (
+	var text = (
 		"[b]{name}[/b]\n" +
-		"HP: {hit_points}/{total_hit_points}\n" +
-		"Attack: {damage}\n" +
-		"Range: {attack_range}"
+		"HP: {hit_points}/{total_hit_points}\n"
 	).format(format_vars)
+	var damage_text = "%s" % damage
+	if damage != effective_damage(null):
+		damage_text = "%s ([color=red]%s[/color])" % [damage, effective_damage(null)]
+	text += "Attack: %s\n" % damage_text
+	text += "Range: {attack_range}\n"
+	if weakness > 0:
+		text += "[url]Weakness[/url]: %s\n" % weakness
+	if vulnerability > 0:
+		text += "[url]Vulnerability[/url]: %s\n" % vulnerability
+	return text
+
+func effective_damage(character: Character):
+	var new_damage = damage
+	if weakness > 0:
+		new_damage *= 0.5
+	return int(new_damage)
 
 func refresh():
 	health_bar.update_health(hit_points, total_hit_points)

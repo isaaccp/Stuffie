@@ -46,7 +46,11 @@ func effect_area(direction: Vector2):
 	var new_effect_area = []
 	var angle = Vector2.RIGHT.angle_to(direction)
 	for pos in tiles:
-		new_effect_area.append(Vector2i(Vector2(pos).rotated(angle)))
+		var rotated_pos = Vector2(pos).rotated(angle)
+		rotated_pos.x = round(rotated_pos.x)
+		rotated_pos.y = round(rotated_pos.y)
+		new_effect_area.append(Vector2i(rotated_pos))
+
 	return new_effect_area
 
 func apply_effect(character: Character, effect: CardEffect):
@@ -64,6 +68,14 @@ func apply_effect(character: Character, effect: CardEffect):
 		character.hit_points += effect.hit_points
 		if character.hit_points > character.total_hit_points:
 			character.hit_points = character.total_hit_points
+
+func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
+	if not effect:
+		return
+	if effect.weakness:
+		enemy.weakness += effect.weakness
+	if effect.vulnerability:
+		enemy.vulnerability += effect.weakness
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
@@ -83,6 +95,7 @@ func effective_damage(character: Character):
 func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
 	enemy.hit_points -= effective_damage(character)
+	apply_effect_enemy(enemy, on_play_effect)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
 		apply_effect(character, on_kill_effect)
