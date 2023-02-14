@@ -69,13 +69,6 @@ class UndoState:
 	var move_points
 
 var undo_states: Dictionary
-
-var stages = [
-	preload("res://stage0.tscn"),
-	preload("res://stage1.tscn"),
-	preload("res://stage2.tscn"),
-]
-var stage: Stage
 var party: Node
 
 signal enemy_died
@@ -89,7 +82,7 @@ signal stage_done
 func _ready():
 	undo_button.hide()
 	
-func initialize(stage_number: int, character_party: Node):
+func initialize(stage: Stage, character_party: Node):
 	party = character_party
 	var i = 0
 	for character in party.get_children():
@@ -101,10 +94,9 @@ func initialize(stage_number: int, character_party: Node):
 		# Hook character selection.
 		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
-	initialize_stage(stage_number)
+	initialize_stage(stage)
 
-func initialize_stage(stage_number: int):
-	stage = stages[stage_number].instantiate() as Stage
+func initialize_stage(stage: Stage):
 	stage.initialize($World/Enemies)
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
@@ -121,21 +113,21 @@ func initialize_stage(stage_number: int):
 	# As of now, some bits of the game require active_character to be set,
 	# so set it now before changing state.
 	set_active_character(0)
-	initialize_map_manager()
+	initialize_map_manager(stage)
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
 		objective_highlight = TilesHighlight.new(map_manager, camera, [stage.reach_position_target])
 		objective_highlight.set_color(Color(0, 0, 1, 1))
 		objective_highlight.set_width(4)
 		objective_highlight.call_deferred("refresh")
 		stage.add_child(objective_highlight)
-	$UI/InfoPanel/VBox/Stage.text = "Stage: %d" % (stage_number + 1)
+	$UI/InfoPanel/VBox/Stage.text = "Stage"
 	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
 	change_state(GameState.HUMAN_TURN)
 
 func next_stage():
 	stage_done.emit()
 
-func initialize_map_manager():
+func initialize_map_manager(stage: Stage):
 	map_manager.initialize(stage.gridmap)
 	map_manager.set_party(party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())

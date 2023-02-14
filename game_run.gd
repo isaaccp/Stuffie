@@ -7,9 +7,14 @@ enum RunState {
 
 var state = null
 
-var stage_scene = preload("res://stage.tscn")
+var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
 
+var stages = [
+	preload("res://stage0.tscn"),
+	preload("res://stage1.tscn"),
+	preload("res://stage2.tscn"),
+]
 var stage_number = 0
 # This needs to be in sync with gameplay.gd number of stages,
 # but eventually it'll be reworked so it's fine for now.
@@ -29,10 +34,11 @@ func change_state(new_state: RunState):
 	for node in stage_parent.get_children():
 		node.queue_free()
 	if new_state == RunState.WITHIN_STAGE:
-		var stage = stage_scene.instantiate()
-		stage.initialize(stage_number, party)
-		stage.connect("stage_done", stage_finished)
-		stage_parent.add_child(stage)
+		var stage_player = stage_player_scene.instantiate()
+		var stage = stages[stage_number].instantiate() as Stage
+		stage_player.initialize(stage, party)
+		stage_player.connect("stage_done", stage_finished)
+		stage_parent.add_child(stage_player)
 	elif new_state == RunState.BETWEEN_STAGES:
 		var between_stages = between_stages_scene.instantiate()
 		var characters: Array[Character] = []

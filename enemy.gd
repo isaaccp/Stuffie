@@ -29,7 +29,8 @@ var done: bool
 func _ready():
 	# For fireable weapons, hide them until attack.
 	if attack_style == AttackStyle.FIRE:
-		weapon.hide()
+		if weapon:
+			weapon.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
