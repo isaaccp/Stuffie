@@ -27,7 +27,9 @@ var done: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	# For fireable weapons, hide them until attack.
+	if attack_style == AttackStyle.FIRE:
+		weapon.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
