@@ -185,6 +185,8 @@ func set_active_character(index: int):
 func _on_card_pressed(index: int):
 	if state != GameState.HUMAN_TURN:
 		return
+	if human_turn_state not in [HumanTurnState.WAITING, HumanTurnState.ACTION_TARGET]:
+		return
 	
 	if current_card_index != -1:
 		hand_ui.get_child(current_card_index).set_highlight(false)
@@ -289,6 +291,26 @@ func refresh_cursors():
 			target_cursor.refresh()
 			target_area.refresh()
 
+func draw_attack(enemy: Enemy, target: Character):
+	if not enemy.weapon:
+		return
+	enemy.weapon.show()
+	var direction = (enemy.weapon.global_position - target.global_position).normalized()
+	enemy.weapon.look_at(target.global_position, Vector3.UP)
+	direction.y = 0
+	var prev_distance = -1
+	while true:
+		var diff = enemy.weapon.global_position - target.global_position
+		diff.y = 0
+		var new_distance = diff.length()
+		if prev_distance != -1 and prev_distance < new_distance:
+			break 
+		prev_distance = new_distance
+		enemy.weapon.global_position -= (direction * 0.5)
+		await get_tree().create_timer(0.02).timeout
+	enemy.weapon.position = Vector3(0, 0, 0)
+	enemy.weapon.hide()
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
@@ -349,6 +371,7 @@ func _process(delta):
 					continue
 				if chosen_target[1] > enemy.attack_range:
 					continue
+				await draw_attack(enemy, target_character)
 				# We found a target within range, attack and destroy character if it died.
 				if target_character.apply_attack(enemy):
 					handle_character_death(target_character)

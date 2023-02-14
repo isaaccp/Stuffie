@@ -3,6 +3,10 @@ extends WorldEntity
 
 class_name Enemy
 
+enum AttackStyle {
+	FIRE,
+}
+
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
@@ -15,8 +19,11 @@ var weakness: int
 # TODO: Implement effect of this.
 var vulnerability: int
 var done: bool
+
 @export var enemy_name: String
 @export var health_bar: HealthDisplay3D
+@export var attack_style: AttackStyle
+@export var weapon: Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
