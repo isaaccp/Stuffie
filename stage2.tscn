@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dce10od0rfnle"]
+[gd_scene load_steps=3 format=3 uid="uid://d3xgv8v7k3y08"]
 
 [ext_resource type="Script" path="res://stage.gd" id="1_0bydp"]
 [ext_resource type="MeshLibrary" uid="uid://d38atikp62fhy" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="2_p0mue"]

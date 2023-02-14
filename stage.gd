@@ -23,7 +23,6 @@ var enemy_scenes = {
 @export var gridmap: GridMap
 @export var starting_positions: Array[Vector2i]
 @export var stage_completion_type: StageCompletionType
-# TODO: Highlight this location in the gridmap.
 @export var reach_position_target: Vector2i
 @export var kill_n_enemies_target: int
 @export var survive_n_turns_target: int

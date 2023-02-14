@@ -18,6 +18,10 @@ func initialize(map: GridMap):
 		["wallCorner", [[1, 0], [0, 0], [0, -1]]],
 		["wallSplit", [[1, 0], [0, 0], [-1, 0], [0, -1]]],
 		["wall_door", [[1, 0], [-1, 0]]],
+		["wall_gate", [[-1, 0], [0, 0], [1, 0]]],
+		# TODO: This should be like "wallCorner", but something's off.
+		# This is good enough for current map.
+		["wall_gateCorner", [[0, 0]]],
 	]:
 		var item_name = item[0]
 		var item_cells = item[1]
