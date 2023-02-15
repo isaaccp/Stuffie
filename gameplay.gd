@@ -42,6 +42,7 @@ var current_card: Card
 var target_cursor: CardTargetHighlight
 var target_area: AreaDistanceHighlight
 var enemy_move_area: TilesHighlight
+var enemy_attack_area: TilesHighlight
 var objective_highlight: TilesHighlight
 
 var camera_panning_speed = 15
@@ -231,13 +232,58 @@ func create_target_area(pos: Vector2i):
 	target_area.refresh()
 	$World.add_child(target_area)
 
-func update_move_area(positions: Array):
+func offsets_within_distance(distance: int) -> Array[Vector2i]:
+	var tiles: Array[Vector2i] = []
+	var zero = Vector2i(0, 0)
+	var i = - distance
+	while i <= distance:
+		var j = -distance
+		while j <= distance:
+			var tile = Vector2i(i, j)
+			if map_manager.distance(zero, tile) <= distance:
+				tiles.push_back(tile)
+			j += 1
+		i += 1
+	return tiles
+	
+func tiles_within_distance(pos: Vector2i, distance: int) -> Array[Vector2i]:
+	var tiles: Array[Vector2i] = []
+	var i = pos.x - distance
+	while i <= pos.x + distance:
+		var j = pos.y - distance
+		while j <= pos.y + distance:
+			var tile = Vector2i(i, j)
+			if map_manager.in_bounds(tile):
+				if not map_manager.is_solid(tile, false, false):
+					if map_manager.distance(pos, tile) <= distance:
+						tiles.push_back(tile)
+			j += 1
+		i += 1
+	return tiles
+
+func update_move_area(enemy: Enemy, positions: Array):
 	if is_instance_valid(enemy_move_area):
 		enemy_move_area.queue_free()
+	if is_instance_valid(enemy_attack_area):
+		enemy_attack_area.queue_free()
 	enemy_move_area = TilesHighlight.new(map_manager, camera, positions)
-	enemy_move_area.set_color(Color(1, 0, 0, 1))
+	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
 	enemy_move_area.refresh()
+	var move_positions = Dictionary()
+	var attack_positions = []
+	for pos in positions:
+		move_positions[pos] = true
+	var offsets = offsets_within_distance(enemy.attack_range)
+	for pos in positions:
+		for offset in offsets:
+			var tile = pos + offset
+			if not move_positions.has(tile) and map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false):
+				attack_positions.push_back(tile)
+	enemy_attack_area = TilesHighlight.new(map_manager, camera, attack_positions)
+	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
+	enemy_attack_area.refresh()
 	$World.add_child(enemy_move_area)
+	$World.add_child(enemy_attack_area)
 	
 func path_cost(path: PackedVector2Array) -> float:
 	var cost = 0.0
@@ -279,6 +325,7 @@ func refresh_cursors():
 	if state == GameState.HUMAN_TURN:
 		if is_instance_valid(enemy_move_area):
 			enemy_move_area.refresh()
+			enemy_attack_area.refresh()
 		if human_turn_state == HumanTurnState.ACTION_TARGET:
 			target_cursor.refresh()
 			target_area.refresh()
@@ -390,7 +437,6 @@ func reset_undo():
 		undo_states[character] = undo_state
 
 func apply_undo():
-	print_debug("On apply_undo")
 	for character in undo_states:
 		var undo_state = undo_states[character]
 		map_manager.move_character(character.get_id_position(), undo_state.position)
@@ -473,14 +519,18 @@ func _input(event):
 
 func update_enemy_info(enemy: Enemy):
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
+	var start = Time.get_ticks_msec()
 	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
-	update_move_area(walkable_cells)
+	update_move_area(enemy, walkable_cells)
+	print_debug("Update enemy info time: ", Time.get_ticks_msec() - start)
 
 func clear_enemy_info():
 	$UI/InfoPanel/VBox/EnemyInfo.text = ""
 	if is_instance_valid(enemy_move_area):
 		enemy_move_area.queue_free()
-
+	if is_instance_valid(enemy_attack_area):
+		enemy_attack_area.queue_free()
+		
 func handle_enemy_death(enemy: Enemy):
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)

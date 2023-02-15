@@ -30,7 +30,7 @@ func initialize(card: Card, character: Character, callback: Callable):
 	refresh()
 
 func get_card_effect_description(effect: CardEffect) -> String:
-	var effect_texts: PackedStringArray
+	var effect_texts: PackedStringArray = []
 	if effect.hit_points > 0:
 		effect_texts.push_back("heals %d" % effect.hit_points)
 	if effect.block > 0:

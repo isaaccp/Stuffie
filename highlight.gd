@@ -18,9 +18,10 @@ func set_width(w: float):
 	width = w
 	refresh()
 	
-func set_color(c: Color):
+func set_color(c: Color, should_refresh=true):
 	color = c
-	refresh()
+	if should_refresh:
+		refresh()
 	
 func refresh():
 	if clear_on_refresh:
