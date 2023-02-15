@@ -519,8 +519,28 @@ func _input(event):
 				target_area.queue_free()
 				active_character.clear_pending_action_cost()
 				change_human_turn_state(HumanTurnState.WAITING)
+	elif Input.is_action_just_pressed("ui_showenemymove"):
+		show_enemy_moves()
+	elif Input.is_action_just_released("ui_showenemymove"):
+		clear_enemy_info()
+		
+func show_enemy_moves():
+	var final_walkable_cells = Dictionary()
+	var final_attackable_cells = Dictionary()
+	for enemy in $World/Enemies.get_children():
+		var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
+		for cell in walkable_cells:
+			final_walkable_cells[cell] = true
+		var attackable_cells = get_attack_cells(enemy, walkable_cells)
+		for cell in attackable_cells:
+			final_attackable_cells[cell] = true
+			if final_walkable_cells.has(cell):
+				final_walkable_cells.erase(cell)
+	update_move_area(final_walkable_cells.keys(), final_attackable_cells.keys())
 
 func update_enemy_info(enemy: Enemy):
+	if Input.is_action_pressed("ui_showenemymove"):
+		return
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
 	var start = Time.get_ticks_msec()
 	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
