@@ -261,16 +261,9 @@ func tiles_within_distance(pos: Vector2i, distance: int) -> Array[Vector2i]:
 		i += 1
 	return tiles
 
-func update_move_area(enemy: Enemy, positions: Array):
-	if is_instance_valid(enemy_move_area):
-		enemy_move_area.queue_free()
-	if is_instance_valid(enemy_attack_area):
-		enemy_attack_area.queue_free()
-	enemy_move_area = TilesHighlight.new(map_manager, camera, positions)
-	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
-	enemy_move_area.refresh()
+func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 	var move_positions = Dictionary()
-	var attack_positions = []
+	var attack_positions: Array[Vector2i] = []
 	for pos in positions:
 		move_positions[pos] = true
 	var offsets = offsets_within_distance(enemy.attack_range)
@@ -279,6 +272,16 @@ func update_move_area(enemy: Enemy, positions: Array):
 			var tile = pos + offset
 			if not move_positions.has(tile) and map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false):
 				attack_positions.push_back(tile)
+	return attack_positions
+	
+func update_move_area(move_positions: Array, attack_positions: Array):
+	if is_instance_valid(enemy_move_area):
+		enemy_move_area.queue_free()
+	if is_instance_valid(enemy_attack_area):
+		enemy_attack_area.queue_free()
+	enemy_move_area = TilesHighlight.new(map_manager, camera, move_positions)
+	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
+	enemy_move_area.refresh()
 	enemy_attack_area = TilesHighlight.new(map_manager, camera, attack_positions)
 	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
 	enemy_attack_area.refresh()
@@ -521,7 +524,8 @@ func update_enemy_info(enemy: Enemy):
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
 	var start = Time.get_ticks_msec()
 	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
-	update_move_area(enemy, walkable_cells)
+	var attackable_cells = get_attack_cells(enemy, walkable_cells)
+	update_move_area(walkable_cells, attackable_cells)
 	print_debug("Update enemy info time: ", Time.get_ticks_msec() - start)
 
 func clear_enemy_info():
