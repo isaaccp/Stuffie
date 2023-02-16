@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EndStageHealRelic" load_steps=2 format=3 uid="uid://dtnkp2rwqellb"]
+
+[ext_resource type="Script" path="res://relic/end_stage_heal.gd" id="1_m6rff"]
+
+[resource]
+script = ExtResource("1_m6rff")
+heal_amount = 6
+name = "Troll Heart"
+tooltip = "Heals 6hp after each stage"

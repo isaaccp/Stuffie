@@ -65,9 +65,7 @@ func apply_effect(character: Character, effect: CardEffect):
 	if effect.action_points > 0:
 		character.action_points += effect.action_points
 	if effect.hit_points > 0:
-		character.hit_points += effect.hit_points
-		if character.hit_points > character.total_hit_points:
-			character.hit_points = character.total_hit_points
+		character.heal(effect.hit_points)
 
 func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
 	if not effect:

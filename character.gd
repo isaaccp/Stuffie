@@ -12,8 +12,8 @@ var block: int
 var power: int
 var pending_action_cost: int = -1
 var pending_move_cost: float = -1.0
-
 var portrait: CharacterPortrait
+var relics: Array[Relic]
 
 @export var health_bar: HealthDisplay3D
 var is_ready = false
@@ -21,6 +21,20 @@ var is_ready = false
 @export var deck: Deck
 @export var extra_cards: CardSelectionSet
 
+class CharacterSnapshot:
+	var action_points: int
+	var move_points: int
+	var hit_points: int
+	var block: int
+	var power: int
+
+	func _init(character: Character):
+		action_points = character.action_points
+		move_points = character.move_points
+		hit_points = character.hit_points
+		block = character.block
+		power = character.power
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	is_ready = true
@@ -30,13 +44,19 @@ func _ready():
 func _process(_delta):
 	pass
 
+func apply_end_stage_relics():
+	for relic in relics:
+		relic.apply_end_stage(self)
+
 func begin_stage():
 	deck.reset()
 
 func end_stage():
 	power = 0
+	apply_end_stage_relics()
 	
 func begin_turn():
+	var snapshot = CharacterSnapshot.new(self)
 	action_points = total_action_points
 	move_points = total_move_points
 	block = 0
@@ -86,6 +106,11 @@ func clear_pending_move_cost():
 	pending_move_cost = -1.0
 	refresh()
 	
+func heal(hp: int):
+	hit_points += hp
+	if hit_points > total_hit_points:
+		hit_points = total_hit_points 
+
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):
 	var damage = enemy.effective_damage(self)

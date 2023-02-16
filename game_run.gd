@@ -43,9 +43,7 @@ func make_blacksmith_stage():
 	
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
-	[
-		preload("res://stages/diff0/stage0_simple.tscn")
-	],
+	#[ preload("res://stages/diff0/stage0_simple.tscn")],
 	[
 		preload("res://stages/diff0/stage0.tscn"),
 	],
@@ -61,30 +59,29 @@ var run = [
 	make_combat_stage(0),
 	make_blacksmith_stage(),
 	make_combat_stage(1),
-	make_combat_stage(2),
 ]
 
 var stage_number = 0
+var characters: Array[Character]
 
 @export var party: Node
 @export var stage_parent: Node
 # Whether the last stage requires rewards.
 var rewards_type = RewardsType.NONE
 
+var troll_heart = preload("res://resources/relics/troll_heart.tres")
+
 signal run_finished
 
 func _ready():
 	change_state(RunState.WITHIN_STAGE)
+	for character in party.get_children():
+		character.relics.push_back(troll_heart)
+		characters.push_back(character)
+	return characters
 
 func current_stage_def():
 	return run[stage_number]
-
-func get_characters():
-	var characters: Array[Character] = []
-	for character in party.get_children():
-		character.end_stage()
-		characters.push_back(character)
-	return characters
 
 func get_combat_stage(difficulty: int):
 	assert(difficulty < stages.size())
@@ -101,6 +98,10 @@ func change_state(new_state: RunState):
 		return
 	for node in stage_parent.get_children():
 		node.queue_free()
+	if state == RunState.WITHIN_STAGE:
+		if current_stage_def().stage_type == StageType.COMBAT:
+			for character in characters:
+				character.end_stage()
 	if new_state == RunState.WITHIN_STAGE:
 		var stage_def = current_stage_def()
 		rewards_type = stage_def.rewards_type()
@@ -112,19 +113,20 @@ func change_state(new_state: RunState):
 			stage_parent.add_child(stage_player)
 		elif stage_def.stage_type == StageType.BLACKSMITH:
 			var blacksmith = get_blacksmith_stage()
-			blacksmith.initialize(get_characters())
+			blacksmith.initialize(characters)
 			blacksmith.connect("stage_done", stage_finished)
 			stage_parent.add_child(blacksmith)
 	elif new_state == RunState.BETWEEN_STAGES:
 		# Possibly just push this into between_stages and
 		# handle it there. Or rename "between_stages" to "rewards_stage".
 		if rewards_type == RewardsType.NONE:
-			next_stage()
-			return
-		var between_stages = between_stages_scene.instantiate()
-		between_stages.initialize(get_characters())
-		stage_parent.add_child(between_stages)
-		between_stages.connect("between_stages_done", next_stage)
+			call_deferred("next_stage")
+		else:
+			var between_stages = between_stages_scene.instantiate()
+			between_stages.initialize(characters)
+			stage_parent.add_child(between_stages)
+			between_stages.connect("between_stages_done", next_stage)
+	state = new_state
 		
 func stage_finished():
 	if stage_number + 1 == run.size():
