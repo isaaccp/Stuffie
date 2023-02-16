@@ -40,8 +40,6 @@ func make_combat_stage(difficulty: int):
 	
 func make_blacksmith_stage():
 	return StageDef.new(StageType.BLACKSMITH)
-
-
 	
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
@@ -81,6 +79,13 @@ func _ready():
 func current_stage_def():
 	return run[stage_number]
 
+func get_characters():
+	var characters: Array[Character] = []
+	for character in party.get_children():
+		character.end_stage()
+		characters.push_back(character)
+	return characters
+
 func get_combat_stage(difficulty: int):
 	assert(difficulty < stages.size())
 	var options = stages[difficulty]
@@ -107,6 +112,7 @@ func change_state(new_state: RunState):
 			stage_parent.add_child(stage_player)
 		elif stage_def.stage_type == StageType.BLACKSMITH:
 			var blacksmith = get_blacksmith_stage()
+			blacksmith.initialize(get_characters())
 			blacksmith.connect("stage_done", stage_finished)
 			stage_parent.add_child(blacksmith)
 	elif new_state == RunState.BETWEEN_STAGES:
@@ -116,11 +122,7 @@ func change_state(new_state: RunState):
 			next_stage()
 			return
 		var between_stages = between_stages_scene.instantiate()
-		var characters: Array[Character] = []
-		for character in party.get_children():
-			character.end_stage()
-			characters.push_back(character)
-		between_stages.initialize(characters)
+		between_stages.initialize(get_characters())
 		stage_parent.add_child(between_stages)
 		between_stages.connect("between_stages_done", next_stage)
 		

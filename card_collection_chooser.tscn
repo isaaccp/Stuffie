@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7iir3mgvux8m"]
+
+[ext_resource type="Script" path="res://card_collection_chooser.gd" id="1_uel8a"]
+
+[node name="CardCollectionChooser" type="Control" node_paths=PackedStringArray("vbox")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_uel8a")
+vbox = NodePath("VBoxContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
