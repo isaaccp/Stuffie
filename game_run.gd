@@ -6,15 +6,15 @@ class RunState extends StateMachine.State:
 	pass
 	
 class WithinStage extends RunState:
-	var name = "WithinStage"
+	var name = "within_stage"
 
 class BetweenStages extends RunState:
-	var name = "BetweenStages"
+	var name = "between_stages"
 
 func class_check(state: RunState):
 	return (state is RunState)
 	
-var state = StateMachine.new(class_check)
+var state = StateMachine.new([WithinStage.new(), BetweenStages.new()], class_check)
 
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
@@ -83,8 +83,11 @@ var troll_heart = preload("res://resources/relics/troll_heart.tres")
 signal run_finished
 
 func _ready():
-	state.connect("state_entered", _on_state_entered)
-	state.connect("state_exited", _on_state_exited)
+	state.connect("within_stage_state_entered", _on_within_stage_entered)
+	state.connect("within_stage_state_exited", _on_within_stage_exited)
+	state.connect("between_stages_state_entered", _on_between_stages_entered)
+	state.connect("between_stages_state_exited", _on_between_stages_exited)
+
 	state.change_state(WithinStage.new())
 	for character in party.get_children():
 		character.relics.push_back(troll_heart)
@@ -104,39 +107,42 @@ func get_blacksmith_stage():
 	var stage = blacksmith_scene.instantiate() as BlacksmithStage
 	return stage
 
-func _on_state_entered(new_state: RunState):
-	if new_state is WithinStage:
-		var stage_def = current_stage_def()
-		rewards_type = stage_def.rewards_type()
-		if stage_def.stage_type == StageType.COMBAT:
-			var stage_player = stage_player_scene.instantiate()
-			var stage = get_combat_stage(stage_def.combat_difficulty)
-			stage_player.initialize(stage, party)
-			stage_player.connect("stage_done", stage_finished)
-			stage_parent.add_child(stage_player)
-		elif stage_def.stage_type == StageType.BLACKSMITH:
-			var blacksmith = get_blacksmith_stage()
-			blacksmith.initialize(characters)
-			blacksmith.connect("stage_done", stage_finished)
-			stage_parent.add_child(blacksmith)
-	elif new_state is BetweenStages:
-		# Possibly just push this into between_stages and
-		# handle it there. Or rename "between_stages" to "rewards_stage".
-		if rewards_type == RewardsType.NONE:
-			call_deferred("next_stage")
-		else:
-			var between_stages = between_stages_scene.instantiate()
-			between_stages.initialize(characters)
-			stage_parent.add_child(between_stages)
-			between_stages.connect("between_stages_done", next_stage)
-			
-func _on_state_exited(state: RunState):
+func _on_within_stage_entered():
+	var stage_def = current_stage_def()
+	rewards_type = stage_def.rewards_type()
+	if stage_def.stage_type == StageType.COMBAT:
+		var stage_player = stage_player_scene.instantiate()
+		var stage = get_combat_stage(stage_def.combat_difficulty)
+		stage_player.initialize(stage, party)
+		stage_player.connect("stage_done", stage_finished)
+		stage_parent.add_child(stage_player)
+	elif stage_def.stage_type == StageType.BLACKSMITH:
+		var blacksmith = get_blacksmith_stage()
+		blacksmith.initialize(characters)
+		blacksmith.connect("stage_done", stage_finished)
+		stage_parent.add_child(blacksmith)
+		
+func _on_between_stages_entered():
+	# Possibly just push this into between_stages and
+	# handle it there. Or rename "between_stages" to "rewards_stage".
+	if rewards_type == RewardsType.NONE:
+		call_deferred("next_stage")
+	else:
+		var between_stages = between_stages_scene.instantiate()
+		between_stages.initialize(characters)
+		stage_parent.add_child(between_stages)
+		between_stages.connect("between_stages_done", next_stage)
+
+func _on_within_stage_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
-	if state is WithinStage:
-		if current_stage_def().stage_type == StageType.COMBAT:
-			for character in characters:
-				character.end_stage()
+	if current_stage_def().stage_type == StageType.COMBAT:
+		for character in characters:
+			character.end_stage()
+			
+func _on_between_stages_exited():
+	for node in stage_parent.get_children():
+		node.queue_free()
 
 func stage_finished():
 	if stage_number + 1 == run.size():

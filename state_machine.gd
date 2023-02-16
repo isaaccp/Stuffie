@@ -6,12 +6,21 @@ class State:
 	pass
 	
 var state: State
+var states: Array[State]
 var class_check: Callable
-signal state_entered(state: State)
-signal state_exited(state: State)
 
-func _init(class_check: Callable):
+func enter_signal_name(s: State):
+	return ("%s_state_entered" % s.name)
+
+func exit_signal_name(s: State):
+	return ("%s_state_exited" % s.name)
+	
+func _init(states: Array[State], class_check: Callable):
+	self.states = states
 	self.class_check = class_check
+	for s in states:
+		add_user_signal(enter_signal_name(s))
+		add_user_signal(exit_signal_name(s))
 	state = null
 	
 func change_state(new_state: State):
@@ -19,6 +28,6 @@ func change_state(new_state: State):
 	if state != null:
 		if state.name == new_state.name:
 			return
-		state_exited.emit(state)
+		emit_signal(exit_signal_name(state))
 	state = new_state
-	state_entered.emit(new_state)
+	emit_signal(enter_signal_name(new_state))
