@@ -14,16 +14,16 @@ class BlacksmithState extends StateMachine.State:
 	pass
 	
 class ChoosingOption extends BlacksmithState:
-	var name = "ChoosingOption"
+	var name = "choosing_option"
 	
 class Removal extends BlacksmithState:
-	var name = "Removal"
+	var name = "removal"
 	
 class Upgrade extends BlacksmithState:
-	var name = "Upgrade"
+	var name = "upgrade"
 
 class Done extends BlacksmithState:
-	var name = "Done"
+	var name = "done"
 
 func class_check(state: BlacksmithState):
 	return (state is BlacksmithState)
