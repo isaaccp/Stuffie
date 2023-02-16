@@ -1,11 +1,20 @@
 extends Node
 
-enum RunState {
-	WITHIN_STAGE,
-	BETWEEN_STAGES,
-}
+class_name GameRun
 
-var state = null
+class RunState extends StateMachine.State:
+	pass
+	
+class WithinStage extends RunState:
+	var name = "WithinStage"
+
+class BetweenStages extends RunState:
+	var name = "BetweenStages"
+
+func class_check(state: RunState):
+	return (state is RunState)
+	
+var state = StateMachine.new(class_check)
 
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
@@ -74,7 +83,9 @@ var troll_heart = preload("res://resources/relics/troll_heart.tres")
 signal run_finished
 
 func _ready():
-	change_state(RunState.WITHIN_STAGE)
+	state.connect("state_entered", _on_state_entered)
+	state.connect("state_exited", _on_state_exited)
+	state.change_state(WithinStage.new())
 	for character in party.get_children():
 		character.relics.push_back(troll_heart)
 		characters.push_back(character)
@@ -92,17 +103,9 @@ func get_combat_stage(difficulty: int):
 func get_blacksmith_stage():
 	var stage = blacksmith_scene.instantiate() as BlacksmithStage
 	return stage
-	
-func change_state(new_state: RunState):
-	if state == new_state:
-		return
-	for node in stage_parent.get_children():
-		node.queue_free()
-	if state == RunState.WITHIN_STAGE:
-		if current_stage_def().stage_type == StageType.COMBAT:
-			for character in characters:
-				character.end_stage()
-	if new_state == RunState.WITHIN_STAGE:
+
+func _on_state_entered(new_state: RunState):
+	if new_state is WithinStage:
 		var stage_def = current_stage_def()
 		rewards_type = stage_def.rewards_type()
 		if stage_def.stage_type == StageType.COMBAT:
@@ -116,7 +119,7 @@ func change_state(new_state: RunState):
 			blacksmith.initialize(characters)
 			blacksmith.connect("stage_done", stage_finished)
 			stage_parent.add_child(blacksmith)
-	elif new_state == RunState.BETWEEN_STAGES:
+	elif new_state is BetweenStages:
 		# Possibly just push this into between_stages and
 		# handle it there. Or rename "between_stages" to "rewards_stage".
 		if rewards_type == RewardsType.NONE:
@@ -126,14 +129,21 @@ func change_state(new_state: RunState):
 			between_stages.initialize(characters)
 			stage_parent.add_child(between_stages)
 			between_stages.connect("between_stages_done", next_stage)
-	state = new_state
-		
+			
+func _on_state_exited(state: RunState):
+	for node in stage_parent.get_children():
+		node.queue_free()
+	if state is WithinStage:
+		if current_stage_def().stage_type == StageType.COMBAT:
+			for character in characters:
+				character.end_stage()
+
 func stage_finished():
 	if stage_number + 1 == run.size():
 		run_finished.emit()
 	else:
-		change_state(RunState.BETWEEN_STAGES)
+		state.change_state(BetweenStages.new())
 	
 func next_stage():
 	stage_number += 1
-	change_state(RunState.WITHIN_STAGE)
+	state.change_state(WithinStage.new())
