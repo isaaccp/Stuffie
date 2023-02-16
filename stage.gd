@@ -83,5 +83,5 @@ func new_turn_started_handler(turn: int):
 		return
 	if stage_completion_type != StageCompletionType.SURVIVE_N_TURNS:
 		return
-	if turn == survive_n_turns_target:
+	if turn == (survive_n_turns_target + 1):
 		complete_stage()
