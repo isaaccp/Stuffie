@@ -2,19 +2,9 @@ extends Node
 
 class_name GameRun
 
-class RunState extends StateMachine.State:
-	pass
-	
-class WithinStage extends RunState:
-	var name = "within_stage"
-
-class BetweenStages extends RunState:
-	var name = "between_stages"
-
-func class_check(state: RunState):
-	return (state is RunState)
-	
-var state = StateMachine.new([WithinStage.new(), BetweenStages.new()], class_check)
+var state = StateMachine.new()
+var WITHIN_STAGE = state.add("within_stage")
+var BETWEEN_STAGES = state.add("between_stages")
 
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
@@ -83,12 +73,8 @@ var troll_heart = preload("res://resources/relics/troll_heart.tres")
 signal run_finished
 
 func _ready():
-	state.connect("within_stage_state_entered", _on_within_stage_entered)
-	state.connect("within_stage_state_exited", _on_within_stage_exited)
-	state.connect("between_stages_state_entered", _on_between_stages_entered)
-	state.connect("between_stages_state_exited", _on_between_stages_exited)
-
-	state.change_state(WithinStage.new())
+	state.connect_signals(self)
+	state.change_state(WITHIN_STAGE)
 	for character in party.get_children():
 		character.relics.push_back(troll_heart)
 		characters.push_back(character)
@@ -148,8 +134,8 @@ func stage_finished():
 	if stage_number + 1 == run.size():
 		run_finished.emit()
 	else:
-		state.change_state(BetweenStages.new())
+		state.change_state(BETWEEN_STAGES)
 	
 func next_stage():
 	stage_number += 1
-	state.change_state(WithinStage.new())
+	state.change_state(WITHIN_STAGE)
