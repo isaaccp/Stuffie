@@ -113,7 +113,7 @@ layout_mode = 2
 transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, 0.40558, -0.579228, 20, 10, -5)
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
-transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 20, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 0.910684, 0.413104, 0, -0.413104, 0.910684, 3, 8, 21)
 
 [connection signal="pressed" from="UI/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UI/InfoPanel/VBox/UndoButton" to="." method="_on_undo_button_pressed"]
