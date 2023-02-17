@@ -20,7 +20,7 @@ func initialize(characters: Array[Character]):
 func _on_card_chosen(card_idx: int):
 	active_character.deck.cards.remove_at(card_idx)
 	done.emit()
-	
+
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		canceled.emit()	
+		canceled.emit()

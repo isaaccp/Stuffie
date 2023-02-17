@@ -79,11 +79,11 @@ func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
 	apply_effect(character, on_play_effect)
 	character.refresh()
-	
+
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
 	apply_effect(ally, on_play_effect)
-	
+
 func effective_damage(character: Character):
 	var new_damage = damage
 	if character.power > 0:

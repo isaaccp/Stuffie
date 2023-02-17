@@ -45,17 +45,17 @@ func _on_removal_entered():
 	removal.connect("canceled", _on_removal_canceled)
 	advanced_option_parent.add_child(removal)
 	advanced_option_parent.show()
-	
+
 func _on_choosing_option_exited():
 	main.hide()
 
 func _on_removal_exited():
 	advanced_option_parent.hide()
-	
+
 func initialize(characters: Array[Character]):
 	self.characters = characters
 	update_removals()
-	
+
 func _process(delta):
 	pass
 
@@ -74,7 +74,7 @@ func _on_removal_done():
 	available_removals -= 1
 	update_removals()
 	state.change_state(CHOOSING_OPTION)
-	
+
 func _on_removal_canceled():
 	state.change_state(CHOOSING_OPTION)
 

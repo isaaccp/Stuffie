@@ -11,12 +11,12 @@ func _init(map_manager: MapManager, camera3d: Camera3D, pos: Vector2i, dir: Vect
 	id_position = pos
 	direction = dir
 	card_target = card
-	
+
 func update(pos: Vector2i, dir: Vector2):
 	id_position = pos
 	direction = dir
 	refresh()
-	
+
 func _refresh_tiles():
 	var target_mode = card_target.target_mode
 	if target_mode == Card.TargetMode.SELF:

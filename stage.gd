@@ -53,7 +53,7 @@ func get_objective_string() -> String:
 		StageCompletionType.SURVIVE_N_TURNS: return "Survive %d turns" % survive_n_turns_target
 	assert(false)
 	return "Unknown objective"
-	
+
 func enemy_died_handler():
 	if stage_complete:
 		return
@@ -62,7 +62,7 @@ func enemy_died_handler():
 	killed_enemies += 1
 	if killed_enemies >= kill_n_enemies_target:
 		complete_stage()
-	
+
 func character_moved_handler(pos: Vector2i):
 	if stage_complete:
 		return
@@ -70,14 +70,14 @@ func character_moved_handler(pos: Vector2i):
 		return
 	if pos == reach_position_target:
 		complete_stage()
-	
+
 func all_enemies_died_handler():
 	if stage_complete:
 		return
 	if stage_completion_type != StageCompletionType.KILL_ALL_ENEMIES:
 		return
 	complete_stage()
-	
+
 func new_turn_started_handler(turn: int):
 	if stage_complete:
 		return

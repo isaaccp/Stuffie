@@ -5,17 +5,17 @@ class_name StateMachine
 class State:
 	var name: String
 	var id: int
-	
+
 	func _init(name: String, id: int):
 		self.name = name
 		self.id = id
-	
+
 	func enter_signal():
 		return "%s_entered" % name
-	
+
 	func exit_signal():
 		return "%s_existed" % name
-		
+
 	func enter_method():
 		return "_on_%s_entered" % name
 
@@ -38,7 +38,7 @@ func add(name: String):
 	add_user_signal(state.enter_signal())
 	add_user_signal(state.exit_signal())
 	return state
-	
+
 func change_state(new_state: State):
 	assert(new_state.id == id)
 	if state != null:

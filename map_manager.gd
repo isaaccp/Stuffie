@@ -11,7 +11,7 @@ var enemy_locs: Dictionary
 
 func initialize(map: GridMap):
 	cell_size = map.cell_size
-	
+
 	var block_items = Dictionary()
 	for item in [
 		["wall", [[-1, 0], [0, 0], [1, 0]]],
@@ -27,13 +27,13 @@ func initialize(map: GridMap):
 		var item_cells = item[1]
 		var item_id = map.mesh_library.find_item_by_name(item_name)
 		block_items[item_id] = item_cells
-		
+
 	# Base map.
 	var min_x = 10000000
 	var min_z = 10000000
 	var max_x = -10000000
 	var max_z = -10000000
-	
+
 	for cell in map.get_used_cells():
 		if cell.x < min_x:
 			min_x = cell.x
@@ -43,7 +43,7 @@ func initialize(map: GridMap):
 			max_x = cell.x
 		if cell.z > max_z:
 			max_z = cell.z
-		var item = map.get_cell_item(cell) 
+		var item = map.get_cell_item(cell)
 		if item in block_items:
 			var basis = map.get_cell_item_basis(cell)
 			var item_cells = block_items[item]
@@ -52,10 +52,10 @@ func initialize(map: GridMap):
 				var xform_cell = cell3 * basis
 				var map_tile = Vector2i(cell.x + xform_cell.x, cell.z + xform_cell.z)
 				base_solid_locations[map_tile] = true
-				
+
 	assert(min_x == 0)
 	assert(min_z == 0)
-	
+
 	map_rect = Rect2i(Vector2i(0, 0), Vector2(max_x, max_z))
 
 # Unused, but keeping just in case.
@@ -64,14 +64,14 @@ func _mesh_size_from_aabb(aabb: AABB) -> Vector2i:
 	mesh_size.x = int((aabb.size.x-0.1) / cell_size.x) + 1
 	mesh_size.y = int((aabb.size.z-0.1) / cell_size.z) + 1
 	return mesh_size
-	
+
 # Needs to be called after set_characters and set_enemies.
 # Think about something better once it's clear how we'll use it.
 func initialize_a_star():
 	a_star.clear()
 	a_star.size = map_rect.size
 	a_star.cell_size = Vector2(cell_size.x, cell_size.z)
-	a_star.diagonal_mode = a_star.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE 
+	a_star.diagonal_mode = a_star.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE
 	a_star.update()
 	for loc in base_solid_locations.keys():
 		a_star.set_point_solid(loc)
@@ -79,24 +79,24 @@ func initialize_a_star():
 		a_star.set_point_solid(loc)
 	for loc in enemy_locs.keys():
 		a_star.set_point_solid(loc)
-	
+
 func set_party(characters: Array):
 	character_locs.clear()
 	for c in characters:
 		character_locs[c.get_id_position()] = c
-	
+
 func set_enemies(enemies: Array):
 	enemy_locs.clear()
 	for e in enemies:
 		enemy_locs[e.get_id_position()] = e
-	
+
 func move_character(from: Vector2i, to: Vector2i):
 	var character = character_locs[from]
 	character_locs.erase(from)
 	character_locs[to] = character
 	a_star.set_point_solid(from, false)
 	a_star.set_point_solid(to)
-	
+
 func move_enemy(from: Vector2i, to: Vector2i):
 	var enemy = enemy_locs[from]
 	enemy_locs.erase(from)
@@ -111,7 +111,7 @@ func remove_enemy(from: Vector2i):
 func remove_character(from: Vector2i):
 	character_locs.erase(from)
 	a_star.set_point_solid(from, false)
-	
+
 func get_path(from: Vector2i, to: Vector2i):
 	if a_star.is_in_boundsv(to):
 		return a_star.get_id_path(from, to)
@@ -120,9 +120,9 @@ func get_path(from: Vector2i, to: Vector2i):
 func set_enemies_solid(solid=true):
 	for loc in enemy_locs.keys():
 		a_star.set_point_solid(loc, solid)
-	
+
 func get_enemy_path(from: Vector2i, to: Vector2i):
-	# TODO: This could cause issues if there are concurrent calls 
+	# TODO: This could cause issues if there are concurrent calls
 	# to get_enemy_path() or to get_path(), the main options are either
 	# adding a mutex or creating new copies of base map with/without enemies,
 	# etc.
@@ -130,7 +130,7 @@ func get_enemy_path(from: Vector2i, to: Vector2i):
 	var path = a_star.get_id_path(from, to)
 	set_enemies_solid(true)
 	return path
-	
+
 func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true):
 	if base_solid_locations.has(pos):
 		return true
@@ -139,14 +139,14 @@ func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true):
 	if enemies and enemy_locs.has(pos):
 		return true
 	return false
-	
+
 func distance(from: Vector2i, to: Vector2i) -> float:
 	var h_dist = abs(from[0] - to[0])
 	var v_dist = abs(from[1] - to[1])
 	var min_dist = min(h_dist, v_dist)
 	var max_dist = max(h_dist, v_dist)
 	return min_dist * 1.5 + (max_dist - min_dist)
-	
+
 func get_surrounding_cells(pos: Vector2i):
 	var neighbors = []
 	for i in [-1, 0, 1]:
@@ -157,7 +157,7 @@ func get_surrounding_cells(pos: Vector2i):
 
 func get_walkable_cells(from: Vector2i, move_points: int) -> Array:
 	return _flood_fill(from, move_points)
-	
+
 func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 	# This is a dictionary of reachable tiles with their current cost.
 	var reachable_cost: Dictionary

@@ -10,13 +10,13 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-	
+
 func set_portrait_texture(texture: Texture):
 	$Margin/VBox/Portrait.texture_normal = texture
 
 func get_portrait_button() -> TextureButton:
 	return $Margin/VBox/Portrait
-		
+
 func set_move_points(pending_move_cost: float, move_points: float, total_move_points: int):
 	var color
 	var move_left
@@ -29,7 +29,7 @@ func set_move_points(pending_move_cost: float, move_points: float, total_move_po
 
 	var bb_code = "MP: [color=%s]%0.1f[/color] / %d" % [color, move_left, total_move_points]
 	$Margin/VBox/MovePoints.parse_bbcode(bb_code)
-	
+
 func set_action_points(pending_action_cost: int, action_points: int, total_action_points: int):
 	var color
 	var actions_left
@@ -52,7 +52,7 @@ func set_hit_points(hit_points: int, total_hit_points: int):
 
 	var bb_code = "HP: [color=%s]%d[/color] / %d" % [color, hit_points, total_hit_points]
 	$Margin/VBox/HitPoints.parse_bbcode(bb_code)
-	
+
 func set_block(block: int):
 	if block == 0:
 		$Margin/VBox/Block.text = ""
@@ -64,6 +64,6 @@ func set_power(power: int):
 		$Margin/VBox/Power.text = ""
 	else:
 		$Margin/VBox/Power.text = "Power: %d⌚" % power
-		
+
 func set_active(active: bool):
 	$Margin/VBox/Portrait/ActiveMarker.visible = active

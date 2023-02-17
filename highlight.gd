@@ -17,12 +17,12 @@ func _init(map_manager: MapManager, camera3d: Camera3D):
 func set_width(w: float):
 	width = w
 	refresh()
-	
+
 func set_color(c: Color, should_refresh=true):
 	color = c
 	if should_refresh:
 		refresh()
-	
+
 func refresh():
 	if clear_on_refresh:
 		tiles.clear()
@@ -32,7 +32,7 @@ func refresh():
 func _refresh_tiles():
 	# Should never be called.
 	assert(false)
-	
+
 func _draw_tiles():
 	for tile in get_children():
 		tile.queue_free()
@@ -43,7 +43,7 @@ func _draw_tiles():
 func _add_unprojected_point(line: Line2D, world_pos: Vector3):
 	var unprojected = camera.unproject_position(world_pos)
 	line.add_point(unprojected)
-	
+
 func _draw_tile(pos: Vector2i) -> Line2D:
 	var line = Line2D.new()
 	line.default_color = color

@@ -16,17 +16,17 @@ enum StageType {
 
 enum RewardsType {
 	NONE,
-	REGULAR,	
+	REGULAR,
 }
 
 class StageDef:
 	var stage_type: StageType
 	var combat_difficulty: int
-	
+
 	func _init(stage_type: StageType):
 		super()
 		self.stage_type = stage_type
-	
+
 	func rewards_type():
 		if stage_type == StageType.COMBAT:
 			return RewardsType.REGULAR
@@ -36,10 +36,10 @@ func make_combat_stage(difficulty: int):
 	var stage_def = StageDef.new(StageType.COMBAT)
 	stage_def.combat_difficulty = difficulty
 	return stage_def
-	
+
 func make_blacksmith_stage():
 	return StageDef.new(StageType.BLACKSMITH)
-	
+
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
 	#[ preload("res://stages/diff0/stage0_simple.tscn")],
@@ -107,7 +107,7 @@ func _on_within_stage_entered():
 		blacksmith.initialize(characters)
 		blacksmith.connect("stage_done", stage_finished)
 		stage_parent.add_child(blacksmith)
-		
+
 func _on_between_stages_entered():
 	# Possibly just push this into between_stages and
 	# handle it there. Or rename "between_stages" to "rewards_stage".
@@ -125,7 +125,7 @@ func _on_within_stage_exited():
 	if current_stage_def().stage_type == StageType.COMBAT:
 		for character in characters:
 			character.end_stage()
-			
+
 func _on_between_stages_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
@@ -135,7 +135,7 @@ func stage_finished():
 		run_finished.emit()
 	else:
 		state.change_state(BETWEEN_STAGES)
-	
+
 func next_stage():
 	stage_number += 1
 	state.change_state(WITHIN_STAGE)

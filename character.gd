@@ -34,7 +34,7 @@ class CharacterSnapshot:
 		hit_points = character.hit_points
 		block = character.block
 		power = character.power
-	
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	is_ready = true
@@ -54,7 +54,7 @@ func begin_stage():
 func end_stage():
 	power = 0
 	apply_end_stage_relics()
-	
+
 func begin_turn():
 	var snapshot = CharacterSnapshot.new(self)
 	action_points = total_action_points
@@ -68,7 +68,7 @@ func begin_turn():
 func draw_cards():
 	deck.discard_hand()
 	deck.draw_cards(4)
-	
+
 func set_portrait(character_portrait: CharacterPortrait):
 	portrait = character_portrait
 	refresh()
@@ -82,18 +82,18 @@ func refresh():
 		portrait.set_block(block)
 		portrait.set_power(power)
 		health_bar.update_health(hit_points, total_hit_points)
-		
+
 func set_active(active: bool):
 	portrait.set_active(active)
 
 func set_pending_action_cost(pending_cost: int):
 	pending_action_cost = pending_cost
 	refresh()
-	
+
 func clear_pending_action_cost():
 	pending_action_cost = -1
 	refresh()
-	
+
 func reduce_move(move_cost: float):
 	move_points -= move_cost
 	refresh()
@@ -101,15 +101,15 @@ func reduce_move(move_cost: float):
 func set_pending_move_cost(pending_cost: float):
 	pending_move_cost = pending_cost
 	refresh()
-	
+
 func clear_pending_move_cost():
 	pending_move_cost = -1.0
 	refresh()
-	
+
 func heal(hp: int):
 	hit_points += hp
 	if hit_points > total_hit_points:
-		hit_points = total_hit_points 
+		hit_points = total_hit_points
 
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):

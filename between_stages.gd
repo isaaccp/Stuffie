@@ -3,7 +3,7 @@ extends Control
 @export var label: Label
 @export var card_container: HBoxContainer
 
-# For now not using StateMachine as this stage 
+# For now not using StateMachine as this stage
 # will go through more changes later.
 enum BetweenStagesState {
 	NEW_CHARACTER,
@@ -25,7 +25,7 @@ func _ready():
 
 func initialize(characters: Array[Character]):
 	self.characters = characters
-	
+
 func _process(delta):
 	if state == BetweenStagesState.NEW_CHARACTER:
 		if current_character == characters.size():

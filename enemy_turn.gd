@@ -10,7 +10,7 @@ func initialize(map: MapManager):
 
 func get_enemy_walkable_cells(enemy: Enemy) -> Array:
 	return map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
-	
+
 func calculate_moves():
 	enemy_moves.clear()
 	for enemy in map_manager.enemy_locs.values():
@@ -31,7 +31,7 @@ func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
 		ret.append([cloc, map_manager.distance(loc, cloc)])
 	ret.sort_custom(func(a, b): return a[1] < b[1])
 	return ret
-	
+
 func top_move_option(enemy: Enemy, move_options: Array):
 	# For now, let's just say the closer to a character the better.
 	var character_locs = map_manager.character_locs.keys()

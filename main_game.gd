@@ -15,12 +15,12 @@ func _ready():
 func clear_children():
 	for node in get_children():
 		node.queue_free()
-		
+
 func _on_main_menu_entered():
 	var main_menu = main_menu_scene.instantiate()
 	add_child(main_menu)
 	main_menu.connect("new_game_selected", start_run)
-	
+
 func _on_main_menu_exited():
 	clear_children()
 
@@ -31,9 +31,9 @@ func _on_within_run_entered():
 
 func _on_within_run_exited():
 	clear_children()
-	
+
 func start_run():
 	state.change_state(WITHIN_RUN)
-	
+
 func finish_run():
 	state.change_state(MAIN_MENU)

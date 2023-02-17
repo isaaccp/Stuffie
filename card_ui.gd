@@ -22,7 +22,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-	
+
 func initialize(card: Card, character: Character, callback: Callable):
 	self.card = card
 	self.character = character
@@ -58,7 +58,7 @@ func get_target_text() -> String:
 	elif card.target_mode == Card.TargetMode.ALLY:
 		target_text = "ally"
 	return target_text
-	
+
 func get_description_text() -> String:
 	var description = ""
 	var target_text = get_target_text()
@@ -90,10 +90,10 @@ func tooltip_text(keyword: String) -> String:
 		return keyword_tooltips[keyword]
 	else:
 		return "Unknown keyword, please file a bug"
-	
+
 func get_cost_text() -> String:
 	return "%d" % card.cost
-	
+
 func refresh():
 	$Margin/VBox/CardTop/Name.text = card.card_name
 	$Margin/VBox/CardTop/Cost.text = get_cost_text()
@@ -102,7 +102,7 @@ func refresh():
 
 func set_highlight(highlight: bool):
 	$Margin/VBox/Playing.visible = highlight
-	
+
 func _gui_input(event):
 		if event is InputEventMouseButton:
 			if event.button_index == 1 and event.pressed:

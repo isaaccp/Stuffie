@@ -82,7 +82,7 @@ signal stage_done
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	undo_button.hide()
-	
+
 func initialize(stage: Stage, character_party: Node):
 	party = character_party
 	var i = 0
@@ -161,10 +161,10 @@ func draw_hand():
 		new_card.tooltip_text = "%d cards on discard pile" % active_character.deck.discard.size()
 	# Set deck tooltip.
 	deck_ui.tooltip_text = "%d cards on deck" % active_character.deck.stage_deck_size()
-	
+
 func set_active_character(index: int):
 	var i = 0
-		
+
 	for character in party.get_children():
 		if i == index:
 			active_character = party.get_child(i)
@@ -174,19 +174,19 @@ func set_active_character(index: int):
 			character.set_active(false)
 			character.clear_pending_move_cost()
 		i += 1
-	
+
 func _on_card_pressed(index: int):
 	if state != GameState.HUMAN_TURN:
 		return
 	if human_turn_state not in [HumanTurnState.WAITING, HumanTurnState.ACTION_TARGET]:
 		return
-	
+
 	if current_card_index != -1:
 		hand_ui.get_child(current_card_index).set_highlight(false)
 		target_area.queue_free()
 		target_cursor.queue_free()
 		active_character.clear_pending_action_cost()
-	
+
 	var card = active_character.deck.hand[index]
 	if card.cost <= active_character.action_points:
 		hand_ui.get_child(index).set_highlight(true)
@@ -198,7 +198,7 @@ func _on_card_pressed(index: int):
 	else:
 		# Not enough action points to play card, throw back to WAITING state.
 		change_human_turn_state(HumanTurnState.WAITING)
-	
+
 func create_cursor(pos: Vector2i, direction: Vector2):
 	var cursor_pos = pos
 	if current_card.target_mode == Card.TargetMode.SELF:
@@ -211,7 +211,7 @@ func create_cursor(pos: Vector2i, direction: Vector2):
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
 	var unprojected = camera.unproject_position(world_pos)
 	line.add_point(unprojected)
-	
+
 func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D:
 	var line = Line2D.new()
 	line.default_color = color
@@ -245,7 +245,7 @@ func offsets_within_distance(distance: int) -> Array[Vector2i]:
 			j += 1
 		i += 1
 	return tiles
-	
+
 func tiles_within_distance(pos: Vector2i, distance: int) -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
 	var i = pos.x - distance
@@ -273,7 +273,7 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 			if not move_positions.has(tile) and map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false):
 				attack_positions.push_back(tile)
 	return attack_positions
-	
+
 func update_move_area(move_positions: Array, attack_positions: Array):
 	if is_instance_valid(enemy_move_area):
 		enemy_move_area.queue_free()
@@ -287,7 +287,7 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 	enemy_attack_area.refresh()
 	$World.add_child(enemy_move_area)
 	$World.add_child(enemy_attack_area)
-	
+
 func path_cost(path: PackedVector2Array) -> float:
 	var cost = 0.0
 	for i in path.size()-1:
@@ -346,7 +346,7 @@ func draw_attack(enemy: Enemy, target: Character):
 		diff.y = 0
 		var new_distance = diff.length()
 		if prev_distance != -1 and prev_distance < new_distance:
-			break 
+			break
 		prev_distance = new_distance
 		enemy.weapon.global_position -= (direction * 0.5)
 		await get_tree().create_timer(0.02).timeout
@@ -475,7 +475,7 @@ func change_human_turn_state(new_state):
 	elif new_state == HumanTurnState.MOVING:
 		pass
 	human_turn_state = new_state
-	
+
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
 
@@ -485,7 +485,7 @@ func curve_from_path(path: PackedVector2Array) -> Curve3D:
 		var world_pos = map_manager.get_world_position(pos)
 		curve.add_point(world_pos)
 	return curve
-	
+
 func handle_move(mouse_pos: Vector2):
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
@@ -500,14 +500,14 @@ func handle_move(mouse_pos: Vector2):
 	for point in curve.get_baked_points():
 		active_character.look_at(point)
 		active_character.position = point
-		await get_tree().create_timer(0.01).timeout	
+		await get_tree().create_timer(0.01).timeout
 	active_character.reduce_move(path_cost(current_path))
 	map_manager.move_character(active_character.get_id_position(), final_pos)
 	active_character.set_id_position(final_pos)
 	character_moved.emit(final_pos)
 	undo_button.show()
 	change_human_turn_state(HumanTurnState.WAITING)
-	
+
 func _input(event):
 	if Input.is_action_pressed("ui_cancel"):
 		if state == GameState.HUMAN_TURN:
@@ -523,7 +523,7 @@ func _input(event):
 		show_enemy_moves()
 	elif Input.is_action_just_released("ui_showenemymove"):
 		clear_enemy_info()
-		
+
 func show_enemy_moves():
 	var final_walkable_cells = Dictionary()
 	var final_attackable_cells = Dictionary()
@@ -554,7 +554,7 @@ func clear_enemy_info():
 		enemy_move_area.queue_free()
 	if is_instance_valid(enemy_attack_area):
 		enemy_attack_area.queue_free()
-		
+
 func handle_enemy_death(enemy: Enemy):
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
@@ -562,7 +562,7 @@ func handle_enemy_death(enemy: Enemy):
 	enemy_died.emit()
 	if map_manager.enemy_locs.is_empty():
 		all_enemies_died.emit()
-	
+
 func handle_character_death(character: Character):
 	var pos = character.get_id_position()
 	map_manager.remove_character(pos)
@@ -573,7 +573,7 @@ func handle_character_death(character: Character):
 		set_active_character(0)
 	else:
 		print_debug("Game over!")
-	
+
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		current_card.apply_self(active_character)
@@ -603,7 +603,7 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 		valid_target = true
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
 		target_cursor.update(new_tile_map_pos, new_direction)
-		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
+		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
 		if distance > current_card.target_distance:
 			valid_target = false
 			target_cursor.set_color(Color(0, 0, 0, 1))
@@ -615,7 +615,7 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 				target_cursor.set_color(Color(1, 1, 1, 1))
 	elif current_card.target_mode == Card.TargetMode.AREA:
 		target_cursor.update(new_tile_map_pos, new_direction)
-		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos) 
+		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
 		if distance > current_card.target_distance:
 			valid_target = false
 			target_cursor.set_color(Color(0, 0, 0, 1))
@@ -648,14 +648,14 @@ func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
 	var t = - (n.dot(p) + d) / n.dot(v)
 	var position = p + t * v
 	return position
-	
+
 func plane_pos_to_tile_pos(plane_pos: Vector3) -> Vector2i:
 	return Vector2i(floor(plane_pos.x / tile_size), floor(plane_pos.z / tile_size))
 
 func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	var tile_changed = tile_map_pos != new_tile_map_pos
 	var direction_changed = direction != new_direction
-	
+
 	# Ideally instead of this long method we can make all those
 	# cursors, etc different objects, and have tile_changed,
 	# direction_changed, camera_changed signals and have them

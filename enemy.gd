@@ -40,7 +40,7 @@ func initialize(pos: Vector2i):
 	hit_points = total_hit_points
 	set_id_position(pos)
 	end_turn()
-	
+
 func end_turn():
 	action_points = total_action_points
 	move_points = total_move_points
