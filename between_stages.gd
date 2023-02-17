@@ -3,10 +3,11 @@ extends Control
 @export var label: Label
 @export var card_container: HBoxContainer
 
+# For now not using StateMachine as this stage 
+# will go through more changes later.
 enum BetweenStagesState {
 	NEW_CHARACTER,
 	CHOOSING,
-	DONE,
 }
 
 const num_cards_selection = 3
@@ -29,7 +30,6 @@ func _process(delta):
 	if state == BetweenStagesState.NEW_CHARACTER:
 		if current_character == characters.size():
 			between_stages_done.emit()
-			state = BetweenStagesState.DONE
 			return
 		var character = characters[current_character]
 		current_cards = character.extra_cards.choose(num_cards_selection)
