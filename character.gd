@@ -5,6 +5,7 @@ class_name Character
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
+@export var initial_relic: Relic
 var action_points: int
 var move_points: float
 var hit_points: int
@@ -21,7 +22,7 @@ var is_ready = false
 @export var deck: Deck
 @export var extra_cards: CardSelectionSet
 
-class CharacterSnapshot:
+class Snapshot:
 	var action_points: int
 	var move_points: int
 	var hit_points: int
@@ -35,14 +36,24 @@ class CharacterSnapshot:
 		block = character.block
 		power = character.power
 
+var snapshot: Snapshot
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	is_ready = true
 	hit_points = total_hit_points
+	snap()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
+
+func snap():
+	snapshot = Snapshot.new(self)
+
+func apply_end_turn_relics():
+	for relic in relics:
+		relic.apply_end_turn(self)
 
 func apply_end_stage_relics():
 	for relic in relics:
@@ -56,7 +67,7 @@ func end_stage():
 	apply_end_stage_relics()
 
 func begin_turn():
-	var snapshot = CharacterSnapshot.new(self)
+	snap()
 	action_points = total_action_points
 	move_points = total_move_points
 	block = 0
@@ -64,6 +75,10 @@ func begin_turn():
 		power -= 1
 	draw_cards()
 	refresh()
+
+func end_turn():
+	snap()
+	apply_end_turn_relics()
 
 func draw_cards():
 	deck.discard_hand()
@@ -110,6 +125,9 @@ func heal(hp: int):
 	hit_points += hp
 	if hit_points > total_hit_points:
 		hit_points = total_hit_points
+
+func add_block(block_amount: int):
+	block += block_amount
 
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):

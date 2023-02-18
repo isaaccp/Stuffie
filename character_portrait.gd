@@ -2,20 +2,28 @@ extends PanelContainer
 
 class_name CharacterPortrait
 
+@export var portrait: TextureButton
+@export var relics_container: Container
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
 func set_portrait_texture(texture: Texture):
-	$Margin/VBox/Portrait.texture_normal = texture
+	portrait.texture_normal = texture
 
-func get_portrait_button() -> TextureButton:
-	return $Margin/VBox/Portrait
+func set_relics(relics: Array[Relic]):
+	print_debug(relics)
+	for relic in relics:
+		var label = Label.new()
+		label.text = relic.name
+		label.tooltip_text = relic.tooltip
+		label.mouse_filter = Control.MOUSE_FILTER_PASS
+		relics_container.add_child(label)
 
 func set_move_points(pending_move_cost: float, move_points: float, total_move_points: int):
 	var color

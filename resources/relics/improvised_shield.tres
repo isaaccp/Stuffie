@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EndTurnAutoBlockRelic" load_steps=2 format=3 uid="uid://dd7kwfoe71gj8"]
+
+[ext_resource type="Script" path="res://relic/end_turn_auto_block.gd" id="1_cypnu"]
+
+[resource]
+script = ExtResource("1_cypnu")
+block_amount = 6
+name = "Improvised Shield"
+tooltip = "If you end your turn with no block, gain 6 block"

@@ -3,13 +3,15 @@
 [ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
 [ext_resource type="Texture2D" uid="uid://dcl7kkxhyedtp" path="res://icon.svg" id="2_s8pq6"]
 
-[node name="CharacterPortrait" type="PanelContainer"]
+[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "relics_container")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qmac0")
+portrait = NodePath("Margin/VBox/Portrait")
+relics_container = NodePath("Margin/VBox/Relics")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -51,10 +53,13 @@ fit_content = true
 layout_mode = 2
 tooltip_text = "If character has block, block is reduced before HP when receiving damage.
 Block is removed at beginning of next turn."
-mouse_filter = 0
+mouse_filter = 1
 
 [node name="Power" type="Label" parent="Margin/VBox"]
 layout_mode = 2
 tooltip_text = "If character has any power, damage +50%.
 Remove 1 power per turn."
-mouse_filter = 0
+mouse_filter = 1
+
+[node name="Relics" type="VBoxContainer" parent="Margin/VBox"]
+layout_mode = 2

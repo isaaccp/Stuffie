@@ -74,17 +74,18 @@ var characters: Array[Character]
 # Whether the last stage requires rewards.
 var rewards_type = RewardsType.NONE
 
-var troll_heart = preload("res://resources/relics/troll_heart.tres")
+var relic_list = preload("res://resources/relic_list.tres")
 
 signal run_finished
 
 func _ready():
 	state.connect_signals(self)
-	state.change_state(WITHIN_STAGE)
 	for character in party.get_children():
-		character.relics.push_back(troll_heart)
+		var initial_relic = character.initial_relic
+		relic_list.mark_used(initial_relic.name)
+		character.relics.push_back(initial_relic)
 		characters.push_back(character)
-	return characters
+	state.change_state(WITHIN_STAGE)
 
 func current_stage_def():
 	return run[stage_number]
@@ -111,7 +112,7 @@ func _on_within_stage_entered():
 		stage_parent.add_child(stage_player)
 	elif stage_def.stage_type == StageType.BLACKSMITH:
 		var blacksmith = get_blacksmith_stage()
-		blacksmith.initialize(characters, shared_bag)
+		blacksmith.initialize(characters, shared_bag, relic_list)
 		blacksmith.stage_done.connect(stage_finished)
 		stage_parent.add_child(blacksmith)
 

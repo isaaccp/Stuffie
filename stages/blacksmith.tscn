@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://blacksmith.gd" id="1_2sanr"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_nj5pa"]
 
-[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "done_button", "advanced_option_parent", "shared_bag_gold_ui")]
+[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "relic_container", "done_button", "advanced_option_parent", "shared_bag_gold_ui")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,6 +14,7 @@ script = ExtResource("1_2sanr")
 main = NodePath("MainScreen")
 removal_panel = NodePath("MainScreen/HBoxContainer/Removal")
 removal_panel_label = NodePath("MainScreen/HBoxContainer/Removal/Label")
+relic_container = NodePath("MainScreen/HBoxContainer/Relics/HBoxContainer")
 done_button = NodePath("MainScreen/HBoxContainer/Done")
 advanced_option_parent = NodePath("AdvancedOptionParent")
 shared_bag_gold_ui = NodePath("MainScreen/SharedBagGoldUI")
@@ -31,6 +32,7 @@ layout_mode = 1
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
+offset_bottom = 23.0
 grow_horizontal = 1
 grow_vertical = 1
 
@@ -47,6 +49,16 @@ offset_right = 77.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Relics" type="VBoxContainer" parent="MainScreen/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainScreen/HBoxContainer/Relics"]
+layout_mode = 2
+text = "Relics"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainScreen/HBoxContainer/Relics"]
+layout_mode = 2
 
 [node name="Removal" type="PanelContainer" parent="MainScreen/HBoxContainer"]
 layout_mode = 2

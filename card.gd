@@ -59,7 +59,7 @@ func apply_effect(character: Character, effect: CardEffect):
 	if effect.move_points > 0:
 		character.move_points += effect.move_points
 	if effect.block > 0:
-		character.block += effect.block
+		character.add_block(effect.block)
 	if effect.power > 0:
 		character.power += effect.power
 	if effect.action_points > 0:

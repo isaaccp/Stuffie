@@ -5,5 +5,8 @@ class_name Relic
 @export var name: String
 @export var tooltip: String
 
+func apply_end_turn(character: Character):
+	pass
+
 func apply_end_stage(character: Character):
 	pass

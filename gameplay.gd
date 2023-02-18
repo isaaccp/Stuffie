@@ -93,13 +93,15 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
 	party = character_party
 	var i = 0
 	for character in party.get_children():
+		# TODO: Pass character to portrait and handle everything inside through signals.
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
 		# Add portraits in UI.
 		character_state_ui.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
 		character.set_portrait(character_portrait)
+		character_portrait.set_relics(character.relics)
 		# Hook character selection.
-		character_portrait.get_portrait_button().pressed.connect(_on_character_portrait_pressed.bind(i))
+		character_portrait.portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
 	initialize_stage(stage)
 
@@ -467,6 +469,8 @@ func change_state(new_state):
 		human_turn_state = HumanTurnState.WAITING
 		new_turn_started.emit(turn_number)
 	elif state == GameState.CPU_TURN:
+		for character in party.get_children():
+			character.end_turn()
 		enemy_turn_calculated = false
 		enemy_turn_thread.start(_async_enemy_turn)
 	$UI/InfoPanel/VBox/TurnState.text = "%s: %d" % [state_text[state], turn_number]

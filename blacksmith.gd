@@ -5,6 +5,7 @@ class_name BlacksmithStage
 @export var main: Control
 @export var removal_panel: PanelContainer
 @export var removal_panel_label: Label
+@export var relic_container: Container
 @export var done_button: Button
 # When choosing an option that requires UI change, we'll hide "main" and
 # attach sub-screen under advanced_option_parent.
@@ -21,10 +22,13 @@ var REMOVAL = state.add("removal")
 # an upgrade. For now, doing removal only.
 
 var removal_cost = 10
+var relic_cost = 20
 var available_removals = 1
+var relics_to_show = 1
 
 var characters: Array[Character]
 var shared_bag: SharedBag
+var relic_list: RelicList
 var current_cards: Array[Card]
 var card_ui_scene = preload("res://card_ui.tscn")
 var removal_scene = preload("res://card_removal.tscn")
@@ -35,6 +39,27 @@ func _ready():
 	state.connect_signals(self)
 	state.change_state(CHOOSING_OPTION)
 	advanced_option_parent.hide()
+
+func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list: RelicList):
+	self.characters = characters
+	self.shared_bag = shared_bag
+	self.relic_list = relic_list
+	shared_bag_gold_ui.set_shared_bag(shared_bag)
+	update_removals()
+	prepare_relics()
+
+func prepare_relics():
+	var relics = relic_list.choose(relics_to_show)
+	for relic in relics:
+		add_relic(relic)
+
+func add_relic(relic):
+	var button = Button.new()
+	button.text = "%s %d🪙" % [relic.name, relic_cost]
+	button.tooltip_text = relic.tooltip
+	button.pressed.connect(_on_relic_selected.bind(relic, button))
+
+	relic_container.add_child(button)
 
 func _on_choosing_option_entered():
 	main.show()
@@ -53,12 +78,6 @@ func _on_choosing_option_exited():
 func _on_removal_exited():
 	advanced_option_parent.hide()
 
-func initialize(characters: Array[Character], shared_bag: SharedBag):
-	self.characters = characters
-	self.shared_bag = shared_bag
-	shared_bag_gold_ui.set_shared_bag(shared_bag)
-	update_removals()
-
 func _process(delta):
 	pass
 
@@ -66,6 +85,10 @@ func _on_removal_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == 1 and event.pressed == true:
 			state.change_state(REMOVAL)
+
+func refresh():
+	update_removals()
+	update_relics()
 
 func update_removals():
 	removal_panel_label.text = "Remove card (%d🪙) (%d left)" % [removal_cost, available_removals]
@@ -76,14 +99,27 @@ func update_removals():
 		removal_panel.modulate = Color(1, 1, 1, 1)
 		removal_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
+func update_relics():
+	for relic_button in relic_container.get_children():
+		if shared_bag.gold < relic_cost:
+			relic_button.disable()
+
 func _on_removal_done():
 	available_removals -= 1
 	shared_bag.spend_gold(removal_cost)
-	update_removals()
+	refresh()
 	state.change_state(CHOOSING_OPTION)
 
 func _on_removal_canceled():
 	state.change_state(CHOOSING_OPTION)
+
+func _on_relic_selected(relic: Relic, button: Button):
+	button.disable()
+	shared_bag.spend_gold(relic_cost)
+	relic_list.mark_used(relic.name)
+	# TODO: Allow to select which character gets the relic.
+	characters[0].relics.push_back(relic)
+	refresh()
 
 func _on_done_pressed():
 	stage_done.emit()
