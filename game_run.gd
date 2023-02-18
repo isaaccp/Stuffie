@@ -42,7 +42,7 @@ func make_blacksmith_stage():
 
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
-	#[ preload("res://stages/diff0/stage0_simple.tscn")],
+	# [ preload("res://stages/diff0/stage0_simple.tscn")],
 	[
 		preload("res://stages/diff0/stage0.tscn"),
 	],
@@ -65,6 +65,8 @@ var run = [
 ]
 
 var stage_number = 0
+@export var shared_bag: SharedBag
+
 var characters: Array[Character]
 
 @export var party: Node
@@ -103,13 +105,13 @@ func _on_within_stage_entered():
 	if stage_def.stage_type == StageType.COMBAT:
 		var stage_player = stage_player_scene.instantiate()
 		var stage = get_combat_stage(stage_def.combat_difficulty)
-		stage_player.initialize(stage, party)
+		stage_player.initialize(stage, party, shared_bag)
 		stage_player.stage_done.connect(stage_finished)
 		stage_player.game_over.connect(game_over)
 		stage_parent.add_child(stage_player)
 	elif stage_def.stage_type == StageType.BLACKSMITH:
 		var blacksmith = get_blacksmith_stage()
-		blacksmith.initialize(characters)
+		blacksmith.initialize(characters, shared_bag)
 		blacksmith.stage_done.connect(stage_finished)
 		stage_parent.add_child(blacksmith)
 
@@ -139,6 +141,7 @@ func stage_finished():
 	if stage_number + 1 == run.size():
 		run_finished.emit()
 	else:
+		shared_bag.add_gold(10)
 		state.change_state(BETWEEN_STAGES)
 
 func next_stage():

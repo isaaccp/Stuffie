@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://d4dta4t8dn1ew"]
+[gd_scene load_steps=3 format=3 uid="uid://d4dta4t8dn1ew"]
 
 [ext_resource type="Script" path="res://blacksmith.gd" id="1_2sanr"]
+[ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_nj5pa"]
 
-[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "done_button", "advanced_option_parent")]
+[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "done_button", "advanced_option_parent", "shared_bag_gold_ui")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,25 +16,37 @@ removal_panel = NodePath("MainScreen/HBoxContainer/Removal")
 removal_panel_label = NodePath("MainScreen/HBoxContainer/Removal/Label")
 done_button = NodePath("MainScreen/HBoxContainer/Done")
 advanced_option_parent = NodePath("AdvancedOptionParent")
+shared_bag_gold_ui = NodePath("MainScreen/SharedBagGoldUI")
 
 [node name="MainScreen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SharedBagGoldUI" parent="MainScreen" instance=ExtResource("2_nj5pa")]
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainScreen"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
+offset_left = -77.0
 offset_top = -20.0
-offset_right = 20.0
+offset_right = 77.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainScreen"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Removal" type="PanelContainer" parent="MainScreen/HBoxContainer"]
 layout_mode = 2

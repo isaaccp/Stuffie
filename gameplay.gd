@@ -64,6 +64,7 @@ var enemy_turn = EnemyTurn.new()
 @export var camera: Camera3D
 @export var camera_pivot: Node3D
 @export var undo_button: Button
+@export var shared_bag_gold_ui: SharedBagGoldUI
 
 class UndoState:
 	var position
@@ -71,6 +72,8 @@ class UndoState:
 
 var undo_states: Dictionary
 var party: Node
+
+var shared_bag: SharedBag
 
 signal enemy_died
 signal character_moved(pos: Vector2i)
@@ -84,7 +87,9 @@ signal game_over
 func _ready():
 	undo_button.hide()
 
-func initialize(stage: Stage, character_party: Node):
+func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
+	self.shared_bag = shared_bag
+	shared_bag_gold_ui.set_shared_bag(shared_bag)
 	party = character_party
 	var i = 0
 	for character in party.get_children():
