@@ -11,7 +11,7 @@
 script = ExtResource("1_rghne")
 total_action_points = 3
 total_move_points = 6
-total_hit_points = 30
+total_hit_points = 50
 health_bar = NodePath("HealthDisplay3D")
 deck = ExtResource("2_d5bu5")
 extra_cards = ExtResource("3_t8tph")
