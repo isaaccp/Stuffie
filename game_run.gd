@@ -50,14 +50,18 @@ var stages = [
 		preload("res://stages/diff1/stage0.tscn"),
 		preload("res://stages/diff1/stage1.tscn"),
 	],
+	[
+		preload("res://stages/diff2/stage0.tscn")
+	],
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 
 var run = [
 	make_combat_stage(0),
-	make_blacksmith_stage(),
 	make_combat_stage(1),
+	make_blacksmith_stage(),
+	make_combat_stage(2),
 ]
 
 var stage_number = 0
@@ -100,12 +104,13 @@ func _on_within_stage_entered():
 		var stage_player = stage_player_scene.instantiate()
 		var stage = get_combat_stage(stage_def.combat_difficulty)
 		stage_player.initialize(stage, party)
-		stage_player.connect("stage_done", stage_finished)
+		stage_player.stage_done.connect(stage_finished)
+		stage_player.game_over.connect(game_over)
 		stage_parent.add_child(stage_player)
 	elif stage_def.stage_type == StageType.BLACKSMITH:
 		var blacksmith = get_blacksmith_stage()
 		blacksmith.initialize(characters)
-		blacksmith.connect("stage_done", stage_finished)
+		blacksmith.stage_done.connect(stage_finished)
 		stage_parent.add_child(blacksmith)
 
 func _on_between_stages_entered():
@@ -117,7 +122,7 @@ func _on_between_stages_entered():
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters)
 		stage_parent.add_child(between_stages)
-		between_stages.connect("between_stages_done", next_stage)
+		between_stages.between_stages_done.connect(next_stage)
 
 func _on_within_stage_exited():
 	for node in stage_parent.get_children():
@@ -139,3 +144,6 @@ func stage_finished():
 func next_stage():
 	stage_number += 1
 	state.change_state(WITHIN_STAGE)
+
+func game_over():
+	run_finished.emit()

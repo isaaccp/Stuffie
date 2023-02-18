@@ -22,6 +22,7 @@ func initialize(map: GridMap):
 		# TODO: This should be like "wallCorner", but something's off.
 		# This is good enough for current map.
 		["wall_gateCorner", [[0, 0]]],
+		["pillar", [[0 ,0]]],
 	]:
 		var item_name = item[0]
 		var item_cells = item[1]

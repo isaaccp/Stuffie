@@ -78,6 +78,7 @@ signal all_enemies_died
 signal new_turn_started(turn: int)
 
 signal stage_done
+signal game_over
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -417,6 +418,8 @@ func _process(delta):
 				# We found a target within range, attack and destroy character if it died.
 				if target_character.apply_attack(enemy):
 					handle_character_death(target_character)
+					if party.get_child_count() == 0:
+						return
 			enemy_moving = false
 			change_state(GameState.HUMAN_TURN)
 
@@ -568,11 +571,12 @@ func handle_character_death(character: Character):
 	map_manager.remove_character(pos)
 	# Handle this in a fancier way, update portrait to show
 	# character is dead, but don't remove from screen, etc.
+	party.remove_child(character)
 	character.queue_free()
 	if not party.get_children().is_empty():
 		set_active_character(0)
 	else:
-		print_debug("Game over!")
+		game_over.emit()
 
 func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
