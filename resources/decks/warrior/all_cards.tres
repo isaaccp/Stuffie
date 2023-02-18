@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=9 format=3 uid="uid://cqmvranirdbgc"]
+
+[ext_resource type="Resource" uid="uid://brsdh2a7rnmdu" path="res://resources/cards/warrior/cleave.tres" id="1_eow2o"]
+[ext_resource type="Resource" uid="uid://0n0j1moqf5bb" path="res://resources/cards/warrior/lunge.tres" id="2_g5yq6"]
+[ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/rage.tres" id="3_l73h4"]
+[ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="4_r24gw"]
+[ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/shout.tres" id="5_2itl1"]
+[ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="6_d5lnn"]
+[ext_resource type="Resource" uid="uid://b2cfup10xv7f" path="res://resources/cards/warrior/sweeping_slash.tres" id="7_8nuoi"]
+[ext_resource type="Script" path="res://card_selection_set.gd" id="8_36x2d"]
+
+[resource]
+script = ExtResource("8_36x2d")
+cards = Array[Resource("res://card.gd")]([ExtResource("1_eow2o"), ExtResource("2_g5yq6"), ExtResource("3_l73h4"), ExtResource("4_r24gw"), ExtResource("5_2itl1"), ExtResource("6_d5lnn"), ExtResource("7_8nuoi")])

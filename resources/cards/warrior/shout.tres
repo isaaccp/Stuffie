@@ -17,6 +17,8 @@ vulnerability = 0
 [resource]
 script = ExtResource("2_chxt4")
 card_name = "Shout"
+basic = false
+upgrade_level = 0
 cost = 1
 texture = ExtResource("3_t4hqr")
 target_mode = 4

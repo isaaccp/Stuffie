@@ -17,6 +17,8 @@ vulnerability = 0
 [resource]
 script = ExtResource("1_ucibj")
 card_name = "Slash"
+basic = true
+upgrade_level = 0
 cost = 1
 texture = ExtResource("2_ssfuh")
 target_mode = 3

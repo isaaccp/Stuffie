@@ -20,6 +20,8 @@ enum AreaType {
 }
 
 @export var card_name: String
+@export var basic = false
+@export var upgrade_level = 0
 @export var cost: int
 @export var texture: Texture2D
 @export var target_mode: TargetMode

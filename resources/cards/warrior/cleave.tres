@@ -17,6 +17,8 @@ vulnerability = 0
 [resource]
 script = ExtResource("2_ekyjs")
 card_name = "Cleave"
+basic = false
+upgrade_level = 0
 cost = 1
 texture = ExtResource("3_qrakg")
 target_mode = 3

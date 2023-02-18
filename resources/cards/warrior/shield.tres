@@ -17,6 +17,8 @@ vulnerability = 0
 [resource]
 script = ExtResource("1_ycjuw")
 card_name = "Shield"
+basic = true
+upgrade_level = 0
 cost = 1
 texture = ExtResource("2_4r8hr")
 target_mode = 0

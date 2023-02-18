@@ -17,6 +17,8 @@ vulnerability = 0
 [resource]
 script = ExtResource("1_6540g")
 card_name = "Rage"
+basic = false
+upgrade_level = 0
 cost = 1
 texture = ExtResource("2_ny6qk")
 target_mode = 0
