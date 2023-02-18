@@ -85,6 +85,9 @@ func apply_ally(character: Character, ally: Character):
 	apply_effect(ally, on_play_effect)
 
 func effective_damage(character: Character):
+	# Cards with natural 0 damage are not intended to be attacks.
+	if damage == 0:
+		return 0
 	var new_damage = damage
 	new_damage = character.apply_relic_damage_change(new_damage)
 	if character.power > 0:

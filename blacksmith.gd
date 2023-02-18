@@ -24,7 +24,7 @@ var REMOVAL = state.add("removal")
 var removal_cost = 10
 var relic_cost = 20
 var available_removals = 1
-var relics_to_show = 1
+var relics_to_show = 2
 
 var characters: Array[Character]
 var shared_bag: SharedBag
