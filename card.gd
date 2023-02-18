@@ -86,6 +86,7 @@ func apply_ally(character: Character, ally: Character):
 
 func effective_damage(character: Character):
 	var new_damage = damage
+	new_damage = character.apply_relic_damage_change(new_damage)
 	if character.power > 0:
 		new_damage *= 1.5
 	return int(new_damage)

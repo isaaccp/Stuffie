@@ -10,3 +10,6 @@ func apply_end_turn(character: Character):
 
 func apply_end_stage(character: Character):
 	pass
+
+func apply_damage_change(damage: int, character: Character):
+	return damage

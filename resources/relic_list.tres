@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="RelicList" load_steps=4 format=3 uid="uid://cf6gcbe3r1fh0"]
+[gd_resource type="Resource" script_class="RelicList" load_steps=5 format=3 uid="uid://cf6gcbe3r1fh0"]
 
 [ext_resource type="Resource" uid="uid://dd7kwfoe71gj8" path="res://resources/relics/improvised_shield.tres" id="1_42ts0"]
 [ext_resource type="Resource" uid="uid://dtnkp2rwqellb" path="res://resources/relics/troll_heart.tres" id="2_8kfux"]
 [ext_resource type="Script" path="res://relic/relic_list.gd" id="3_ctgw1"]
+[ext_resource type="Resource" uid="uid://dux5lw0gtcnsg" path="res://resources/relics/final_rage.tres" id="3_m0lin"]
 
 [resource]
 script = ExtResource("3_ctgw1")
-relics = Array[Resource("res://relic/relic.gd")]([ExtResource("1_42ts0"), ExtResource("2_8kfux")])
+relics = Array[Resource("res://relic/relic.gd")]([ExtResource("1_42ts0"), ExtResource("2_8kfux"), ExtResource("3_m0lin")])

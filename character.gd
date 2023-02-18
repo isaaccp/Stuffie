@@ -129,6 +129,12 @@ func add_block(block_amount: int):
 	block += block_amount
 	refresh()
 
+func apply_relic_damage_change(damage: int):
+	var dmg = damage
+	for relic in relics:
+		dmg = relic.apply_damage_change(dmg, self)
+	return dmg
+
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):
 	var damage = enemy.effective_damage(self)

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CombatLowHealthDamage" load_steps=2 format=3 uid="uid://dux5lw0gtcnsg"]
+
+[ext_resource type="Script" path="res://relic/combat_low_health_damage.gd" id="1_5hwb7"]
+
+[resource]
+script = ExtResource("1_5hwb7")
+health_fraction = 0.25
+extra_damage = 5
+name = "Final Rage"
+tooltip = "When having 25% or less hp, attacks deal 5 extra damage"

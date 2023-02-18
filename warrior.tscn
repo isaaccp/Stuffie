@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://decks/warrior_deck.tres" id="2_d5bu5"]
-[ext_resource type="Resource" uid="uid://dtnkp2rwqellb" path="res://resources/relics/troll_heart.tres" id="2_smrhk"]
+[ext_resource type="Resource" uid="uid://dux5lw0gtcnsg" path="res://resources/relics/final_rage.tres" id="2_f8bod"]
 [ext_resource type="Resource" uid="uid://cqfbo212r1n0g" path="res://decks/warrior_selections.tres" id="3_t8tph"]
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
@@ -13,7 +13,7 @@ script = ExtResource("1_rghne")
 total_action_points = 3
 total_move_points = 6
 total_hit_points = 50
-initial_relic = ExtResource("2_smrhk")
+initial_relic = ExtResource("2_f8bod")
 portrait_texture = NodePath("Portrait")
 health_bar = NodePath("HealthDisplay3D")
 deck = ExtResource("2_d5bu5")
