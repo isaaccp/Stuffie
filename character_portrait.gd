@@ -5,19 +5,30 @@ class_name CharacterPortrait
 @export var portrait: TextureButton
 @export var relics_container: Container
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+var character: Character
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func set_character(character: Character):
+	self.character = character
+	character.made_active.connect(_set_active)
+	character.changed.connect(_update_character)
+	_update_character()
+	# TODO: If relics can change in the lifetime of portrait,
+	# handle that later.
+	_set_relics(character.relics)
 
-func set_portrait_texture(texture: Texture):
+
+func _update_character():
+	_set_portrait_texture(character.portrait_texture.texture)
+	_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
+	_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
+	_set_hit_points(character.hit_points, character.total_hit_points)
+	_set_block(character.block)
+	_set_power(character.power)
+
+func _set_portrait_texture(texture: Texture):
 	portrait.texture_normal = texture
 
-func set_relics(relics: Array[Relic]):
-	print_debug(relics)
+func _set_relics(relics: Array[Relic]):
 	for relic in relics:
 		var label = Label.new()
 		label.text = relic.name
@@ -25,7 +36,7 @@ func set_relics(relics: Array[Relic]):
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		relics_container.add_child(label)
 
-func set_move_points(pending_move_cost: float, move_points: float, total_move_points: int):
+func _set_move_points(pending_move_cost: float, move_points: float, total_move_points: int):
 	var color
 	var move_left
 	if pending_move_cost > 0:
@@ -38,7 +49,7 @@ func set_move_points(pending_move_cost: float, move_points: float, total_move_po
 	var bb_code = "MP: [color=%s]%0.1f[/color] / %d" % [color, move_left, total_move_points]
 	$Margin/VBox/MovePoints.parse_bbcode(bb_code)
 
-func set_action_points(pending_action_cost: int, action_points: int, total_action_points: int):
+func _set_action_points(pending_action_cost: int, action_points: int, total_action_points: int):
 	var color
 	var actions_left
 	if pending_action_cost > 0:
@@ -51,7 +62,7 @@ func set_action_points(pending_action_cost: int, action_points: int, total_actio
 	var bb_code = "AP: [color=%s]%d[/color] / %d" % [color, actions_left, total_action_points]
 	$Margin/VBox/ActionPoints.parse_bbcode(bb_code)
 
-func set_hit_points(hit_points: int, total_hit_points: int):
+func _set_hit_points(hit_points: int, total_hit_points: int):
 	var color
 	if hit_points / total_hit_points < 0.5:
 		color = "red"
@@ -61,17 +72,17 @@ func set_hit_points(hit_points: int, total_hit_points: int):
 	var bb_code = "HP: [color=%s]%d[/color] / %d" % [color, hit_points, total_hit_points]
 	$Margin/VBox/HitPoints.parse_bbcode(bb_code)
 
-func set_block(block: int):
+func _set_block(block: int):
 	if block == 0:
 		$Margin/VBox/Block.text = ""
 	else:
 		$Margin/VBox/Block.text = "Block: %d" % block
 
-func set_power(power: int):
+func _set_power(power: int):
 	if power == 0:
 		$Margin/VBox/Power.text = ""
 	else:
 		$Margin/VBox/Power.text = "Power: %d⌚" % power
 
-func set_active(active: bool):
+func _set_active(active: bool):
 	$Margin/VBox/Portrait/ActiveMarker.visible = active

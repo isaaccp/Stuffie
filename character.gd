@@ -6,6 +6,7 @@ class_name Character
 @export var total_move_points: int
 @export var total_hit_points: int
 @export var initial_relic: Relic
+@export var portrait_texture: TextureRect
 var action_points: int
 var move_points: float
 var hit_points: int
@@ -13,14 +14,14 @@ var block: int
 var power: int
 var pending_action_cost: int = -1
 var pending_move_cost: float = -1.0
-var portrait: CharacterPortrait
 var relics: Array[Relic]
 
 @export var health_bar: HealthDisplay3D
-var is_ready = false
-
 @export var deck: Deck
 @export var extra_cards: CardSelectionSet
+
+signal changed
+signal made_active(active: bool)
 
 class Snapshot:
 	var action_points: int
@@ -40,9 +41,12 @@ var snapshot: Snapshot
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	is_ready = true
-	hit_points = total_hit_points
+	changed.connect(_on_changed)
+	heal_full()
 	snap()
+
+func _on_changed():
+	health_bar.update_health(hit_points, total_hit_points)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -65,6 +69,7 @@ func begin_stage():
 func end_stage():
 	power = 0
 	apply_end_stage_relics()
+	refresh()
 
 func begin_turn():
 	snap()
@@ -84,22 +89,11 @@ func draw_cards():
 	deck.discard_hand()
 	deck.draw_cards(4)
 
-func set_portrait(character_portrait: CharacterPortrait):
-	portrait = character_portrait
-	refresh()
-
 func refresh():
-	if is_ready:
-		portrait.set_portrait_texture($Portrait.texture)
-		portrait.set_action_points(pending_action_cost, action_points, total_action_points)
-		portrait.set_move_points(pending_move_cost, move_points, total_move_points)
-		portrait.set_hit_points(hit_points, total_hit_points)
-		portrait.set_block(block)
-		portrait.set_power(power)
-		health_bar.update_health(hit_points, total_hit_points)
+	changed.emit()
 
 func set_active(active: bool):
-	portrait.set_active(active)
+	made_active.emit(active)
 
 func set_pending_action_cost(pending_cost: int):
 	pending_action_cost = pending_cost
@@ -125,9 +119,15 @@ func heal(hp: int):
 	hit_points += hp
 	if hit_points > total_hit_points:
 		hit_points = total_hit_points
+	refresh()
+
+func heal_full():
+	hit_points = total_hit_points
+	refresh()
 
 func add_block(block_amount: int):
 	block += block_amount
+	refresh()
 
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):

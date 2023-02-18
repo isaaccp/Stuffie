@@ -98,8 +98,7 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
 		# Add portraits in UI.
 		character_state_ui.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
-		character.set_portrait(character_portrait)
-		character_portrait.set_relics(character.relics)
+		character_portrait.set_character(character)
 		# Hook character selection.
 		character_portrait.portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
