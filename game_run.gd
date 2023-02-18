@@ -66,6 +66,7 @@ var run = [
 
 var stage_number = 0
 @export var shared_bag: SharedBag
+const GOLD_PER_STAGE = 20
 
 var characters: Array[Character]
 
@@ -142,7 +143,7 @@ func stage_finished():
 	if stage_number + 1 == run.size():
 		run_finished.emit()
 	else:
-		shared_bag.add_gold(10)
+		shared_bag.add_gold(GOLD_PER_STAGE)
 		state.change_state(BETWEEN_STAGES)
 
 func next_stage():

@@ -52,13 +52,11 @@ func prepare_relics():
 	var relics = relic_list.choose(relics_to_show)
 	for relic in relics:
 		add_relic(relic)
+	update_relics()
 
 func add_relic(relic):
-	var button = Button.new()
-	button.text = "%s %d🪙" % [relic.name, relic_cost]
-	button.tooltip_text = relic.tooltip
-	button.pressed.connect(_on_relic_selected.bind(relic, button))
-
+	var button = RelicButton.new(relic, relic_cost)
+	button.pressed.connect(_on_relic_selected.bind(button))
 	relic_container.add_child(button)
 
 func _on_choosing_option_entered():
@@ -100,9 +98,12 @@ func update_removals():
 		removal_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func update_relics():
+	# TODO: At some point we may move relic_cost to the relic
+	# and have it be different per tier or whatever.
 	for relic_button in relic_container.get_children():
-		if shared_bag.gold < relic_cost:
-			relic_button.disable()
+		var available = relic_list.available(relic_button.relic.name)
+		var affordable = shared_bag.gold >= relic_cost
+		relic_button.disabled = not (affordable and available)
 
 func _on_removal_done():
 	available_removals -= 1
@@ -113,12 +114,11 @@ func _on_removal_done():
 func _on_removal_canceled():
 	state.change_state(CHOOSING_OPTION)
 
-func _on_relic_selected(relic: Relic, button: Button):
-	button.disable()
+func _on_relic_selected(relic_button: RelicButton):
 	shared_bag.spend_gold(relic_cost)
-	relic_list.mark_used(relic.name)
+	relic_list.mark_used(relic_button.relic.name)
 	# TODO: Allow to select which character gets the relic.
-	characters[0].relics.push_back(relic)
+	characters[0].relics.push_back(relic_button.relic)
 	refresh()
 
 func _on_done_pressed():
