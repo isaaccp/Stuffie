@@ -127,7 +127,7 @@ func initialize_stage(stage: Stage):
 		objective_highlight = TilesHighlight.new(map_manager, camera, [stage.reach_position_target])
 		objective_highlight.set_color(Color(0, 0, 1, 1))
 		objective_highlight.set_width(4)
-		objective_highlight.call_deferred("refresh")
+		objective_highlight.refresh.call_deferred()
 		stage.add_child(objective_highlight)
 	$UI/InfoPanel/VBox/Stage.text = "Stage"
 	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
@@ -435,7 +435,7 @@ func _async_enemy_turn():
 	enemy_turn.calculate_moves()
 	var end = Time.get_ticks_msec()
 	print_debug("Enemy turn time ", end-start)
-	call_deferred("_wait_enemy_turn_completed")
+	_wait_enemy_turn_completed.call_deferred()
 
 func _wait_enemy_turn_completed():
 	var results = enemy_turn_thread.wait_to_finish()

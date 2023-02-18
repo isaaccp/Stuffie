@@ -121,7 +121,7 @@ func _on_between_stages_entered():
 	# Possibly just push this into between_stages and
 	# handle it there. Or rename "between_stages" to "rewards_stage".
 	if rewards_type == RewardsType.NONE:
-		call_deferred("next_stage")
+		next_stage.call_deferred()
 	else:
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters)
