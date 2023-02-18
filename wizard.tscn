@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dvhxmiqckixoy"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_i4i62"]
-[ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://decks/wizard_deck.tres" id="2_r0eug"]
+[ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://resources/decks/wizard_deck.tres" id="2_r0eug"]
 [ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
 [ext_resource type="PackedScene" uid="uid://ddsimr8wumis7" path="res://resources/kaykit-dungeon/models/characters/gltf/character_mage.gltf" id="4_e1b5r"]
 

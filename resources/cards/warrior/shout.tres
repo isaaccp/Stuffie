@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://cfkn2xw2y3ml0"]
+
+[ext_resource type="Script" path="res://card_effect.gd" id="1_f6sog"]
+[ext_resource type="Script" path="res://card.gd" id="2_chxt4"]
+[ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="3_t4hqr"]
+
+[sub_resource type="Resource" id="Resource_oihnq"]
+script = ExtResource("1_f6sog")
+block = 0
+power = 0
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 1
+vulnerability = 0
+
+[resource]
+script = ExtResource("2_chxt4")
+card_name = "Shout"
+cost = 1
+texture = ExtResource("3_t4hqr")
+target_mode = 4
+target_distance = 1
+damage = 0
+on_play_effect = SubResource("Resource_oihnq")
+area_type = 0
+area_length = 3
+area_width = 3

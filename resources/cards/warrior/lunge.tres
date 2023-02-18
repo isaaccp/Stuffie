@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://0n0j1moqf5bb"]
+
+[ext_resource type="Script" path="res://card.gd" id="1_xdrgf"]
+[ext_resource type="Texture2D" uid="uid://c52y4ijrrdkuh" path="res://resources/lunge.png" id="2_3e4yq"]
+
+[resource]
+script = ExtResource("1_xdrgf")
+card_name = "Lunge"
+cost = 2
+texture = ExtResource("2_3e4yq")
+target_mode = 4
+target_distance = 1
+damage = 10
+area_type = 0
+area_length = 2
+area_width = 1

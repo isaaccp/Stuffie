@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://cvg3k6jn0ialy"]
+
+[ext_resource type="Script" path="res://card.gd" id="1_mr1ke"]
+[ext_resource type="Texture2D" uid="uid://e0i3dtvmoy8s" path="res://resources/sprint.png" id="2_50iua"]
+
+[resource]
+script = ExtResource("1_mr1ke")
+card_name = "Sprint"
+description = "Add {move_points} move points to self"
+cost = null
+texture = ExtResource("2_50iua")
+target_mode = 0
+target_distance = null
+damage = null
+move_points = 5
