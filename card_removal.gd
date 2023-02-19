@@ -14,11 +14,11 @@ func initialize(characters: Array[Character]):
 	self.characters = characters
 	# Use CharacterChooser when implemented.
 	active_character = characters[0]
-	chooser.initialize(active_character)
+	chooser.initialize_from_character(active_character)
 	chooser.connect("card_chosen", _on_card_chosen)
 
-func _on_card_chosen(card_idx: int):
-	active_character.deck.cards.remove_at(card_idx)
+func _on_card_chosen(card: Card):
+	active_character.deck.cards.erase(card)
 	done.emit()
 
 func _input(event):

@@ -4,23 +4,45 @@ class_name CardCollectionChooser
 
 @export var vbox: VBoxContainer
 
+enum Filter {
+	ALL,
+	UPGRADABLE,
+}
+
 var card_ui_scene = preload("res://card_ui.tscn")
 
-var deck: Deck
+var cards: Array
 var cards_per_row = 4  # TODO: Do something smart with screen size later.
 
-signal card_chosen(card_idx: int)
+signal card_chosen(card: Card)
 
-func initialize(character: Character):
-	self.deck = character.deck
-	var rows = ((deck.cards.size()-1)/cards_per_row)+1
+func initialize_from_character(character: Character, filter=Filter.ALL):
+	if filter == Filter.ALL:
+		initialize_from_cards(character, character.deck.cards)
+	elif filter == Filter.UPGRADABLE:
+		print_debug("Initializing from UPGRADABLE")
+		var upgradable_cards: Array[Card] = []
+		print_debug(character.card_upgrades)
+		for card in character.deck.cards:
+			if character.card_upgrades.has(card.card_name):
+				upgradable_cards.push_back(card)
+		print_debug(upgradable_cards)
+		initialize_from_cards(character, upgradable_cards)
+
+func initialize_from_upgrades_to_card(character: Character, card: Card):
+	var upgrades = character.card_upgrades[card.card_name]
+	initialize_from_cards(character, upgrades)
+
+func initialize_from_cards(character: Character, cards: Array):
+	self.cards = cards
+	var rows = ((cards.size()-1)/cards_per_row)+1
 	var card_idx = 0
 	for i in range(rows):
 		var hbox = HBoxContainer.new()
 		for d in range(cards_per_row):
-			if card_idx == deck.cards.size():
+			if card_idx == cards.size():
 				break
-			var card = deck.cards[card_idx]
+			var card = cards[card_idx]
 			var card_ui = card_ui_scene.instantiate() as CardUI
 			card_ui.initialize(card, character, _on_card_pressed.bind(card_idx))
 			card_idx += 1
@@ -28,4 +50,4 @@ func initialize(character: Character):
 		vbox.add_child(hbox)
 
 func _on_card_pressed(card_idx: int):
-	card_chosen.emit(card_idx)
+	card_chosen.emit(cards[card_idx])

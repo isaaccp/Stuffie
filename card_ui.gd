@@ -80,6 +80,10 @@ func get_description_text() -> String:
 			var on_play_text = get_card_effect_description(card.on_play_effect)
 			if on_play_text:
 				description += "On Play: %s %s" % [target_text, on_play_text]
+		if card.on_play_self_effect:
+			var on_play_self_text = get_card_effect_description(card.on_play_self_effect)
+			if on_play_self_text:
+				description += "On Play: %s %s" % ["character", on_play_self_text]
 		if card.on_kill_effect:
 			var on_kill_text = get_card_effect_description(card.on_kill_effect)
 			description += "On Kill: %s" % on_kill_text

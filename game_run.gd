@@ -42,7 +42,7 @@ func make_blacksmith_stage():
 
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
-	# [ preload("res://stages/diff0/stage0_simple.tscn")],
+	[ preload("res://stages/diff0/stage0_simple.tscn")],
 	[
 		preload("res://stages/diff0/stage0.tscn"),
 	],
@@ -59,8 +59,8 @@ var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 
 var run = [
 	make_combat_stage(0),
-	make_combat_stage(1),
 	make_blacksmith_stage(),
+	make_combat_stage(1),
 	make_combat_stage(2),
 ]
 
@@ -76,6 +76,7 @@ var characters: Array[Character]
 var rewards_type = RewardsType.NONE
 
 var relic_list = preload("res://resources/relic_list.tres")
+var all_cards = Dictionary()
 
 signal run_finished
 

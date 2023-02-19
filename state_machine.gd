@@ -39,6 +39,10 @@ func add(name: String):
 	add_user_signal(state.exit_signal())
 	return state
 
+func is_state(state: State):
+	assert(state.id == id)
+	return self.state == state
+
 func change_state(new_state: State):
 	assert(new_state.id == id)
 	if state != null:

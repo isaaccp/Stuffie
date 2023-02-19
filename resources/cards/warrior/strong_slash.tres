@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://b62kpw0duqn6u"]
+
+[ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="1_2xc24"]
+[ext_resource type="Script" path="res://card_effect.gd" id="1_jlluj"]
+[ext_resource type="Script" path="res://card.gd" id="2_upcx8"]
+[ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="3_63yvy"]
+
+[sub_resource type="Resource" id="Resource_dnggy"]
+script = ExtResource("1_jlluj")
+block = 0
+power = 0
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 0
+vulnerability = 0
+
+[resource]
+script = ExtResource("2_upcx8")
+card_name = "Strong Slash"
+basic = true
+upgrade_level = 1
+base_card = ExtResource("1_2xc24")
+cost = 1
+texture = ExtResource("3_63yvy")
+target_mode = 3
+target_distance = 1
+damage = 12
+on_play_effect = SubResource("Resource_dnggy")
+area_type = 0
+area_length = 1
+area_width = 1

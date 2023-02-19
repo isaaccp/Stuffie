@@ -19,6 +19,8 @@ var relics: Array[Relic]
 @export var health_bar: HealthDisplay3D
 @export var deck: Deck
 @export var extra_cards: CardSelectionSet
+@export var all_cards: CardSelectionSet
+var card_upgrades: Dictionary
 
 signal changed
 signal made_active(active: bool)
@@ -41,9 +43,17 @@ var snapshot: Snapshot
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	process_cards()
 	changed.connect(_on_changed)
 	heal_full()
 	snap()
+
+func process_cards():
+	for card in all_cards.cards:
+		if card.base_card:
+			if not card_upgrades.has(card.base_card.card_name):
+				card_upgrades[card.base_card.card_name] = []
+			card_upgrades[card.base_card.card_name].push_back(card)
 
 func _on_changed():
 	health_bar.update_health(hit_points, total_hit_points)

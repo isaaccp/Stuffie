@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://blacksmith.gd" id="1_2sanr"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_nj5pa"]
 
-[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "relic_container", "done_button", "advanced_option_parent", "shared_bag_gold_ui")]
+[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "upgrade_panel", "upgrade_panel_label", "relic_container", "done_button", "advanced_option_parent", "shared_bag_gold_ui")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,6 +14,8 @@ script = ExtResource("1_2sanr")
 main = NodePath("MainScreen")
 removal_panel = NodePath("MainScreen/HBoxContainer/Removal")
 removal_panel_label = NodePath("MainScreen/HBoxContainer/Removal/Label")
+upgrade_panel = NodePath("MainScreen/HBoxContainer/Upgrade")
+upgrade_panel_label = NodePath("MainScreen/HBoxContainer/Upgrade/Label")
 relic_container = NodePath("MainScreen/HBoxContainer/Relics/HBoxContainer")
 done_button = NodePath("MainScreen/HBoxContainer/Done")
 advanced_option_parent = NodePath("AdvancedOptionParent")
@@ -67,6 +69,13 @@ layout_mode = 2
 layout_mode = 2
 text = "Remove card"
 
+[node name="Upgrade" type="PanelContainer" parent="MainScreen/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainScreen/HBoxContainer/Upgrade"]
+layout_mode = 2
+text = "Upgrade card"
+
 [node name="Done" type="Button" parent="MainScreen/HBoxContainer"]
 layout_mode = 2
 text = "Done"
@@ -86,4 +95,5 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [connection signal="gui_input" from="MainScreen/HBoxContainer/Removal" to="." method="_on_removal_gui_input"]
+[connection signal="gui_input" from="MainScreen/HBoxContainer/Upgrade" to="." method="_on_upgrade_gui_input"]
 [connection signal="pressed" from="MainScreen/HBoxContainer/Done" to="." method="_on_done_pressed"]

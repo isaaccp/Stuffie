@@ -22,11 +22,15 @@ enum AreaType {
 @export var card_name: String
 @export var basic = false
 @export var upgrade_level = 0
+@export var base_card: Card
 @export var cost: int
 @export var texture: Texture2D
 @export var target_mode: TargetMode
 @export var target_distance: int
 @export var damage: int
+# Use on_play_self_effect when creating a card that has
+# extra side effect on self besides target.
+@export var on_play_self_effect: CardEffect
 @export var on_play_effect: CardEffect
 @export var on_kill_effect: CardEffect
 @export var area_type: AreaType = AreaType.RECTANGLE
@@ -85,6 +89,7 @@ func apply_self(character: Character):
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
 	apply_effect(ally, on_play_effect)
+	apply_effect(character, on_play_self_effect)
 
 func effective_damage(character: Character):
 	# Cards with natural 0 damage are not intended to be attacks.
@@ -100,6 +105,7 @@ func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
 	enemy.hit_points -= effective_damage(character)
 	apply_effect_enemy(enemy, on_play_effect)
+	apply_effect(character, on_play_self_effect)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
 		apply_effect(character, on_kill_effect)

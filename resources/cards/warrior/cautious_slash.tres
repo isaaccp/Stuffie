@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://qy8mps4hkyur"]
+
+[ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="1_bde3y"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_4agp7"]
+[ext_resource type="Script" path="res://card.gd" id="3_lcaxs"]
+[ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="4_d2ipr"]
+
+[sub_resource type="Resource" id="Resource_vu0ah"]
+script = ExtResource("2_4agp7")
+block = 3
+power = 0
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 0
+vulnerability = 0
+
+[resource]
+script = ExtResource("3_lcaxs")
+card_name = "Cautious Slash"
+basic = true
+upgrade_level = 1
+base_card = ExtResource("1_bde3y")
+cost = 1
+texture = ExtResource("4_d2ipr")
+target_mode = 3
+target_distance = 1
+damage = 10
+on_play_self_effect = SubResource("Resource_vu0ah")
+area_type = 0
+area_length = 1
+area_width = 1

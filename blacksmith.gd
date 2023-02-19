@@ -5,6 +5,8 @@ class_name BlacksmithStage
 @export var main: Control
 @export var removal_panel: PanelContainer
 @export var removal_panel_label: Label
+@export var upgrade_panel: PanelContainer
+@export var upgrade_panel_label: Label
 @export var relic_container: Container
 @export var done_button: Button
 # When choosing an option that requires UI change, we'll hide "main" and
@@ -15,15 +17,17 @@ class_name BlacksmithStage
 var state = StateMachine.new()
 var CHOOSING_OPTION = state.add("choosing_option")
 var REMOVAL = state.add("removal")
-# var UPGRADE = state.add("upgrade")
+var UPGRADE = state.add("upgrade")
 
 # TODO: Eventually we'll display a box of e.g. 4 cards for purchase,
 # potentially relics for purchase, and options to purchase a removal or
 # an upgrade. For now, doing removal only.
 
 var removal_cost = 10
+var upgrade_cost = 15
 var relic_cost = 20
 var available_removals = 1
+var available_upgrades = 1
 var relics_to_show = 2
 
 var characters: Array[Character]
@@ -32,6 +36,7 @@ var relic_list: RelicList
 var current_cards: Array[Card]
 var card_ui_scene = preload("res://card_ui.tscn")
 var removal_scene = preload("res://card_removal.tscn")
+var upgrade_scene = preload("res://card_upgrade.tscn")
 
 signal stage_done
 
@@ -45,6 +50,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list:
 	self.shared_bag = shared_bag
 	self.relic_list = relic_list
 	shared_bag_gold_ui.set_shared_bag(shared_bag)
+	update_upgrades()
 	update_removals()
 	prepare_relics()
 
@@ -62,6 +68,9 @@ func add_relic(relic):
 func _on_choosing_option_entered():
 	main.show()
 
+func _on_choosing_option_exited():
+	main.hide()
+
 func _on_removal_entered():
 	var removal = removal_scene.instantiate() as CardRemoval
 	removal.initialize(characters)
@@ -70,10 +79,18 @@ func _on_removal_entered():
 	advanced_option_parent.add_child(removal)
 	advanced_option_parent.show()
 
-func _on_choosing_option_exited():
-	main.hide()
-
 func _on_removal_exited():
+	advanced_option_parent.hide()
+
+func _on_upgrade_entered():
+	var upgrade = upgrade_scene.instantiate() as CardUpgrade
+	upgrade.initialize(characters)
+	upgrade.connect("done", _on_upgrade_done)
+	upgrade.connect("canceled", _on_upgrade_canceled)
+	advanced_option_parent.add_child(upgrade)
+	advanced_option_parent.show()
+
+func _on_upgrade_exited():
 	advanced_option_parent.hide()
 
 func _process(delta):
@@ -84,8 +101,14 @@ func _on_removal_gui_input(event):
 		if event.button_index == 1 and event.pressed == true:
 			state.change_state(REMOVAL)
 
+func _on_upgrade_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == 1 and event.pressed == true:
+			state.change_state(UPGRADE)
+
 func refresh():
 	update_removals()
+	update_upgrades()
 	update_relics()
 
 func update_removals():
@@ -96,6 +119,15 @@ func update_removals():
 	else:
 		removal_panel.modulate = Color(1, 1, 1, 1)
 		removal_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+
+func update_upgrades():
+	upgrade_panel_label.text = "Upgrade card (%d🪙) (%d left)" % [upgrade_cost, available_upgrades]
+	if available_upgrades  == 0 or shared_bag.gold < upgrade_cost:
+		upgrade_panel.modulate = Color(0.5, 0.5, 0.5, 0.5)
+		upgrade_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	else:
+		upgrade_panel.modulate = Color(1, 1, 1, 1)
+		upgrade_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func update_relics():
 	# TODO: At some point we may move relic_cost to the relic
@@ -112,6 +144,15 @@ func _on_removal_done():
 	state.change_state(CHOOSING_OPTION)
 
 func _on_removal_canceled():
+	state.change_state(CHOOSING_OPTION)
+
+func _on_upgrade_done():
+	available_upgrades -= 1
+	shared_bag.spend_gold(upgrade_cost)
+	refresh()
+	state.change_state(CHOOSING_OPTION)
+
+func _on_upgrade_canceled():
 	state.change_state(CHOOSING_OPTION)
 
 func _on_relic_selected(relic_button: RelicButton):
