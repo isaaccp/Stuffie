@@ -59,7 +59,7 @@ func _set_action_points(pending_action_cost: int, action_points: int, total_acti
 		color = "white"
 		actions_left = action_points
 
-	var bb_code = "AP: [color=%s]%d[/color] / %d" % [color, actions_left, total_action_points]
+	var bb_code = "AP💢: [color=%s]%d[/color] / %d" % [color, actions_left, total_action_points]
 	$Margin/VBox/ActionPoints.parse_bbcode(bb_code)
 
 func _set_hit_points(hit_points: int, total_hit_points: int):

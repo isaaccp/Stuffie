@@ -97,7 +97,7 @@ func tooltip_text(keyword: String) -> String:
 		return "Unknown keyword, please file a bug"
 
 func get_cost_text() -> String:
-	return "%d" % card.cost
+	return "%d💢" % card.cost
 
 func refresh():
 	$Margin/VBox/CardTop/Name.text = card.card_name
