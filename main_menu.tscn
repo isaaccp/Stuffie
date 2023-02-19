@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_x8lvv"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("new_game_button")]
+[node name="Control" type="Control" node_paths=PackedStringArray("new_game_button", "test_blacksmith_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,20 +10,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x8lvv")
-new_game_button = NodePath("NewGameButton")
+new_game_button = NodePath("HBoxContainer/NewGameButton")
+test_blacksmith_button = NodePath("HBoxContainer/TestBlacksmith")
 
-[node name="NewGameButton" type="Button" parent="."]
-custom_minimum_size = Vector2(400, 200)
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -46.5
-offset_top = -15.5
-offset_right = 46.5
-offset_bottom = 15.5
+offset_left = -267.0
+offset_top = -100.0
+offset_right = 267.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="NewGameButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
 text = "New Game"
+
+[node name="TestBlacksmith" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Test Blacksmith"

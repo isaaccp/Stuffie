@@ -80,7 +80,7 @@ func _on_removal_entered():
 	advanced_option_parent.show()
 
 func _on_removal_exited():
-	advanced_option_parent.hide()
+	_clear_advanced_option_parent()
 
 func _on_upgrade_entered():
 	var upgrade = upgrade_scene.instantiate() as CardUpgrade
@@ -91,10 +91,15 @@ func _on_upgrade_entered():
 	advanced_option_parent.show()
 
 func _on_upgrade_exited():
-	advanced_option_parent.hide()
+	_clear_advanced_option_parent()
 
 func _process(delta):
 	pass
+
+func _clear_advanced_option_parent():
+	for child in advanced_option_parent.get_children():
+		child.queue_free()
+	advanced_option_parent.hide()
 
 func _on_removal_gui_input(event):
 	if event is InputEventMouseButton:

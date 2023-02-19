@@ -24,10 +24,13 @@ shared_bag_gold_ui = NodePath("UI/InfoPanel/VBox/SharedBagGoldUI")
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="EndTurnButton" type="Button" parent="UI"]
-offset_left = 2226.0
-offset_top = 1265.0
-offset_right = 2304.0
-offset_bottom = 1296.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -78.0
+offset_top = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "End Turn"

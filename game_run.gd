@@ -57,12 +57,13 @@ var stages = [
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 
-var run = [
-	make_combat_stage(0),
-	make_combat_stage(1),
-	make_blacksmith_stage(),
-	make_combat_stage(2),
-]
+
+enum RunType {
+	REGULAR,
+	TEST_BLACKSMITH,
+}
+
+var run = []
 
 var stage_number = 0
 @export var shared_bag: SharedBag
@@ -88,6 +89,20 @@ func _ready():
 		character.relics.push_back(initial_relic)
 		characters.push_back(character)
 	state.change_state(WITHIN_STAGE)
+
+func set_run_type(run_type: RunType):
+	if run_type == RunType.REGULAR:
+		run = [
+			make_combat_stage(0),
+			make_combat_stage(1),
+			make_blacksmith_stage(),
+			make_combat_stage(2),
+		]
+	elif run_type == RunType.TEST_BLACKSMITH:
+		shared_bag.add_gold(30)
+		run = [
+			make_blacksmith_stage(),
+		]
 
 func current_stage_def():
 	return run[stage_number]
