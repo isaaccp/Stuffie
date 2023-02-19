@@ -42,7 +42,7 @@ func make_blacksmith_stage():
 
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
-	[ preload("res://stages/diff0/stage0_simple.tscn")],
+	# [ preload("res://stages/diff0/stage0_simple.tscn")],
 	[
 		preload("res://stages/diff0/stage0.tscn"),
 	],
@@ -59,14 +59,14 @@ var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 
 var run = [
 	make_combat_stage(0),
-	make_blacksmith_stage(),
 	make_combat_stage(1),
+	make_blacksmith_stage(),
 	make_combat_stage(2),
 ]
 
 var stage_number = 0
 @export var shared_bag: SharedBag
-const GOLD_PER_STAGE = 20
+const GOLD_PER_STAGE = 15
 
 var characters: Array[Character]
 
