@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_ydu63"]
 script = ExtResource("1_utn31")
-block = 10
+block = 8
 power = 0
 hit_points = 0
 move_points = 0
