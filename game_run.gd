@@ -44,10 +44,10 @@ var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
 	# [ preload("res://stages/diff0/stage0_simple.tscn")],
 	[
-		preload("res://stages/diff0/stage0.stage")
+		preload("res://stages/diff0/stage_1w_2a.stage"),
 	],
 	[
-		preload("res://stages/diff1/stage0.tscn"),
+		preload("res://stages/diff1/stage_3w_2a.stage"),
 		preload("res://stages/diff1/stage1.tscn"),
 	],
 	[
