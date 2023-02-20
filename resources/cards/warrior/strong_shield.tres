@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://dplfqiqipmmlq"]
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dplfqiqipmmlq"]
 
 [ext_resource type="Script" path="res://card_effect.gd" id="1_2fhx6"]
+[ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="1_viuel"]
 [ext_resource type="Script" path="res://card.gd" id="2_gpudr"]
-[ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="3_aveed"]
+[ext_resource type="Texture2D" uid="uid://dy5mse5bllook" path="res://resources/shield.png" id="3_aveed"]
 
 [sub_resource type="Resource" id="Resource_ydu63"]
 script = ExtResource("1_2fhx6")
@@ -18,7 +19,8 @@ vulnerability = 0
 script = ExtResource("2_gpudr")
 card_name = "Strong Shield"
 basic = true
-upgrade_level = 0
+upgrade_level = 1
+base_card = ExtResource("1_viuel")
 cost = 1
 texture = ExtResource("3_aveed")
 target_mode = 0

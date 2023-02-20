@@ -77,6 +77,7 @@ var rewards_type = RewardsType.NONE
 
 var relic_list = preload("res://resources/relic_list.tres")
 var all_cards = Dictionary()
+var run_type: RunType
 
 signal run_finished
 
@@ -87,9 +88,12 @@ func _ready():
 		relic_list.mark_used(initial_relic.name)
 		character.relics.push_back(initial_relic)
 		characters.push_back(character)
+		if run_type == RunType.TEST_BLACKSMITH:
+			character.deck.cards = character.all_cards.cards
 	state.change_state(WITHIN_STAGE)
 
 func set_run_type(run_type: RunType):
+	self.run_type = run_type
 	if run_type == RunType.REGULAR:
 		run = [
 			make_combat_stage(0),

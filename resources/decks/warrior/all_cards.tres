@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=14 format=3 uid="uid://cqmvranirdbgc"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=16 format=3 uid="uid://cqmvranirdbgc"]
 
 [ext_resource type="Resource" uid="uid://brsdh2a7rnmdu" path="res://resources/cards/warrior/cleave.tres" id="1_sc6dv"]
 [ext_resource type="Resource" uid="uid://qy8mps4hkyur" path="res://resources/cards/warrior/cautious_slash.tres" id="1_yycgb"]
@@ -6,14 +6,16 @@
 [ext_resource type="Resource" uid="uid://cdshftbsr7241" path="res://resources/cards/warrior/deep_lunge.tres" id="3_coc87"]
 [ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/rage.tres" id="3_i5oyq"]
 [ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="4_7i3eu"]
+[ext_resource type="Resource" uid="uid://dsj8uc8l5ps70" path="res://resources/cards/warrior/power_cleave.tres" id="5_sns57"]
 [ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/shout.tres" id="5_wof76"]
 [ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="6_3p74u"]
-[ext_resource type="Resource" path="res://resources/cards/warrior/strong_slash.tres" id="8_fj12h"]
+[ext_resource type="Resource" uid="uid://b62kpw0duqn6u" path="res://resources/cards/warrior/strong_slash.tres" id="8_fj12h"]
 [ext_resource type="Resource" uid="uid://b2cfup10xv7f" path="res://resources/cards/warrior/sweeping_slash.tres" id="8_g36hd"]
 [ext_resource type="Resource" uid="uid://dplfqiqipmmlq" path="res://resources/cards/warrior/strong_shield.tres" id="8_gqiom"]
 [ext_resource type="Script" path="res://card_selection_set.gd" id="9_2el75"]
 [ext_resource type="Resource" uid="uid://cmxrjrycyegii" path="res://resources/cards/warrior/strong_lunge.tres" id="9_6yeon"]
+[ext_resource type="Resource" uid="uid://bfhwdfwipn4lf" path="res://resources/cards/warrior/through_cleave.tres" id="14_p0ya6"]
 
 [resource]
 script = ExtResource("9_2el75")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_yycgb"), ExtResource("1_sc6dv"), ExtResource("3_coc87"), ExtResource("2_oosuh"), ExtResource("3_i5oyq"), ExtResource("4_7i3eu"), ExtResource("5_wof76"), ExtResource("6_3p74u"), ExtResource("9_6yeon"), ExtResource("8_gqiom"), ExtResource("8_fj12h"), ExtResource("8_g36hd")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_yycgb"), ExtResource("1_sc6dv"), ExtResource("3_coc87"), ExtResource("2_oosuh"), ExtResource("5_sns57"), ExtResource("3_i5oyq"), ExtResource("4_7i3eu"), ExtResource("5_wof76"), ExtResource("6_3p74u"), ExtResource("9_6yeon"), ExtResource("8_gqiom"), ExtResource("8_fj12h"), ExtResource("8_g36hd"), ExtResource("14_p0ya6")])
