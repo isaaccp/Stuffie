@@ -13,6 +13,7 @@ stage_parent = NodePath("StageParent")
 [node name="Party" type="Node" parent="."]
 
 [node name="Warrior" parent="Party" instance=ExtResource("2_33vft")]
+total_hit_points = 60
 
 [node name="StageParent" type="Node" parent="."]
 
