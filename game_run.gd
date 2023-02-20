@@ -44,15 +44,16 @@ var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
 	# [ preload("res://stages/diff0/stage_simple.stage")],
 	[
-		preload("res://stages/diff0/1w_2a.stage"),
+		preload("res://stages/1w_2a.stage"),
 	],
 	[
-		preload("res://stages/diff1/3w_2a.stage"),
-		preload("res://stages/diff1/cages.stage"),
+		preload("res://stages/3w_2a.stage"),
+		preload("res://stages/cages.stage"),
 	],
 	[
-		preload("res://stages/diff2/corridor.stage")
-	],
+		preload("res://stages/death_cage.stage"),
+		preload("res://stages/corridor.stage"),
+	]
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")

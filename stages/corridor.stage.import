@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://kpu2xg1ib4q3"
+path="res://.godot/imported/corridor.stage-623293609ef2a1e57226d24d0b286e0d.tscn"
+
+[deps]
+
+source_file="res://stages/corridor.stage"
+dest_files=["res://.godot/imported/corridor.stage-623293609ef2a1e57226d24d0b286e0d.tscn"]
+
+[params]
+
