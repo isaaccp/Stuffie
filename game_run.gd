@@ -105,6 +105,7 @@ func set_run_type(run_type: RunType):
 		shared_bag.add_gold(30)
 		run = [
 			make_blacksmith_stage(),
+			make_combat_stage(0),
 		]
 
 func current_stage_def():

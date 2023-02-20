@@ -17,6 +17,7 @@ enum TargetMode {
 
 enum AreaType {
 	RECTANGLE,
+	FRONT_AND_SIDES,  # Covers 3 tiles in front and both sides.
 }
 
 @export var card_name: String
@@ -49,6 +50,12 @@ func effect_area(direction: Vector2):
 		for i in range(area_length):
 			for j in range(-width_idx, width_idx+1):
 				tiles.push_back(Vector2i(i, j))
+	elif area_type == AreaType.FRONT_AND_SIDES:
+		tiles = [
+			Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, -1),
+			Vector2i(-1, -1), Vector2i(-1, 1)
+		]
+
 	var new_effect_area = []
 	var angle = Vector2.RIGHT.angle_to(direction)
 	for pos in tiles:

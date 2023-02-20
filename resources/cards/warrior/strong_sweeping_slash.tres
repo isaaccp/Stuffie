@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://baauj7cb1ei5j"]
+
+[ext_resource type="Resource" uid="uid://b2cfup10xv7f" path="res://resources/cards/warrior/sweeping_slash.tres" id="1_qanyr"]
+[ext_resource type="Script" path="res://card.gd" id="1_r87jx"]
+[ext_resource type="Texture2D" uid="uid://bskrd1sy5i2j8" path="res://resources/sweeping_slash.png" id="2_dw4g6"]
+
+[resource]
+script = ExtResource("1_r87jx")
+card_name = "Strong Sweeping Slash"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_qanyr")
+cost = 2
+texture = ExtResource("2_dw4g6")
+target_mode = 4
+target_distance = 1
+damage = 11
+area_type = 0
+area_length = 1
+area_width = 3
