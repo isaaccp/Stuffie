@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CombatFirstStageAttackDamageRelic" load_steps=2 format=3 uid="uid://dy2d0a7t3a4sb"]
+
+[ext_resource type="Script" path="res://relic/combat_first_stage_attack_damage.gd" id="1_doifj"]
+
+[resource]
+script = ExtResource("1_doifj")
+extra_damage = 8
+name = "Strong Start"
+tooltip = "First attack on each stage does 8 extra damage"

@@ -86,7 +86,7 @@ func _ready():
 	for character in party.get_children():
 		var initial_relic = character.initial_relic
 		relic_list.mark_used(initial_relic.name)
-		character.relics.push_back(initial_relic)
+		character.add_relic(initial_relic)
 		characters.push_back(character)
 		if run_type == RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards

@@ -93,7 +93,6 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
 	party = character_party
 	var i = 0
 	for character in party.get_children():
-		# TODO: Pass character to portrait and handle everything inside through signals.
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
 		# Add portraits in UI.
 		character_state_ui.add_child(character_portrait)
@@ -218,18 +217,6 @@ func create_cursor(pos: Vector2i, direction: Vector2):
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
 	var unprojected = camera.unproject_position(world_pos)
 	line.add_point(unprojected)
-
-func draw_square(pos: Vector2i, width: float, color=Color(1, 1, 1, 1)) -> Line2D:
-	var line = Line2D.new()
-	line.default_color = color
-	line.width = width
-	var start = map_manager.get_world_position_corner(pos)
-	add_unprojected_point(line, start)
-	add_unprojected_point(line, start + Vector3(tile_size, 0, 0))
-	add_unprojected_point(line, start + Vector3(tile_size, 0, tile_size))
-	add_unprojected_point(line, start + Vector3(0, 0, tile_size))
-	add_unprojected_point(line, start)
-	return line
 
 func create_target_area(pos: Vector2i):
 	# Respect line-of-sight here.
@@ -594,8 +581,11 @@ func play_card():
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
 				var enemy = map_manager.enemy_locs[tile_map_pos + tile_offset]
+				# TODO: Move this inside character.
 				if current_card.apply_enemy(active_character, enemy):
 					handle_enemy_death(enemy)
+					active_character.killed_enemy.emit(active_character)
+				active_character.attacked.emit(active_character)
 	active_character.action_points -= current_card.cost
 	active_character.deck.discard_card(current_card_index)
 	draw_hand()

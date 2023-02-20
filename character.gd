@@ -24,6 +24,12 @@ var card_upgrades: Dictionary
 
 signal changed
 signal made_active(active: bool)
+signal stage_started(character: Character)
+signal stage_ended(character: Character)
+signal turn_started(character: Character)
+signal turn_ended(character: Character)
+signal attacked(character: Character)
+signal killed_enemy(character: Character)
 
 class Snapshot:
 	var action_points: int
@@ -65,20 +71,17 @@ func _process(_delta):
 func snap():
 	snapshot = Snapshot.new(self)
 
-func apply_end_turn_relics():
-	for relic in relics:
-		relic.apply_end_turn(self)
-
-func apply_end_stage_relics():
-	for relic in relics:
-		relic.apply_end_stage(self)
+func add_relic(relic: Relic):
+	relics.push_back(relic)
+	relic.connect_signals(self)
 
 func begin_stage():
 	deck.reset()
+	stage_started.emit(self)
 
 func end_stage():
 	power = 0
-	apply_end_stage_relics()
+	stage_ended.emit(self)
 	refresh()
 
 func begin_turn():
@@ -89,11 +92,12 @@ func begin_turn():
 	if power > 0:
 		power -= 1
 	draw_cards()
+	turn_started.emit(self)
 	refresh()
 
 func end_turn():
 	snap()
-	apply_end_turn_relics()
+	turn_ended.emit(self)
 
 func draw_cards():
 	deck.discard_hand()

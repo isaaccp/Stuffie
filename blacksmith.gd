@@ -164,7 +164,7 @@ func _on_relic_selected(relic_button: RelicButton):
 	shared_bag.spend_gold(relic_cost)
 	relic_list.mark_used(relic_button.relic.name)
 	# TODO: Allow to select which character gets the relic.
-	characters[0].relics.push_back(relic_button.relic)
+	characters[0].add_relic(relic_button.relic)
 	refresh()
 
 func _on_done_pressed():
