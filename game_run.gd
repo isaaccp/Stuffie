@@ -48,7 +48,7 @@ var stages = [
 	],
 	[
 		preload("res://stages/diff1/stage_3w_2a.stage"),
-		preload("res://stages/diff1/stage1.tscn"),
+		preload("res://stages/diff1/stage_cages.stage"),
 	],
 	[
 		preload("res://stages/diff2/stage0.tscn")
@@ -56,7 +56,6 @@ var stages = [
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
-
 
 enum RunType {
 	REGULAR,

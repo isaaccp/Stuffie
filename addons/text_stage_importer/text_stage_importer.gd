@@ -67,6 +67,30 @@ class StageLoader:
 		Item.PILLAR: "pillar",
 	}
 
+	enum WallItemType {
+		WALL,
+		CORNER,
+		T,
+		CROSS,
+	}
+
+	func _make_wall_item_dict(wall, corner, t, cross):
+		var dict = {}
+		if wall:
+			dict[WallItemType.WALL] = wall
+		if corner:
+			dict[WallItemType.CORNER] = corner
+		if t:
+			dict[WallItemType.T] = t
+		if cross:
+			dict[WallItemType.CROSS] = cross
+		return dict
+
+	var wall_items = {
+		'#': _make_wall_item_dict(Item.WALL, Item.WALL_CORNER, Item.WALL_T, Item.WALL_CROSS),
+		'X': _make_wall_item_dict(Item.WALL_GATE, Item.WALL_GATE_CORNER, null, null),
+	}
+
 	var enemy_map = {}
 
 	var item_map: Dictionary
@@ -93,9 +117,21 @@ class StageLoader:
 
 	func _parse_stage_completion():
 		print("Parsing stage completion")
-		var stage_completion_type = stage.StageCompletionType.get(lines[pline])
+		var parts = lines[pline].split(' ')
+		var stage_completion_type = stage.StageCompletionType.get(parts[0])
 		assert(stage_completion_type != null)
 		stage.stage_completion_type = stage_completion_type
+		match stage_completion_type:
+			stage.StageCompletionType.KILL_ALL_ENEMIES:
+				assert(parts.size() == 1)
+			stage.StageCompletionType.KILL_N_ENEMIES:
+				assert(parts.size() == 2)
+				assert(parts[1].is_valid_int())
+				stage.kill_n_enemies_target = int(parts[1])
+			stage.StageCompletionType.SURVIVE_N_TURNS:
+				assert(parts.size() == 2)
+				assert(parts[1].is_valid_int())
+				stage.survive_n_turns_target = int(parts[1])
 		pline += 1
 
 	func _parse_enemy_map():
@@ -104,6 +140,7 @@ class StageLoader:
 			var parts = lines[pline].split(' ')
 			assert(parts.size() == 2)
 			var letter = parts[0]
+			assert(letter.length() == 1)
 			var enemy_id = stage.EnemyId.get(parts[1])
 			assert(enemy_id != null)
 			enemy_map[letter] = enemy_id
@@ -132,8 +169,8 @@ class StageLoader:
 				var tile = _get_tile(x, y)
 				if tile != ' ':
 					_set_gridmap_tile(x, y, 0, Item.GROUND)
-				if tile == '#':
-					var item = _choose_wall_item(x, y)
+				if tile == '#' or tile == 'X':
+					var item = _choose_wall_item(tile, x, y)
 					_set_gridmap_tile(x, y, 1, item.item, item.orientation)
 				elif tile.is_valid_int():
 					starting_positions[int(tile)] = Vector2i(x, y)
@@ -142,8 +179,12 @@ class StageLoader:
 					enemy_position.enemy_id = enemy_map[tile]
 					enemy_position.position = Vector2i(x, y)
 					stage.enemies.push_back(enemy_position)
+				elif tile == '@':
+					assert(stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION)
+					stage.reach_position_target = Vector2i(x, y)
 
 	func _add_starting_positions():
+		assert(starting_positions.size() > 0)
 		for i in range(starting_positions.size()):
 			assert(starting_positions.has(i+1))
 			stage.starting_positions.push_back(starting_positions[i+1])
@@ -156,43 +197,51 @@ class StageLoader:
 	func _item(item: Item, orientation=Vector3.FORWARD):
 		return ItemOrientation.new(item, _orientation(orientation))
 
-	func _choose_wall_item(x: int, y: int):
+	func _wall_item(tile: String, type: WallItemType, orientation=Vector3.FORWARD):
+		assert(wall_items.has(tile))
+		var tile_wall_items = wall_items[tile]
+		assert(tile_wall_items.has(type))
+		var item = tile_wall_items[type]
+		return _item(item, orientation)
+
+	func _choose_wall_item(tile: String, x: int, y: int):
 		var forward = _get_tile(x, y-1)
 		var back = _get_tile(x, y+1)
 		var left = _get_tile(x-1, y)
 		var right = _get_tile(x+1, y)
 
-		var count = [forward, back, left, right].count('#')
+		var count = [forward, back, left, right].count(tile)
 		if count == 4:
-			return _item(Item.WALL_CROSS)
+			return _wall_item(tile, WallItemType.CROSS)
 		elif count == 3:
-			# TODO: Make sure those are right!
-			if back != '#':
-				return _item(Item.WALL_T, Vector3.RIGHT)
-			elif left != '#':
-				return _item(Item.WALL_T, Vector3.BACK)
-			elif forward != '#':
-				return _item(Item.WALL_T, Vector3.LEFT)
-			elif right != '#':
-				return _item(Item.WALL_T, Vector3.UP)
+			# TODO: Fix those.
+			if back != tile:
+				return _wall_item(tile, WallItemType.T, Vector3.RIGHT)
+			elif left != tile:
+				return _wall_item(tile, WallItemType.T, Vector3.BACK)
+			elif forward != tile:
+				return _wall_item(tile, WallItemType.T, Vector3.LEFT)
+			elif right != tile:
+				return _wall_item(tile, WallItemType.T, Vector3.UP)
 		elif count == 2:
 			if forward == back or left == right:
-				if right == '#':
-					return _item(Item.WALL, Vector3.FORWARD)
+				if right == tile:
+					return _wall_item(tile, WallItemType.WALL, Vector3.FORWARD)
 				else:
-					return _item(Item.WALL, Vector3.RIGHT)
+					return _wall_item(tile, WallItemType.WALL, Vector3.RIGHT)
 			else:
-				if back == '#':
-					if left == '#':
-						return _item(Item.WALL_CORNER, Vector3.FORWARD)
+				if back == tile:
+					if left == tile:
+						return _wall_item(tile, WallItemType.CORNER, Vector3.FORWARD)
 					else:
-						return _item(Item.WALL_CORNER, Vector3.LEFT)
-				elif forward == '#':
-					if left == '#':
-						return _item(Item.WALL_CORNER, Vector3.RIGHT)
+						return _wall_item(tile, WallItemType.CORNER, Vector3.LEFT)
+				elif forward == tile:
+					if left == tile:
+						return _wall_item(tile, WallItemType.CORNER, Vector3.RIGHT)
 					else:
-						return _item(Item.WALL_CORNER, Vector3.BACK)
+						return _wall_item(tile, WallItemType.CORNER, Vector3.BACK)
 		else:
+			# TODO: Make this different depending on # or X?
 			return _item(Item.PILLAR)
 
 	func _set_gridmap_tile(x: int, y: int, floor: int, item: Item, orientation=0):
