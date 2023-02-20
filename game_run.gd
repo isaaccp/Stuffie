@@ -42,7 +42,7 @@ func make_blacksmith_stage():
 
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
-	# [ preload("res://stages/diff0/stage0_simple.tscn")],
+	# [ preload("res://stages/diff0/stage_simple.stage")],
 	[
 		preload("res://stages/diff0/stage_1w_2a.stage"),
 	],

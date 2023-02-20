@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://bb41kb77ao2wb"
+path="res://.godot/imported/stage_simple.stage-ab641f308cfc18c09420a1d5aa292cf3.tscn"
+
+[deps]
+
+source_file="res://stages/diff0/stage_simple.stage"
+dest_files=["res://.godot/imported/stage_simple.stage-ab641f308cfc18c09420a1d5aa292cf3.tscn"]
+
+[params]
+
