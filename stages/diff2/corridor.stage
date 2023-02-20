@@ -1,6 +1,7 @@
 KILL_ALL_ENEMIES
-w SKELETON_WARRIOR
-a SKELETON_ARCHER
+w SKELETON_WARRIOR 0
+a SKELETON_ARCHER 0
+A SKELETON_ARCHER 2
 -
 #####
 #...#
@@ -12,6 +13,6 @@ a SKELETON_ARCHER
 #...#
 #w.w#
 #www#
-#aaa#
+#aAa#
 #...#
 #####

@@ -43,7 +43,7 @@ func top_move_option(enemy: Enemy, move_options: Array):
 		var distance_sum = 0
 		for loc in character_locs:
 			var distance = map_manager.distance(move, loc)
-			if distance <= enemy.attack_range:
+			if distance <= enemy.attack_range():
 				reachable_targets += 1
 			distance_sum += distance
 		if reachable_targets:

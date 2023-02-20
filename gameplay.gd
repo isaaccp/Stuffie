@@ -260,7 +260,7 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 	var attack_positions: Array[Vector2i] = []
 	for pos in positions:
 		move_positions[pos] = true
-	var offsets = offsets_within_distance(enemy.attack_range)
+	var offsets = offsets_within_distance(enemy.attack_range())
 	for pos in positions:
 		for offset in offsets:
 			var tile = pos + offset
@@ -405,7 +405,7 @@ func _process(delta):
 				# If no targets, continue.
 				if chosen_target == null:
 					continue
-				if chosen_target[1] > enemy.attack_range:
+				if chosen_target[1] > enemy.attack_range():
 					continue
 				await draw_attack(enemy, target_character)
 				# We found a target within range, attack and destroy character if it died.

@@ -43,7 +43,7 @@ func initialize(enemies_node: Node):
 	gridmap = $GridMap
 	for enemy_position in enemies:
 		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
-		enemy.initialize(enemy_position.position)
+		enemy.initialize(enemy_position.position, enemy_position.level)
 		enemies_node.add_child(enemy)
 
 func complete_stage():

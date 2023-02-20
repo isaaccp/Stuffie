@@ -7,10 +7,12 @@
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("health_bar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_pyj6g")
-total_action_points = 1
-total_move_points = 5
-total_hit_points = 12
-damage = 6
+base_move_points = 5
+base_hit_points = 12
+base_damage = 6
+base_attack_range = 1
+level_hit_points = 2.0
+level_damage = 1.0
 enemy_name = "Skeleton Warrior"
 health_bar = NodePath("HealthDisplay3D")
 

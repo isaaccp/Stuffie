@@ -138,12 +138,14 @@ class StageLoader:
 		print("Parsing enemy map")
 		while lines[pline] != '-':
 			var parts = lines[pline].split(' ')
-			assert(parts.size() == 2)
+			assert(parts.size() == 3)
 			var letter = parts[0]
 			assert(letter.length() == 1)
 			var enemy_id = stage.EnemyId.get(parts[1])
 			assert(enemy_id != null)
-			enemy_map[letter] = enemy_id
+			assert(parts[2].is_valid_int())
+			var level = int(parts[2])
+			enemy_map[letter] = [enemy_id, level]
 			pline += 1
 		# Skip '-'.
 		pline += 1
@@ -180,7 +182,9 @@ class StageLoader:
 					starting_positions[int(tile)] = Vector2i(x, y)
 				elif enemy_map.has(tile):
 					var enemy_position = EnemyPosition.new()
-					enemy_position.enemy_id = enemy_map[tile]
+					var enemy_info = enemy_map[tile]
+					enemy_position.enemy_id = enemy_info[0]
+					enemy_position.level = enemy_info[1]
 					enemy_position.position = Vector2i(x, y)
 					stage.enemies.push_back(enemy_position)
 				elif tile == '@':

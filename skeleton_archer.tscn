@@ -9,11 +9,13 @@
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("health_bar", "weapon")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_2ehli")
-total_action_points = 1
-total_move_points = 4
-total_hit_points = 8
-damage = 8
-attack_range = 6
+base_move_points = 4
+base_hit_points = 8
+base_damage = 8
+base_attack_range = 5
+level_hit_points = 1.0
+level_damage = 1.0
+level_attack_range = 0.25
 enemy_name = "Skeleton Archer"
 health_bar = NodePath("HealthDisplay3D")
 attack_style = 0
