@@ -1,4 +1,4 @@
-extends Control
+extends PanelContainer
 
 class_name CardCollectionChooser
 
@@ -15,6 +15,11 @@ var cards: Array
 var cards_per_row = 4  # TODO: Do something smart with screen size later.
 
 signal card_chosen(card: Card)
+
+func reset():
+	cards.clear()
+	for child in vbox.get_children():
+		child.queue_free()
 
 func initialize_from_character(character: Character, filter=Filter.ALL):
 	if filter == Filter.ALL:
@@ -34,6 +39,7 @@ func initialize_from_upgrades_to_card(character: Character, card: Card):
 	initialize_from_cards(character, upgrades)
 
 func initialize_from_cards(character: Character, cards: Array):
+	reset()
 	self.cards = cards
 	var rows = ((cards.size()-1)/cards_per_row)+1
 	var card_idx = 0

@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7rmy4m8bwdwv"]
+[gd_scene load_steps=4 format=3 uid="uid://c7rmy4m8bwdwv"]
 
 [ext_resource type="Script" path="res://card_upgrade.gd" id="1_5d5iy"]
+[ext_resource type="PackedScene" uid="uid://c7iir3mgvux8m" path="res://card_collection_chooser.tscn" id="2_pkoxn"]
+[ext_resource type="PackedScene" uid="uid://c2wg8gqprp7pc" path="res://card_ui.tscn" id="3_o5xce"]
 
-[node name="CardUpgrade" type="Control"]
+[node name="CardUpgrade" type="Control" node_paths=PackedStringArray("card_chooser", "upgrade_chooser", "card_to_upgrade_ui", "upgrade_box")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,3 +12,57 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5d5iy")
+card_chooser = NodePath("HBoxContainer/Upgradable/CardChooser")
+upgrade_chooser = NodePath("HBoxContainer/Upgrades/UpgradeChooser")
+card_to_upgrade_ui = NodePath("HBoxContainer/Upgrades/Card")
+upgrade_box = NodePath("HBoxContainer/Upgrades")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Upgradable" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/Upgradable"]
+layout_mode = 2
+text = "Choose a card to upgrade"
+horizontal_alignment = 1
+
+[node name="CardChooser" parent="HBoxContainer/Upgradable" instance=ExtResource("2_pkoxn")]
+layout_mode = 2
+
+[node name="Upgrades" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/Upgrades"]
+layout_mode = 2
+text = "Choose Upgrade"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="HBoxContainer/Upgrades"]
+layout_mode = 2
+text = "Card to upgrade"
+horizontal_alignment = 1
+
+[node name="Card" parent="HBoxContainer/Upgrades" instance=ExtResource("3_o5xce")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label3" type="Label" parent="HBoxContainer/Upgrades"]
+layout_mode = 2
+text = "Upgrade options"
+horizontal_alignment = 1
+
+[node name="UpgradeChooser" parent="HBoxContainer/Upgrades" instance=ExtResource("2_pkoxn")]
+layout_mode = 2
