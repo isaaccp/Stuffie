@@ -27,6 +27,9 @@ var gridmap: GridMap
 @export var kill_n_enemies_target: int
 @export var survive_n_turns_target: int
 
+@export var solid_tiles: Array[Vector2i]
+@export var view_blocking_tiles: Array[Vector2i]
+
 var stage_complete = false
 var killed_enemies = 0
 

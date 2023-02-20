@@ -172,6 +172,9 @@ class StageLoader:
 				if tile == '#' or tile == 'X':
 					var item = _choose_wall_item(tile, x, y)
 					_set_gridmap_tile(x, y, 1, item.item, item.orientation)
+					stage.solid_tiles.push_back(Vector2i(x, y))
+					if tile == '#':
+						stage.view_blocking_tiles.push_back(Vector2i(x, y))
 				elif tile.is_valid_int():
 					starting_positions[int(tile)] = Vector2i(x, y)
 				elif enemy_map.has(tile):
