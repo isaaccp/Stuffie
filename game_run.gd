@@ -44,9 +44,6 @@ var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
 	# [ preload("res://stages/diff0/stage_simple.stage")],
 	[
-		preload("res://stages/big_bad_skeleton.stage"),
-	],
-	[
 		preload("res://stages/1w_2a.stage"),
 	],
 	[
