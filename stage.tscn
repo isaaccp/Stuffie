@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
-[ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
+[ext_resource type="Texture2D" uid="uid://c1m8f58q5sfcd" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
 [node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "undo_button", "shared_bag_gold_ui")]
 script = ExtResource("1_bqe1h")
@@ -122,6 +122,7 @@ transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 0.910684, 0.413104, 0, -0.413104, 0.910684, 3, 8, 21)
+current = true
 
 [connection signal="pressed" from="UI/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UI/InfoPanel/VBox/UndoButton" to="." method="_on_undo_button_pressed"]
