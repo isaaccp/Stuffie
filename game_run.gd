@@ -44,6 +44,9 @@ var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
 	# [ preload("res://stages/diff0/stage_simple.stage")],
 	[
+		preload("res://stages/big_bad_skeleton.stage"),
+	],
+	[
 		preload("res://stages/1w_2a.stage"),
 	],
 	[
@@ -51,9 +54,15 @@ var stages = [
 		preload("res://stages/cages.stage"),
 	],
 	[
+		preload("res://stages/death_wall.stage"),
+	],
+	[
 		preload("res://stages/death_cage.stage"),
 		preload("res://stages/corridor.stage"),
-	]
+	],
+	[
+		preload("res://stages/big_bad_skeleton.stage"),
+	],
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
@@ -101,6 +110,9 @@ func set_run_type(run_type: RunType):
 			make_combat_stage(1),
 			make_blacksmith_stage(),
 			make_combat_stage(2),
+			make_combat_stage(3),
+			make_blacksmith_stage(),
+			make_combat_stage(4),
 		]
 	elif run_type == RunType.TEST_BLACKSMITH:
 		shared_bag.add_gold(30)

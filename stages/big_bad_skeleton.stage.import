@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://c4luuxpxc2ohm"
+path="res://.godot/imported/big_bad_skeleton.stage-83f5a91a39b6f4f590046f3b1f83fad6.tscn"
+
+[deps]
+
+source_file="res://stages/big_bad_skeleton.stage"
+dest_files=["res://.godot/imported/big_bad_skeleton.stage-83f5a91a39b6f4f590046f3b1f83fad6.tscn"]
+
+[params]
+

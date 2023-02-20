@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://dinr73bvpt864"
+path="res://.godot/imported/death_wall.stage-576a5cee695dc8b9dbf689d59a63f89a.tscn"
+
+[deps]
+
+source_file="res://stages/death_wall.stage"
+dest_files=["res://.godot/imported/death_wall.stage-576a5cee695dc8b9dbf689d59a63f89a.tscn"]
+
+[params]
+
