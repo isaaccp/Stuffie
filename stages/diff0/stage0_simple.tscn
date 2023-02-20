@@ -4,9 +4,8 @@
 [ext_resource type="MeshLibrary" uid="uid://d38atikp62fhy" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="3_krf0n"]
 [ext_resource type="Script" path="res://enemy_viewer.gd" id="4_emot1"]
 
-[node name="Node" type="Node" node_paths=PackedStringArray("gridmap")]
+[node name="Node" type="Node"]
 script = ExtResource("1_sws8i")
-gridmap = NodePath("GridMap")
 starting_positions = Array[Vector2i]([Vector2i(6, 2), Vector2i(8, 2)])
 stage_completion_type = 3
 survive_n_turns_target = 1

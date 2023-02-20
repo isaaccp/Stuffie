@@ -24,6 +24,10 @@ window/size/viewport_height=1296
 
 movie_writer/movie_file="C:/Users/isaac/Documents/GodotVideos/.avi"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/text_stage_importer/plugin.cfg")
+
 [input]
 
 ui_left={

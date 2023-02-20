@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://b4rgs4psgw0iv"
+path="res://.godot/imported/foo.stage-638a7d17e3a1c7f82c48f4f2f665570f.tscn"
+
+[deps]
+
+source_file="res://addons/text_stage_importer/foo.stage"
+dest_files=["res://.godot/imported/foo.stage-638a7d17e3a1c7f82c48f4f2f665570f.tscn"]
+
+[params]
+

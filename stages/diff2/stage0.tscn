@@ -50,10 +50,9 @@ script = ExtResource("2_7r506")
 enemy_id = 1
 position = Vector2i(10, 3)
 
-[node name="Node" type="Node" node_paths=PackedStringArray("gridmap")]
+[node name="Node" type="Node"]
 script = ExtResource("1_krkru")
 enemies = Array[ExtResource("2_7r506")]([SubResource("Resource_juagn"), SubResource("Resource_2eant"), SubResource("Resource_8aqve"), SubResource("Resource_am7kb"), SubResource("Resource_2dfbf"), SubResource("Resource_10qcj"), SubResource("Resource_cbhn4"), SubResource("Resource_bqknk"), SubResource("Resource_cwj6t")])
-gridmap = NodePath("GridMap")
 starting_positions = Array[Vector2i]([Vector2i(2, 2)])
 stage_completion_type = 0
 

@@ -19,8 +19,8 @@ var enemy_scenes = {
 	EnemyId.SKELETON_ARCHER: preload("res://skeleton_archer.tscn"),
 }
 
+var gridmap: GridMap
 @export var enemies: Array[EnemyPosition]
-@export var gridmap: GridMap
 @export var starting_positions: Array[Vector2i]
 @export var stage_completion_type: StageCompletionType
 @export var reach_position_target: Vector2i
@@ -36,6 +36,7 @@ func _ready():
 	pass
 
 func initialize(enemies_node: Node):
+	gridmap = $GridMap
 	for enemy_position in enemies:
 		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
 		enemy.initialize(enemy_position.position)
