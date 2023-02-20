@@ -4,67 +4,21 @@ class_name MapManager
 
 var a_star = AStarGrid2D.new()
 var base_solid_locations: Dictionary
+var base_view_blocking_locations: Dictionary
 var map_rect: Rect2i
 var cell_size: Vector3
 var character_locs: Dictionary
 var enemy_locs: Dictionary
 
-func initialize(map: GridMap):
-	cell_size = map.cell_size
+func initialize(stage: Stage):
+	cell_size = stage.gridmap.cell_size
+	map_rect = stage.rect
 
-	var block_items = Dictionary()
-	for item in [
-		["wall", [[-1, 0], [0, 0], [1, 0]]],
-		["wallCorner", [[1, 0], [0, 0], [0, -1]]],
-		["wallSplit", [[1, 0], [0, 0], [-1, 0], [0, -1]]],
-		["wall_door", [[1, 0], [-1, 0]]],
-		["wall_gate", [[-1, 0], [0, 0], [1, 0]]],
-		# TODO: This should be like "wallCorner", but something's off.
-		# This is good enough for current map.
-		["wall_gateCorner", [[0, 0]]],
-		["pillar", [[0 ,0]]],
-	]:
-		var item_name = item[0]
-		var item_cells = item[1]
-		var item_id = map.mesh_library.find_item_by_name(item_name)
-		block_items[item_id] = item_cells
+	for loc in stage.solid_tiles:
+		base_solid_locations[loc] = true
 
-	# Base map.
-	var min_x = 10000000
-	var min_z = 10000000
-	var max_x = -10000000
-	var max_z = -10000000
-
-	for cell in map.get_used_cells():
-		if cell.x < min_x:
-			min_x = cell.x
-		if cell.z < min_z:
-			min_z = cell.z
-		if cell.x > max_x:
-			max_x = cell.x
-		if cell.z > max_z:
-			max_z = cell.z
-		var item = map.get_cell_item(cell)
-		if item in block_items:
-			var basis = map.get_cell_item_basis(cell)
-			var item_cells = block_items[item]
-			for item_cell in item_cells:
-				var cell3 = Vector3(item_cell[0], 0, item_cell[1])
-				var xform_cell = cell3 * basis
-				var map_tile = Vector2i(cell.x + xform_cell.x, cell.z + xform_cell.z)
-				base_solid_locations[map_tile] = true
-
-	assert(min_x == 0)
-	assert(min_z == 0)
-
-	map_rect = Rect2i(Vector2i(0, 0), Vector2(max_x, max_z))
-
-# Unused, but keeping just in case.
-func _mesh_size_from_aabb(aabb: AABB) -> Vector2i:
-	var mesh_size: Vector2i
-	mesh_size.x = int((aabb.size.x-0.1) / cell_size.x) + 1
-	mesh_size.y = int((aabb.size.z-0.1) / cell_size.z) + 1
-	return mesh_size
+	for loc in stage.view_blocking_tiles:
+		base_view_blocking_locations[loc] = true
 
 # Needs to be called after set_characters and set_enemies.
 # Think about something better once it's clear how we'll use it.

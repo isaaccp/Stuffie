@@ -29,6 +29,7 @@ var gridmap: GridMap
 
 @export var solid_tiles: Array[Vector2i]
 @export var view_blocking_tiles: Array[Vector2i]
+@export var rect: Rect2i
 
 var stage_complete = false
 var killed_enemies = 0

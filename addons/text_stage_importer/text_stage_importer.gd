@@ -158,6 +158,7 @@ class StageLoader:
 		for line in map:
 			max_x = max(max_x, line.length())
 		max_y = map.size()
+		stage.rect = Rect2i(Vector2i(0, 0), Vector2i(max_x, max_y))
 		stage.name = "Stage"
 		gridmap.name = "GridMap"
 		stage.add_child(gridmap)

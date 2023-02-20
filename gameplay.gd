@@ -136,7 +136,7 @@ func next_stage():
 	stage_done.emit()
 
 func initialize_map_manager(stage: Stage):
-	map_manager.initialize(stage.gridmap)
+	map_manager.initialize(stage)
 	map_manager.set_party(party.get_children())
 	map_manager.set_enemies($World/Enemies.get_children())
 	map_manager.initialize_a_star()
