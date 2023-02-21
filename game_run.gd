@@ -3,11 +3,13 @@ extends Node
 class_name GameRun
 
 var state = StateMachine.new()
+var MAP = state.add("map")
 var WITHIN_STAGE = state.add("within_stage")
 var BETWEEN_STAGES = state.add("between_stages")
 
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
+var run_map_scene = preload("res://run_map.tscn")
 
 enum StageType {
 	COMBAT,
@@ -97,7 +99,7 @@ func _ready():
 		characters.push_back(character)
 		if run_type == RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards
-	state.change_state(WITHIN_STAGE)
+	state.change_state(MAP)
 
 func set_run_type(run_type: RunType):
 	self.run_type = run_type
@@ -147,25 +149,36 @@ func _on_within_stage_entered():
 		blacksmith.stage_done.connect(stage_finished)
 		stage_parent.add_child(blacksmith)
 
-func _on_between_stages_entered():
-	# Possibly just push this into between_stages and
-	# handle it there. Or rename "between_stages" to "rewards_stage".
-	if rewards_type == RewardsType.NONE:
-		next_stage.call_deferred()
-	else:
-		var between_stages = between_stages_scene.instantiate()
-		between_stages.initialize(characters)
-		stage_parent.add_child(between_stages)
-		between_stages.between_stages_done.connect(next_stage)
-
 func _on_within_stage_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
 	if current_stage_def().stage_type == StageType.COMBAT:
 		for character in characters:
 			character.end_stage()
+	stage_number += 1
+
+func _on_between_stages_entered():
+	# Possibly just push this into between_stages and
+	# handle it there. Or rename "between_stages" to "rewards_stage".
+	if rewards_type == RewardsType.NONE:
+		state.change_state.call_deferred(MAP)
+	else:
+		var between_stages = between_stages_scene.instantiate()
+		between_stages.initialize(characters)
+		stage_parent.add_child(between_stages)
+		between_stages.between_stages_done.connect(state.change_state.bind(MAP))
 
 func _on_between_stages_exited():
+	for node in stage_parent.get_children():
+		node.queue_free()
+
+func _on_map_entered():
+	var run_map = run_map_scene.instantiate() as RunMap
+	run_map.initialize(run, stage_number, shared_bag)
+	stage_parent.add_child(run_map)
+	run_map.done.connect(next_stage)
+
+func _on_map_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
 
@@ -177,7 +190,6 @@ func stage_finished():
 		state.change_state(BETWEEN_STAGES)
 
 func next_stage():
-	stage_number += 1
 	state.change_state(WITHIN_STAGE)
 
 func game_over():

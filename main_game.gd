@@ -6,6 +6,7 @@ var WITHIN_RUN = state.add("within_run")
 
 var main_menu_scene = preload("res://main_menu.tscn")
 var game_run_scene = preload("res://game_run.tscn")
+
 var run_type: GameRun.RunType
 
 func _ready():

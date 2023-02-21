@@ -1,0 +1,290 @@
+[gd_scene load_steps=29 format=3 uid="uid://cjjdp1q07jr0j"]
+
+[ext_resource type="Script" path="res://run_map.gd" id="1_5k821"]
+[ext_resource type="Texture2D" uid="uid://b2igb4akb82vs" path="res://resources/map/textures/parchmentFoldedCrinkled.png" id="2_7dhdk"]
+[ext_resource type="Texture2D" uid="uid://cubi6iii5ct2s" path="res://resources/map/items/banner.png" id="2_etg7e"]
+[ext_resource type="Texture2D" uid="uid://bpebf3fhw1xk" path="res://resources/map/items/waterWheel.png" id="3_ygmcr"]
+[ext_resource type="Texture2D" uid="uid://b727k0xli8b3h" path="res://resources/map/items/pathStraight.png" id="4_q8lcq"]
+[ext_resource type="Texture2D" uid="uid://ebr0npqv2bqk" path="res://resources/map/items/skull.png" id="4_t1bfn"]
+[ext_resource type="Texture2D" uid="uid://p1engudsktn8" path="res://resources/map/items/houses.png" id="6_sxx82"]
+[ext_resource type="Texture2D" uid="uid://ci1nrkf1cifam" path="res://resources/map/items/houseChimney.png" id="7_64g4j"]
+[ext_resource type="Texture2D" uid="uid://bipighsdj78w5" path="res://resources/map/items/graveyard.png" id="8_5g6ec"]
+[ext_resource type="Texture2D" uid="uid://6huqquv0pb88" path="res://resources/map/items/churchLarge.png" id="9_m3al1"]
+[ext_resource type="Texture2D" uid="uid://dkqhyimlxdhxr" path="res://resources/map/items/lake.png" id="10_0knc1"]
+[ext_resource type="Texture2D" uid="uid://boc6pb7nv4wir" path="res://resources/map/items/watchtower.png" id="11_8cuhu"]
+[ext_resource type="Texture2D" uid="uid://bwkb2s5spw51p" path="res://resources/map/items/house.png" id="12_dcy76"]
+[ext_resource type="Texture2D" uid="uid://d2hg0dq5dbcev" path="res://resources/map/items/rocksMountain.png" id="13_m3i73"]
+[ext_resource type="Texture2D" uid="uid://7ysa1oknro4l" path="res://resources/map/items/well.png" id="13_muow4"]
+[ext_resource type="Texture2D" uid="uid://bh6n5yb87qrwb" path="res://resources/map/items/houseTall.png" id="14_clcfw"]
+[ext_resource type="Texture2D" uid="uid://di4txxfeee2pl" path="res://resources/map/items/castleTall.png" id="15_p2cm0"]
+[ext_resource type="Texture2D" uid="uid://bhpbyuudewoj8" path="res://resources/map/items/cactus.png" id="17_lr0jd"]
+[ext_resource type="Texture2D" uid="uid://iw8ic4a62wy7" path="res://resources/map/items/cactusLarge.png" id="18_7fqgt"]
+[ext_resource type="Texture2D" uid="uid://ctcdno3cqsjo1" path="res://resources/map/items/bush.png" id="19_1nb1b"]
+[ext_resource type="Texture2D" uid="uid://b0me1tytpgk48" path="res://resources/map/items/mine.png" id="20_t8suo"]
+[ext_resource type="Texture2D" uid="uid://d0ptegxvwxe1" path="res://resources/map/items/palmLarge.png" id="21_8xje1"]
+[ext_resource type="Texture2D" uid="uid://dns5jtbvke08i" path="res://resources/map/items/palm.png" id="22_cb1gi"]
+[ext_resource type="Texture2D" uid="uid://byoipsxbkd4fu" path="res://resources/map/items/tent.png" id="23_n5aai"]
+[ext_resource type="Texture2D" uid="uid://og4umoo4ut0e" path="res://resources/map/items/vulcano.png" id="24_5mmoc"]
+[ext_resource type="Texture2D" uid="uid://b3xjv32unjjnm" path="res://resources/map/items/treePines.png" id="25_s4k3o"]
+[ext_resource type="Texture2D" uid="uid://c8d85a7jsxx17" path="res://resources/map/items/campfire.png" id="26_lntsw"]
+[ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="28_q1iqd"]
+
+[node name="Control" type="Control" node_paths=PackedStringArray("panel", "shared_bag_gold_ui")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5k821")
+panel = NodePath("Panel")
+combat = ExtResource("2_etg7e")
+blacksmith = ExtResource("3_ygmcr")
+boss = ExtResource("4_t1bfn")
+path = ExtResource("4_q8lcq")
+shared_bag_gold_ui = NodePath("PanelContainer/SharedBagGoldUI")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="Panel"]
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 6920.0
+offset_bottom = 3804.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_7dhdk")
+stretch_mode = 1
+
+[node name="Decorations" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Town" type="Control" parent="Panel/Decorations"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 869.0
+offset_top = 405.0
+offset_right = 909.0
+offset_bottom = 445.0
+
+[node name="Items" type="Control" parent="Panel/Decorations/Town"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.5, 1.5)
+
+[node name="Houses" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(-53, -55)
+texture = ExtResource("6_sxx82")
+
+[node name="Houses2" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(21, -25)
+texture = ExtResource("6_sxx82")
+
+[node name="HouseChimney" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(-59, 4)
+texture = ExtResource("7_64g4j")
+
+[node name="Graveyard" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(177, -45)
+texture = ExtResource("8_5g6ec")
+
+[node name="ChurchLarge" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(92, -42)
+texture = ExtResource("9_m3al1")
+
+[node name="Lake" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(4, 64)
+texture = ExtResource("10_0knc1")
+
+[node name="Watchtower" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(-123, 47)
+texture = ExtResource("11_8cuhu")
+
+[node name="House" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(76, 9)
+texture = ExtResource("12_dcy76")
+
+[node name="Well" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(14, -90)
+texture = ExtResource("13_muow4")
+
+[node name="Houses3" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(67.3334, -111.333)
+texture = ExtResource("6_sxx82")
+
+[node name="HouseTall" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(-33.3333, -125.333)
+texture = ExtResource("14_clcfw")
+
+[node name="CastleTall" type="Sprite2D" parent="Panel/Decorations/Town/Items"]
+position = Vector2(-190, -53.3333)
+texture = ExtResource("15_p2cm0")
+
+[node name="Mountains" type="Control" parent="Panel/Decorations"]
+anchors_preset = 0
+offset_left = 85.0
+offset_top = 90.0
+offset_right = 125.0
+offset_bottom = 130.0
+scale = Vector2(1.5, 1.5)
+
+[node name="RocksMountain" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(846.667, 168)
+texture = ExtResource("13_m3i73")
+
+[node name="RocksMountain2" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(822.667, 100)
+texture = ExtResource("13_m3i73")
+
+[node name="RocksMountain3" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(821.333, 224.667)
+texture = ExtResource("13_m3i73")
+
+[node name="RocksMountain4" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(905.333, 244.667)
+texture = ExtResource("13_m3i73")
+
+[node name="RocksMountain5" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(884, 126.667)
+texture = ExtResource("13_m3i73")
+
+[node name="RocksMountain6" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(908, 190.667)
+texture = ExtResource("13_m3i73")
+
+[node name="Cactus" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(988.667, 142.667)
+texture = ExtResource("17_lr0jd")
+
+[node name="CactusLarge" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1028.67, 222)
+texture = ExtResource("18_7fqgt")
+
+[node name="Cactus2" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1061.33, 122.667)
+texture = ExtResource("17_lr0jd")
+
+[node name="CactusLarge2" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1095.33, 206)
+texture = ExtResource("18_7fqgt")
+
+[node name="Bush" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1129.33, 154)
+texture = ExtResource("19_1nb1b")
+
+[node name="Bush2" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1148.67, 213.333)
+texture = ExtResource("19_1nb1b")
+
+[node name="Bush3" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1130.67, 98.6667)
+texture = ExtResource("19_1nb1b")
+
+[node name="Mine" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(966, 226)
+texture = ExtResource("20_t8suo")
+
+[node name="PalmLarge" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1180, 68.6667)
+texture = ExtResource("21_8xje1")
+
+[node name="Palm" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1180, 140.667)
+texture = ExtResource("22_cb1gi")
+
+[node name="Palm2" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1205.33, 220.667)
+texture = ExtResource("22_cb1gi")
+
+[node name="PalmLarge2" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1236.67, 114)
+texture = ExtResource("21_8xje1")
+
+[node name="PalmLarge3" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1251.33, 186)
+texture = ExtResource("21_8xje1")
+
+[node name="Palm3" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1273.33, 54.6667)
+texture = ExtResource("22_cb1gi")
+
+[node name="Palm4" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1306, 135.333)
+texture = ExtResource("22_cb1gi")
+
+[node name="PalmLarge4" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1304.67, 223.333)
+texture = ExtResource("21_8xje1")
+
+[node name="Tent" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(1007.33, 60)
+texture = ExtResource("23_n5aai")
+
+[node name="Vulcano" type="Sprite2D" parent="Panel/Decorations/Mountains"]
+position = Vector2(840, 43.3333)
+texture = ExtResource("24_5mmoc")
+
+[node name="Forest" type="Control" parent="Panel/Decorations"]
+anchors_preset = 0
+offset_left = 168.0
+offset_top = 800.0
+offset_right = 208.0
+offset_bottom = 840.0
+scale = Vector2(1.5, 1.5)
+
+[node name="TreePines" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(277.333, 54.6667)
+texture = ExtResource("25_s4k3o")
+
+[node name="TreePines2" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(274.667, 232)
+texture = ExtResource("25_s4k3o")
+
+[node name="TreePines3" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(306, 156.667)
+texture = ExtResource("25_s4k3o")
+
+[node name="TreePines4" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(128, 221.333)
+texture = ExtResource("25_s4k3o")
+
+[node name="TreePines5" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(124, 140)
+texture = ExtResource("25_s4k3o")
+
+[node name="TreePines6" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(206.667, 189.333)
+texture = ExtResource("25_s4k3o")
+
+[node name="TreePines7" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(182, 75.3333)
+texture = ExtResource("25_s4k3o")
+
+[node name="Campfire" type="Sprite2D" parent="Panel/Decorations/Forest"]
+position = Vector2(223.333, 115.333)
+texture = ExtResource("26_lntsw")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="SharedBagGoldUI" parent="PanelContainer" instance=ExtResource("28_q1iqd")]
+layout_mode = 2
