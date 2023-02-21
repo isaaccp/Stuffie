@@ -166,7 +166,7 @@ func _on_between_stages_entered():
 		state.change_state.call_deferred(MAP)
 	else:
 		var between_stages = between_stages_scene.instantiate()
-		between_stages.initialize(characters)
+		between_stages.initialize(characters, shared_bag)
 		stage_parent.add_child(between_stages)
 		between_stages.between_stages_done.connect(state.change_state.bind(MAP))
 
