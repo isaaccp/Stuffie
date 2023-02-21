@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c87xh0a8orldv"]
+
+[ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/shout.tres" id="1_k2skt"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_3sx8p"]
+[ext_resource type="Script" path="res://card.gd" id="3_b74jm"]
+[ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="4_d2u6j"]
+
+[sub_resource type="Resource" id="Resource_oihnq"]
+script = ExtResource("2_3sx8p")
+block = 0
+power = 0
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 2
+vulnerability = 0
+
+[resource]
+script = ExtResource("3_b74jm")
+card_name = "Echoing Shout"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_k2skt")
+cost = 1
+texture = ExtResource("4_d2u6j")
+target_mode = 4
+target_distance = 1
+damage = 0
+on_play_effect = SubResource("Resource_oihnq")
+area_type = 0
+area_length = 3
+area_width = 3

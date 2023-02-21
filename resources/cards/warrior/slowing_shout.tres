@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://djnbtvfb2efs5"]
+
+[ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/shout.tres" id="1_12yct"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_jkv5l"]
+[ext_resource type="Script" path="res://card.gd" id="3_oeghp"]
+[ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="4_2a3hm"]
+
+[sub_resource type="Resource" id="Resource_oihnq"]
+script = ExtResource("2_jkv5l")
+block = 0
+power = 0
+hit_points = 0
+move_points = -3
+action_points = 0
+weakness = 1
+vulnerability = 0
+
+[resource]
+script = ExtResource("3_oeghp")
+card_name = "Slowing Shout"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_12yct")
+cost = 1
+texture = ExtResource("4_2a3hm")
+target_mode = 4
+target_distance = 1
+damage = 0
+on_play_effect = SubResource("Resource_oihnq")
+area_type = 0
+area_length = 3
+area_width = 3

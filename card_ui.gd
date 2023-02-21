@@ -39,6 +39,8 @@ func get_card_effect_description(effect: CardEffect) -> String:
 		effect_texts.push_back("adds %d [url]power[/url]" % effect.power)
 	if effect.move_points > 0:
 		effect_texts.push_back("adds %d MP" % effect.move_points)
+	elif effect.move_points < 0:
+		effect_texts.push_back("removes %d MP" % -effect.move_points)
 	if effect.action_points > 0:
 		effect_texts.push_back("adds %d AP" % effect.action_points)
 	if effect.weakness > 0:
