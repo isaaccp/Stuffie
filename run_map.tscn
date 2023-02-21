@@ -42,6 +42,7 @@ combat = ExtResource("2_etg7e")
 blacksmith = ExtResource("3_ygmcr")
 boss = ExtResource("4_t1bfn")
 path = ExtResource("4_q8lcq")
+camp = ExtResource("26_lntsw")
 shared_bag_gold_ui = NodePath("PanelContainer/SharedBagGoldUI")
 
 [node name="Panel" type="Panel" parent="."]

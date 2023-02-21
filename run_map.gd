@@ -13,6 +13,7 @@ var stage_number: int
 @export var blacksmith: Texture
 @export var boss: Texture
 @export var path: Texture
+@export var camp: Texture
 @export var shared_bag_gold_ui: SharedBagGoldUI
 
 var between_stage_space: float
@@ -59,6 +60,8 @@ func prepare_item(index: int) -> Sprite2D:
 					return get_sprite(boss, index)
 			GameRun.StageType.BLACKSMITH:
 				return get_sprite(blacksmith, index)
+			GameRun.StageType.CAMP:
+				return get_sprite(camp, index)
 	assert(false)
 	return null
 

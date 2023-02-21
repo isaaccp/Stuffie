@@ -69,32 +69,12 @@ func effect_area(direction: Vector2):
 func apply_effect(character: Character, effect: CardEffect):
 	if not effect:
 		return
-	if effect.move_points > 0:
-		character.move_points += effect.move_points
-	if effect.block > 0:
-		character.add_block(effect.block)
-	if effect.power > 0:
-		character.power += effect.power
-	if effect.action_points > 0:
-		character.action_points += effect.action_points
-	if effect.hit_points > 0:
-		character.heal(effect.hit_points)
-	if effect.draw_cards > 0:
-		character.draw_cards(effect.draw_cards)
-	if effect.draw_attack > 0:
-		character.draw_attack(effect.draw_attack)
+	effect.apply_to_character(character)
 
 func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
 	if not effect:
 		return
-	if effect.weakness:
-		enemy.weakness += effect.weakness
-	if effect.vulnerability:
-		enemy.vulnerability += effect.weakness
-	if effect.move_points:
-		enemy.move_points += effect.move_points
-		if enemy.move_points < 0:
-			enemy.move_points = 0
+	effect.apply_to_enemy(enemy)
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)

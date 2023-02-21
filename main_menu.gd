@@ -1,17 +1,15 @@
 extends Control
 
-signal new_game_selected
-signal test_blacksmith_selected
+signal run_type_selected(run_type: GameRun.RunType)
 
 @export var new_game_button: Button
 @export var test_blacksmith_button: Button
+@export var test_camp_button: Button
 
 func _ready():
-	new_game_button.connect("pressed", new_game_pressed)
-	test_blacksmith_button.connect("pressed", test_blacksmith_pressed)
+	new_game_button.pressed.connect(start_run.bind(GameRun.RunType.REGULAR))
+	test_blacksmith_button.pressed.connect(start_run.bind(GameRun.RunType.TEST_BLACKSMITH))
+	test_camp_button.pressed.connect(start_run.bind(GameRun.RunType.TEST_CAMP))
 
-func new_game_pressed():
-	new_game_selected.emit()
-
-func test_blacksmith_pressed():
-	test_blacksmith_selected.emit()
+func start_run(run_type: GameRun.RunType):
+	run_type_selected.emit(run_type)

@@ -18,7 +18,6 @@ level_damage = 1.0
 level_attack_range = 0.25
 enemy_name = "Skeleton Archer"
 health_bar = NodePath("HealthDisplay3D")
-attack_style = 0
 weapon = NodePath("Weapon")
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("3_oxvrd")]

@@ -14,6 +14,7 @@ var run_map_scene = preload("res://run_map.tscn")
 enum StageType {
 	COMBAT,
 	BLACKSMITH,
+	CAMP,
 }
 
 enum RewardsType {
@@ -34,13 +35,16 @@ class StageDef:
 			return RewardsType.REGULAR
 		return RewardsType.NONE
 
-func make_combat_stage(difficulty: int):
-	var stage_def = StageDef.new(StageType.COMBAT)
-	stage_def.combat_difficulty = difficulty
-	return stage_def
+	static func combat(difficulty: int) -> StageDef:
+		var stage_def = StageDef.new(StageType.COMBAT)
+		stage_def.combat_difficulty = difficulty
+		return stage_def
 
-func make_blacksmith_stage():
-	return StageDef.new(StageType.BLACKSMITH)
+	static func blacksmith():
+		return StageDef.new(StageType.BLACKSMITH)
+
+	static func camp():
+		return StageDef.new(StageType.CAMP)
 
 var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
@@ -67,10 +71,12 @@ var stages = [
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
+var camp_scene = preload("res://stages/camp.tscn")
 
 enum RunType {
 	REGULAR,
 	TEST_BLACKSMITH,
+	TEST_CAMP,
 }
 
 var run = []
@@ -101,25 +107,33 @@ func _ready():
 		characters.push_back(character)
 		if run_type == RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards
+		elif run_type == RunType.TEST_CAMP:
+			character.hit_points -= 30
 	state.change_state(MAP)
 
 func set_run_type(run_type: RunType):
 	self.run_type = run_type
 	if run_type == RunType.REGULAR:
 		run = [
-			make_combat_stage(0),
-			make_combat_stage(1),
-			make_blacksmith_stage(),
-			make_combat_stage(2),
-			make_combat_stage(3),
-			make_blacksmith_stage(),
-			make_combat_stage(4),
+			StageDef.combat(0),
+			StageDef.combat(1),
+			StageDef.blacksmith(),
+			StageDef.combat(2),
+			StageDef.camp(),
+			StageDef.combat(3),
+			StageDef.blacksmith(),
+			StageDef.combat(4),
 		]
 	elif run_type == RunType.TEST_BLACKSMITH:
 		shared_bag.add_gold(30)
 		run = [
-			make_blacksmith_stage(),
-			make_combat_stage(0),
+			StageDef.blacksmith(),
+			StageDef.combat(0),
+		]
+	elif run_type == RunType.TEST_CAMP:
+		run = [
+			StageDef.camp(),
+			StageDef.combat(0),
 		]
 
 func current_stage_def():
@@ -133,6 +147,10 @@ func get_combat_stage(difficulty: int):
 
 func get_blacksmith_stage():
 	var stage = blacksmith_scene.instantiate() as BlacksmithStage
+	return stage
+
+func get_camp_stage():
+	var stage = camp_scene.instantiate() as CampStage
 	return stage
 
 func _on_within_stage_entered():
@@ -150,6 +168,11 @@ func _on_within_stage_entered():
 		blacksmith.initialize(characters, shared_bag, relic_list)
 		blacksmith.stage_done.connect(stage_finished)
 		stage_parent.add_child(blacksmith)
+	elif stage_def.stage_type == StageType.CAMP:
+		var camp = get_camp_stage()
+		camp.initialize(characters, shared_bag)
+		camp.stage_done.connect(stage_finished)
+		stage_parent.add_child(camp)
 
 func _on_within_stage_exited():
 	for node in stage_parent.get_children():

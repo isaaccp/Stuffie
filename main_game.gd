@@ -20,8 +20,7 @@ func clear_children():
 func _on_main_menu_entered():
 	var main_menu = main_menu_scene.instantiate()
 	add_child(main_menu)
-	main_menu.new_game_selected.connect(start_run)
-	main_menu.test_blacksmith_selected.connect(start_blacksmith_run)
+	main_menu.run_type_selected.connect(start_run)
 
 func _on_main_menu_exited():
 	clear_children()
@@ -35,12 +34,8 @@ func _on_within_run_entered():
 func _on_within_run_exited():
 	clear_children()
 
-func start_run():
-	run_type = GameRun.RunType.REGULAR
-	state.change_state(WITHIN_RUN)
-
-func start_blacksmith_run():
-	run_type = GameRun.RunType.TEST_BLACKSMITH
+func start_run(run_type: GameRun.RunType):
+	self.run_type = run_type
 	state.change_state(WITHIN_RUN)
 
 func finish_run():
