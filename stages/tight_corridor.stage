@@ -1,0 +1,16 @@
+KILL_ALL_ENEMIES
+w SKELETON_WARRIOR 0
+a SKELETON_ARCHER 0
+A SKELETON_ARCHER 2
+-
+###
+#.#
+#1#
+#.#
+#.#
+#w#
+#w#
+#a#
+#A#
+#.#
+###

@@ -46,6 +46,7 @@ var stages = [
 	# Super simple stage for easy testing of stage transitions, etc.
 	# [ preload("res://stages/diff0/stage_simple.stage")],
 	[
+		preload("res://stages/4w.stage"),
 		preload("res://stages/1w_2a.stage"),
 	],
 	[
@@ -54,6 +55,7 @@ var stages = [
 	],
 	[
 		preload("res://stages/death_wall.stage"),
+		preload("res://stages/tight_corridor.stage"),
 	],
 	[
 		preload("res://stages/death_cage.stage"),

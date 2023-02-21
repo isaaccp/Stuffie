@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://bv7n471y0axy6"
+path="res://.godot/imported/tight_corridor.stage-166c877bc6284fe84c0b23ee0c7465e3.tscn"
+
+[deps]
+
+source_file="res://stages/tight_corridor.stage"
+dest_files=["res://.godot/imported/tight_corridor.stage-166c877bc6284fe84c0b23ee0c7465e3.tscn"]
+
+[params]
+
