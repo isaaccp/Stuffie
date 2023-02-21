@@ -91,7 +91,7 @@ func begin_turn():
 	block = 0
 	if power > 0:
 		power -= 1
-	draw_cards()
+	get_new_hand()
 	turn_started.emit(self)
 	refresh()
 
@@ -99,9 +99,15 @@ func end_turn():
 	snap()
 	turn_ended.emit(self)
 
-func draw_cards():
+func get_new_hand():
 	deck.discard_hand()
 	deck.draw_cards(4)
+
+func draw_cards(number: int):
+	deck.draw_cards(number)
+
+func draw_attack(number: int):
+	deck.draw_attack(number)
 
 func refresh():
 	changed.emit()

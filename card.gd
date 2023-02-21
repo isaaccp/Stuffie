@@ -79,6 +79,10 @@ func apply_effect(character: Character, effect: CardEffect):
 		character.action_points += effect.action_points
 	if effect.hit_points > 0:
 		character.heal(effect.hit_points)
+	if effect.draw_cards > 0:
+		character.draw_cards(effect.draw_cards)
+	if effect.draw_attack > 0:
+		character.draw_attack(effect.draw_attack)
 
 func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
 	if not effect:
@@ -87,6 +91,10 @@ func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
 		enemy.weakness += effect.weakness
 	if effect.vulnerability:
 		enemy.vulnerability += effect.weakness
+	if effect.move_points:
+		enemy.move_points += effect.move_points
+		if enemy.move_points < 0:
+			enemy.move_points = 0
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
@@ -118,3 +126,6 @@ func apply_enemy(character: Character, enemy: Enemy):
 		apply_effect(character, on_kill_effect)
 		return true
 	return false
+
+func is_attack():
+	return damage != 0

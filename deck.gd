@@ -34,6 +34,16 @@ func draw_cards(num_cards: int):
 	for i in num_cards:
 		draw_card()
 
+func draw_attack(num_cards: int):
+	var drawn = 0
+	for card in deck:
+		if card.is_attack():
+			deck.erase(card)
+			hand.append(card)
+			drawn += 1
+			if drawn == num_cards:
+				return
+
 func shuffle_discard():
 	while not discard.is_empty():
 		deck.append(discard.pop_back())

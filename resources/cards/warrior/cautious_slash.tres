@@ -14,6 +14,8 @@ move_points = 0
 action_points = 0
 weakness = 0
 vulnerability = 0
+draw_cards = 0
+draw_attack = 0
 
 [resource]
 script = ExtResource("3_lcaxs")

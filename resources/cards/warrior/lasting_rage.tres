@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://4wcd2fljpd7f"]
+
+[ext_resource type="Script" path="res://card_effect.gd" id="1_0lplh"]
+[ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/rage.tres" id="1_au4ac"]
+[ext_resource type="Script" path="res://card.gd" id="2_clg82"]
+[ext_resource type="Texture2D" uid="uid://duyu517a4wjk6" path="res://resources/rage.png" id="3_k1bhq"]
+
+[sub_resource type="Resource" id="Resource_30j2d"]
+script = ExtResource("1_0lplh")
+block = 0
+power = 2
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 0
+vulnerability = 0
+draw_cards = 0
+draw_attack = 0
+
+[resource]
+script = ExtResource("2_clg82")
+card_name = "Lasting Rage"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_au4ac")
+cost = 1
+texture = ExtResource("3_k1bhq")
+target_mode = 0
+target_distance = 0
+damage = 0
+on_play_effect = SubResource("Resource_30j2d")
+area_type = 0
+area_length = 1
+area_width = 1

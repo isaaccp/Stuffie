@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://48tkoexc41yi"]
+
+[ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="1_nqysc"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_223a0"]
+[ext_resource type="Script" path="res://card.gd" id="3_weqv3"]
+[ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="4_huxwc"]
+
+[sub_resource type="Resource" id="Resource_ydu63"]
+script = ExtResource("2_223a0")
+block = 8
+power = 0
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 0
+vulnerability = 0
+draw_cards = 1
+draw_attack = 0
+
+[resource]
+script = ExtResource("3_weqv3")
+card_name = "Block & Plan"
+basic = true
+upgrade_level = 1
+base_card = ExtResource("1_nqysc")
+cost = 1
+texture = ExtResource("4_huxwc")
+target_mode = 0
+target_distance = null
+damage = null
+on_play_effect = SubResource("Resource_ydu63")
+area_type = null
+area_length = null
+area_width = null

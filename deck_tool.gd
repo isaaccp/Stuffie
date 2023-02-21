@@ -19,6 +19,7 @@ func create_card_lists():
 		dir.list_dir_begin()
 		var filename = dir.get_next()
 		while filename != "":
+			print("Loading %s" % filename)
 			var card = load(dir_path + "/" + filename) as Card
 			all_cards.cards.push_back(card)
 			if not card.basic and card.upgrade_level == 0:

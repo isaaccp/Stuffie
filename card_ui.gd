@@ -47,6 +47,10 @@ func get_card_effect_description(effect: CardEffect) -> String:
 		effect_texts.push_back("adds %d [url]weakness[/url]" % effect.weakness)
 	if effect.vulnerability > 0:
 		effect_texts.push_back("adds %d [url]vulnerability[/url]" % effect.vulnerability)
+	if effect.draw_cards > 0:
+		effect_texts.push_back("draws %d cards" % effect.draw_cards)
+	if effect.draw_attack > 0:
+		effect_texts.push_back("draws %d attack cards" % effect.draw_attack)
 	if effect_texts.size() == 0:
 		return ""
 	return ", ".join(effect_texts)
