@@ -23,6 +23,7 @@ func create_card_lists():
 			var card = load(dir_path + "/" + filename) as Card
 			all_cards.cards.push_back(card)
 			if not card.basic and card.upgrade_level == 0:
+				print("Adding to extra_cards")
 				extra_cards.cards.push_back(card)
 			filename = dir.get_next()
 
