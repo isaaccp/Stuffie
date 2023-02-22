@@ -10,38 +10,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x8lvv")
-new_game_button = NodePath("HBoxContainer/NewGameButton")
-test_blacksmith_button = NodePath("HBoxContainer/TestBlacksmith")
-test_camp_button = NodePath("HBoxContainer/TestCamp")
-test_after_stage_button = NodePath("HBoxContainer/TestAfterStage")
+new_game_button = NodePath("VBoxContainer/NewGameButton")
+test_blacksmith_button = NodePath("VBoxContainer/HBoxContainer/TestBlacksmith")
+test_camp_button = NodePath("VBoxContainer/HBoxContainer/TestCamp")
+test_after_stage_button = NodePath("VBoxContainer/HBoxContainer/TestAfterStage")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -267.0
-offset_top = -100.0
-offset_right = 267.0
-offset_bottom = 100.0
+offset_left = -200.0
+offset_top = -117.5
+offset_right = 200.0
+offset_bottom = 117.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NewGameButton" type="Button" parent="HBoxContainer"]
+[node name="NewGameButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(400, 200)
 layout_mode = 2
 text = "New Game"
 
-[node name="TestBlacksmith" type="Button" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TestBlacksmith" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Test Blacksmith"
 
-[node name="TestCamp" type="Button" parent="HBoxContainer"]
+[node name="TestCamp" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Test Camp"
 
-[node name="TestAfterStage" type="Button" parent="HBoxContainer"]
+[node name="TestAfterStage" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Test after stage"
