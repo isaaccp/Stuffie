@@ -73,6 +73,11 @@ func _process(_delta):
 func snap():
 	snapshot = Snapshot.new(self)
 
+func get_card_upgrades(card: Card):
+	if not card_upgrades.has(card.card_name):
+		return []
+	return card_upgrades[card.card_name].duplicate()
+
 func add_relic(relic: Relic):
 	relics.push_back(relic)
 	relic.connect_signals(self)

@@ -27,12 +27,12 @@ func initialize_from_character(character: Character, filter=Filter.ALL):
 	elif filter == Filter.UPGRADABLE:
 		var upgradable_cards: Array[Card] = []
 		for card in character.deck.cards:
-			if character.card_upgrades.has(card.card_name):
+			if character.get_card_upgrades(card).size() > 0:
 				upgradable_cards.push_back(card)
 		initialize_from_cards(character, upgradable_cards)
 
 func initialize_from_upgrades_to_card(character: Character, card: Card):
-	var upgrades = character.card_upgrades[card.card_name].duplicate()
+	var upgrades = character.get_card_upgrades(card)
 	initialize_from_cards(character, upgrades)
 
 func initialize_from_cards(character: Character, cards: Array):
