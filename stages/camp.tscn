@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://stages/camp.gd" id="1_iynco"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="2_iw1lg"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_ufos7"]
-[ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="4_x46wg"]
+[ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="4_xwk87"]
 
 [sub_resource type="Resource" id="Resource_stguo"]
 script = ExtResource("2_ufos7")
@@ -35,11 +35,20 @@ choice_container = NodePath("HBoxContainer/VBoxContainer/HBoxContainer")
 camp_choices = Array[ExtResource("2_iw1lg")]([SubResource("Resource_erjq1")])
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.5
+offset_top = -40.0
+offset_right = 62.5
 offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CharacterPortrait" parent="HBoxContainer" instance=ExtResource("4_x46wg")]
+[node name="CharacterPortrait" parent="HBoxContainer" instance=ExtResource("4_xwk87")]
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]

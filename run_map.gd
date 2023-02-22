@@ -26,7 +26,6 @@ func initialize(run: Array, stage_number: int, shared_bag: SharedBag):
 
 func _ready():
 	between_stage_space = size.x / (run.size() + 1)
-	print_debug(between_stage_space)
 	vertical_center = size.y / 2
 	var i = 0
 	for stage in run:

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_x8lvv"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("new_game_button", "test_blacksmith_button", "test_camp_button")]
+[node name="Control" type="Control" node_paths=PackedStringArray("new_game_button", "test_blacksmith_button", "test_camp_button", "test_after_stage_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,7 @@ script = ExtResource("1_x8lvv")
 new_game_button = NodePath("HBoxContainer/NewGameButton")
 test_blacksmith_button = NodePath("HBoxContainer/TestBlacksmith")
 test_camp_button = NodePath("HBoxContainer/TestCamp")
+test_after_stage_button = NodePath("HBoxContainer/TestAfterStage")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -40,3 +41,7 @@ text = "Test Blacksmith"
 [node name="TestCamp" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 text = "Test Camp"
+
+[node name="TestAfterStage" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Test after stage"

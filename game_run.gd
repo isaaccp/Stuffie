@@ -77,6 +77,7 @@ enum RunType {
 	REGULAR,
 	TEST_BLACKSMITH,
 	TEST_CAMP,
+	TEST_AFTER_STAGE,
 }
 
 var run = []
@@ -134,6 +135,14 @@ func set_run_type(run_type: RunType):
 		run = [
 			StageDef.camp(),
 			StageDef.combat(0),
+		]
+	elif run_type == RunType.TEST_AFTER_STAGE:
+		run = [
+			StageDef.combat(0),
+			StageDef.combat(0),
+		]
+		stages = [
+			[preload("res://stages/simple.stage")],
 		]
 
 func current_stage_def():

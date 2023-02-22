@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://buhtt4n22qqga"]
+[gd_scene load_steps=3 format=3 uid="uid://buhtt4n22qqga"]
 
 [ext_resource type="Script" path="res://between_stages.gd" id="1_cjytp"]
+[ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="2_a5syq"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("label", "card_container", "skip")]
+[node name="Control" type="Control" node_paths=PackedStringArray("label", "card_container", "skip", "character_portrait")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,11 +11,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cjytp")
-label = NodePath("VBoxContainer/Label")
-card_container = NodePath("VBoxContainer/HBoxContainer")
-skip = NodePath("VBoxContainer/Skip")
+label = NodePath("HBoxContainer/VBoxContainer/Label")
+card_container = NodePath("HBoxContainer/VBoxContainer/HBoxContainer")
+skip = NodePath("HBoxContainer/VBoxContainer/Skip")
+character_portrait = NodePath("HBoxContainer/CharacterPortrait")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -28,11 +30,17 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="CharacterPortrait" parent="HBoxContainer" instance=ExtResource("2_a5syq")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="Skip" type="Button" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Skip" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2

@@ -3,6 +3,7 @@ extends Control
 @export var label: Label
 @export var card_container: HBoxContainer
 @export var skip: Button
+@export var character_portrait: CharacterPortrait
 
 # For now not using StateMachine as this stage
 # will go through more changes later.
@@ -14,6 +15,7 @@ enum BetweenStagesState {
 const num_cards_selection = 3
 
 var state = BetweenStagesState.NEW_CHARACTER
+
 var characters: Array[Character]
 var current_character = 0
 var current_cards: Array[Card]
@@ -37,6 +39,7 @@ func _process(delta):
 			between_stages_done.emit()
 			return
 		var character = characters[current_character]
+		character_portrait.set_character(character)
 		current_cards = character.extra_cards.choose(num_cards_selection)
 		var i = 0
 		for card in current_cards:
