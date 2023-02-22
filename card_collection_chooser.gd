@@ -25,17 +25,14 @@ func initialize_from_character(character: Character, filter=Filter.ALL):
 	if filter == Filter.ALL:
 		initialize_from_cards(character, character.deck.cards)
 	elif filter == Filter.UPGRADABLE:
-		print_debug("Initializing from UPGRADABLE")
 		var upgradable_cards: Array[Card] = []
-		print_debug(character.card_upgrades)
 		for card in character.deck.cards:
 			if character.card_upgrades.has(card.card_name):
 				upgradable_cards.push_back(card)
-		print_debug(upgradable_cards)
 		initialize_from_cards(character, upgradable_cards)
 
 func initialize_from_upgrades_to_card(character: Character, card: Card):
-	var upgrades = character.card_upgrades[card.card_name]
+	var upgrades = character.card_upgrades[card.card_name].duplicate()
 	initialize_from_cards(character, upgrades)
 
 func initialize_from_cards(character: Character, cards: Array):
