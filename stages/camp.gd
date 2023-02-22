@@ -2,6 +2,7 @@ extends Control
 
 class_name CampStage
 
+@export var character_portrait: CharacterPortrait
 @export var choice_container: HBoxContainer
 @export var camp_choices: Array[CampChoice]
 
@@ -32,6 +33,7 @@ func _process(delta):
 			stage_done.emit()
 			return
 		var character = characters[current_character]
+		character_portrait.set_character(character)
 		var i = 0
 		# TODO: Have a base choice for all characters (rest) and make other choices per
 		# character.
