@@ -27,5 +27,8 @@ func _on_start_turn(character: Character):
 func _on_end_turn(character: Character):
 	pass
 
+func camp_choices():
+	return []
+
 func apply_damage_change(damage: int, character: Character):
 	return damage

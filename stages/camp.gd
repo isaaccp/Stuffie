@@ -46,7 +46,8 @@ func _process(delta):
 		# character.
 		for choice in camp_choices:
 			add_choice(choice)
-		add_choice(character.camp_choice)
+		for choice in character.camp_choices():
+			add_choice(choice)
 		state = CampState.CHOOSING
 
 func _next_character():

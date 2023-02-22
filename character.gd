@@ -171,3 +171,10 @@ func apply_attack(enemy: Enemy):
 	if hit_points <= 0:
 		return true
 	refresh()
+
+func camp_choices():
+	var camp_choices = [camp_choice]
+	for relic in relics:
+		for choice in relic.camp_choices():
+			camp_choices.push_back(choice)
+	return camp_choices

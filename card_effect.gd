@@ -12,6 +12,9 @@ class_name CardEffect
 @export var draw_cards: int
 @export var draw_attack: int
 @export var total_hit_points: int
+@export var upgrade_collection: int
+
+var upgrade_scene = preload("res://card_upgrade.tscn")
 
 func apply_to_character(character: Character):
 	if move_points > 0:
@@ -31,6 +34,13 @@ func apply_to_character(character: Character):
 		character.draw_cards(draw_cards)
 	if draw_attack > 0:
 		character.draw_attack(draw_attack)
+	if upgrade_collection > 0:
+		var tree = character.get_tree().current_scene
+		var upgrade = upgrade_scene.instantiate() as CardUpgrade
+		upgrade.initialize([character])
+		tree.add_child(upgrade)
+		await upgrade.done
+		upgrade.queue_free()
 
 func apply_to_enemy(enemy: Enemy):
 	if weakness:
@@ -66,6 +76,8 @@ func get_description() -> String:
 		effect_texts.push_back("draws %d cards" % draw_cards)
 	if draw_attack > 0:
 		effect_texts.push_back("draws %d attack cards" % draw_attack)
+	if upgrade_collection > 0:
+		effect_texts.push_back("upgrade %d cards permanently" % upgrade_collection)
 	if effect_texts.size() == 0:
 		return ""
 	return ", ".join(effect_texts)

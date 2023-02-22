@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
-[ext_resource type="Texture2D" uid="uid://c1m8f58q5sfcd" path="res://resources/card_back.jpg" id="3_ciuq7"]
+[ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
 [node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "undo_button", "shared_bag_gold_ui")]
 script = ExtResource("1_bqe1h")
@@ -41,20 +41,6 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -150.0
 offset_right = 204.0
-grow_vertical = 0
-
-[node name="CardAreaControl" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = 980.0
-offset_bottom = 160.0
-grow_horizontal = 2
 grow_vertical = 0
 
 [node name="InfoPanel" type="PanelContainer" parent="UI"]

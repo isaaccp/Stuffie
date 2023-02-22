@@ -23,6 +23,7 @@ vulnerability = 0
 draw_cards = 0
 draw_attack = 0
 total_hit_points = 5
+upgrade_collection = 0
 
 [sub_resource type="Resource" id="Resource_gq1ff"]
 script = ExtResource("7_j2akc")
@@ -32,7 +33,7 @@ effect = SubResource("Resource_7xehr")
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
 script = ExtResource("1_rghne")
 total_action_points = 3
-total_move_points = 6
+total_move_points = 7
 total_hit_points = 50
 initial_relic = ExtResource("2_i4ij4")
 portrait_texture = NodePath("Portrait")

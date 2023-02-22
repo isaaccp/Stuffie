@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="CampChoiceRelic" load_steps=6 format=3 uid="uid://dadxxp5315kdb"]
+
+[ext_resource type="Script" path="res://card_effect.gd" id="1_m68lp"]
+[ext_resource type="Script" path="res://camp_choice.gd" id="2_ku6lh"]
+[ext_resource type="Script" path="res://relic/camp_choice_relic.gd" id="3_du3u0"]
+
+[sub_resource type="Resource" id="Resource_gj4pw"]
+script = ExtResource("1_m68lp")
+block = 0
+power = 0
+hit_points = 0
+move_points = 0
+action_points = 0
+weakness = 0
+vulnerability = 0
+draw_cards = 0
+draw_attack = 0
+total_hit_points = 0
+upgrade_collection = 1
+
+[sub_resource type="Resource" id="Resource_x56or"]
+script = ExtResource("2_ku6lh")
+title = "Upgrade"
+effect = SubResource("Resource_gj4pw")
+
+[resource]
+script = ExtResource("3_du3u0")
+camp_choice = SubResource("Resource_x56or")
+name = "Wrench"
+tooltip = "Adds option to upgrade card in camp"
