@@ -20,6 +20,8 @@ var relics: Array[Relic]
 @export var deck: Deck
 @export var extra_cards: CardSelectionSet
 @export var all_cards: CardSelectionSet
+@export var camp_choice: CampChoice
+
 var card_upgrades: Dictionary
 
 signal changed

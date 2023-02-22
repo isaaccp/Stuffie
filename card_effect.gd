@@ -11,6 +11,7 @@ class_name CardEffect
 @export var vulnerability: int
 @export var draw_cards: int
 @export var draw_attack: int
+@export var total_hit_points: int
 
 func apply_to_character(character: Character):
 	if move_points > 0:
@@ -23,6 +24,9 @@ func apply_to_character(character: Character):
 		character.action_points += action_points
 	if hit_points > 0:
 		character.heal(hit_points)
+	if total_hit_points > 0:
+		character.total_hit_points += total_hit_points
+		character.heal(total_hit_points)
 	if draw_cards > 0:
 		character.draw_cards(draw_cards)
 	if draw_attack > 0:
@@ -42,6 +46,8 @@ func get_description() -> String:
 	var effect_texts: PackedStringArray = []
 	if hit_points > 0:
 		effect_texts.push_back("heals %d" % hit_points)
+	if total_hit_points > 0:
+		effect_texts.push_back("increases max HP by %d" % total_hit_points)
 	if block > 0:
 		effect_texts.push_back("adds %d [url]block[/url]" % block)
 	if power > 0:

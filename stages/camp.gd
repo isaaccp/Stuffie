@@ -27,6 +27,13 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 	self.characters = characters
 	self.shared_bag = shared_bag
 
+func add_choice(choice: CampChoice):
+	var button = Button.new()
+	button.text = choice.title
+	button.tooltip_text = choice.effect.get_description()
+	button.pressed.connect(_on_button_pressed.bind(choice))
+	choice_container.add_child(button)
+
 func _process(delta):
 	if state == CampState.NEW_CHARACTER:
 		if current_character == characters.size():
@@ -38,12 +45,8 @@ func _process(delta):
 		# TODO: Have a base choice for all characters (rest) and make other choices per
 		# character.
 		for choice in camp_choices:
-			var button = Button.new()
-			button.text = choice.title
-			button.tooltip_text = choice.effect.get_description()
-			button.pressed.connect(_on_button_pressed.bind(choice))
-			choice_container.add_child(button)
-			i += 1
+			add_choice(choice)
+		add_choice(character.camp_choice)
 		state = CampState.CHOOSING
 
 func _next_character():

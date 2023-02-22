@@ -16,6 +16,7 @@ weakness = 0
 vulnerability = 0
 draw_cards = 0
 draw_attack = 0
+total_hit_points = 0
 
 [sub_resource type="Resource" id="Resource_erjq1"]
 script = ExtResource("2_iw1lg")
