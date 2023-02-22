@@ -101,6 +101,7 @@ signal run_finished
 
 func _ready():
 	state.connect_signals(self)
+	relic_list.reset()
 	for character in party.get_children():
 		var initial_relic = character.initial_relic
 		relic_list.mark_used(initial_relic.name)

@@ -6,10 +6,7 @@ class_name RelicList
 
 var available_relics: Dictionary
 
-func _init():
-	ready.call_deferred()
-
-func ready():
+func reset():
 	# TODO: Filter out not unlocked relics.
 	for relic in relics:
 		available_relics[relic.name] = relic
