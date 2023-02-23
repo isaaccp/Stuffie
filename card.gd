@@ -104,6 +104,7 @@ func regular_damage(character: Character):
 		return damage
 	if damage_value:
 		return damage_value.get_value(character)
+	return 0
 
 func effective_damage(character: Character):
 	# Cards with natural 0 damage are not intended to be attacks.

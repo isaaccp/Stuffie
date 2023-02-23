@@ -22,7 +22,10 @@ enum Effect {
 @export var effect: Effect
 
 func apply_to_character(character: Character):
-	var value = effect_value.get_value(character)
+	var value = 0
+	# Some effects don't need a value, so allow that.
+	if effect_value:
+		value = effect_value.get_value(character)
 	if effect_type == EffectType.EFFECT:
 		match effect:
 			Effect.DISCARD_HAND:
