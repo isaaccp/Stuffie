@@ -6,7 +6,6 @@ enum ValueType {
 	NO_VALUE,
 	ABSOLUTE,
 	REFERENCE,
-	SNAPSHOT_REFERENCE,
 }
 
 enum EffectType {
@@ -31,7 +30,7 @@ enum Field {
 var field_name = {
 	Field.HIT_POINTS: "HP",
 	Field.TOTAL_HIT_POINTS: "total HP",
-	Field.MOVE_POINTS: "MP",
+	Field.MOVE_POINTS: "[url]MP[/url]",
 	Field.TOTAL_MOVE_POINTS: "total MP",
 	Field.ACTION_POINTS: "AP",
 	Field.TOTAL_ACTION_POINTS: "total AP",
@@ -42,11 +41,11 @@ var field_name = {
 
 enum ReadOnlyField {
 	NO_FIELD,
-	HAND_CARDS,
+	SNAPSHOT_HAND_CARDS,
 }
 
 var read_only_field_name = {
-	ReadOnlyField.HAND_CARDS: "number of cards in your hand",
+	ReadOnlyField.SNAPSHOT_HAND_CARDS: "original number of cards in your hand",
 }
 
 enum ValueFieldType {
@@ -79,23 +78,13 @@ func _get_value(character: Character):
 	if value_type == ValueType.REFERENCE:
 		var original_value = _get_reference_value(character)
 		return int(original_value * reference_fraction)
-	elif value_type == ValueType.SNAPSHOT_REFERENCE:
-		var original_value = _get_snapshot_value(character)
-		return int(original_value * reference_fraction)
 
 func _get_reference_value(character: Character):
 	if value_field_type == ValueFieldType.REGULAR:
 		pass
 	elif value_field_type == ValueFieldType.READ_ONLY:
 		match read_only_field:
-			ReadOnlyField.HAND_CARDS: return character.num_hand_cards()
-
-func _get_snapshot_value(character: Character):
-	if value_field_type == ValueFieldType.REGULAR:
-		pass
-	elif value_field_type == ValueFieldType.READ_ONLY:
-		match read_only_field:
-			ReadOnlyField.HAND_CARDS: return character.snapshot.num_hand_cards
+			ReadOnlyField.SNAPSHOT_HAND_CARDS: return character.snapshot.num_hand_cards
 
 func apply_to_character(character: Character):
 	var value = _get_value(character)
@@ -125,9 +114,7 @@ func _get_value_string():
 	if value_type == ValueType.ABSOLUTE:
 		return "%d" % absolute_value
 	if value_type == ValueType.REFERENCE:
-		return "%s %s" % ["current", _get_field_name()]
-	elif value_type == ValueType.SNAPSHOT_REFERENCE:
-		return "%s %s" % ["original", _get_field_name()]
+		return _get_field_name()
 
 func get_description() -> String:
 	var effect_text = ""

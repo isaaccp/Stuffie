@@ -18,7 +18,7 @@ effect = 1
 
 [sub_resource type="Resource" id="Resource_eu354"]
 script = ExtResource("1_vym21")
-value_type = 3
+value_type = 2
 absolute_value = 0
 reference_fraction = 1.0
 value_field_type = 2
