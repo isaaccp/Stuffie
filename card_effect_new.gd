@@ -40,6 +40,17 @@ func apply_to_character(character: Character):
 		match target_field:
 			CardEffectValue.Field.POWER: character.power += value
 
+func apply_to_enemy(character: Character, enemy: Enemy):
+	var value = 0
+	if effect_value:
+		value = effect_value.get_value(character)
+	if effect_type == EffectType.EFFECT:
+		pass
+	elif effect_type == EffectType.FIELD:
+		match target_field:
+			CardEffectValue.Field.MOVE_POINTS: enemy.move_points += value
+			CardEffectValue.Field.WEAKNESS: enemy.weakness += value
+
 func get_description() -> String:
 	var effect_text = ""
 	var value_text = ""
@@ -53,5 +64,7 @@ func get_description() -> String:
 		var prefix_text = "add"
 		if effect_value.is_negative():
 			prefix_text = "remove"
+			# Remove leading -.
+			value_text = value_text.substr(1)
 		effect_text = "%s (%s) %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(target_field)]
 	return effect_text

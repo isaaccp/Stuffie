@@ -120,6 +120,8 @@ func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
 	enemy.hit_points -= effective_damage(character)
 	apply_effect(character, on_play_effect)
+	for effect in on_play_effects:
+		effect.apply_to_enemy(character, enemy)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
 		for effect in on_kill_effects:
@@ -138,6 +140,8 @@ func get_target_text() -> String:
 		target_text = "self or ally"
 	elif target_mode == Card.TargetMode.ALLY:
 		target_text = "ally"
+	elif target_mode == Card.TargetMode.AREA:
+		target_text = "area"
 	return target_text
 
 func on_effect_text(effects: Array[CardEffectNew]) -> String:
@@ -145,6 +149,7 @@ func on_effect_text(effects: Array[CardEffectNew]) -> String:
 	for effect in effects:
 		effect_texts.push_back(effect.get_description())
 	return ', '.join(effect_texts)
+
 func on_play_effect_text() -> String:
 	if on_play_effect:
 		return on_play_effect.get_description()
@@ -157,7 +162,7 @@ func get_description(character: Character) -> String:
 	if target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
-			description += "On Play: %s %s" % [target_text, on_play_text]
+			description += "On Play(%s): %s" % [target_text, on_play_text]
 	elif target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
 		var attack_text = "Attack"
 		var area_size = effect_area(Vector2.RIGHT).size()
@@ -169,15 +174,14 @@ func get_description(character: Character) -> String:
 			if damage != effective_damage(character):
 				damage_text = "%d ([color=red]%d[/color])" % [damage, effective_damage(character)]
 			description += "%s for %s dmg\n" % [attack_text, damage_text]
-		if on_play_effect:
-			var on_play_text = on_play_effect.get_description()
-			if on_play_text:
-				description += "On Play: %s %s" % [target_text, on_play_text]
+		var on_play_text = on_play_effect_text()
+		if on_play_text:
+			description += "On Play(%s): %s" % [target_text, on_play_text]
 		if on_play_self_effect:
 			var on_play_self_text = on_play_self_effect.get_description()
 			if on_play_self_text:
-				description += "On Play: %s %s" % ["character", on_play_self_text]
+				description += "On Play(self): %s" % on_play_self_text
 		var on_kill_text = on_effect_text(on_kill_effects)
 		if on_kill_text:
-			description += "On Kill: %s" % on_kill_text
+			description += "On Kill(self): %s" % on_kill_text
 	return description
