@@ -14,8 +14,11 @@ move_points = 3
 action_points = 1
 weakness = 0
 vulnerability = 0
+discard_hand = false
 draw_cards = 0
 draw_attack = 0
+total_hit_points = 0
+upgrade_collection = 0
 
 [resource]
 script = ExtResource("3_hjmsg")
@@ -28,6 +31,7 @@ texture = ExtResource("4_jaqwa")
 target_mode = 3
 target_distance = 1
 damage = 10
+on_play_effects = Array[Resource("res://card_effect_new.gd")]([])
 on_kill_effect = SubResource("Resource_113td")
 area_type = 0
 area_length = 1

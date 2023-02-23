@@ -13,8 +13,11 @@ move_points = 0
 action_points = 0
 weakness = 1
 vulnerability = 0
+discard_hand = false
 draw_cards = 0
 draw_attack = 0
+total_hit_points = 0
+upgrade_collection = 0
 
 [resource]
 script = ExtResource("2_chxt4")
@@ -27,6 +30,7 @@ target_mode = 4
 target_distance = 1
 damage = 0
 on_play_effect = SubResource("Resource_oihnq")
+on_play_effects = Array[Resource("res://card_effect_new.gd")]([])
 area_type = 0
 area_length = 3
 area_width = 3

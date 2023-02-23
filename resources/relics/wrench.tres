@@ -13,6 +13,7 @@ move_points = 0
 action_points = 0
 weakness = 0
 vulnerability = 0
+discard_hand = false
 draw_cards = 0
 draw_attack = 0
 total_hit_points = 0

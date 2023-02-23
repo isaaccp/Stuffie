@@ -14,8 +14,11 @@ move_points = 0
 action_points = 0
 weakness = 0
 vulnerability = 0
+discard_hand = false
 draw_cards = 0
 draw_attack = 0
+total_hit_points = 0
+upgrade_collection = 0
 
 [resource]
 script = ExtResource("2_clg82")
@@ -29,6 +32,7 @@ target_mode = 0
 target_distance = 0
 damage = 0
 on_play_effect = SubResource("Resource_30j2d")
+on_play_effects = Array[Resource("res://card_effect_new.gd")]([])
 area_type = 0
 area_length = 1
 area_width = 1
