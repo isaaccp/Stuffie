@@ -1,23 +1,17 @@
 [gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://bbqowimw5rf1n"]
 
 [ext_resource type="Script" path="res://card.gd" id="1_ucibj"]
-[ext_resource type="Script" path="res://card_effect.gd" id="1_yod6t"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_ug6h5"]
 [ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="2_ssfuh"]
 
-[sub_resource type="Resource" id="Resource_dnggy"]
-script = ExtResource("1_yod6t")
-block = 0
-power = 0
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_aai3o"]
+script = ExtResource("1_ug6h5")
+value_type = 1
+absolute_value = 10
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
 
 [resource]
 script = ExtResource("1_ucibj")
@@ -28,8 +22,8 @@ cost = 1
 texture = ExtResource("2_ssfuh")
 target_mode = 3
 target_distance = 1
-damage = 10
-on_play_effect = SubResource("Resource_dnggy")
+damage = 0
+damage_value = SubResource("Resource_aai3o")
 on_play_effects = Array[Resource("res://card_effect_new.gd")]([])
 area_type = 0
 area_length = 1

@@ -29,6 +29,7 @@ enum AreaType {
 @export var target_mode: TargetMode
 @export var target_distance: int
 @export var damage: int
+@export var damage_value: CardEffectValue
 # Use on_play_self_effect when creating a card that has
 # extra side effect on self besides target.
 @export var on_play_self_effect: CardEffect
@@ -98,11 +99,17 @@ func apply_ally(character: Character, ally: Character):
 	apply_on_play_effects(character)
 	apply_effect(character, on_play_self_effect)
 
+func regular_damage(character: Character):
+	if damage != 0:
+		return damage
+	if damage_value:
+		return damage_value.get_value(character)
+
 func effective_damage(character: Character):
 	# Cards with natural 0 damage are not intended to be attacks.
-	if damage == 0:
+	if regular_damage(character) == 0:
 		return 0
-	var new_damage = damage
+	var new_damage = regular_damage(character)
 	new_damage = character.apply_relic_damage_change(new_damage)
 	if character.power > 0:
 		new_damage *= 1.5
@@ -119,7 +126,7 @@ func apply_enemy(character: Character, enemy: Enemy):
 	return false
 
 func is_attack():
-	return damage != 0
+	return damage != 0 or damage_value
 
 func get_target_text() -> String:
 	var target_text = ""
@@ -152,6 +159,7 @@ func get_description(character: Character) -> String:
 		var area_size = effect_area(Vector2.RIGHT).size()
 		if area_size > 1:
 			attack_text += (" enemies in area (%s tiles)" % area_size)
+		var damage = regular_damage(character)
 		if damage:
 			var damage_text = "%d" % damage
 			if damage != effective_damage(character):
