@@ -35,6 +35,10 @@ func apply_to_character(character: Character):
 	elif effect_type == EffectType.FIELD:
 		match target_field:
 			CardEffectValue.Field.MOVE_POINTS: character.move_points += value
+		match target_field:
+			CardEffectValue.Field.ACTION_POINTS: character.action_points += value
+		match target_field:
+			CardEffectValue.Field.POWER: character.power += value
 
 func get_description() -> String:
 	var effect_text = ""

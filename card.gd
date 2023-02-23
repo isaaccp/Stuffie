@@ -37,7 +37,7 @@ enum AreaType {
 # TODO: Deprecate on_play_effect at some point. For now we'll run
 # both on_play_effect and on_play_effects.
 @export var on_play_effects: Array[CardEffectNew]
-@export var on_kill_effect: CardEffect
+@export var on_kill_effects: Array[CardEffectNew]
 @export var area_type: AreaType = AreaType.RECTANGLE
 @export var area_length: int = 1
 # Area width should in general be odd.
@@ -122,7 +122,8 @@ func apply_enemy(character: Character, enemy: Enemy):
 	apply_effect(character, on_play_effect)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
-		apply_effect(character, on_kill_effect)
+		for effect in on_kill_effects:
+			effect.apply_to_character(character)
 		return true
 	return false
 
@@ -139,14 +140,16 @@ func get_target_text() -> String:
 		target_text = "ally"
 	return target_text
 
+func on_effect_text(effects: Array[CardEffectNew]) -> String:
+	var effect_texts: PackedStringArray = []
+	for effect in effects:
+		effect_texts.push_back(effect.get_description())
+	return ', '.join(effect_texts)
 func on_play_effect_text() -> String:
 	if on_play_effect:
 		return on_play_effect.get_description()
 	else:
-		var effect_texts: PackedStringArray = []
-		for effect in on_play_effects:
-			effect_texts.push_back(effect.get_description())
-		return ', '.join(effect_texts)
+		return on_effect_text(on_play_effects)
 
 func get_description(character: Character) -> String:
 	var description = ""
@@ -174,7 +177,7 @@ func get_description(character: Character) -> String:
 			var on_play_self_text = on_play_self_effect.get_description()
 			if on_play_self_text:
 				description += "On Play: %s %s" % ["character", on_play_self_text]
-		if on_kill_effect:
-			var on_kill_text = on_kill_effect.get_description()
+		var on_kill_text = on_effect_text(on_kill_effects)
+		if on_kill_text:
 			description += "On Kill: %s" % on_kill_text
 	return description
