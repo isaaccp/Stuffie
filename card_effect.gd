@@ -9,6 +9,7 @@ class_name CardEffect
 @export var action_points: int
 @export var weakness: int
 @export var vulnerability: int
+@export var discard_hand: bool
 @export var draw_cards: int
 @export var draw_attack: int
 @export var total_hit_points: int
@@ -34,6 +35,8 @@ func apply_to_character(character: Character):
 		character.draw_cards(draw_cards)
 	if draw_attack > 0:
 		character.draw_attack(draw_attack)
+	if discard_hand:
+		character.discard()
 	if upgrade_collection > 0:
 		var tree = character.get_tree().current_scene
 		var upgrade = upgrade_scene.instantiate() as CardUpgrade
@@ -41,6 +44,7 @@ func apply_to_character(character: Character):
 		tree.add_child(upgrade)
 		await upgrade.done
 		upgrade.queue_free()
+
 
 func apply_to_enemy(enemy: Enemy):
 	if weakness:

@@ -29,46 +29,8 @@ func initialize(card: Card, character: Character, callback: Callable):
 	cb = callback
 	refresh()
 
-func get_target_text() -> String:
-	var target_text = ""
-	if card.target_mode == Card.TargetMode.SELF:
-		target_text = "character"
-	elif card.target_mode == Card.TargetMode.SELF_ALLY:
-		target_text = "character or ally"
-	elif card.target_mode == Card.TargetMode.ALLY:
-		target_text = "ally"
-	return target_text
-
 func get_description_text() -> String:
-	var description = ""
-	var target_text = get_target_text()
-	if card.target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
-		if card.on_play_effect:
-			var on_play_text = card.on_play_effect.get_description()
-			if on_play_text:
-				description += "On Play: %s %s" % [target_text, on_play_text]
-	elif card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
-		var attack_text = "Attack"
-		var area_size = card.effect_area(Vector2.RIGHT).size()
-		if area_size > 1:
-			attack_text += (" enemies in area (%s tiles)" % area_size)
-		if card.damage:
-			var damage_text = "%d" % card.damage
-			if card.damage != card.effective_damage(character):
-				damage_text = "%d ([color=red]%d[/color])" % [card.damage, card.effective_damage(character)]
-			description += "%s for %s dmg\n" % [attack_text, damage_text]
-		if card.on_play_effect:
-			var on_play_text = card.on_play_effect.get_description()
-			if on_play_text:
-				description += "On Play: %s %s" % [target_text, on_play_text]
-		if card.on_play_self_effect:
-			var on_play_self_text = card.on_play_self_effect.get_description()
-			if on_play_self_text:
-				description += "On Play: %s %s" % ["character", on_play_self_text]
-		if card.on_kill_effect:
-			var on_kill_text = card.on_kill_effect.get_description()
-			description += "On Kill: %s" % on_kill_text
-	return description
+	return card.get_description(character)
 
 func tooltip_text(keyword: String) -> String:
 	if keyword_tooltips.has(keyword):

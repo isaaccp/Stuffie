@@ -574,9 +574,14 @@ func handle_character_death(character: Character):
 		game_over.emit()
 
 func play_card():
+	# Discard card first.
+	active_character.deck.discard_card(current_card_index)
+	# Take snapshot of current state before playing card.
+	active_character.snap()
 	if current_card.target_mode == Card.TargetMode.SELF:
 		current_card.apply_self(active_character)
 	elif current_card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
+		current_card.apply_self_effect(active_character)
 		var affected_tiles = current_card.effect_area(direction)
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
@@ -587,7 +592,6 @@ func play_card():
 					active_character.killed_enemy.emit(active_character)
 				active_character.attacked.emit(active_character)
 	active_character.action_points -= current_card.cost
-	active_character.deck.discard_card(current_card_index)
 	draw_hand()
 	# Consider wrapping all this into a method.
 	current_card_index = -1

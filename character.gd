@@ -39,6 +39,7 @@ class Snapshot:
 	var hit_points: int
 	var block: int
 	var power: int
+	var num_hand_cards: int
 
 	func _init(character: Character):
 		action_points = character.action_points
@@ -46,6 +47,7 @@ class Snapshot:
 		hit_points = character.hit_points
 		block = character.block
 		power = character.power
+		num_hand_cards = character.num_hand_cards()
 
 var snapshot: Snapshot
 
@@ -98,7 +100,7 @@ func begin_turn():
 	block = 0
 	if power > 0:
 		power -= 1
-	get_new_hand()
+	draw_new_hand()
 	turn_started.emit(self)
 	refresh()
 
@@ -106,7 +108,13 @@ func end_turn():
 	snap()
 	turn_ended.emit(self)
 
-func get_new_hand():
+func discard():
+	deck.discard_hand()
+
+func num_hand_cards():
+	return deck.num_hand_cards()
+
+func draw_new_hand():
 	deck.discard_hand()
 	deck.draw_cards(4)
 

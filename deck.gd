@@ -44,6 +44,9 @@ func draw_attack(num_cards: int):
 			if drawn == num_cards:
 				return
 
+func num_hand_cards():
+	return hand.size()
+
 func shuffle_discard():
 	while not discard.is_empty():
 		deck.append(discard.pop_back())

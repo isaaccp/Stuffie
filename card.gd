@@ -33,6 +33,9 @@ enum AreaType {
 # extra side effect on self besides target.
 @export var on_play_self_effect: CardEffect
 @export var on_play_effect: CardEffect
+# TODO: Deprecate on_play_effect at some point. For now we'll run
+# both on_play_effect and on_play_effects.
+@export var on_play_effects: Array[CardEffectNew]
 @export var on_kill_effect: CardEffect
 @export var area_type: AreaType = AreaType.RECTANGLE
 @export var area_length: int = 1
@@ -76,14 +79,23 @@ func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
 		return
 	effect.apply_to_enemy(enemy)
 
+func apply_on_play_effects(character: Character):
+	for effect in on_play_effects:
+		effect.apply_to_character(character)
+
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
 	apply_effect(character, on_play_effect)
+	apply_on_play_effects(character)
 	character.refresh()
+
+func apply_self_effect(character: Character):
+	apply_effect(character, on_play_self_effect)
 
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
-	apply_effect(ally, on_play_effect)
+	apply_effect(character, on_play_effect)
+	apply_on_play_effects(character)
 	apply_effect(character, on_play_self_effect)
 
 func effective_damage(character: Character):
@@ -99,8 +111,7 @@ func effective_damage(character: Character):
 func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
 	enemy.hit_points -= effective_damage(character)
-	apply_effect_enemy(enemy, on_play_effect)
-	apply_effect(character, on_play_self_effect)
+	apply_effect(character, on_play_effect)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
 		apply_effect(character, on_kill_effect)
@@ -109,3 +120,52 @@ func apply_enemy(character: Character, enemy: Enemy):
 
 func is_attack():
 	return damage != 0
+
+func get_target_text() -> String:
+	var target_text = ""
+	if target_mode == Card.TargetMode.SELF:
+		target_text = "self"
+	elif target_mode == Card.TargetMode.SELF_ALLY:
+		target_text = "self or ally"
+	elif target_mode == Card.TargetMode.ALLY:
+		target_text = "ally"
+	return target_text
+
+func on_play_effect_text() -> String:
+	if on_play_effect:
+		return on_play_effect.get_description()
+	else:
+		var effect_texts: PackedStringArray = []
+		for effect in on_play_effects:
+			effect_texts.push_back(effect.get_description())
+		return ', '.join(effect_texts)
+
+func get_description(character: Character) -> String:
+	var description = ""
+	var target_text = get_target_text()
+	if target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
+		var on_play_text = on_play_effect_text()
+		if on_play_text:
+			description += "On Play: %s %s" % [target_text, on_play_text]
+	elif target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
+		var attack_text = "Attack"
+		var area_size = effect_area(Vector2.RIGHT).size()
+		if area_size > 1:
+			attack_text += (" enemies in area (%s tiles)" % area_size)
+		if damage:
+			var damage_text = "%d" % damage
+			if damage != effective_damage(character):
+				damage_text = "%d ([color=red]%d[/color])" % [damage, effective_damage(character)]
+			description += "%s for %s dmg\n" % [attack_text, damage_text]
+		if on_play_effect:
+			var on_play_text = on_play_effect.get_description()
+			if on_play_text:
+				description += "On Play: %s %s" % [target_text, on_play_text]
+		if on_play_self_effect:
+			var on_play_self_text = on_play_self_effect.get_description()
+			if on_play_self_text:
+				description += "On Play: %s %s" % ["character", on_play_self_text]
+		if on_kill_effect:
+			var on_kill_text = on_kill_effect.get_description()
+			description += "On Kill: %s" % on_kill_text
+	return description

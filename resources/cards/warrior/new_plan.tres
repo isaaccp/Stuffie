@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://bpsnyvo00otit"]
+
+[ext_resource type="Script" path="res://card_effect_new.gd" id="1_vym21"]
+[ext_resource type="Script" path="res://card.gd" id="1_wl48j"]
+[ext_resource type="Texture2D" uid="uid://dmoru5qxtsj70" path="res://resources/new_plan.png" id="2_jj7ll"]
+
+[sub_resource type="Resource" id="Resource_q0sws"]
+script = ExtResource("1_vym21")
+value_type = 1
+absolute_value = 0
+reference_fraction = 0.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+effect_type = 2
+target_field = 0
+effect = 1
+
+[sub_resource type="Resource" id="Resource_eu354"]
+script = ExtResource("1_vym21")
+value_type = 3
+absolute_value = 0
+reference_fraction = 1.0
+value_field_type = 2
+regular_field = 0
+read_only_field = 1
+effect_type = 2
+target_field = 0
+effect = 2
+
+[resource]
+script = ExtResource("1_wl48j")
+card_name = "New Plan"
+basic = false
+upgrade_level = 0
+cost = 1
+texture = ExtResource("2_jj7ll")
+target_mode = 0
+target_distance = 0
+damage = 0
+on_play_effects = Array[ExtResource("1_vym21")]([SubResource("Resource_q0sws"), SubResource("Resource_eu354")])
+area_type = 0
+area_length = 1
+area_width = 1
