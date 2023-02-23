@@ -5,6 +5,7 @@ class_name Character
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
+@export var cards_per_turn: int
 @export var initial_relic: Relic
 @export var portrait_texture: TextureRect
 var action_points: int
@@ -116,7 +117,7 @@ func num_hand_cards():
 
 func draw_new_hand():
 	deck.discard_hand()
-	deck.draw_cards(4)
+	deck.draw_cards(cards_per_turn)
 
 func draw_cards(number: int):
 	deck.draw_cards(number)

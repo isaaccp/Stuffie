@@ -36,6 +36,7 @@ script = ExtResource("1_rghne")
 total_action_points = 3
 total_move_points = 7
 total_hit_points = 50
+cards_per_turn = 5
 initial_relic = ExtResource("2_i4ij4")
 portrait_texture = NodePath("Portrait")
 health_bar = NodePath("HealthDisplay3D")
