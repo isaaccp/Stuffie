@@ -624,7 +624,7 @@ func play_card():
 				if current_card.apply_enemy(active_character, enemy):
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
-				active_character.attacked.emit(active_character)
+		active_character.attacked.emit(active_character)
 	active_character.action_points -= current_card.cost
 	draw_hand()
 	# Consider wrapping all this into a method.
