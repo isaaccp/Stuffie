@@ -54,7 +54,7 @@ func move_character(from: Vector2i, to: Vector2i) -> bool:
 	a_star.set_point_solid(from, false)
 	a_star.set_point_solid(to)
 	if treasure_locs.has(to):
-		pick_up_treasure(to, character)
+		await pick_up_treasure(to, character)
 		return false
 	return true
 
@@ -191,7 +191,7 @@ func pick_up_treasure(pos: Vector2i, character: Character):
 	var treasure: Treasure = treasure_locs[pos]
 	treasure_locs.erase(pos)
 	for effect in treasure.def.effects:
-		effect.apply_to_character(character)
+		await effect.apply_to_character(character)
 	treasure.queue_free()
 
 func remove_treasure(pos: Vector2i):

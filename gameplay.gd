@@ -18,6 +18,9 @@ enum HumanTurnState {
 	MOVING,
 	# An action has been chosen and we are waiting to choose a target.
 	ACTION_TARGET,
+	# Need to add a PLAYING state while playing cards, that way
+	# if some cards require interaction (e.g. choosing a card to
+	# discard, we can prevent UI from causing issues.
 }
 
 var turn_number = 0
@@ -64,9 +67,10 @@ var enemy_turn = EnemyTurn.new()
 @export var character_state_ui: Control
 @export var camera: Camera3D
 @export var camera_pivot: Node3D
+@export var end_turn_button: Button
 @export var undo_button: Button
 @export var treasures: Node
-@export var treasure_info: Label
+@export var treasure_info: RichTextLabel
 @export var shared_bag_gold_ui: SharedBagGoldUI
 
 class UndoState:
@@ -484,15 +488,17 @@ func change_state(new_state):
 
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:
+		end_turn_button.disabled = false
 		current_path.clear()
 		$World/Path.clear_points()
 	elif new_state == HumanTurnState.ACTION_TARGET:
+		end_turn_button.disabled = true
 		current_path.clear()
 		$World/Path.clear_points()
 		create_target_area(active_character.get_id_position())
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
-		pass
+		end_turn_button.disabled = true
 	human_turn_state = new_state
 
 func _on_end_turn_button_pressed():
@@ -521,7 +527,8 @@ func handle_move(mouse_pos: Vector2):
 		active_character.position = point
 		await get_tree().create_timer(0.01).timeout
 	active_character.reduce_move(path_cost(current_path))
-	if map_manager.move_character(active_character.get_id_position(), final_pos):
+	var can_undo = await map_manager.move_character(active_character.get_id_position(), final_pos)
+	if can_undo:
 		undo_button.show()
 	else:
 		reset_undo()
@@ -722,6 +729,8 @@ func update_position_direction(mouse_position: Vector2):
 
 func _unhandled_input(event):
 	if state == GameState.HUMAN_TURN:
+		if state == HumanTurnState.MOVING:
+			return
 		if event is InputEventMouseButton:
 			var mouse_event = event as InputEventMouseButton
 			# left click

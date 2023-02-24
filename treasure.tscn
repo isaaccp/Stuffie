@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://b74ha70j5irk3"]
+[gd_scene load_steps=8 format=3 uid="uid://b74ha70j5irk3"]
 
 [ext_resource type="Script" path="res://treasure.gd" id="1_vion4"]
 [ext_resource type="PackedScene" uid="uid://dkmb4rtidaovq" path="res://resources/kaykit-dungeon/models/gltf/chest_uncommon.gltf.glb" id="2_ojg1r"]
-[ext_resource type="Resource" uid="uid://d3c173rngj3rx" path="res://resources/treasure/gold.tres" id="2_t1xjs"]
+[ext_resource type="Resource" uid="uid://ci8kwmg5m0vnm" path="res://resources/treasure/gold.tres" id="2_t1xjs"]
 [ext_resource type="PackedScene" uid="uid://dafhl0hsoumwg" path="res://resources/kaykit-dungeon/models/gltf/chestTop_uncommon.gltf.glb" id="3_li8ea"]
+[ext_resource type="Resource" uid="uid://bsk3f5v4ck7cn" path="res://resources/treasure/health_potion.tres" id="3_mj2o5"]
+[ext_resource type="Resource" uid="uid://cmlc0kcakaeh2" path="res://resources/treasure/power_potion.tres" id="4_m3apt"]
+[ext_resource type="Resource" uid="uid://vy3i344xkca8" path="res://resources/treasure/workbench.tres" id="5_x5ihy"]
 
 [node name="Treasure" type="Node3D"]
 script = ExtResource("1_vion4")
-def = ExtResource("2_t1xjs")
+common = Array[Resource("res://treasure_def.gd")]([ExtResource("5_x5ihy"), ExtResource("2_t1xjs"), ExtResource("4_m3apt"), ExtResource("3_mj2o5")])
 
 [node name="Chest" type="Node3D" parent="."]
 

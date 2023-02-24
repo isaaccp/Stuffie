@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
-[node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "undo_button", "treasures", "treasure_info", "shared_bag_gold_ui")]
+[node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "treasure_info", "shared_bag_gold_ui")]
 script = ExtResource("1_bqe1h")
 hand_ui = NodePath("UI/CardAreaHBox/Hand")
 deck_ui = NodePath("UI/CardAreaHBox/Deck")
@@ -12,6 +12,7 @@ discard_ui = NodePath("UI/CardAreaHBox/Discard")
 character_state_ui = NodePath("UI/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 camera_pivot = NodePath("Pivot")
+end_turn_button = NodePath("UI/EndTurnButton")
 undo_button = NodePath("UI/InfoPanel/VBox/UndoButton")
 treasures = NodePath("World/Treasures")
 treasure_info = NodePath("UI/InfoPanel/VBox/TreasureInfo")
@@ -75,8 +76,10 @@ layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="TreasureInfo" type="Label" parent="UI/InfoPanel/VBox"]
+[node name="TreasureInfo" type="RichTextLabel" parent="UI/InfoPanel/VBox"]
 layout_mode = 2
+bbcode_enabled = true
+fit_content = true
 
 [node name="UndoButton" type="Button" parent="UI/InfoPanel/VBox"]
 layout_mode = 2
