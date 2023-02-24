@@ -560,7 +560,8 @@ func show_enemy_moves():
 	for enemy in $World/Enemies.get_children():
 		var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
 		for cell in walkable_cells:
-			final_walkable_cells[cell] = true
+			if cell not in final_attackable_cells:
+				final_walkable_cells[cell] = true
 		var attackable_cells = get_attack_cells(enemy, walkable_cells)
 		for cell in attackable_cells:
 			final_attackable_cells[cell] = true
