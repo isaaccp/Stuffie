@@ -1,24 +1,26 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://qy8mps4hkyur"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://qy8mps4hkyur"]
 
 [ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="1_bde3y"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_4agp7"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_nfk26"]
 [ext_resource type="Script" path="res://card.gd" id="3_lcaxs"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="3_t28pl"]
 [ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="4_d2ipr"]
 
-[sub_resource type="Resource" id="Resource_vu0ah"]
-script = ExtResource("2_4agp7")
-block = 3
-power = 0
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_gldr8"]
+script = ExtResource("2_nfk26")
+value_type = 1
+absolute_value = 3
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_ggxew"]
+script = ExtResource("3_t28pl")
+effect_value = SubResource("Resource_gldr8")
+effect_type = 1
+target_field = 7
+effect = 0
 
 [resource]
 script = ExtResource("3_lcaxs")
@@ -31,8 +33,9 @@ texture = ExtResource("4_d2ipr")
 target_mode = 3
 target_distance = 1
 damage = 10
-on_play_self_effect = SubResource("Resource_vu0ah")
-on_play_effects = Array[Resource("res://card_effect_new.gd")]([])
+on_play_self_effects = Array[ExtResource("3_t28pl")]([SubResource("Resource_ggxew")])
+on_play_effects = Array[ExtResource("3_t28pl")]([])
+on_kill_effects = Array[ExtResource("3_t28pl")]([])
 area_type = 0
 area_length = 1
 area_width = 1

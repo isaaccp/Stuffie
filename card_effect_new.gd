@@ -51,6 +51,7 @@ func apply_to_character(character: Character):
 					character.heal(value)
 			CardEffectValue.Field.POWER: character.power += value
 			CardEffectValue.Field.GOLD: character.shared_bag.add_gold(value)
+			CardEffectValue.Field.BLOCK: character.block += value
 
 func apply_to_enemy(character: Character, enemy: Enemy):
 	var value = 0
@@ -87,3 +88,7 @@ static func join_effects_text(effects: Array[CardEffectNew]) -> String:
 	for effect in effects:
 		effect_texts.push_back(effect.get_description())
 	return ', '.join(effect_texts)
+
+static func apply_effects_to_character(character: Character, effects: Array[CardEffectNew]):
+	for effect in effects:
+		effect.apply_to_character(character)

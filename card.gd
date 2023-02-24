@@ -30,9 +30,9 @@ enum AreaType {
 @export var target_distance: int
 @export var damage: int
 @export var damage_value: CardEffectValue
-# Use on_play_self_effect when creating a card that has
+# Use on_play_self_effects when creating a card that has
 # extra side effect on self besides target.
-@export var on_play_self_effect: CardEffect
+@export var on_play_self_effects: Array[CardEffectNew]
 @export var on_play_effect: CardEffect
 # TODO: Deprecate on_play_effect at some point. For now we'll run
 # both on_play_effect and on_play_effects.
@@ -81,8 +81,7 @@ func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
 	effect.apply_to_enemy(enemy)
 
 func apply_on_play_effects(character: Character):
-	for effect in on_play_effects:
-		effect.apply_to_character(character)
+	CardEffectNew.apply_effects_to_character(character, on_play_effects)
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
@@ -90,14 +89,14 @@ func apply_self(character: Character):
 	apply_on_play_effects(character)
 	character.refresh()
 
-func apply_self_effect(character: Character):
-	apply_effect(character, on_play_self_effect)
+func apply_self_effects(character: Character):
+	CardEffectNew.apply_effects_to_character(character, on_play_self_effects)
 
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
 	apply_effect(character, on_play_effect)
 	apply_on_play_effects(character)
-	apply_effect(character, on_play_self_effect)
+	apply_self_effects(character)
 
 func regular_damage(character: Character):
 	if damage != 0:
@@ -118,14 +117,13 @@ func effective_damage(character: Character):
 
 func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
+	apply_self_effects(character)
 	enemy.hit_points -= effective_damage(character)
-	apply_effect(character, on_play_effect)
 	for effect in on_play_effects:
 		effect.apply_to_enemy(character, enemy)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
-		for effect in on_kill_effects:
-			effect.apply_to_character(character)
+		CardEffectNew.apply_effects_to_character(character, on_kill_effects)
 		return true
 	return false
 
@@ -171,10 +169,9 @@ func get_description(character: Character) -> String:
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
-		if on_play_self_effect:
-			var on_play_self_text = on_play_self_effect.get_description()
-			if on_play_self_text:
-				description += "On Play(self): %s" % on_play_self_text
+		var on_play_self_text = CardEffectNew.join_effects_text(on_play_self_effects)
+		if on_play_self_text:
+			description += "On Play(self): %s" % on_play_self_text
 		var on_kill_text = CardEffectNew.join_effects_text(on_kill_effects)
 		if on_kill_text:
 			description += "On Kill(self): %s" % on_kill_text
