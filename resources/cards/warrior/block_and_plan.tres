@@ -1,24 +1,42 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://48tkoexc41yi"]
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://48tkoexc41yi"]
 
 [ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="1_nqysc"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_223a0"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="3_vxxsd"]
 [ext_resource type="Script" path="res://card.gd" id="3_weqv3"]
 [ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="4_huxwc"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="4_too3r"]
 
-[sub_resource type="Resource" id="Resource_ydu63"]
-script = ExtResource("2_223a0")
-block = 8
-power = 0
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 1
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_mcdck"]
+script = ExtResource("3_vxxsd")
+value_type = 1
+absolute_value = 8
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_grl1p"]
+script = ExtResource("4_too3r")
+effect_value = SubResource("Resource_mcdck")
+effect_type = 1
+target_field = 7
+effect = 0
+
+[sub_resource type="Resource" id="Resource_lodo0"]
+script = ExtResource("3_vxxsd")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_8nref"]
+script = ExtResource("4_too3r")
+effect_value = SubResource("Resource_lodo0")
+effect_type = 2
+target_field = 0
+effect = 2
 
 [resource]
 script = ExtResource("3_weqv3")
@@ -28,12 +46,12 @@ upgrade_level = 1
 base_card = ExtResource("1_nqysc")
 cost = 1
 texture = ExtResource("4_huxwc")
-target_mode = null
-target_distance = null
-damage = null
-on_play_effect = SubResource("Resource_ydu63")
-on_play_effects = null
-on_kill_effects = null
-area_type = null
-area_length = null
-area_width = null
+target_mode = 0
+target_distance = 0
+damage = 0
+on_play_self_effects = Array[ExtResource("4_too3r")]([])
+on_play_effects = Array[ExtResource("4_too3r")]([SubResource("Resource_grl1p"), SubResource("Resource_8nref")])
+on_kill_effects = Array[ExtResource("4_too3r")]([])
+area_type = 0
+area_length = 1
+area_width = 1

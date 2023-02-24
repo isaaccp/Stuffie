@@ -171,8 +171,8 @@ func get_description(character: Character) -> String:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
 		var on_play_self_text = CardEffectNew.join_effects_text(on_play_self_effects)
 		if on_play_self_text:
-			description += "On Play(self): %s" % on_play_self_text
+			description += "On Play: %s" % on_play_self_text
 		var on_kill_text = CardEffectNew.join_effects_text(on_kill_effects)
 		if on_kill_text:
-			description += "On Kill(self): %s" % on_kill_text
+			description += "On Kill: %s" % on_kill_text
 	return description

@@ -1,37 +1,39 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://cc1m880hp6tlk"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cc1m880hp6tlk"]
 
 [ext_resource type="Script" path="res://card.gd" id="1_6540g"]
-[ext_resource type="Script" path="res://card_effect.gd" id="1_wj2am"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_xwtxm"]
 [ext_resource type="Texture2D" uid="uid://duyu517a4wjk6" path="res://resources/rage.png" id="2_ny6qk"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="2_yi182"]
 
-[sub_resource type="Resource" id="Resource_30j2d"]
-script = ExtResource("1_wj2am")
-block = 0
-power = 1
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_klifp"]
+script = ExtResource("1_xwtxm")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_1vcvm"]
+script = ExtResource("2_yi182")
+effect_value = SubResource("Resource_klifp")
+effect_type = 1
+target_field = 8
+effect = 0
 
 [resource]
 script = ExtResource("1_6540g")
 card_name = "Rage"
-basic = null
-upgrade_level = null
+basic = false
+upgrade_level = 0
 cost = 1
 texture = ExtResource("2_ny6qk")
-target_mode = null
-target_distance = null
-damage = null
-on_play_effect = SubResource("Resource_30j2d")
-on_play_effects = null
-on_kill_effects = null
-area_type = null
-area_length = null
-area_width = null
+target_mode = 0
+target_distance = 0
+damage = 0
+on_play_self_effects = Array[ExtResource("2_yi182")]([])
+on_play_effects = Array[ExtResource("2_yi182")]([SubResource("Resource_1vcvm")])
+on_kill_effects = Array[ExtResource("2_yi182")]([])
+area_type = 0
+area_length = 1
+area_width = 1
