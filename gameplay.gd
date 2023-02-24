@@ -18,9 +18,8 @@ enum HumanTurnState {
 	MOVING,
 	# An action has been chosen and we are waiting to choose a target.
 	ACTION_TARGET,
-	# Need to add a PLAYING state while playing cards, that way
-	# if some cards require interaction (e.g. choosing a card to
-	# discard, we can prevent UI from causing issues.
+	# Playing a card. No actions can be chosen, no character change, etc.
+	PLAYING_CARD,
 }
 
 var turn_number = 0
@@ -464,6 +463,7 @@ func begin_turn():
 		if treasure.turns_left == 0:
 			var pos = treasure.get_id_position()
 			map_manager.remove_treasure(pos)
+	# TODO: Make this less sketchy.
 	if turn_number == 2:
 		spawn_treasure()
 	human_turn_state = HumanTurnState.WAITING
@@ -498,6 +498,8 @@ func change_human_turn_state(new_state):
 		create_target_area(active_character.get_id_position())
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
+		end_turn_button.disabled = true
+	elif new_state == HumanTurnState.PLAYING_CARD:
 		end_turn_button.disabled = true
 	human_turn_state = new_state
 
@@ -605,6 +607,7 @@ func handle_character_death(character: Character):
 		game_over.emit()
 
 func play_card():
+	change_human_turn_state(HumanTurnState.PLAYING_CARD)
 	# Discard card first.
 	active_character.deck.discard_card(current_card_index)
 	# Take snapshot of current state before playing card.
@@ -729,7 +732,7 @@ func update_position_direction(mouse_position: Vector2):
 
 func _unhandled_input(event):
 	if state == GameState.HUMAN_TURN:
-		if state == HumanTurnState.MOVING:
+		if state == HumanTurnState.MOVING or state == HumanTurnState.PLAYING_CARD:
 			return
 		if event is InputEventMouseButton:
 			var mouse_event = event as InputEventMouseButton
