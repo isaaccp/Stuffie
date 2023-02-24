@@ -1,23 +1,25 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://cfkn2xw2y3ml0"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cfkn2xw2y3ml0"]
 
-[ext_resource type="Script" path="res://card_effect.gd" id="1_f6sog"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_xt36i"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="2_7c234"]
 [ext_resource type="Script" path="res://card.gd" id="2_chxt4"]
 [ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="3_t4hqr"]
 
-[sub_resource type="Resource" id="Resource_oihnq"]
-script = ExtResource("1_f6sog")
-block = 0
-power = 0
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 1
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_d6h1u"]
+script = ExtResource("1_xt36i")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_n7yks"]
+script = ExtResource("2_7c234")
+effect_value = SubResource("Resource_d6h1u")
+effect_type = 1
+target_field = 9
+effect = 0
 
 [resource]
 script = ExtResource("2_chxt4")
@@ -29,9 +31,9 @@ texture = ExtResource("3_t4hqr")
 target_mode = 4
 target_distance = 1
 damage = null
-on_play_effect = SubResource("Resource_oihnq")
-on_play_effects = null
-on_kill_effects = null
+on_play_self_effects = Array[ExtResource("2_7c234")]([])
+on_play_effects = Array[ExtResource("2_7c234")]([SubResource("Resource_n7yks")])
+on_kill_effects = Array[ExtResource("2_7c234")]([])
 area_type = null
 area_length = 3
 area_width = 3

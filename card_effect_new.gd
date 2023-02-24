@@ -34,6 +34,8 @@ func apply_to_character(character: Character):
 				character.discard()
 			Effect.DRAW_CARDS:
 				character.draw_cards(value)
+			Effect.DRAW_CARDS:
+				character.draw_attacks(value)
 			Effect.COLLECTION_UPGRADE:
 				var tree = character.get_tree().current_scene
 				var upgrade = upgrade_scene.instantiate() as CardUpgrade
@@ -73,6 +75,7 @@ func get_description() -> String:
 		match effect:
 			Effect.DISCARD_HAND: effect_text = "discard your hand"
 			Effect.DRAW_CARDS: effect_text = "draw (%s) cards" % value_text
+			Effect.DRAW_ATTACKS: effect_text = "draw (%s) attack cards" % value_text
 			Effect.COLLECTION_UPGRADE: effect_text = "upgrade (%s) cards" % value_text
 	elif effect_type == EffectType.FIELD:
 		var prefix_text = "add"

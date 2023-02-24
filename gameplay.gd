@@ -616,7 +616,7 @@ func play_card():
 	if current_card.target_mode == Card.TargetMode.SELF:
 		current_card.apply_self(active_character)
 	elif current_card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
-		current_card.apply_self_effect(active_character)
+		current_card.apply_self_effects(active_character)
 		var affected_tiles = current_card.effect_area(direction)
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):

@@ -1,24 +1,26 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dplfqiqipmmlq"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://dplfqiqipmmlq"]
 
-[ext_resource type="Script" path="res://card_effect.gd" id="1_2fhx6"]
 [ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="1_viuel"]
 [ext_resource type="Script" path="res://card.gd" id="2_gpudr"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_imj6q"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="3_2bvtr"]
 [ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="3_aveed"]
 
-[sub_resource type="Resource" id="Resource_ydu63"]
-script = ExtResource("1_2fhx6")
-block = 11
-power = 0
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_ytexk"]
+script = ExtResource("2_imj6q")
+value_type = 1
+absolute_value = 11
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_xmbwa"]
+script = ExtResource("3_2bvtr")
+effect_value = SubResource("Resource_ytexk")
+effect_type = 1
+target_field = 7
+effect = 0
 
 [resource]
 script = ExtResource("2_gpudr")
@@ -31,9 +33,9 @@ texture = ExtResource("3_aveed")
 target_mode = null
 target_distance = null
 damage = null
-on_play_effect = SubResource("Resource_ydu63")
-on_play_effects = null
-on_kill_effects = null
+on_play_self_effects = Array[ExtResource("3_2bvtr")]([])
+on_play_effects = Array[ExtResource("3_2bvtr")]([SubResource("Resource_xmbwa")])
+on_kill_effects = Array[ExtResource("3_2bvtr")]([])
 area_type = null
 area_length = null
 area_width = null

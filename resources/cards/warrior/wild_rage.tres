@@ -1,24 +1,42 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c4igkofn7lu6o"]
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://c4igkofn7lu6o"]
 
 [ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/rage.tres" id="1_log4y"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_ns0np"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_e26d0"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="3_2n8hj"]
 [ext_resource type="Script" path="res://card.gd" id="3_tsm18"]
 [ext_resource type="Texture2D" uid="uid://duyu517a4wjk6" path="res://resources/rage.png" id="4_1tydp"]
 
-[sub_resource type="Resource" id="Resource_30j2d"]
-script = ExtResource("2_ns0np")
-block = 0
-power = 1
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 1
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_mvgn5"]
+script = ExtResource("2_e26d0")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_lysdq"]
+script = ExtResource("3_2n8hj")
+effect_value = SubResource("Resource_mvgn5")
+effect_type = 1
+target_field = 8
+effect = 0
+
+[sub_resource type="Resource" id="Resource_rsufi"]
+script = ExtResource("2_e26d0")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_3e87q"]
+script = ExtResource("3_2n8hj")
+effect_value = SubResource("Resource_rsufi")
+effect_type = 2
+target_field = 0
+effect = 3
 
 [resource]
 script = ExtResource("3_tsm18")
@@ -31,9 +49,9 @@ texture = ExtResource("4_1tydp")
 target_mode = null
 target_distance = null
 damage = null
-on_play_effect = SubResource("Resource_30j2d")
-on_play_effects = null
-on_kill_effects = null
+on_play_self_effects = Array[ExtResource("3_2n8hj")]([])
+on_play_effects = Array[ExtResource("3_2n8hj")]([SubResource("Resource_lysdq"), SubResource("Resource_3e87q")])
+on_kill_effects = Array[ExtResource("3_2n8hj")]([])
 area_type = null
 area_length = null
 area_width = null

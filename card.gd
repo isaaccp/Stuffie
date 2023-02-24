@@ -33,9 +33,6 @@ enum AreaType {
 # Use on_play_self_effects when creating a card that has
 # extra side effect on self besides target.
 @export var on_play_self_effects: Array[CardEffectNew]
-@export var on_play_effect: CardEffect
-# TODO: Deprecate on_play_effect at some point. For now we'll run
-# both on_play_effect and on_play_effects.
 @export var on_play_effects: Array[CardEffectNew]
 @export var on_kill_effects: Array[CardEffectNew]
 @export var area_type: AreaType = AreaType.RECTANGLE
@@ -70,22 +67,11 @@ func effect_area(direction: Vector2):
 
 	return new_effect_area
 
-func apply_effect(character: Character, effect: CardEffect):
-	if not effect:
-		return
-	effect.apply_to_character(character)
-
-func apply_effect_enemy(enemy: Enemy, effect: CardEffect):
-	if not effect:
-		return
-	effect.apply_to_enemy(enemy)
-
 func apply_on_play_effects(character: Character):
 	CardEffectNew.apply_effects_to_character(character, on_play_effects)
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
-	apply_effect(character, on_play_effect)
 	apply_on_play_effects(character)
 	character.refresh()
 
@@ -94,7 +80,6 @@ func apply_self_effects(character: Character):
 
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
-	apply_effect(character, on_play_effect)
 	apply_on_play_effects(character)
 	apply_self_effects(character)
 
@@ -143,10 +128,7 @@ func get_target_text() -> String:
 	return target_text
 
 func on_play_effect_text() -> String:
-	if on_play_effect:
-		return on_play_effect.get_description()
-	else:
-		return CardEffectNew.join_effects_text(on_play_effects)
+	return CardEffectNew.join_effects_text(on_play_effects)
 
 func get_description(character: Character) -> String:
 	var description = ""

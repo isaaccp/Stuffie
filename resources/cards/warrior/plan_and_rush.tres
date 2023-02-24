@@ -55,6 +55,7 @@ texture = ExtResource("4_iuglk")
 target_mode = null
 target_distance = null
 damage = null
+on_play_self_effects = Array[ExtResource("2_6u4us")]([])
 on_play_effects = Array[ExtResource("2_6u4us")]([SubResource("Resource_cvc3o"), SubResource("Resource_q0sws"), SubResource("Resource_eu354")])
 on_kill_effects = null
 area_type = null
