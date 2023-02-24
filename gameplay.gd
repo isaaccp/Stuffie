@@ -270,7 +270,7 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 	for pos in positions:
 		for offset in offsets:
 			var tile = pos + offset
-			if not move_positions.has(tile) and map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false):
+			if map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false):
 				attack_positions.push_back(tile)
 	return attack_positions
 
