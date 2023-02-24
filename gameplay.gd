@@ -23,6 +23,7 @@ enum HumanTurnState {
 var turn_number = 0
 var portrait_scene = preload("res://character_portrait.tscn")
 var card_ui_scene = preload("res://card_ui.tscn")
+var treasure_scene = preload("res://treasure.tscn")
 var active_character: Character
 # Direction of mouse position respect active character.
 # E.g. Vector2.right if it's more to the right than up/down.
@@ -64,6 +65,8 @@ var enemy_turn = EnemyTurn.new()
 @export var camera: Camera3D
 @export var camera_pivot: Node3D
 @export var undo_button: Button
+@export var treasures: Node
+@export var treasure_info: Label
 @export var shared_bag_gold_ui: SharedBagGoldUI
 
 class UndoState:
@@ -248,7 +251,7 @@ func tiles_within_distance(pos: Vector2i, distance: int) -> Array[Vector2i]:
 		while j <= pos.y + distance:
 			var tile = Vector2i(i, j)
 			if map_manager.in_bounds(tile):
-				if not map_manager.is_solid(tile, false, false):
+				if not map_manager.is_solid(tile, false, false, false):
 					if map_manager.distance(pos, tile) <= distance:
 						tiles.push_back(tile)
 			j += 1
@@ -264,7 +267,7 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 	for pos in positions:
 		for offset in offsets:
 			var tile = pos + offset
-			if not move_positions.has(tile) and map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false):
+			if not move_positions.has(tile) and map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false):
 				attack_positions.push_back(tile)
 	return attack_positions
 
@@ -441,19 +444,37 @@ func apply_undo():
 		map_manager.move_character(character.get_id_position(), undo_state.position)
 		character.set_id_position(undo_state.position)
 		character.move_points = undo_state.move_points
+	# No need to reset as it should now match.
+	undo_button.hide()
+
+func begin_turn():
+	for enemy in $World/Enemies.get_children():
+		enemy.end_turn()
+	turn_number += 1
+	for character in party.get_children():
+		character.begin_turn()
+	reset_undo()
+	draw_hand()
+	for treasure in $World/Treasures.get_children():
+		treasure.turns_left -= 1
+		if treasure.turns_left == 0:
+			var pos = treasure.get_id_position()
+			map_manager.remove_treasure(pos)
+	if turn_number == 2:
+		spawn_treasure()
+	human_turn_state = HumanTurnState.WAITING
+	new_turn_started.emit(turn_number)
+
+func spawn_treasure():
+	var treasure = treasure_scene.instantiate() as Treasure
+	var loc = map_manager.get_random_empty_tile()
+	map_manager.add_treasure(loc, treasure)
+	treasures.add_child(treasure)
 
 func change_state(new_state):
 	state = new_state
 	if state == GameState.HUMAN_TURN:
-		for enemy in $World/Enemies.get_children():
-			enemy.end_turn()
-		turn_number += 1
-		for character in party.get_children():
-			character.begin_turn()
-		reset_undo()
-		draw_hand()
-		human_turn_state = HumanTurnState.WAITING
-		new_turn_started.emit(turn_number)
+		begin_turn()
 	elif state == GameState.CPU_TURN:
 		for character in party.get_children():
 			character.end_turn()
@@ -500,10 +521,12 @@ func handle_move(mouse_pos: Vector2):
 		active_character.position = point
 		await get_tree().create_timer(0.01).timeout
 	active_character.reduce_move(path_cost(current_path))
-	map_manager.move_character(active_character.get_id_position(), final_pos)
+	if map_manager.move_character(active_character.get_id_position(), final_pos):
+		undo_button.show()
+	else:
+		reset_undo()
 	active_character.set_id_position(final_pos)
 	character_moved.emit(final_pos)
-	undo_button.show()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func _input(event):
@@ -570,6 +593,7 @@ func handle_character_death(character: Character):
 	character.queue_free()
 	if not party.get_children().is_empty():
 		set_active_character(0)
+		reset_undo()
 	else:
 		game_over.emit()
 
@@ -671,6 +695,11 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
 		else:
 			clear_enemy_info()
+		if map_manager.treasure_locs.has(new_tile_map_pos):
+			var treasure = map_manager.treasure_locs[new_tile_map_pos]
+			treasure_info.text = "Treasure: %s (%d turns left)" % [treasure.get_description(), treasure.turns_left]
+		else:
+			treasure_info.text = ""
 		# If targeting, there should be a cursor and the cursor can be move around.
 		# Likely this is only if target_mode is not SELF, will need to take that into account.
 		if state == GameState.HUMAN_TURN:

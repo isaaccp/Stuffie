@@ -16,6 +16,7 @@ var power: int
 var pending_action_cost: int = -1
 var pending_move_cost: float = -1.0
 var relics: Array[Relic]
+var shared_bag: SharedBag
 
 @export var health_bar: HealthDisplay3D
 @export var deck: Deck

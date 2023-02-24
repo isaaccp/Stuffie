@@ -39,6 +39,8 @@ func apply_to_character(character: Character):
 			CardEffectValue.Field.ACTION_POINTS: character.action_points += value
 		match target_field:
 			CardEffectValue.Field.POWER: character.power += value
+		match target_field:
+			CardEffectValue.Field.GOLD: character.shared_bag.add_gold(value)
 
 func apply_to_enemy(character: Character, enemy: Enemy):
 	var value = 0
@@ -68,3 +70,9 @@ func get_description() -> String:
 			value_text = value_text.substr(1)
 		effect_text = "%s (%s) %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(target_field)]
 	return effect_text
+
+static func join_effects_text(effects: Array[CardEffectNew]) -> String:
+	var effect_texts: PackedStringArray = []
+	for effect in effects:
+		effect_texts.push_back(effect.get_description())
+	return ', '.join(effect_texts)

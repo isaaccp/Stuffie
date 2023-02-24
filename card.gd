@@ -144,17 +144,11 @@ func get_target_text() -> String:
 		target_text = "area"
 	return target_text
 
-func on_effect_text(effects: Array[CardEffectNew]) -> String:
-	var effect_texts: PackedStringArray = []
-	for effect in effects:
-		effect_texts.push_back(effect.get_description())
-	return ', '.join(effect_texts)
-
 func on_play_effect_text() -> String:
 	if on_play_effect:
 		return on_play_effect.get_description()
 	else:
-		return on_effect_text(on_play_effects)
+		return CardEffectNew.join_effects_text(on_play_effects)
 
 func get_description(character: Character) -> String:
 	var description = ""
@@ -181,7 +175,7 @@ func get_description(character: Character) -> String:
 			var on_play_self_text = on_play_self_effect.get_description()
 			if on_play_self_text:
 				description += "On Play(self): %s" % on_play_self_text
-		var on_kill_text = on_effect_text(on_kill_effects)
+		var on_kill_text = CardEffectNew.join_effects_text(on_kill_effects)
 		if on_kill_text:
 			description += "On Kill(self): %s" % on_kill_text
 	return description

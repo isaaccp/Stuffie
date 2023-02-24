@@ -9,6 +9,7 @@ var map_rect: Rect2i
 var cell_size: Vector3
 var character_locs: Dictionary
 var enemy_locs: Dictionary
+var treasure_locs: Dictionary
 
 func initialize(stage: Stage):
 	cell_size = stage.gridmap.cell_size
@@ -45,12 +46,17 @@ func set_enemies(enemies: Array):
 	for e in enemies:
 		enemy_locs[e.get_id_position()] = e
 
-func move_character(from: Vector2i, to: Vector2i):
+# If the move can be undone, return true, otherwise return false.
+func move_character(from: Vector2i, to: Vector2i) -> bool:
 	var character = character_locs[from]
 	character_locs.erase(from)
 	character_locs[to] = character
 	a_star.set_point_solid(from, false)
 	a_star.set_point_solid(to)
+	if treasure_locs.has(to):
+		pick_up_treasure(to, character)
+		return false
+	return true
 
 func move_enemy(from: Vector2i, to: Vector2i):
 	var enemy = enemy_locs[from]
@@ -86,12 +92,14 @@ func get_enemy_path(from: Vector2i, to: Vector2i):
 	set_enemies_solid(true)
 	return path
 
-func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true):
+func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true, treasures: bool=true):
 	if base_solid_locations.has(pos):
 		return true
 	if party and character_locs.has(pos):
 		return true
 	if enemies and enemy_locs.has(pos):
+		return true
+	if treasures and treasure_locs.has(pos):
 		return true
 	return false
 
@@ -163,3 +171,30 @@ func get_world_position_corner(pos: Vector2i) -> Vector3:
 
 func in_bounds(pos: Vector2i):
 	return map_rect.has_point(pos)
+
+func get_random_empty_tile():
+	var choices = []
+	for i in map_rect.size.x:
+		for j in map_rect.size.y:
+			var pos = Vector2i(i, j)
+			if not is_solid(pos):
+				choices.push_back(pos)
+	return choices[randi() % choices.size()]
+
+func add_treasure(pos: Vector2i, treasure: Treasure):
+	assert(not is_solid(pos))
+	treasure.set_id_position(pos)
+	# Do not update A* as we want the character to be able to walk into it.
+	treasure_locs[pos] = treasure
+
+func pick_up_treasure(pos: Vector2i, character: Character):
+	var treasure: Treasure = treasure_locs[pos]
+	treasure_locs.erase(pos)
+	for effect in treasure.def.effects:
+		effect.apply_to_character(character)
+	treasure.queue_free()
+
+func remove_treasure(pos: Vector2i):
+	var treasure = treasure_locs[pos]
+	treasure_locs.erase(pos)
+	treasure.queue_free()

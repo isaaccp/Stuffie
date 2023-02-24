@@ -84,7 +84,7 @@ var run = []
 
 var stage_number = 0
 @export var shared_bag: SharedBag
-const GOLD_PER_STAGE = 15
+const GOLD_PER_STAGE = 10
 
 var characters: Array[Character]
 
@@ -102,9 +102,11 @@ signal run_finished
 func _ready():
 	state.connect_signals(self)
 	relic_list.reset()
+	# Improve this character initialization.
 	for character in party.get_children():
 		var initial_relic = character.initial_relic
 		relic_list.mark_used(initial_relic.name)
+		character.shared_bag = shared_bag
 		character.add_relic(initial_relic)
 		characters.push_back(character)
 		if run_type == RunType.TEST_BLACKSMITH:

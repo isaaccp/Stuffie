@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://b74ha70j5irk3"]
+
+[ext_resource type="Script" path="res://treasure.gd" id="1_vion4"]
+[ext_resource type="PackedScene" uid="uid://dkmb4rtidaovq" path="res://resources/kaykit-dungeon/models/gltf/chest_uncommon.gltf.glb" id="2_ojg1r"]
+[ext_resource type="Resource" uid="uid://d3c173rngj3rx" path="res://resources/treasure/gold.tres" id="2_t1xjs"]
+[ext_resource type="PackedScene" uid="uid://dafhl0hsoumwg" path="res://resources/kaykit-dungeon/models/gltf/chestTop_uncommon.gltf.glb" id="3_li8ea"]
+
+[node name="Treasure" type="Node3D"]
+script = ExtResource("1_vion4")
+def = ExtResource("2_t1xjs")
+
+[node name="Chest" type="Node3D" parent="."]
+
+[node name="chest_uncommongltf" parent="Chest" instance=ExtResource("2_ojg1r")]
+
+[node name="chestTop_uncommongltf" parent="Chest" instance=ExtResource("3_li8ea")]
+transform = Transform3D(1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 0.5, -0.5)
