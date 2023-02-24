@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://stages/camp.gd" id="1_iynco"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_84e0o"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="2_iw1lg"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="3_6n6lm"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_6n6lm"]
 [ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="4_xwk87"]
 
 [sub_resource type="Resource" id="Resource_f8cvr"]

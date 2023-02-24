@@ -32,9 +32,9 @@ enum AreaType {
 @export var damage_value: CardEffectValue
 # Use on_play_self_effects when creating a card that has
 # extra side effect on self besides target.
-@export var on_play_self_effects: Array[CardEffectNew]
-@export var on_play_effects: Array[CardEffectNew]
-@export var on_kill_effects: Array[CardEffectNew]
+@export var on_play_self_effects: Array[CardEffect]
+@export var on_play_effects: Array[CardEffect]
+@export var on_kill_effects: Array[CardEffect]
 @export var area_type: AreaType = AreaType.RECTANGLE
 @export var area_length: int = 1
 # Area width should in general be odd.
@@ -68,7 +68,7 @@ func effect_area(direction: Vector2):
 	return new_effect_area
 
 func apply_on_play_effects(character: Character):
-	CardEffectNew.apply_effects_to_character(character, on_play_effects)
+	CardEffect.apply_effects_to_character(character, on_play_effects)
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
@@ -76,7 +76,7 @@ func apply_self(character: Character):
 	character.refresh()
 
 func apply_self_effects(character: Character):
-	CardEffectNew.apply_effects_to_character(character, on_play_self_effects)
+	CardEffect.apply_effects_to_character(character, on_play_self_effects)
 
 func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
@@ -108,7 +108,7 @@ func apply_enemy(character: Character, enemy: Enemy):
 		effect.apply_to_enemy(character, enemy)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
-		CardEffectNew.apply_effects_to_character(character, on_kill_effects)
+		CardEffect.apply_effects_to_character(character, on_kill_effects)
 		return true
 	return false
 
@@ -128,7 +128,7 @@ func get_target_text() -> String:
 	return target_text
 
 func on_play_effect_text() -> String:
-	return CardEffectNew.join_effects_text(on_play_effects)
+	return CardEffect.join_effects_text(on_play_effects)
 
 func get_description(character: Character) -> String:
 	var description = ""
@@ -151,10 +151,10 @@ func get_description(character: Character) -> String:
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
-		var on_play_self_text = CardEffectNew.join_effects_text(on_play_self_effects)
+		var on_play_self_text = CardEffect.join_effects_text(on_play_self_effects)
 		if on_play_self_text:
 			description += "On Play: %s" % on_play_self_text
-		var on_kill_text = CardEffectNew.join_effects_text(on_kill_effects)
+		var on_kill_text = CardEffect.join_effects_text(on_kill_effects)
 		if on_kill_text:
 			description += "On Kill: %s" % on_kill_text
 	return description

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_siojm"]
 [ext_resource type="Script" path="res://card.gd" id="2_ekyjs"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="2_gtolk"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_gtolk"]
 [ext_resource type="Texture2D" uid="uid://dyhf244xs7bqg" path="res://resources/cleave.png" id="3_qrakg"]
 
 [sub_resource type="Resource" id="Resource_brnhp"]

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="TreasureDef" load_steps=6 format=3 uid="uid://cmlc0kcakaeh2"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_ukv0v"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="2_rj5br"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_rj5br"]
 [ext_resource type="Script" path="res://treasure_def.gd" id="3_x474y"]
 
 [sub_resource type="Resource" id="Resource_717nv"]

@@ -11,4 +11,4 @@ func _ready():
 	def = common[randi() % common.size()]
 
 func get_description():
-	return CardEffectNew.join_effects_text(def.effects)
+	return CardEffect.join_effects_text(def.effects)

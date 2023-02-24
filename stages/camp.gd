@@ -30,7 +30,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 func add_choice(choice: CampChoice):
 	var button = Button.new()
 	button.text = choice.title
-	button.tooltip_text = CardEffectNew.join_effects_text(choice.effects)
+	button.tooltip_text = CardEffect.join_effects_text(choice.effects)
 	button.pressed.connect(_on_button_pressed.bind(choice))
 	choice_container.add_child(button)
 

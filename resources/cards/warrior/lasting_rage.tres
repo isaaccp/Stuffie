@@ -3,7 +3,7 @@
 [ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/rage.tres" id="1_au4ac"]
 [ext_resource type="Script" path="res://card.gd" id="2_clg82"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_xx18y"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="3_61v7p"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_61v7p"]
 [ext_resource type="Texture2D" uid="uid://duyu517a4wjk6" path="res://resources/rage.png" id="3_k1bhq"]
 
 [sub_resource type="Resource" id="Resource_jedua"]

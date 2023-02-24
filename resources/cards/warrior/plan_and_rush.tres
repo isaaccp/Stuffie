@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://d3etj70kx2c4t"]
 
 [ext_resource type="Resource" uid="uid://bpsnyvo00otit" path="res://resources/cards/warrior/new_plan.tres" id="1_lbc1m"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="2_6u4us"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_6u4us"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_bi4m3"]
 [ext_resource type="Script" path="res://card.gd" id="3_17yh5"]
 [ext_resource type="Texture2D" uid="uid://dmoru5qxtsj70" path="res://resources/new_plan.png" id="4_iuglk"]

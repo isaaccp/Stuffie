@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://bfhwdfwipn4lf"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_3hcvr"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="2_nukhp"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_nukhp"]
 [ext_resource type="Script" path="res://card.gd" id="3_hjmsg"]
 [ext_resource type="Texture2D" uid="uid://dyhf244xs7bqg" path="res://resources/cleave.png" id="4_jaqwa"]
 

@@ -1,6 +1,6 @@
 extends Resource
 
-class_name CardEffectNew
+class_name CardEffect
 
 enum EffectType {
 	NO_EFFECT,
@@ -86,12 +86,12 @@ func get_description() -> String:
 		effect_text = "%s (%s) %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(target_field)]
 	return effect_text
 
-static func join_effects_text(effects: Array[CardEffectNew]) -> String:
+static func join_effects_text(effects: Array[CardEffect]) -> String:
 	var effect_texts: PackedStringArray = []
 	for effect in effects:
 		effect_texts.push_back(effect.get_description())
 	return ', '.join(effect_texts)
 
-static func apply_effects_to_character(character: Character, effects: Array[CardEffectNew]):
+static func apply_effects_to_character(character: Character, effects: Array[CardEffect]):
 	for effect in effects:
 		effect.apply_to_character(character)

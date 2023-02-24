@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/shout.tres" id="1_k2skt"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_y5o5l"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="3_4cfls"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_4cfls"]
 [ext_resource type="Script" path="res://card.gd" id="3_b74jm"]
 [ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="4_d2u6j"]
 

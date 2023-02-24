@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://bpsnyvo00otit"]
 
-[ext_resource type="Script" path="res://card_effect_new.gd" id="1_vym21"]
+[ext_resource type="Script" path="res://card_effect.gd" id="1_vym21"]
 [ext_resource type="Script" path="res://card.gd" id="1_wl48j"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_5kuxm"]
 [ext_resource type="Texture2D" uid="uid://dmoru5qxtsj70" path="res://resources/new_plan.png" id="2_jj7ll"]

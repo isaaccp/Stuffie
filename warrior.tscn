@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://cqmvranirdbgc" path="res://resources/decks/warrior/all_cards.tres" id="5_6bt2n"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="5_stldu"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_uruck"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="7_0sito"]
+[ext_resource type="Script" path="res://card_effect.gd" id="7_0sito"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="7_j2akc"]
 
 [sub_resource type="Resource" id="Resource_4umbw"]

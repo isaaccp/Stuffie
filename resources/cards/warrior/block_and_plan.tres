@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://card_effect_value.gd" id="3_vxxsd"]
 [ext_resource type="Script" path="res://card.gd" id="3_weqv3"]
 [ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="4_huxwc"]
-[ext_resource type="Script" path="res://card_effect_new.gd" id="4_too3r"]
+[ext_resource type="Script" path="res://card_effect.gd" id="4_too3r"]
 
 [sub_resource type="Resource" id="Resource_mcdck"]
 script = ExtResource("3_vxxsd")
