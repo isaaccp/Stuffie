@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://chh0sy5tad4lg"]
+[gd_scene load_steps=15 format=3 uid="uid://chh0sy5tad4lg"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://resources/decks/warrior/deck.tres" id="2_d5bu5"]
@@ -8,28 +8,30 @@
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
 [ext_resource type="Resource" uid="uid://cqmvranirdbgc" path="res://resources/decks/warrior/all_cards.tres" id="5_6bt2n"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="5_stldu"]
-[ext_resource type="Script" path="res://card_effect.gd" id="6_h06f3"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="6_uruck"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="7_0sito"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="7_j2akc"]
 
-[sub_resource type="Resource" id="Resource_7xehr"]
-script = ExtResource("6_h06f3")
-block = 0
-power = 0
-hit_points = 0
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 5
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_4umbw"]
+script = ExtResource("6_uruck")
+value_type = 1
+absolute_value = 5
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_roygk"]
+script = ExtResource("7_0sito")
+effect_value = SubResource("Resource_4umbw")
+effect_type = 1
+target_field = 2
+effect = 0
 
 [sub_resource type="Resource" id="Resource_gq1ff"]
 script = ExtResource("7_j2akc")
 title = "Train"
-effect = SubResource("Resource_7xehr")
+effects = Array[ExtResource("7_0sito")]([SubResource("Resource_roygk")])
 
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
 script = ExtResource("1_rghne")

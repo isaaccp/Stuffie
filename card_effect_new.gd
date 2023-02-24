@@ -46,6 +46,9 @@ func apply_to_character(character: Character):
 			CardEffectValue.Field.MOVE_POINTS: character.move_points += value
 			CardEffectValue.Field.ACTION_POINTS: character.action_points += value
 			CardEffectValue.Field.HIT_POINTS: character.heal(value)
+			CardEffectValue.Field.TOTAL_HIT_POINTS:
+					character.total_hit_points += value
+					character.heal(value)
 			CardEffectValue.Field.POWER: character.power += value
 			CardEffectValue.Field.GOLD: character.shared_bag.add_gold(value)
 

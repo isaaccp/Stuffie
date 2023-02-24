@@ -30,7 +30,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 func add_choice(choice: CampChoice):
 	var button = Button.new()
 	button.text = choice.title
-	button.tooltip_text = choice.effect.get_description()
+	button.tooltip_text = CardEffectNew.join_effects_text(choice.effects)
 	button.pressed.connect(_on_button_pressed.bind(choice))
 	choice_container.add_child(button)
 
@@ -57,5 +57,6 @@ func _next_character():
 	state = CampState.NEW_CHARACTER
 
 func _on_button_pressed(choice: CampChoice):
-	choice.effect.apply_to_character(characters[current_character])
+	for effect in choice.effects:
+		effect.apply_to_character(characters[current_character])
 	_next_character()

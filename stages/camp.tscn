@@ -1,29 +1,31 @@
-[gd_scene load_steps=7 format=3 uid="uid://bstc04njnjap7"]
+[gd_scene load_steps=9 format=3 uid="uid://bstc04njnjap7"]
 
 [ext_resource type="Script" path="res://stages/camp.gd" id="1_iynco"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_84e0o"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="2_iw1lg"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_ufos7"]
+[ext_resource type="Script" path="res://card_effect_new.gd" id="3_6n6lm"]
 [ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="4_xwk87"]
 
-[sub_resource type="Resource" id="Resource_stguo"]
-script = ExtResource("2_ufos7")
-block = 0
-power = 0
-hit_points = 20
-move_points = 0
-action_points = 0
-weakness = 0
-vulnerability = 0
-discard_hand = false
-draw_cards = 0
-draw_attack = 0
-total_hit_points = 0
-upgrade_collection = 0
+[sub_resource type="Resource" id="Resource_f8cvr"]
+script = ExtResource("2_84e0o")
+value_type = 2
+absolute_value = 0
+reference_fraction = 0.3
+value_field_type = 1
+regular_field = 2
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_b3cqx"]
+script = ExtResource("3_6n6lm")
+effect_value = SubResource("Resource_f8cvr")
+effect_type = 1
+target_field = 1
+effect = 0
 
 [sub_resource type="Resource" id="Resource_erjq1"]
 script = ExtResource("2_iw1lg")
 title = "Rest"
-effect = SubResource("Resource_stguo")
+effects = Array[ExtResource("3_6n6lm")]([SubResource("Resource_b3cqx")])
 
 [node name="Control" type="Control" node_paths=PackedStringArray("character_portrait", "choice_container")]
 layout_mode = 3

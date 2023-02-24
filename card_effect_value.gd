@@ -71,11 +71,14 @@ func _get_reference_value(character: Character):
 		return get_read_only_field(character, read_only_field)
 
 func get_field(character: Character, field: Field):
-	pass
+	match field:
+		Field.TOTAL_HIT_POINTS: return character.total_hit_points
+	assert(false)
 
 func get_read_only_field(character: Character, field: ReadOnlyField):
 	match field:
 		ReadOnlyField.SNAPSHOT_HAND_CARDS: return character.snapshot.num_hand_cards
+	assert(false)
 
 static func get_regular_field_name(field: Field):
 	return field_name[field]
@@ -93,7 +96,7 @@ func get_value_string():
 	if value_type == ValueType.ABSOLUTE:
 		return "%d" % absolute_value
 	if value_type == ValueType.REFERENCE:
-		return get_field_name()
+		return "%d%% of %s" % [reference_fraction * 100, get_field_name()]
 
 func is_negative():
 	if value_type == ValueType.ABSOLUTE and absolute_value < 0:
