@@ -12,6 +12,9 @@ var keyword_tooltips = {
 	"MP": "Move points. Used to move the character. Can be raised over Total MP.",
 }
 
+@export var card_name: Label
+@export var cost: Label
+@export var playing: Label
 @export var description: RichTextLabel
 @export var tooltip: Label
 @export var image: TextureRect
@@ -43,13 +46,13 @@ func get_cost_text() -> String:
 	return "%d💢" % card.cost
 
 func refresh():
-	$Margin/VBox/CardTop/Name.text = card.card_name
-	$Margin/VBox/CardTop/Cost.text = get_cost_text()
+	card_name.text = card.card_name
+	cost.text = get_cost_text()
 	image.texture = card.texture
 	description.text = get_description_text()
 
 func set_highlight(highlight: bool):
-	$Margin/VBox/Playing.visible = highlight
+	playing.visible = highlight
 
 func _gui_input(event):
 		if event is InputEventMouseButton:

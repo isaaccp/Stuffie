@@ -40,6 +40,8 @@ func _ready():
 	pass
 
 func initialize(enemies_node: Node):
+	# TODO: I was unable to save the gridmap as a exported node path in the stage importer,
+	# so need to set it here.
 	gridmap = $GridMap
 	for enemy_position in enemies:
 		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy

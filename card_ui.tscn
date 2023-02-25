@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://c2wg8gqprp7pc"]
 
 [ext_resource type="Script" path="res://card_ui.gd" id="1_h04yd"]
-[ext_resource type="Texture2D" uid="uid://x5yx5ngn4feu" path="res://resources/lunge.png" id="2_lr4w5"]
+[ext_resource type="Texture2D" uid="uid://c52y4ijrrdkuh" path="res://resources/lunge.png" id="2_lr4w5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8d27"]
 
-[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("description", "tooltip", "image")]
+[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("card_name", "cost", "playing", "description", "tooltip", "image")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,6 +14,9 @@ offset_bottom = -996.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h04yd")
+card_name = NodePath("Margin/VBox/CardTop/Name")
+cost = NodePath("Margin/VBox/CardTop/Cost")
+playing = NodePath("Margin/VBox/Playing")
 description = NodePath("Margin/VBox/Description")
 tooltip = NodePath("Margin/VBox/PanelContainer/Tooltip")
 image = NodePath("Margin/VBox/PanelContainer/Image")
