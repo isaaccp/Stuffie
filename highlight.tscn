@@ -1,26 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://d5b1cvprnofd"]
+[gd_scene load_steps=3 format=3 uid="uid://d5b1cvprnofd"]
 
 [ext_resource type="Script" path="res://highlight3d.gd" id="1_ddu6r"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_54boa"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_essuj"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_8dci0"]
-
-[node name="Highlight" type="Node3D" node_paths=PackedStringArray("viewport", "sprite", "node")]
+[node name="Highlight" type="Node3D" node_paths=PackedStringArray("container", "viewport")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
 script = ExtResource("1_ddu6r")
-texture = SubResource("ViewportTexture_54boa")
+container = NodePath("Sprite3D/SubViewport/Node2D")
 viewport = NodePath("Sprite3D/SubViewport")
-sprite = NodePath("Sprite3D")
-node = NodePath("Sprite3D/SubViewport/Node2D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
 centered = false
 flip_v = true
 axis = 1
-texture = SubResource("ViewportTexture_8dci0")
+texture = SubResource("ViewportTexture_essuj")
 
 [node name="SubViewport" type="SubViewport" parent="Sprite3D"]
 disable_3d = true
