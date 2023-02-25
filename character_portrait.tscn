@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
 [ext_resource type="Texture2D" uid="uid://dcl7kkxhyedtp" path="res://icon.svg" id="2_s8pq6"]
 
-[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "relics_container")]
+[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "active_marker", "action_points_label", "move_points_label", "hit_points_label", "block_label", "power_label", "relics_container")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,6 +11,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qmac0")
 portrait = NodePath("Margin/VBox/Portrait")
+active_marker = NodePath("Margin/VBox/Portrait/ActiveMarker")
+action_points_label = NodePath("Margin/VBox/ActionPoints")
+move_points_label = NodePath("Margin/VBox/MovePoints")
+hit_points_label = NodePath("Margin/VBox/HitPoints")
+block_label = NodePath("Margin/VBox/Block")
+power_label = NodePath("Margin/VBox/Power")
 relics_container = NodePath("Margin/VBox/Relics")
 
 [node name="Margin" type="MarginContainer" parent="."]

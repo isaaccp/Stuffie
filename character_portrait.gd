@@ -3,6 +3,12 @@ extends PanelContainer
 class_name CharacterPortrait
 
 @export var portrait: TextureButton
+@export var active_marker: TextureRect
+@export var action_points_label: RichTextLabel
+@export var move_points_label: RichTextLabel
+@export var hit_points_label: RichTextLabel
+@export var block_label: Label
+@export var power_label: Label
 @export var relics_container: Container
 
 var character: Character
@@ -47,7 +53,7 @@ func _set_move_points(pending_move_cost: float, move_points: float, total_move_p
 		move_left = move_points
 
 	var bb_code = "MP: [color=%s]%0.1f[/color] / %d" % [color, move_left, total_move_points]
-	$Margin/VBox/MovePoints.parse_bbcode(bb_code)
+	move_points_label.parse_bbcode(bb_code)
 
 func _set_action_points(pending_action_cost: int, action_points: int, total_action_points: int):
 	var color
@@ -60,7 +66,7 @@ func _set_action_points(pending_action_cost: int, action_points: int, total_acti
 		actions_left = action_points
 
 	var bb_code = "AP💢: [color=%s]%d[/color] / %d" % [color, actions_left, total_action_points]
-	$Margin/VBox/ActionPoints.parse_bbcode(bb_code)
+	action_points_label.parse_bbcode(bb_code)
 
 func _set_hit_points(hit_points: int, total_hit_points: int):
 	var color
@@ -70,19 +76,19 @@ func _set_hit_points(hit_points: int, total_hit_points: int):
 		color = "white"
 
 	var bb_code = "HP: [color=%s]%d[/color] / %d" % [color, hit_points, total_hit_points]
-	$Margin/VBox/HitPoints.parse_bbcode(bb_code)
+	hit_points_label.parse_bbcode(bb_code)
 
 func _set_block(block: int):
 	if block == 0:
-		$Margin/VBox/Block.text = ""
+		block_label.text = ""
 	else:
-		$Margin/VBox/Block.text = "Block: %d" % block
+		block_label.text = "Block: %d" % block
 
 func _set_power(power: int):
 	if power == 0:
-		$Margin/VBox/Power.text = ""
+		power_label.text = ""
 	else:
-		$Margin/VBox/Power.text = "Power: %d⌚" % power
+		power_label.text = "Power: %d⌚" % power
 
 func _set_active(active: bool):
-	$Margin/VBox/Portrait/ActiveMarker.visible = active
+	active_marker.visible = active
