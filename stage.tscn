@@ -4,8 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
-[node name="gameplay" type="Node3D" node_paths=PackedStringArray("hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "treasure_info", "shared_bag_gold_ui")]
+[node name="gameplay" type="Node3D" node_paths=PackedStringArray("enemies_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
+enemies_node = NodePath("World/Enemies")
 hand_ui = NodePath("UI/CardAreaHBox/Hand")
 deck_ui = NodePath("UI/CardAreaHBox/Deck")
 discard_ui = NodePath("UI/CardAreaHBox/Discard")
@@ -15,8 +16,13 @@ camera_pivot = NodePath("Pivot")
 end_turn_button = NodePath("UI/EndTurnButton")
 undo_button = NodePath("UI/InfoPanel/VBox/UndoButton")
 treasures = NodePath("World/Treasures")
+stage_info = NodePath("UI/InfoPanel/VBox/Stage")
+objective_info = NodePath("UI/InfoPanel/VBox/Objective")
+turn_state_info = NodePath("UI/InfoPanel/VBox/TurnState")
+enemy_info = NodePath("UI/InfoPanel/VBox/EnemyInfo")
 treasure_info = NodePath("UI/InfoPanel/VBox/TreasureInfo")
 shared_bag_gold_ui = NodePath("UI/InfoPanel/VBox/SharedBagGoldUI")
+move_path = NodePath("World/Path")
 
 [node name="World" type="Node" parent="."]
 

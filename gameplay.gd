@@ -60,6 +60,10 @@ var enemy_turn_calculated = false
 var enemy_moving = false
 var enemy_turn = EnemyTurn.new()
 
+# New stages are added to this world.
+@export var world: Node
+# Enemies are under this node.
+@export var enemies_node: Node
 @export var hand_ui: Control
 @export var deck_ui: Control
 @export var discard_ui: Control
@@ -69,8 +73,13 @@ var enemy_turn = EnemyTurn.new()
 @export var end_turn_button: Button
 @export var undo_button: Button
 @export var treasures: Node
+@export var stage_info: Label
+@export var objective_info: Label
+@export var turn_state_info: Label
+@export var enemy_info: RichTextLabel
 @export var treasure_info: RichTextLabel
 @export var shared_bag_gold_ui: SharedBagGoldUI
+@export var move_path: Line2D
 
 class UndoState:
 	var position
@@ -112,13 +121,13 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
 	initialize_stage(stage)
 
 func initialize_stage(stage: Stage):
-	stage.initialize($World/Enemies)
+	stage.initialize(enemies_node)
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
 	connect("new_turn_started", stage.new_turn_started_handler)
 	stage.connect("stage_completed", next_stage)
-	$World.add_child(stage)
+	world.add_child(stage)
 	var i = 0
 	for character in party.get_children():
 		character.begin_stage()
@@ -135,8 +144,8 @@ func initialize_stage(stage: Stage):
 		objective_highlight.set_width(4)
 		objective_highlight.refresh.call_deferred()
 		stage.add_child(objective_highlight)
-	$UI/InfoPanel/VBox/Stage.text = "Stage"
-	$UI/InfoPanel/VBox/Objective.text = stage.get_objective_string()
+	stage_info.text = "Stage"
+	objective_info.text = stage.get_objective_string()
 	change_state(GameState.HUMAN_TURN)
 
 func next_stage():
@@ -145,7 +154,7 @@ func next_stage():
 func initialize_map_manager(stage: Stage):
 	map_manager.initialize(stage)
 	map_manager.set_party(party.get_children())
-	map_manager.set_enemies($World/Enemies.get_children())
+	map_manager.set_enemies(enemies_node.get_children())
 	map_manager.initialize_a_star()
 	enemy_turn.initialize(map_manager)
 
@@ -220,7 +229,7 @@ func create_cursor(pos: Vector2i, direction: Vector2):
 	target_cursor = CardTargetHighlight.new(map_manager, cursor_pos, direction, current_card)
 	target_cursor.set_width(3)
 	target_cursor.refresh()
-	$World.add_child(target_cursor)
+	world.add_child(target_cursor)
 
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
 	var unprojected = camera.unproject_position(world_pos)
@@ -232,7 +241,7 @@ func create_target_area(pos: Vector2i):
 			target_area.queue_free()
 	target_area = AreaDistanceHighlight.new(map_manager, pos, current_card.target_distance)
 	target_area.refresh()
-	$World.add_child(target_area)
+	world.add_child(target_area)
 
 func offsets_within_distance(distance: int) -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
@@ -293,8 +302,8 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
 	enemy_attack_area.refresh()
 	print_debug("Cost of create/refresh attack area ", Time.get_ticks_msec() - start)
-	$World.add_child(enemy_move_area)
-	$World.add_child(enemy_attack_area)
+	world.add_child(enemy_move_area)
+	world.add_child(enemy_attack_area)
 
 func path_cost(path: PackedVector2Array) -> float:
 	var cost = 0.0
@@ -320,15 +329,15 @@ func calculate_path(tile_map_pos):
 	else:
 		active_character.set_pending_move_cost(cost)
 	# Draw path.
-	$World/Path.clear_points()
+	move_path.clear_points()
 	if valid_path:
 		if too_long_path:
-			$World/Path.default_color = Color(1, 0, 0, 1)
+			move_path.default_color = Color(1, 0, 0, 1)
 		else:
-			$World/Path.default_color = Color(1, 1, 1, 1)
+			move_path.default_color = Color(1, 1, 1, 1)
 		for point in current_path:
 			var location = map_manager.get_world_position(point)
-			add_unprojected_point($World/Path, location)
+			add_unprojected_point(move_path, location)
 
 func draw_attack(enemy: Enemy, target: Character):
 	if not enemy.weapon:
@@ -447,7 +456,7 @@ func apply_undo():
 	undo_button.hide()
 
 func begin_turn():
-	for enemy in $World/Enemies.get_children():
+	for enemy in enemies_node.get_children():
 		enemy.end_turn()
 	clear_enemy_info_cache()
 	turn_number += 1
@@ -455,7 +464,7 @@ func begin_turn():
 		character.begin_turn()
 	reset_undo()
 	draw_hand()
-	for treasure in $World/Treasures.get_children():
+	for treasure in treasures.get_children():
 		treasure.turns_left -= 1
 		if treasure.turns_left == 0:
 			var pos = treasure.get_id_position()
@@ -481,17 +490,17 @@ func change_state(new_state):
 			character.end_turn()
 		enemy_turn_calculated = false
 		enemy_turn_thread.start(_async_enemy_turn)
-	$UI/InfoPanel/VBox/TurnState.text = "%s: %d" % [state_text[state], turn_number]
+	turn_state_info.text = "%s: %d" % [state_text[state], turn_number]
 
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:
 		end_turn_button.disabled = false
 		current_path.clear()
-		$World/Path.clear_points()
+		move_path.clear_points()
 	elif new_state == HumanTurnState.ACTION_TARGET:
 		end_turn_button.disabled = true
 		current_path.clear()
-		$World/Path.clear_points()
+		move_path.clear_points()
 		create_target_area(active_character.get_id_position())
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
@@ -555,7 +564,7 @@ func _input(event):
 func show_enemy_moves():
 	var final_walkable_cells = Dictionary()
 	var final_attackable_cells = Dictionary()
-	for enemy in $World/Enemies.get_children():
+	for enemy in enemies_node.get_children():
 		var walkable_cells = get_enemy_walkable_cells(enemy)
 		for cell in walkable_cells:
 			if cell not in final_attackable_cells:
@@ -601,7 +610,7 @@ func clear_enemy_info_cache():
 func update_enemy_info(enemy: Enemy):
 	if Input.is_action_pressed("ui_showenemymove"):
 		return
-	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
+	enemy_info.text = enemy.info_text()
 	var start = Time.get_ticks_msec()
 	var walkable_cells = get_enemy_walkable_cells(enemy)
 	var attackable_cells = get_enemy_attackable_not_walkable_cells(enemy)
@@ -611,7 +620,7 @@ func update_enemy_info(enemy: Enemy):
 	print_debug("Update move area time: ", Time.get_ticks_msec() - start)
 
 func clear_enemy_info():
-	$UI/InfoPanel/VBox/EnemyInfo.text = ""
+	enemy_info.text = ""
 	if is_instance_valid(enemy_move_area):
 		enemy_move_area.queue_free()
 	if is_instance_valid(enemy_attack_area):

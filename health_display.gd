@@ -6,7 +6,7 @@ var bar_red = preload("res://resources/ui/bar_horizontal_red.png")
 var bar_green = preload("res://resources/ui/bar_horizontal_green.png")
 var bar_yellow = preload("res://resources/ui/bar_horizontal_yellow.png")
 
-@onready var healthbar = $HealthBar
+@export var healthbar: TextureProgressBar
 
 func _ready():
 	hide()

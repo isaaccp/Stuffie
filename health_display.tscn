@@ -3,8 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bwa62stu30mso" path="res://resources/ui/bar_horizontal_green.png" id="1_365wh"]
 [ext_resource type="Script" path="res://health_display.gd" id="1_u4alx"]
 
-[node name="HealthDisplay" type="Node2D"]
+[node name="HealthDisplay" type="Node2D" node_paths=PackedStringArray("healthbar")]
 script = ExtResource("1_u4alx")
+healthbar = NodePath("HealthBar")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_right = 40.0
