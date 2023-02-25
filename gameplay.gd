@@ -78,8 +78,10 @@ class UndoState:
 
 var undo_states: Dictionary
 var party: Node
-
 var shared_bag: SharedBag
+
+var enemy_walkable_cache: Dictionary
+var enemy_attackable_cache: Dictionary
 
 signal enemy_died
 signal character_moved(pos: Vector2i)
@@ -279,12 +281,16 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 		enemy_move_area.queue_free()
 	if is_instance_valid(enemy_attack_area):
 		enemy_attack_area.queue_free()
+	var start = Time.get_ticks_msec()
 	enemy_move_area = TilesHighlight.new(map_manager, move_positions)
 	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
 	enemy_move_area.refresh()
+	print_debug("Cost of create/refresh move area ", Time.get_ticks_msec() - start)
+	start = Time.get_ticks_msec()
 	enemy_attack_area = TilesHighlight.new(map_manager, attack_positions)
 	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
 	enemy_attack_area.refresh()
+	print_debug("Cost of create/refresh attack area ", Time.get_ticks_msec() - start)
 	$World.add_child(enemy_move_area)
 	$World.add_child(enemy_attack_area)
 
@@ -441,6 +447,7 @@ func apply_undo():
 func begin_turn():
 	for enemy in $World/Enemies.get_children():
 		enemy.end_turn()
+	clear_enemy_info_cache()
 	turn_number += 1
 	for character in party.get_children():
 		character.begin_turn()
@@ -524,6 +531,7 @@ func handle_move(mouse_pos: Vector2):
 		reset_undo()
 	active_character.set_id_position(final_pos)
 	character_moved.emit(final_pos)
+	clear_enemy_info_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func _input(event):
@@ -546,26 +554,59 @@ func show_enemy_moves():
 	var final_walkable_cells = Dictionary()
 	var final_attackable_cells = Dictionary()
 	for enemy in $World/Enemies.get_children():
-		var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
+		var walkable_cells = get_enemy_walkable_cells(enemy)
 		for cell in walkable_cells:
 			if cell not in final_attackable_cells:
 				final_walkable_cells[cell] = true
-		var attackable_cells = get_attack_cells(enemy, walkable_cells)
+		var attackable_cells = get_enemy_attackable_cells(enemy)
 		for cell in attackable_cells:
 			final_attackable_cells[cell] = true
 			if final_walkable_cells.has(cell):
 				final_walkable_cells.erase(cell)
 	update_move_area(final_walkable_cells.keys(), final_attackable_cells.keys())
 
+func get_enemy_walkable_cells(enemy: Enemy):
+	if enemy_walkable_cache.has(enemy):
+		return enemy_walkable_cache[enemy]
+	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
+	enemy_walkable_cache[enemy] = walkable_cells
+	return walkable_cells
+
+func get_enemy_attackable_cells(enemy: Enemy):
+	if enemy_attackable_cache.has(enemy):
+		return enemy_attackable_cache[enemy]
+	var walkable_cells = get_enemy_walkable_cells(enemy)
+	var attackable_cells = get_attack_cells(enemy, walkable_cells)
+	enemy_attackable_cache[enemy] = attackable_cells
+	return attackable_cells
+
+func get_enemy_attackable_not_walkable_cells(enemy: Enemy):
+	var walkable_cells = get_enemy_walkable_cells(enemy)
+	var walkable = {}
+	for cell in walkable_cells:
+		walkable[cell] = true
+	var attackable_cells = get_attack_cells(enemy, walkable_cells)
+	var attackable_not_walkable = []
+	for cell in attackable_cells:
+		if not walkable.has(cell):
+			attackable_not_walkable.push_back(cell)
+	return attackable_not_walkable
+
+func clear_enemy_info_cache():
+	enemy_walkable_cache.clear()
+	enemy_attackable_cache.clear()
+
 func update_enemy_info(enemy: Enemy):
 	if Input.is_action_pressed("ui_showenemymove"):
 		return
 	$UI/InfoPanel/VBox/EnemyInfo.text = enemy.info_text()
 	var start = Time.get_ticks_msec()
-	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
-	var attackable_cells = get_attack_cells(enemy, walkable_cells)
+	var walkable_cells = get_enemy_walkable_cells(enemy)
+	var attackable_cells = get_enemy_attackable_not_walkable_cells(enemy)
+	print_debug("Get walkable/attackable cells time: ", Time.get_ticks_msec() - start)
+	start = Time.get_ticks_msec()
 	update_move_area(walkable_cells, attackable_cells)
-	print_debug("Update enemy info time: ", Time.get_ticks_msec() - start)
+	print_debug("Update move area time: ", Time.get_ticks_msec() - start)
 
 func clear_enemy_info():
 	$UI/InfoPanel/VBox/EnemyInfo.text = ""
@@ -623,6 +664,7 @@ func play_card():
 	target_cursor.queue_free()
 	active_character.clear_pending_action_cost()
 	reset_undo()
+	clear_enemy_info_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
