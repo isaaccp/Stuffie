@@ -138,6 +138,12 @@ func initialize_stage(stage: Stage):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager(stage)
+	enemy_move_area = TilesHighlight.new(map_manager, [])
+	enemy_attack_area = TilesHighlight.new(map_manager, [])
+	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
+	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
+	world.add_child(enemy_move_area)
+	world.add_child(enemy_attack_area)
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
 		objective_highlight = TilesHighlight.new(map_manager, [stage.reach_position_target])
 		objective_highlight.set_color(Color(0, 0, 1, 1))
@@ -286,24 +292,14 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 	return attack_positions
 
 func update_move_area(move_positions: Array, attack_positions: Array):
-	if is_instance_valid(enemy_move_area):
-		enemy_move_area.queue_free()
-	if is_instance_valid(enemy_attack_area):
-		enemy_attack_area.queue_free()
 	var start = Time.get_ticks_msec()
-	enemy_move_area = TilesHighlight.new(map_manager, move_positions)
-	print_debug("Cost of create move area ", Time.get_ticks_msec() - start)
-	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
-	enemy_move_area.refresh()
-	print_debug("Cost of create/refresh move area ", Time.get_ticks_msec() - start)
+	enemy_move_area.set_tiles(move_positions)
+	enemy_move_area.visible = true
+	print_debug("Cost of set tiles move area ", Time.get_ticks_msec() - start)
 	start = Time.get_ticks_msec()
-	enemy_attack_area = TilesHighlight.new(map_manager, attack_positions)
-	print_debug("Cost of create attack area ", Time.get_ticks_msec() - start)
-	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
-	enemy_attack_area.refresh()
-	print_debug("Cost of create/refresh attack area ", Time.get_ticks_msec() - start)
-	world.add_child(enemy_move_area)
-	world.add_child(enemy_attack_area)
+	enemy_attack_area.set_tiles(attack_positions)
+	enemy_attack_area.set_visible(true)
+	print_debug("Cost of set tiles attack area ", Time.get_ticks_msec() - start)
 
 func path_cost(path: PackedVector2Array) -> float:
 	var cost = 0.0
@@ -621,10 +617,8 @@ func update_enemy_info(enemy: Enemy):
 
 func clear_enemy_info():
 	enemy_info.text = ""
-	if is_instance_valid(enemy_move_area):
-		enemy_move_area.queue_free()
-	if is_instance_valid(enemy_attack_area):
-		enemy_attack_area.queue_free()
+	enemy_move_area.visible = false
+	enemy_attack_area.visible = false
 
 func handle_enemy_death(enemy: Enemy):
 	var pos = enemy.get_id_position()
