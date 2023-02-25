@@ -2,8 +2,8 @@ extends Highlight
 
 class_name TilesHighlight
 
-func _init(map_manager: MapManager, camera3d: Camera3D, fixed_tiles: Array):
-	super(map_manager, camera3d)
+func _init(map_manager: MapManager, fixed_tiles: Array):
+	super(map_manager)
 	# Do not clear tiles on refresh.
 	clear_on_refresh = false
 	for tile in fixed_tiles:

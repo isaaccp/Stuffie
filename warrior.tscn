@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://chh0sy5tad4lg"]
+[gd_scene load_steps=16 format=3 uid="uid://chh0sy5tad4lg"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://resources/decks/warrior/deck.tres" id="2_d5bu5"]
@@ -33,6 +33,9 @@ script = ExtResource("7_j2akc")
 title = "Train"
 effects = Array[ExtResource("7_0sito")]([SubResource("Resource_roygk")])
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_n48rq"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
 script = ExtResource("1_rghne")
 total_action_points = 3
@@ -62,3 +65,4 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("5_stldu")]
+texture = SubResource("ViewportTexture_n48rq")

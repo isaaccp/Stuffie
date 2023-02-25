@@ -6,8 +6,8 @@ var id_position: Vector2i
 var direction: Vector2
 var card_target: Card
 
-func _init(map_manager: MapManager, camera3d: Camera3D, pos: Vector2i, dir: Vector2, card: Card):
-	super(map_manager, camera3d)
+func _init(map_manager: MapManager, pos: Vector2i, dir: Vector2, card: Card):
+	super(map_manager)
 	id_position = pos
 	direction = dir
 	card_target = card

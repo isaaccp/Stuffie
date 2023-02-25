@@ -5,8 +5,8 @@ class_name AreaDistanceHighlight
 var id_position: Vector2i
 var area_distance: int
 
-func _init(map_manager: MapManager, camera3d: Camera3D, pos: Vector2i, distance: int):
-	super(map_manager, camera3d)
+func _init(map_manager: MapManager, pos: Vector2i, distance: int):
+	super(map_manager)
 	id_position = pos
 	area_distance = distance
 

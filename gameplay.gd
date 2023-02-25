@@ -128,7 +128,7 @@ func initialize_stage(stage: Stage):
 	set_active_character(0)
 	initialize_map_manager(stage)
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
-		objective_highlight = TilesHighlight.new(map_manager, camera, [stage.reach_position_target])
+		objective_highlight = TilesHighlight.new(map_manager, [stage.reach_position_target])
 		objective_highlight.set_color(Color(0, 0, 1, 1))
 		objective_highlight.set_width(4)
 		objective_highlight.refresh.call_deferred()
@@ -215,7 +215,7 @@ func create_cursor(pos: Vector2i, direction: Vector2):
 	var cursor_pos = pos
 	if current_card.target_mode == Card.TargetMode.SELF:
 		cursor_pos = active_character.get_id_position()
-	target_cursor = CardTargetHighlight.new(map_manager, camera, cursor_pos, direction, current_card)
+	target_cursor = CardTargetHighlight.new(map_manager, cursor_pos, direction, current_card)
 	target_cursor.set_width(3)
 	target_cursor.refresh()
 	$World.add_child(target_cursor)
@@ -225,10 +225,10 @@ func add_unprojected_point(line: Line2D, world_pos: Vector3):
 	line.add_point(unprojected)
 
 func create_target_area(pos: Vector2i):
-	# Respect line-of-sight here.
+	# TODO: Respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
-	target_area = AreaDistanceHighlight.new(map_manager, camera, pos, current_card.target_distance)
+	target_area = AreaDistanceHighlight.new(map_manager, pos, current_card.target_distance)
 	target_area.refresh()
 	$World.add_child(target_area)
 
@@ -279,10 +279,10 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 		enemy_move_area.queue_free()
 	if is_instance_valid(enemy_attack_area):
 		enemy_attack_area.queue_free()
-	enemy_move_area = TilesHighlight.new(map_manager, camera, move_positions)
+	enemy_move_area = TilesHighlight.new(map_manager, move_positions)
 	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
 	enemy_move_area.refresh()
-	enemy_attack_area = TilesHighlight.new(map_manager, camera, attack_positions)
+	enemy_attack_area = TilesHighlight.new(map_manager, attack_positions)
 	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
 	enemy_attack_area.refresh()
 	$World.add_child(enemy_move_area)
@@ -321,17 +321,6 @@ func calculate_path(tile_map_pos):
 		for point in current_path:
 			var location = map_manager.get_world_position(point)
 			add_unprojected_point($World/Path, location)
-
-func refresh_cursors():
-	if is_instance_valid(objective_highlight):
-		objective_highlight.refresh()
-	if state == GameState.HUMAN_TURN:
-		if is_instance_valid(enemy_move_area):
-			enemy_move_area.refresh()
-			enemy_attack_area.refresh()
-		if human_turn_state == HumanTurnState.ACTION_TARGET:
-			target_cursor.refresh()
-			target_area.refresh()
 
 func draw_attack(enemy: Enemy, target: Character):
 	if not enemy.weapon:
@@ -382,7 +371,6 @@ func _process(delta):
 			camera_modified = true
 		if camera_modified:
 			update_position_direction(get_viewport().get_mouse_position())
-			refresh_cursors()
 	elif state == GameState.CPU_TURN:
 		if enemy_turn_calculated and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
