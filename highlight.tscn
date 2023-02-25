@@ -25,3 +25,5 @@ centered = false
 flip_v = true
 axis = 1
 texture = SubResource("ViewportTexture_vk27p")
+
+[node name="Numbers" type="Node3D" parent="."]

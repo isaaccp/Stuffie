@@ -138,10 +138,10 @@ func initialize_stage(stage: Stage):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager(stage)
-	enemy_move_area = TilesHighlight.new(map_manager, [])
-	enemy_attack_area = TilesHighlight.new(map_manager, [])
-	enemy_move_area.set_color(Color(1, 0, 0, 1), false)
-	enemy_attack_area.set_color(Color(1, 1, 1, 1), false)
+	enemy_move_area = TilesHighlight.new(map_manager)
+	enemy_attack_area = TilesHighlight.new(map_manager)
+	enemy_move_area.set_color(Color(1, 0, 0, 1))
+	enemy_attack_area.set_color(Color(1, 1, 1, 1))
 	world.add_child(enemy_move_area)
 	world.add_child(enemy_attack_area)
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
@@ -278,9 +278,9 @@ func tiles_within_distance(pos: Vector2i, distance: int) -> Array[Vector2i]:
 		i += 1
 	return tiles
 
-func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
+func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
 	var move_positions = Dictionary()
-	var attack_positions: Array[Vector2i] = []
+	var attack_positions: Dictionary
 	for pos in positions:
 		move_positions[pos] = true
 	var offsets = offsets_within_distance(enemy.attack_range())
@@ -288,8 +288,8 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array[Vector2i]:
 		for offset in offsets:
 			var tile = pos + offset
 			if map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false):
-				attack_positions.push_back(tile)
-	return attack_positions
+				attack_positions[tile] = true
+	return attack_positions.keys()
 
 func update_move_area(move_positions: Array, attack_positions: Array):
 	var start = Time.get_ticks_msec()
@@ -298,7 +298,7 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 	print_debug("Cost of set tiles move area ", Time.get_ticks_msec() - start)
 	start = Time.get_ticks_msec()
 	enemy_attack_area.set_tiles(attack_positions)
-	enemy_attack_area.set_visible(true)
+	enemy_attack_area.visible = true
 	print_debug("Cost of set tiles attack area ", Time.get_ticks_msec() - start)
 
 func path_cost(path: PackedVector2Array) -> float:
@@ -567,10 +567,15 @@ func show_enemy_moves():
 				final_walkable_cells[cell] = true
 		var attackable_cells = get_enemy_attackable_cells(enemy)
 		for cell in attackable_cells:
-			final_attackable_cells[cell] = true
+			if not cell in final_attackable_cells:
+				final_attackable_cells[cell] = 0
+			final_attackable_cells[cell] += 1
 			if final_walkable_cells.has(cell):
 				final_walkable_cells.erase(cell)
-	update_move_area(final_walkable_cells.keys(), final_attackable_cells.keys())
+	enemy_move_area.set_tiles(final_walkable_cells.keys())
+	enemy_move_area.visible = true
+	enemy_attack_area.set_labeled_tiles(final_attackable_cells)
+	enemy_attack_area.visible = true
 
 func get_enemy_walkable_cells(enemy: Enemy):
 	if enemy_walkable_cache.has(enemy):
