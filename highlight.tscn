@@ -5,11 +5,12 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_essuj"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
-[node name="Highlight" type="Node3D" node_paths=PackedStringArray("container", "viewport")]
+[node name="Highlight" type="Node3D" node_paths=PackedStringArray("container", "viewport", "sprite")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
 script = ExtResource("1_ddu6r")
 container = NodePath("Sprite3D/SubViewport/Node2D")
 viewport = NodePath("Sprite3D/SubViewport")
+sprite = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
