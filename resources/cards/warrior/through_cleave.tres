@@ -76,7 +76,7 @@ effect = 0
 [sub_resource type="Resource" id="Resource_6lqnf"]
 script = ExtResource("1_3hcvr")
 value_type = 1
-absolute_value = 3
+absolute_value = 6
 reference_fraction = 1.0
 value_field_type = 0
 regular_field = 0
