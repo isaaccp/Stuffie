@@ -26,6 +26,7 @@ func _on_main_menu_exited():
 	clear_children()
 
 func _on_within_run_entered():
+	StatsManager.add_level(StatsManager.Level.GAME_RUN)
 	var game_run = game_run_scene.instantiate() as GameRun
 	game_run.set_run_type(run_type)
 	game_run.run_finished.connect(finish_run)
@@ -39,4 +40,5 @@ func start_run(run_type: GameRun.RunType):
 	state.change_state(WITHIN_RUN)
 
 func finish_run():
+	StatsManager.remove_level(StatsManager.Level.GAME_RUN)
 	state.change_state(MAIN_MENU)

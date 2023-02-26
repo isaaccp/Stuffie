@@ -93,14 +93,12 @@ var shared_bag: SharedBag
 var enemy_walkable_cache: Dictionary
 var enemy_attackable_cache: Dictionary
 
-var stats = Stats.new()
-
 signal enemy_died
 signal character_moved(pos: Vector2i)
 signal all_enemies_died
 signal new_turn_started(turn: int)
 
-signal stage_done(stats: Stats)
+signal stage_done
 signal game_over
 
 # Called when the node enters the scene tree for the first time.
@@ -157,10 +155,13 @@ func initialize_stage(stage: Stage):
 		stage.add_child(objective_highlight)
 	stage_info.text = "Stage"
 	objective_info.text = stage.get_objective_string()
+	# Usually "turn stats" are created at beginning of enemy turn, create here the first time.
+	StatsManager.add_level(StatsManager.Level.TURN)
 	change_state(GameState.HUMAN_TURN)
 
 func next_stage():
-	stage_done.emit(stats)
+	StatsManager.remove_level(StatsManager.Level.TURN)
+	stage_done.emit()
 
 func initialize_map_manager(stage: Stage):
 	map_manager.initialize(stage)
@@ -445,7 +446,9 @@ func apply_undo():
 		var undo_state = undo_states[character]
 		map_manager.move_character(character.get_id_position(), undo_state.position)
 		character.set_id_position(undo_state.position)
+		var reverted_move_points = undo_state.move_points - character.move_points
 		character.move_points = undo_state.move_points
+		StatsManager.remove(active_character, Stats.Field.MP_USED, reverted_move_points)
 	# No need to reset as it should now match.
 	undo_button.hide()
 
@@ -480,6 +483,10 @@ func change_state(new_state):
 	if state == GameState.HUMAN_TURN:
 		begin_turn()
 	elif state == GameState.CPU_TURN:
+		StatsManager.turn_stats.print()
+		# Re-start turn stats so we can use enemy turn stats in cards next run.
+		StatsManager.remove_level(StatsManager.Level.TURN)
+		StatsManager.add_level(StatsManager.Level.TURN)
 		for character in party.get_children():
 			character.end_turn()
 		enemy_turn_calculated = false
@@ -526,7 +533,9 @@ func handle_move(mouse_pos: Vector2):
 		active_character.look_at(point)
 		active_character.position = point
 		await get_tree().create_timer(0.01).timeout
-	active_character.reduce_move(path_cost(current_path))
+	var move_cost = path_cost(current_path)
+	active_character.reduce_move(move_cost)
+	StatsManager.add(active_character, Stats.Field.MP_USED, move_cost)
 	var can_undo = await map_manager.move_character(active_character.get_id_position(), final_pos)
 	if can_undo:
 		undo_button.show()
@@ -624,6 +633,7 @@ func clear_enemy_info():
 	enemy_attack_area.visible = false
 
 func handle_enemy_death(enemy: Enemy):
+	StatsManager.add(active_character, Stats.Field.ENEMIES_KILLED, 1)
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
 	enemy.queue_free()
@@ -663,6 +673,8 @@ func play_card():
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
 		active_character.attacked.emit(active_character)
+	StatsManager.add(active_character, Stats.Field.CARDS_PLAYED, 1)
+	StatsManager.add(active_character, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
 	draw_hand()
 	# Consider wrapping all this into a method.

@@ -18,9 +18,7 @@ var characters: Array[Character]
 var current_character = 0
 var shared_bag: SharedBag
 
-var stats = Stats.new()
-
-signal stage_done(stats: Stats)
+signal stage_done
 
 func _ready():
 	pass
@@ -29,7 +27,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 	self.characters = characters
 	self.shared_bag = shared_bag
 	for character in characters:
-		stats.add(character.character_type, Stats.Field.CAMPS_VISITED, 1)
+		StatsManager.add(character, Stats.Field.CAMPS_VISITED, 1)
 
 func add_choice(choice: CampChoice):
 	var button = Button.new()
@@ -41,7 +39,7 @@ func add_choice(choice: CampChoice):
 func _process(delta):
 	if state == CampState.NEW_CHARACTER:
 		if current_character == characters.size():
-			stage_done.emit(stats)
+			stage_done.emit()
 			return
 		var character = characters[current_character]
 		character_portrait.set_character(character)
@@ -62,6 +60,5 @@ func _next_character():
 
 func _on_button_pressed(choice: CampChoice):
 	for effect in choice.effects:
-		var effect_stats = await effect.apply_to_character(characters[current_character])
-		stats.append(effect_stats)
+		effect.apply_to_character(characters[current_character])
 	_next_character()

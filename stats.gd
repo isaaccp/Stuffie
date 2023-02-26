@@ -27,8 +27,8 @@ enum Field {
 	BLOCK_ACQUIRED,
 	WEAKNESS_APPLIED,
 	ENEMY_MP_REMOVED,
-	RUNS_PLAYED,
-	RUNS_COMPLETED,
+	RUNS_DEFEAT,
+	RUNS_VICTORY,
 }
 
 var reverse_field_lookup: Dictionary
@@ -67,10 +67,11 @@ func append(new_stats: Stats):
 		for field in character_stats:
 			add(character, field, character_stats[field])
 
-func get_value(character: Character.CharacterType, field: Field):
-	if not character in stats:
+func get_value(character: Character, field: Field):
+	var character_type = character.character_type
+	if not character_type in stats:
 		return 0
-	var character_stats = stats[character]
+	var character_stats = stats[character_type]
 	if field not in character_stats:
 		return 0
 

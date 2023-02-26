@@ -31,10 +31,16 @@ func draw_card():
 	hand.append(deck.pop_back())
 
 func draw_cards(num_cards: int):
-	for i in num_cards:
-		draw_card()
+	var drawn = 0
+	for card in deck:
+		deck.erase(card)
+		hand.append(card)
+		drawn += 1
+		if drawn == num_cards:
+			break
+	return drawn
 
-func draw_attack(num_cards: int):
+func draw_attacks(num_cards: int):
 	var drawn = 0
 	for card in deck:
 		if card.is_attack():
@@ -42,7 +48,9 @@ func draw_attack(num_cards: int):
 			hand.append(card)
 			drawn += 1
 			if drawn == num_cards:
-				return
+				break
+	return drawn
+
 
 func num_hand_cards():
 	return hand.size()
@@ -56,8 +64,11 @@ func discard_card(index: int):
 	discard.append(hand.pop_at(index))
 
 func discard_hand():
+	var discarded = 0
 	while not hand.is_empty():
 		discard.append(hand.pop_back())
+		discarded += 1
+	return discarded
 
 func stage_deck_size():
 	return deck.size()

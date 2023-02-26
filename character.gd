@@ -32,6 +32,7 @@ var shared_bag: SharedBag
 @export var camp_choice: CampChoice
 
 var card_upgrades: Dictionary
+var upgrade_scene = preload("res://card_upgrade.tscn")
 
 signal changed
 signal made_active(active: bool)
@@ -89,9 +90,11 @@ func get_card_upgrades(card: Card):
 		return []
 	return card_upgrades[card.card_name].duplicate()
 
-func add_relic(relic: Relic):
+func add_relic(relic: Relic, update_stats=true):
 	relics.push_back(relic)
 	relic.connect_signals(self)
+	if update_stats:
+		StatsManager.add(self, Stats.Field.RELICS_ACQUIRED, 1)
 
 func begin_stage():
 	deck.reset()
@@ -117,10 +120,9 @@ func end_turn():
 	snap()
 	turn_ended.emit(self)
 
-func discard():
-	var hand_cards = num_hand_cards()
-	deck.discard_hand()
-	return hand_cards
+func discard_hand():
+	var discarded = deck.discard_hand()
+	StatsManager.add(self, Stats.Field.DISCARDED_CARDS, discarded)
 
 func num_hand_cards():
 	return deck.num_hand_cards()
@@ -130,10 +132,34 @@ func draw_new_hand():
 	deck.draw_cards(cards_per_turn)
 
 func draw_cards(number: int):
-	deck.draw_cards(number)
+	var drawn = deck.draw_cards(number)
+	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 
 func draw_attack(number: int):
-	deck.draw_attack(number)
+	var drawn = deck.draw_attacks(number)
+	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
+
+func upgrade_cards(number: int):
+	# TODO: Support upgrading more than 1 in CardUpgrade.
+	assert(number == 1)
+	var tree = get_tree().current_scene
+	var upgrade = upgrade_scene.instantiate() as CardUpgrade
+	upgrade.initialize([self])
+	tree.add_child(upgrade)
+	await upgrade.done
+	upgrade.queue_free()
+	# TODO: Check if we actually upgraded.
+	StatsManager.add(self, Stats.Field.CARDS_UPGRADED, number)
+
+func add_power(power_amount: int):
+	self.power += power_amount
+	StatsManager.add(self, Stats.Field.POWER_ACQUIRED, power_amount)
+	refresh()
+
+func add_block(block_amount: int):
+	block += block_amount
+	StatsManager.add(self, Stats.Field.BLOCK_ACQUIRED, block_amount)
+	refresh()
 
 func refresh():
 	changed.emit()
@@ -161,22 +187,22 @@ func clear_pending_move_cost():
 	pending_move_cost = -1
 	refresh()
 
-# Heals 'hp' without going over total hp, and returns amount healed.
+# Heals 'hp' without going over total hp.
 func heal(hp: int):
 	var original_hp = hit_points
 	hit_points += hp
 	if hit_points > total_hit_points:
 		hit_points = total_hit_points
+	StatsManager.add(self, Stats.Field.HP_HEALED, hit_points - original_hp)
 	refresh()
-	return hit_points - original_hp
 
 func heal_full():
 	hit_points = total_hit_points
 	refresh()
 
-func add_block(block_amount: int):
-	block += block_amount
-	refresh()
+func add_gold(gold: int):
+	shared_bag.add_gold(gold)
+	StatsManager.add(self, Stats.Field.GOLD_EARNED, gold)
 
 func apply_relic_damage_change(damage: int):
 	var dmg = damage
@@ -184,20 +210,30 @@ func apply_relic_damage_change(damage: int):
 		dmg = relic.apply_damage_change(dmg, self)
 	return dmg
 
-# Apply attack from enemy to this character.
-func apply_attack(enemy: Enemy):
-	var damage = enemy.effective_damage(self)
-	if block > 0:
-		if damage <= block:
-			block -= damage
-			damage = 0
-		else:
-			damage -= block
-			block = 0
+func apply_damage(damage: int, blockable=true):
+	if blockable:
+		var blocked_damage = 0
+		if block > 0:
+			if damage <= block:
+				block -= damage
+				blocked_damage = damage
+				damage = 0
+			else:
+				damage -= block
+				blocked_damage = block
+				block = 0
+		if blocked_damage:
+			StatsManager.add(self, Stats.Field.DAMAGE_BLOCKED, blocked_damage)
+	StatsManager.add(self, Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
 	if hit_points <= 0:
 		return true
 	refresh()
+
+# Apply attack from enemy to this character.
+func apply_attack(enemy: Enemy):
+	var damage = enemy.effective_damage(self)
+	apply_damage(damage)
 
 func camp_choices():
 	var camp_choices = [camp_choice]

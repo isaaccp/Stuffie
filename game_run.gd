@@ -10,7 +10,6 @@ var BETWEEN_STAGES = state.add("between_stages")
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
 var run_map_scene = preload("res://run_map.tscn")
-var stats = Stats.new()
 
 enum StageType {
 	COMBAT,
@@ -108,7 +107,7 @@ func _ready():
 		var initial_relic = character.initial_relic
 		relic_list.mark_used(initial_relic.name)
 		character.shared_bag = shared_bag
-		character.add_relic(initial_relic)
+		character.add_relic(initial_relic, false)
 		characters.push_back(character)
 		if run_type == RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards
@@ -170,6 +169,7 @@ func _on_within_stage_entered():
 	var stage_def = current_stage_def()
 	rewards_type = stage_def.rewards_type()
 	if stage_def.stage_type == StageType.COMBAT:
+		StatsManager.add_level(StatsManager.Level.STAGE)
 		var stage_player = stage_player_scene.instantiate()
 		var stage = get_combat_stage(stage_def.combat_difficulty)
 		stage_player.initialize(stage, party, shared_bag)
@@ -203,7 +203,7 @@ func _on_between_stages_entered():
 	else:
 		shared_bag.add_gold(GOLD_PER_STAGE)
 		for character in characters:
-			stats.add(character.character_type, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/2)
+			StatsManager.add(character, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/2)
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters, shared_bag)
 		stage_parent.add_child(between_stages)
@@ -223,13 +223,17 @@ func _on_map_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
 
-func stage_finished(stage_stats: Stats, stage_type: StageType):
-	stats.append(stage_stats)
+func add_stat(field: Stats.Field, value: int):
+	for character in characters:
+		StatsManager.add(character, field, value)
+
+func stage_finished(stage_type: StageType):
 	if stage_type == StageType.COMBAT:
-		for character in characters:
-			stats.add(character.character_type, Stats.Field.COMBAT_STAGES_FINISHED, 1)
-	stats.print()
+		StatsManager.remove_level(StatsManager.Level.STAGE)
+		add_stat(Stats.Field.COMBAT_STAGES_FINISHED, 1)
+	StatsManager.run_stats.print()
 	if stage_number + 1 == run.size():
+		add_stat(Stats.Field.RUNS_VICTORY, 1)
 		run_finished.emit()
 	else:
 		state.change_state(BETWEEN_STAGES)
@@ -238,4 +242,6 @@ func next_stage():
 	state.change_state(WITHIN_STAGE)
 
 func game_over():
+	StatsManager.remove_level(StatsManager.Level.STAGE)
+	add_stat(Stats.Field.RUNS_DEFEAT, 1)
 	run_finished.emit()
