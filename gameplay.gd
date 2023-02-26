@@ -328,6 +328,7 @@ func calculate_path(tile_map_pos):
 			add_unprojected_point(move_path, location)
 		if too_long_path:
 			move_path.default_color = Color(1, 0, 0, 1)
+			player_move_area.hide()
 		else:
 			move_path.default_color = Color(1, 1, 1, 1)
 			var walkable_cells = map_manager.get_walkable_cells(tile_map_pos, active_character.move_points - cost, [active_character.get_id_position()])

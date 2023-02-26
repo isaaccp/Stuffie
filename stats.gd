@@ -40,7 +40,7 @@ func _init():
 	for key in Field.keys():
 		reverse_field_lookup[Field[key]] = key
 
-func _field_name(field: Field):
+func _field_name(field: Field) -> String:
 	return reverse_field_lookup[field]
 
 func add(character: Character.CharacterType, field: Field, value: int):
@@ -67,6 +67,12 @@ func append(new_stats: Stats):
 		for field in character_stats:
 			add(character, field, character_stats[field])
 
+func get_pretty_field_name(field: Field):
+	return _field_name(field).capitalize()
+
+func get_field_name(field: Field):
+	return _field_name(field)
+
 func get_value(character: Character, field: Field):
 	var character_type = character.character_type
 	if not character_type in stats:
@@ -74,6 +80,7 @@ func get_value(character: Character, field: Field):
 	var character_stats = stats[character_type]
 	if field not in character_stats:
 		return 0
+	return character_stats[field]
 
 func print():
 	for character_type in stats:

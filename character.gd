@@ -135,7 +135,7 @@ func draw_cards(number: int):
 	var drawn = deck.draw_cards(number)
 	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 
-func draw_attack(number: int):
+func draw_attacks(number: int):
 	var drawn = deck.draw_attacks(number)
 	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 

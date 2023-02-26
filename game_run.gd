@@ -6,10 +6,13 @@ var state = StateMachine.new()
 var MAP = state.add("map")
 var WITHIN_STAGE = state.add("within_stage")
 var BETWEEN_STAGES = state.add("between_stages")
+var RUN_SUMMARY = state.add("run_summary")
 
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
 var run_map_scene = preload("res://run_map.tscn")
+
+var run_victory = false
 
 enum StageType {
 	COMBAT,
@@ -72,6 +75,7 @@ var stages = [
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 var camp_scene = preload("res://stages/camp.tscn")
+var summary_scene = preload("res://run_summary.tscn")
 
 enum RunType {
 	REGULAR,
@@ -203,7 +207,7 @@ func _on_between_stages_entered():
 	else:
 		shared_bag.add_gold(GOLD_PER_STAGE)
 		for character in characters:
-			StatsManager.add(character, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/2)
+			StatsManager.add(character, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/characters.size())
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters, shared_bag)
 		stage_parent.add_child(between_stages)
@@ -223,6 +227,15 @@ func _on_map_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
 
+func _on_run_summary_entered():
+	var summary = summary_scene.instantiate() as RunSummary
+	summary.initialize(characters, run_victory)
+	stage_parent.add_child(summary)
+	summary.done.connect(finish_run)
+
+func _on_run_summary_exited():
+	pass
+
 func add_stat(field: Stats.Field, value: int):
 	for character in characters:
 		StatsManager.add(character, field, value)
@@ -234,7 +247,8 @@ func stage_finished(stage_type: StageType):
 	StatsManager.run_stats.print()
 	if stage_number + 1 == run.size():
 		add_stat(Stats.Field.RUNS_VICTORY, 1)
-		run_finished.emit()
+		run_victory = true
+		state.change_state(RUN_SUMMARY)
 	else:
 		state.change_state(BETWEEN_STAGES)
 
@@ -244,4 +258,7 @@ func next_stage():
 func game_over():
 	StatsManager.remove_level(StatsManager.Level.STAGE)
 	add_stat(Stats.Field.RUNS_DEFEAT, 1)
+	state.change_state(RUN_SUMMARY)
+
+func finish_run():
 	run_finished.emit()

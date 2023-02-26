@@ -25,32 +25,37 @@ func add_card(card: Card):
 func shuffle():
 	deck.shuffle()
 
-func draw_card():
-	if deck.is_empty():
-		shuffle_discard()
-	hand.append(deck.pop_back())
+# Returns "first" card in the deck that matches a condition.
+# End of deck array is top of deck.
+func find_card(condition: Callable) -> int:
+	for i in range(deck.size()-1, -1, -1):
+		if condition.call(deck[i]):
+			return i
+	return -1
 
-func draw_cards(num_cards: int):
-	var drawn = 0
-	for card in deck:
-		deck.erase(card)
-		hand.append(card)
-		drawn += 1
-		if drawn == num_cards:
-			break
-	return drawn
+# Returns true if succesful.
+func draw_card_condition(condition: Callable) -> int:
+	var card_index = find_card(condition)
+	if card_index == -1:
+		shuffle_discard()
+		# If still can't find card, give up.
+		card_index = find_card(condition)
+		if card_index == -1:
+			return false
+	var card = deck[card_index]
+	deck.remove_at(card_index)
+	hand.append(card)
+	return true
+
+func draw_cards(num_cards: int, condition: Callable = func(c): return true):
+	for i in num_cards:
+		var drawn = draw_card_condition(condition)
+		if not drawn:
+			return i
+	return num_cards
 
 func draw_attacks(num_cards: int):
-	var drawn = 0
-	for card in deck:
-		if card.is_attack():
-			deck.erase(card)
-			hand.append(card)
-			drawn += 1
-			if drawn == num_cards:
-				break
-	return drawn
-
+	return draw_cards(num_cards, func(c): return c.is_attack())
 
 func num_hand_cards():
 	return hand.size()

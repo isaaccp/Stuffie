@@ -34,7 +34,7 @@ func apply_to_character(character: Character):
 				character.discard_hand()
 			Effect.DRAW_CARDS:
 				character.draw_cards(value)
-			Effect.DRAW_CARDS:
+			Effect.DRAW_ATTACKS:
 				character.draw_attacks(value)
 			Effect.COLLECTION_UPGRADE:
 				character.upgrade_cards(value)
