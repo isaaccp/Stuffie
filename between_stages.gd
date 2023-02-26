@@ -5,6 +5,8 @@ extends Control
 @export var skip: Button
 @export var character_portrait: CharacterPortrait
 
+var stats = Stats.new()
+
 # For now not using StateMachine as this stage
 # will go through more changes later.
 enum BetweenStagesState {
@@ -24,7 +26,7 @@ var shared_bag: SharedBag
 
 const NO_CARD_GOLD = 5
 
-signal between_stages_done
+signal between_stages_done(stats: Stats)
 
 func _ready():
 	pass
@@ -36,7 +38,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 func _process(delta):
 	if state == BetweenStagesState.NEW_CHARACTER:
 		if current_character == characters.size():
-			between_stages_done.emit()
+			between_stages_done.emit(stats)
 			return
 		var character = characters[current_character]
 		character_portrait.set_character(character)
@@ -59,8 +61,10 @@ func _next_character():
 
 func _on_card_pressed(card_number: int):
 	characters[current_character].deck.add_card(current_cards[card_number])
+	stats.add(characters[current_character].character_type, Stats.Field.CARDS_ACQUIRED, 1)
 	_next_character()
 
 func _on_skip_pressed():
 	shared_bag.add_gold(NO_CARD_GOLD)
+	stats.add(characters[current_character].character_type, Stats.Field.GOLD_EARNED, NO_CARD_GOLD)
 	_next_character()

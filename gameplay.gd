@@ -92,12 +92,14 @@ var shared_bag: SharedBag
 var enemy_walkable_cache: Dictionary
 var enemy_attackable_cache: Dictionary
 
+var stats = Stats.new()
+
 signal enemy_died
 signal character_moved(pos: Vector2i)
 signal all_enemies_died
 signal new_turn_started(turn: int)
 
-signal stage_done
+signal stage_done(stats: Stats)
 signal game_over
 
 # Called when the node enters the scene tree for the first time.
@@ -155,7 +157,7 @@ func initialize_stage(stage: Stage):
 	change_state(GameState.HUMAN_TURN)
 
 func next_stage():
-	stage_done.emit()
+	stage_done.emit(stats)
 
 func initialize_map_manager(stage: Stage):
 	map_manager.initialize(stage)

@@ -33,11 +33,12 @@ script = ExtResource("7_j2akc")
 title = "Train"
 effects = Array[ExtResource("7_0sito")]([SubResource("Resource_roygk")])
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_on2jw"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_nmqot"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
 script = ExtResource("1_rghne")
+character_type = 1
 total_action_points = 3
 total_move_points = 7
 total_hit_points = 50
@@ -65,4 +66,4 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("5_stldu")]
-texture = SubResource("ViewportTexture_on2jw")
+texture = SubResource("ViewportTexture_nmqot")

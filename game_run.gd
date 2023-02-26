@@ -10,6 +10,7 @@ var BETWEEN_STAGES = state.add("between_stages")
 var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
 var run_map_scene = preload("res://run_map.tscn")
+var stats = Stats.new()
 
 enum StageType {
 	COMBAT,
@@ -172,18 +173,18 @@ func _on_within_stage_entered():
 		var stage_player = stage_player_scene.instantiate()
 		var stage = get_combat_stage(stage_def.combat_difficulty)
 		stage_player.initialize(stage, party, shared_bag)
-		stage_player.stage_done.connect(stage_finished)
+		stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
 		stage_player.game_over.connect(game_over)
 		stage_parent.add_child(stage_player)
 	elif stage_def.stage_type == StageType.BLACKSMITH:
 		var blacksmith = get_blacksmith_stage()
 		blacksmith.initialize(characters, shared_bag, relic_list)
-		blacksmith.stage_done.connect(stage_finished)
+		blacksmith.stage_done.connect(stage_finished.bind(StageType.BLACKSMITH))
 		stage_parent.add_child(blacksmith)
 	elif stage_def.stage_type == StageType.CAMP:
 		var camp = get_camp_stage()
 		camp.initialize(characters, shared_bag)
-		camp.stage_done.connect(stage_finished)
+		camp.stage_done.connect(stage_finished.bind(StageType.CAMP))
 		stage_parent.add_child(camp)
 
 func _on_within_stage_exited():
@@ -200,6 +201,9 @@ func _on_between_stages_entered():
 	if rewards_type == RewardsType.NONE:
 		state.change_state.call_deferred(MAP)
 	else:
+		shared_bag.add_gold(GOLD_PER_STAGE)
+		for character in characters:
+			stats.add(character.character_type, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/2)
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters, shared_bag)
 		stage_parent.add_child(between_stages)
@@ -219,11 +223,15 @@ func _on_map_exited():
 	for node in stage_parent.get_children():
 		node.queue_free()
 
-func stage_finished():
+func stage_finished(stage_stats: Stats, stage_type: StageType):
+	stats.append(stage_stats)
+	if stage_type == StageType.COMBAT:
+		for character in characters:
+			stats.add(character.character_type, Stats.Field.COMBAT_STAGES_FINISHED, 1)
+	stats.print()
 	if stage_number + 1 == run.size():
 		run_finished.emit()
 	else:
-		shared_bag.add_gold(GOLD_PER_STAGE)
 		state.change_state(BETWEEN_STAGES)
 
 func next_stage():

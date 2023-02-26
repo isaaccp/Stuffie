@@ -37,8 +37,9 @@ var current_cards: Array[Card]
 var card_ui_scene = preload("res://card_ui.tscn")
 var removal_scene = preload("res://card_removal.tscn")
 var upgrade_scene = preload("res://card_upgrade.tscn")
+var stats = Stats.new()
 
-signal stage_done
+signal stage_done(stats: Stats)
 
 func _ready():
 	state.connect_signals(self)
@@ -50,6 +51,8 @@ func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list:
 	self.shared_bag = shared_bag
 	self.relic_list = relic_list
 	shared_bag_gold_ui.set_shared_bag(shared_bag)
+	for character in characters:
+		stats.add(character.character_type, Stats.Field.BLACKSMITHS_VISITED, 1)
 	update_upgrades()
 	update_removals()
 	prepare_relics()
@@ -142,18 +145,22 @@ func update_relics():
 		var affordable = shared_bag.gold >= relic_cost
 		relic_button.disabled = not (affordable and available)
 
-func _on_removal_done():
+func _on_removal_done(character: Character):
 	available_removals -= 1
 	shared_bag.spend_gold(removal_cost)
+	stats.add(character.character_type, Stats.Field.CARDS_REMOVED, 1)
+	stats.add(character.character_type, Stats.Field.GOLD_SPENT, removal_cost)
 	refresh()
 	state.change_state(CHOOSING_OPTION)
 
 func _on_removal_canceled():
 	state.change_state(CHOOSING_OPTION)
 
-func _on_upgrade_done():
+func _on_upgrade_done(character: Character):
 	available_upgrades -= 1
 	shared_bag.spend_gold(upgrade_cost)
+	stats.add(character.character_type, Stats.Field.CARDS_UPGRADED, 1)
+	stats.add(character.character_type, Stats.Field.GOLD_SPENT, upgrade_cost)
 	refresh()
 	state.change_state(CHOOSING_OPTION)
 
@@ -165,7 +172,9 @@ func _on_relic_selected(relic_button: RelicButton):
 	relic_list.mark_used(relic_button.relic.name)
 	# TODO: Allow to select which character gets the relic.
 	characters[0].add_relic(relic_button.relic)
+	stats.add(characters[0].character_type, Stats.Field.RELICS_ACQUIRED, 1)
+	stats.add(characters[0].character_type, Stats.Field.GOLD_SPENT, relic_cost)
 	refresh()
 
 func _on_done_pressed():
-	stage_done.emit()
+	stage_done.emit(stats)

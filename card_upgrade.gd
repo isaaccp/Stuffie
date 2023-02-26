@@ -14,7 +14,7 @@ var card_to_upgrade: Card
 
 var chooser_scene = preload("res://card_collection_chooser.tscn")
 
-signal done
+signal done(character: Character)
 signal canceled
 
 func _ready():
@@ -36,7 +36,7 @@ func _on_card_chosen(card: Card):
 func _on_upgrade_card_chosen(card: Card):
 	active_character.deck.cards.erase(card_to_upgrade)
 	active_character.deck.cards.push_back(card)
-	done.emit()
+	done.emit(active_character)
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):

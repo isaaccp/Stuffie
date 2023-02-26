@@ -2,6 +2,13 @@ extends WorldEntity
 
 class_name Character
 
+enum CharacterType {
+	NO_CHARACTER,
+	WARRIOR,
+	WIZARD,
+}
+
+@export var character_type: CharacterType
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
@@ -111,7 +118,9 @@ func end_turn():
 	turn_ended.emit(self)
 
 func discard():
+	var hand_cards = num_hand_cards()
 	deck.discard_hand()
+	return hand_cards
 
 func num_hand_cards():
 	return deck.num_hand_cards()
@@ -152,11 +161,14 @@ func clear_pending_move_cost():
 	pending_move_cost = -1.0
 	refresh()
 
+# Heals 'hp' without going over total hp, and returns amount healed.
 func heal(hp: int):
+	var original_hp = hit_points
 	hit_points += hp
 	if hit_points > total_hit_points:
 		hit_points = total_hit_points
 	refresh()
+	return hit_points - original_hp
 
 func heal_full():
 	hit_points = total_hit_points

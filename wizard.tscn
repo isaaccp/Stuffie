@@ -7,6 +7,7 @@
 
 [node name="Wizard" type="Node3D"]
 script = ExtResource("1_i4i62")
+character_type = 2
 total_action_points = 2
 total_move_points = 10
 total_hit_points = 20

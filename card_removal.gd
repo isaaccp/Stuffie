@@ -7,7 +7,7 @@ class_name CardRemoval
 var characters: Array[Character]
 var active_character: Character
 
-signal done
+signal done(character: Character)
 signal canceled
 
 func initialize(characters: Array[Character]):
@@ -19,7 +19,7 @@ func initialize(characters: Array[Character]):
 
 func _on_card_chosen(card: Card):
 	active_character.deck.cards.erase(card)
-	done.emit()
+	done.emit(active_character)
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
