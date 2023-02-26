@@ -16,12 +16,12 @@ enum CharacterType {
 @export var initial_relic: Relic
 @export var portrait_texture: TextureRect
 var action_points: int
-var move_points: float
+var move_points: int
 var hit_points: int
 var block: int
 var power: int
 var pending_action_cost: int = -1
-var pending_move_cost: float = -1.0
+var pending_move_cost: int = -1
 var relics: Array[Relic]
 var shared_bag: SharedBag
 
@@ -149,16 +149,16 @@ func clear_pending_action_cost():
 	pending_action_cost = -1
 	refresh()
 
-func reduce_move(move_cost: float):
+func reduce_move(move_cost: int):
 	move_points -= move_cost
 	refresh()
 
-func set_pending_move_cost(pending_cost: float):
+func set_pending_move_cost(pending_cost: int):
 	pending_move_cost = pending_cost
 	refresh()
 
 func clear_pending_move_cost():
-	pending_move_cost = -1.0
+	pending_move_cost = -1
 	refresh()
 
 # Heals 'hp' without going over total hp, and returns amount healed.

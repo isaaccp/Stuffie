@@ -81,7 +81,7 @@ func apply_to_enemy(character: Character, enemy: Enemy):
 		match target_field:
 			CardEffectValue.Field.MOVE_POINTS:
 				enemy.move_points += value
-				stats.add(character.character_type, Stats.Field.ENEMY_MOVE_REMOVED, value)
+				stats.add(character.character_type, Stats.Field.ENEMY_MP_REMOVED, value)
 			CardEffectValue.Field.WEAKNESS:
 				enemy.weakness += value
 				stats.add(character.character_type, Stats.Field.WEAKNESS_APPLIED, value)

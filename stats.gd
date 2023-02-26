@@ -26,7 +26,7 @@ enum Field {
 	POWER_ACQUIRED,
 	BLOCK_ACQUIRED,
 	WEAKNESS_APPLIED,
-	ENEMY_MOVE_REMOVED,
+	ENEMY_MP_REMOVED,
 	RUNS_PLAYED,
 	RUNS_COMPLETED,
 }
@@ -66,6 +66,13 @@ func append(new_stats: Stats):
 		var character_stats = new_stats.stats[character]
 		for field in character_stats:
 			add(character, field, character_stats[field])
+
+func get_value(character: Character.CharacterType, field: Field):
+	if not character in stats:
+		return 0
+	var character_stats = stats[character]
+	if field not in character_stats:
+		return 0
 
 func print():
 	for character_type in stats:

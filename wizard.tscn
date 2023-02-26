@@ -9,7 +9,7 @@
 script = ExtResource("1_i4i62")
 character_type = 2
 total_action_points = 2
-total_move_points = 10
+total_move_points = 20
 total_hit_points = 20
 deck = ExtResource("2_r0eug")
 

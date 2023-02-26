@@ -44,6 +44,7 @@ var current_card_index: int = -1
 var current_card: Card
 var target_cursor: CardTargetHighlight
 var target_area: AreaDistanceHighlight
+var player_move_area: TilesHighlight
 var enemy_move_area: TilesHighlight
 var enemy_attack_area: TilesHighlight
 var objective_highlight: TilesHighlight
@@ -140,10 +141,12 @@ func initialize_stage(stage: Stage):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager(stage)
+	player_move_area = TilesHighlight.new(map_manager)
 	enemy_move_area = TilesHighlight.new(map_manager)
 	enemy_attack_area = TilesHighlight.new(map_manager)
 	enemy_move_area.set_color(Color(1, 0, 0, 1))
 	enemy_attack_area.set_color(Color(1, 1, 1, 1))
+	world.add_child(player_move_area)
 	world.add_child(enemy_move_area)
 	world.add_child(enemy_attack_area)
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
@@ -265,21 +268,6 @@ func offsets_within_distance(distance: int) -> Array[Vector2i]:
 		i += 1
 	return tiles
 
-func tiles_within_distance(pos: Vector2i, distance: int) -> Array[Vector2i]:
-	var tiles: Array[Vector2i] = []
-	var i = pos.x - distance
-	while i <= pos.x + distance:
-		var j = pos.y - distance
-		while j <= pos.y + distance:
-			var tile = Vector2i(i, j)
-			if map_manager.in_bounds(tile):
-				if not map_manager.is_solid(tile, false, false, false):
-					if map_manager.distance(pos, tile) <= distance:
-						tiles.push_back(tile)
-			j += 1
-		i += 1
-	return tiles
-
 func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
 	var move_positions = Dictionary()
 	var attack_positions: Dictionary
@@ -303,15 +291,20 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 	enemy_attack_area.visible = true
 	print_debug("Cost of set tiles attack area ", Time.get_ticks_msec() - start)
 
-func path_cost(path: PackedVector2Array) -> float:
+func path_cost(path: PackedVector2Array) -> int:
 	var cost = 0.0
 	for i in path.size()-1:
 		var path_diff = path[i+1] - path[i]
 		if path_diff[0] == 0 or path_diff[1] == 0:
-			cost += 1.0
+			cost += 2
 		else:
-			cost += 1.5
+			cost += 3
 	return cost
+
+func clear_path():
+	current_path.clear()
+	move_path.clear_points()
+	player_move_area.hide()
 
 func calculate_path(tile_map_pos):
 	# Active character position
@@ -329,13 +322,16 @@ func calculate_path(tile_map_pos):
 	# Draw path.
 	move_path.clear_points()
 	if valid_path:
+		for point in current_path:
+			var location = map_manager.get_world_position(point)
+			add_unprojected_point(move_path, location)
 		if too_long_path:
 			move_path.default_color = Color(1, 0, 0, 1)
 		else:
 			move_path.default_color = Color(1, 1, 1, 1)
-		for point in current_path:
-			var location = map_manager.get_world_position(point)
-			add_unprojected_point(move_path, location)
+			var walkable_cells = map_manager.get_walkable_cells(tile_map_pos, active_character.move_points - cost, [active_character.get_id_position()])
+			player_move_area.set_tiles(walkable_cells)
+			player_move_area.show()
 
 func draw_attack(enemy: Enemy, target: Character):
 	if not enemy.weapon:
@@ -493,12 +489,10 @@ func change_state(new_state):
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:
 		end_turn_button.disabled = false
-		current_path.clear()
-		move_path.clear_points()
+		clear_path()
 	elif new_state == HumanTurnState.ACTION_TARGET:
 		end_turn_button.disabled = true
-		current_path.clear()
-		move_path.clear_points()
+		clear_path()
 		create_target_area(active_character.get_id_position())
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:

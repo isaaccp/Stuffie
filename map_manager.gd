@@ -4,6 +4,7 @@ class_name MapManager
 
 var a_star = AStarGrid2D.new()
 var base_solid_locations: Dictionary
+var temp_not_solid_locations: Dictionary
 var base_view_blocking_locations: Dictionary
 var map_rect: Rect2i
 var cell_size: Vector3
@@ -93,6 +94,8 @@ func get_enemy_path(from: Vector2i, to: Vector2i):
 	return path
 
 func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true, treasures: bool=true):
+	if temp_not_solid_locations.has(pos):
+		return false
 	if base_solid_locations.has(pos):
 		return true
 	if party and character_locs.has(pos):
@@ -110,6 +113,9 @@ func distance(from: Vector2i, to: Vector2i) -> float:
 	var max_dist = max(h_dist, v_dist)
 	return min_dist * 1.5 + (max_dist - min_dist)
 
+func move_cost(from: Vector2i, to: Vector2i):
+	return distance(from, to) * 2
+
 func get_surrounding_cells(pos: Vector2i):
 	var neighbors = []
 	for i in [-1, 0, 1]:
@@ -118,8 +124,13 @@ func get_surrounding_cells(pos: Vector2i):
 				neighbors.push_back(Vector2i(pos[0]+i, pos[1]+j))
 	return neighbors
 
-func get_walkable_cells(from: Vector2i, move_points: int) -> Array:
-	return _flood_fill(from, move_points)
+func get_walkable_cells(from: Vector2i, move_points: int, ignore_tiles=[]) -> Array:
+	for tile in ignore_tiles:
+		temp_not_solid_locations[tile] = true
+	var cells = _flood_fill(from, move_points)
+	for tile in ignore_tiles:
+		temp_not_solid_locations.erase(tile)
+	return cells
 
 func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 	# This is a dictionary of reachable tiles with their current cost.
@@ -157,7 +168,7 @@ func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 			if neighbor in reachable_cost and reachable_cost[neighbor] <= cost:
 				continue
 			# This is where we extend the stack.
-			stack.append([neighbor, cost + distance(pos, neighbor)])
+			stack.append([neighbor, cost + move_cost(pos, neighbor)])
 	return reachable_cost.keys()
 
 func get_world_position(pos: Vector2i) -> Vector3:

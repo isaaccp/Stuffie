@@ -4,13 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://dm3exbag2fdec" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_warrior.gltf" id="2_nqrh5"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="3_kynnm"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_eq4m2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_b4fu1"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("health_bar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_pyj6g")
-base_move_points = 5
+base_move_points = 10
 base_hit_points = 12
 base_damage = 6
 base_attack_range = 1
@@ -23,4 +23,4 @@ health_bar = NodePath("HealthDisplay3D")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("3_kynnm")]
-texture = SubResource("ViewportTexture_eq4m2")
+texture = SubResource("ViewportTexture_b4fu1")

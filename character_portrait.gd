@@ -42,7 +42,7 @@ func _set_relics(relics: Array[Relic]):
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		relics_container.add_child(label)
 
-func _set_move_points(pending_move_cost: float, move_points: float, total_move_points: int):
+func _set_move_points(pending_move_cost: int, move_points: int, total_move_points: int):
 	var color
 	var move_left
 	if pending_move_cost > 0:
@@ -52,7 +52,7 @@ func _set_move_points(pending_move_cost: float, move_points: float, total_move_p
 		color = "white"
 		move_left = move_points
 
-	var bb_code = "MP: [color=%s]%0.1f[/color] / %d" % [color, move_left, total_move_points]
+	var bb_code = "MP: [color=%s]%d[/color] / %d" % [color, move_left, total_move_points]
 	move_points_label.parse_bbcode(bb_code)
 
 func _set_action_points(pending_action_cost: int, action_points: int, total_action_points: int):
