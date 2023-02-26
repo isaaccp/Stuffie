@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DiscardBlockRelic" load_steps=2 format=3 uid="uid://cxrbh1q2aqvtb"]
+
+[ext_resource type="Script" path="res://relic/discard_block_relic.gd" id="1_3kqfr"]
+
+[resource]
+script = ExtResource("1_3kqfr")
+block_multiplier = 3
+name = "Barricade"
+tooltip = "Adds 3 block for each discarded card"

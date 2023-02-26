@@ -154,7 +154,7 @@ func set_run_type(run_type: RunType):
 			StageDef.card_reward(),
 			StageDef.card_reward(),
 			StageDef.card_reward(),
-			StageDef.blacksmith(4, 4, 1),
+			StageDef.blacksmith(4, 4, 3),
 			StageDef.combat(0),
 			StageDef.combat(1),
 			StageDef.blacksmith(),

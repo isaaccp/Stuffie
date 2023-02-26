@@ -19,6 +19,8 @@ var stage_stats:
 var turn_stats:
 	get: return stack[Level.TURN]
 
+signal stats_added(character: Character, field: Stats.Field, value: int)
+
 func _init():
 	super()
 	add_level(Level.OVERALL)
@@ -35,9 +37,11 @@ func remove_level(level: Level):
 	stack.pop_back()
 
 func add(character: Character, field: Stats.Field, value: int):
+	print_debug(character.character_type, overall_stats.get_field_name(field), value)
 	var character_type = character.character_type
 	for level in range(stack.size()):
 		stack[level].add(character_type, field, value)
+	stats_added.emit(character, field, value)
 
 func remove(character: Character, field: Stats.Field, value: int):
 	var character_type = character.character_type
