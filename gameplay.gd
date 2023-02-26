@@ -161,6 +161,10 @@ func initialize_stage(stage: Stage):
 
 func next_stage():
 	StatsManager.remove_level(StatsManager.Level.TURN)
+	# Restore AP, MP, remove block/power, etc so it doesn't appear in non-combat
+	# stages.
+	for character in party.get_children():
+		character.end_stage_restore()
 	stage_done.emit()
 
 func initialize_map_manager(stage: Stage):
@@ -258,7 +262,7 @@ func create_target_area(pos: Vector2i):
 func offsets_within_distance(distance: int) -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
 	var zero = Vector2i(0, 0)
-	var i = - distance
+	var i = -distance
 	while i <= distance:
 		var j = -distance
 		while j <= distance:
@@ -293,7 +297,7 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 	print_debug("Cost of set tiles attack area ", Time.get_ticks_msec() - start)
 
 func path_cost(path: PackedVector2Array) -> int:
-	var cost = 0.0
+	var cost = 0
 	for i in path.size()-1:
 		var path_diff = path[i+1] - path[i]
 		if path_diff[0] == 0 or path_diff[1] == 0:

@@ -116,6 +116,16 @@ func begin_turn():
 	turn_started.emit(self)
 	refresh()
 
+func end_stage_restore():
+	action_points = total_action_points
+	move_points = total_move_points
+	block = 0
+	power = 0
+	deck.reset()
+	clear_pending_move_cost()
+	clear_pending_action_cost()
+	refresh()
+
 func end_turn():
 	snap()
 	turn_ended.emit(self)
