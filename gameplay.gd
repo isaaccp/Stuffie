@@ -554,7 +554,7 @@ func _input(event):
 				target_area.queue_free()
 				active_character.clear_pending_action_cost()
 				change_human_turn_state(HumanTurnState.WAITING)
-	elif Input.is_action_just_pressed("ui_showenemymove"):
+	elif Input.is_action_pressed("ui_showenemymove"):
 		show_enemy_moves()
 	elif Input.is_action_just_released("ui_showenemymove"):
 		clear_enemy_info()
@@ -624,6 +624,8 @@ func update_enemy_info(enemy: Enemy):
 
 func clear_enemy_info():
 	enemy_info.text = ""
+	if Input.is_action_pressed("ui_showenemymove"):
+		return
 	enemy_move_area.visible = false
 	enemy_attack_area.visible = false
 
