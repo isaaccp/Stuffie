@@ -18,6 +18,7 @@ enum StageType {
 	COMBAT,
 	BLACKSMITH,
 	CAMP,
+	CARD_REWARD,
 }
 
 enum RewardsType {
@@ -28,6 +29,10 @@ enum RewardsType {
 class StageDef:
 	var stage_type: StageType
 	var combat_difficulty: int
+	var combat_added_levels: int
+	var blacksmith_removals: int
+	var blacksmith_upgrades: int
+	var blacksmith_relics: int
 
 	func _init(stage_type: StageType):
 		super()
@@ -38,13 +43,21 @@ class StageDef:
 			return RewardsType.REGULAR
 		return RewardsType.NONE
 
-	static func combat(difficulty: int) -> StageDef:
+	static func combat(difficulty: int, added_levels=0) -> StageDef:
 		var stage_def = StageDef.new(StageType.COMBAT)
 		stage_def.combat_difficulty = difficulty
+		stage_def.combat_added_levels = added_levels
 		return stage_def
 
-	static func blacksmith():
-		return StageDef.new(StageType.BLACKSMITH)
+	static func blacksmith(removals: int = 1, upgrades: int = 1, relics: int = 2):
+		var stage_def = StageDef.new(StageType.BLACKSMITH)
+		stage_def.blacksmith_removals = removals
+		stage_def.blacksmith_upgrades = upgrades
+		stage_def.blacksmith_relics = relics
+		return stage_def
+
+	static func card_reward():
+		return StageDef.new(StageType.CARD_REWARD)
 
 	static func camp():
 		return StageDef.new(StageType.CAMP)
@@ -79,6 +92,7 @@ var summary_scene = preload("res://run_summary.tscn")
 
 enum RunType {
 	REGULAR,
+	REGULAR_PLUS,
 	TEST_BLACKSMITH,
 	TEST_CAMP,
 	TEST_AFTER_STAGE,
@@ -100,6 +114,7 @@ var rewards_type = RewardsType.NONE
 var relic_list = preload("res://resources/relic_list.tres")
 var all_cards = Dictionary()
 var run_type: RunType
+var added_levels = 0
 
 signal run_finished
 
@@ -123,6 +138,23 @@ func set_run_type(run_type: RunType):
 	self.run_type = run_type
 	if run_type == RunType.REGULAR:
 		run = [
+			StageDef.combat(0),
+			StageDef.combat(1),
+			StageDef.blacksmith(),
+			StageDef.combat(2),
+			StageDef.camp(),
+			StageDef.combat(3),
+			StageDef.blacksmith(),
+			StageDef.combat(4),
+		]
+	elif run_type == RunType.REGULAR_PLUS:
+		added_levels = 3
+		shared_bag.add_gold(100)
+		run = [
+			StageDef.card_reward(),
+			StageDef.card_reward(),
+			StageDef.card_reward(),
+			StageDef.blacksmith(4, 4, 1),
 			StageDef.combat(0),
 			StageDef.combat(1),
 			StageDef.blacksmith(),
@@ -169,6 +201,10 @@ func get_camp_stage():
 	var stage = camp_scene.instantiate() as CampStage
 	return stage
 
+func get_card_reward_stage():
+	var stage = between_stages_scene.instantiate()
+	return stage
+
 func _on_within_stage_entered():
 	var stage_def = current_stage_def()
 	rewards_type = stage_def.rewards_type()
@@ -176,13 +212,15 @@ func _on_within_stage_entered():
 		StatsManager.add_level(StatsManager.Level.STAGE)
 		var stage_player = stage_player_scene.instantiate()
 		var stage = get_combat_stage(stage_def.combat_difficulty)
+		for enemy in stage.enemies:
+			enemy.level += added_levels + stage_def.combat_added_levels
 		stage_player.initialize(stage, party, shared_bag)
 		stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
 		stage_player.game_over.connect(game_over)
 		stage_parent.add_child(stage_player)
 	elif stage_def.stage_type == StageType.BLACKSMITH:
 		var blacksmith = get_blacksmith_stage()
-		blacksmith.initialize(characters, shared_bag, relic_list)
+		blacksmith.initialize(characters, shared_bag, relic_list, stage_def.blacksmith_removals, stage_def.blacksmith_upgrades, stage_def.blacksmith_relics)
 		blacksmith.stage_done.connect(stage_finished.bind(StageType.BLACKSMITH))
 		stage_parent.add_child(blacksmith)
 	elif stage_def.stage_type == StageType.CAMP:
@@ -190,6 +228,11 @@ func _on_within_stage_entered():
 		camp.initialize(characters, shared_bag)
 		camp.stage_done.connect(stage_finished.bind(StageType.CAMP))
 		stage_parent.add_child(camp)
+	elif stage_def.stage_type == StageType.CARD_REWARD:
+		var card_reward = get_card_reward_stage()
+		card_reward.initialize(characters, shared_bag)
+		card_reward.between_stages_done.connect(stage_finished.bind(StageType.CARD_REWARD))
+		stage_parent.add_child(card_reward)
 
 func _on_within_stage_exited():
 	for node in stage_parent.get_children():

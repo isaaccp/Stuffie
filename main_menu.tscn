@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_x8lvv"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("new_game_button", "test_blacksmith_button", "test_camp_button", "test_after_stage_button")]
+[node name="Control" type="Control" node_paths=PackedStringArray("new_game_button", "new_game_plus_button", "test_blacksmith_button", "test_camp_button", "test_after_stage_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,7 +10,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x8lvv")
-new_game_button = NodePath("VBoxContainer/NewGameButton")
+new_game_button = NodePath("VBoxContainer/HBoxContainer2/NewGameButton")
+new_game_plus_button = NodePath("VBoxContainer/HBoxContainer2/NewGamePlusButton")
 test_blacksmith_button = NodePath("VBoxContainer/HBoxContainer/TestBlacksmith")
 test_camp_button = NodePath("VBoxContainer/HBoxContainer/TestCamp")
 test_after_stage_button = NodePath("VBoxContainer/HBoxContainer/TestAfterStage")
@@ -29,10 +30,17 @@ offset_bottom = 117.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NewGameButton" type="Button" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="NewGameButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(400, 200)
 layout_mode = 2
 text = "New Game"
+
+[node name="NewGamePlusButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "New Game +"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

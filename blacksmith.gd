@@ -26,9 +26,9 @@ var UPGRADE = state.add("upgrade")
 var removal_cost = 10
 var upgrade_cost = 15
 var relic_cost = 20
-var available_removals = 1
-var available_upgrades = 1
-var relics_to_show = 2
+var available_removals: int
+var available_upgrades: int
+var relics_to_show: int
 
 var characters: Array[Character]
 var shared_bag: SharedBag
@@ -45,10 +45,14 @@ func _ready():
 	state.change_state(CHOOSING_OPTION)
 	advanced_option_parent.hide()
 
-func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list: RelicList):
+func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list: RelicList,
+				removals: int = 1, upgrades: int = 1, relics: int = 2):
 	self.characters = characters
 	self.shared_bag = shared_bag
 	self.relic_list = relic_list
+	available_removals = removals
+	available_upgrades = upgrades
+	relics_to_show = relics
 	shared_bag_gold_ui.set_shared_bag(shared_bag)
 	for character in characters:
 		StatsManager.add(character, Stats.Field.BLACKSMITHS_VISITED, 1)
