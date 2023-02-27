@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://cd640snoqbr10"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cd640snoqbr10"]
 
 [ext_resource type="Resource" uid="uid://bdi2htf3fr7we" path="res://resources/cards/warrior/shield_bash.tres" id="1_jmdm6"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_072ut"]
 [ext_resource type="Script" path="res://card_effect.gd" id="3_0a3o2"]
 [ext_resource type="Script" path="res://card.gd" id="3_d55j0"]
+[ext_resource type="Texture2D" uid="uid://o5iwt8cflfno" path="res://resources/shield_bash.png" id="5_gahch"]
 
 [sub_resource type="Resource" id="Resource_5384m"]
 script = ExtResource("2_072ut")
@@ -37,6 +38,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_jmdm6")
 cost = 1
+texture = ExtResource("5_gahch")
 target_mode = 3
 target_distance = 1
 damage = 0
