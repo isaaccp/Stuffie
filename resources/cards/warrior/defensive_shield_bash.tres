@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://cd640snoqbr10"]
+
+[ext_resource type="Resource" uid="uid://bdi2htf3fr7we" path="res://resources/cards/warrior/shield_bash.tres" id="1_jmdm6"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_072ut"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_0a3o2"]
+[ext_resource type="Script" path="res://card.gd" id="3_d55j0"]
+
+[sub_resource type="Resource" id="Resource_5384m"]
+script = ExtResource("2_072ut")
+value_type = 2
+absolute_value = 0
+reference_fraction = 1.0
+value_field_type = 1
+regular_field = 7
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_rdanr"]
+script = ExtResource("2_072ut")
+value_type = 1
+absolute_value = 4
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_wm2nn"]
+script = ExtResource("3_0a3o2")
+effect_value = SubResource("Resource_rdanr")
+effect_type = 1
+target_field = 7
+effect = 0
+
+[resource]
+script = ExtResource("3_d55j0")
+card_name = "Defensive Shield Bash"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_jmdm6")
+cost = 1
+target_mode = 3
+target_distance = 1
+damage = 0
+damage_value = SubResource("Resource_5384m")
+on_play_self_effects = Array[ExtResource("3_0a3o2")]([SubResource("Resource_wm2nn")])
+on_play_effects = Array[ExtResource("3_0a3o2")]([])
+on_kill_effects = Array[ExtResource("3_0a3o2")]([])
+area_type = 0
+area_length = 1
+area_width = 1

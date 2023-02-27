@@ -153,6 +153,9 @@ func get_description(character: Character) -> String:
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
 	elif target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
+		var on_play_self_text = CardEffect.join_effects_text(character, on_play_self_effects)
+		if on_play_self_text:
+			description += "On Play: %s\n" % on_play_self_text
 		var attack_text = "Attack"
 		var area_size = effect_area(Vector2.RIGHT).size()
 		if area_size > 1:
@@ -163,9 +166,6 @@ func get_description(character: Character) -> String:
 		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
-		var on_play_self_text = CardEffect.join_effects_text(character, on_play_self_effects)
-		if on_play_self_text:
-			description += "On Play: %s" % on_play_self_text
 		var on_kill_text = CardEffect.join_effects_text(character, on_kill_effects)
 		if on_kill_text:
 			description += "On Kill: %s" % on_kill_text
