@@ -763,7 +763,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			clear_enemy_info()
 		if map_manager.treasure_locs.has(new_tile_map_pos):
 			var treasure = map_manager.treasure_locs[new_tile_map_pos]
-			treasure_info.text = "Treasure: %s (%d turns left)" % [treasure.get_description(), treasure.turns_left]
+			treasure_info.text = "Treasure: %s (%d turns left)" % [treasure.get_description(active_character), treasure.turns_left]
 		else:
 			treasure_info.text = ""
 		# If targeting, there should be a cursor and the cursor can be move around.

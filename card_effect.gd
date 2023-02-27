@@ -70,30 +70,30 @@ func apply_to_enemy(character: Character, enemy: Enemy):
 				enemy.weakness += value
 				StatsManager.add(character, Stats.Field.WEAKNESS_APPLIED, value)
 
-func get_description() -> String:
+func get_description(character: Character) -> String:
 	var effect_text = ""
 	var value_text = ""
 	if effect_value:
-		value_text = effect_value.get_value_string()
+		value_text = effect_value.get_value_string(character)
 	if effect_type == EffectType.EFFECT:
 		match effect:
 			Effect.DISCARD_HAND: effect_text = "discard your hand"
-			Effect.DRAW_CARDS: effect_text = "draw (%s) cards" % value_text
-			Effect.DRAW_ATTACKS: effect_text = "draw (%s) attack cards" % value_text
-			Effect.COLLECTION_UPGRADE: effect_text = "upgrade (%s) cards" % value_text
+			Effect.DRAW_CARDS: effect_text = "draw %s cards" % value_text
+			Effect.DRAW_ATTACKS: effect_text = "draw %s attack cards" % value_text
+			Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
 	elif effect_type == EffectType.FIELD:
 		var prefix_text = "add"
 		if effect_value.is_negative():
 			prefix_text = "remove"
 			# Remove leading -.
 			value_text = value_text.substr(1)
-		effect_text = "%s (%s) %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(target_field)]
+		effect_text = "%s %s %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(target_field)]
 	return effect_text
 
-static func join_effects_text(effects: Array[CardEffect]) -> String:
+static func join_effects_text(character: Character, effects: Array[CardEffect]) -> String:
 	var effect_texts: PackedStringArray = []
 	for effect in effects:
-		effect_texts.push_back(effect.get_description())
+		effect_texts.push_back(effect.get_description(character))
 	return ', '.join(effect_texts)
 
 static func apply_effects_to_character(character: Character, effects: Array[CardEffect]):

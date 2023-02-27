@@ -100,6 +100,18 @@ func effective_damage(character: Character):
 		new_damage *= 1.5
 	return int(new_damage)
 
+func get_damage_description(character: Character):
+	if damage == 0 and damage_value == null:
+		return ""
+	var regular_damage = regular_damage(character)
+	var damage_text = "%d" % regular_damage
+	if damage_value:
+		damage_text = damage_value.get_value_string(character)
+	var effective_damage = effective_damage(character)
+	if regular_damage != effective_damage:
+			damage_text = "%s ([color=red]%d[/color])" % [damage_text, effective_damage]
+	return damage_text
+
 func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
 	apply_self_effects(character)
@@ -126,17 +138,18 @@ func get_target_text() -> String:
 	elif target_mode == Card.TargetMode.ALLY:
 		target_text = "ally"
 	elif target_mode == Card.TargetMode.AREA:
-		target_text = "area"
+		var area_size = effect_area(Vector2.RIGHT).size()
+		target_text = "area (%d tiles)" % area_size
 	return target_text
 
-func on_play_effect_text() -> String:
-	return CardEffect.join_effects_text(on_play_effects)
+func on_play_effect_text(character: Character) -> String:
+	return CardEffect.join_effects_text(character, on_play_effects)
 
 func get_description(character: Character) -> String:
 	var description = ""
 	var target_text = get_target_text()
 	if target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
-		var on_play_text = on_play_effect_text()
+		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
 	elif target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
@@ -144,19 +157,16 @@ func get_description(character: Character) -> String:
 		var area_size = effect_area(Vector2.RIGHT).size()
 		if area_size > 1:
 			attack_text += (" enemies in area (%s tiles)" % area_size)
-		var damage = regular_damage(character)
-		if damage:
-			var damage_text = "%d" % damage
-			if damage != effective_damage(character):
-				damage_text = "%d ([color=red]%d[/color])" % [damage, effective_damage(character)]
+		var damage_text = get_damage_description(character)
+		if damage_text:
 			description += "%s for %s dmg\n" % [attack_text, damage_text]
-		var on_play_text = on_play_effect_text()
+		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]
-		var on_play_self_text = CardEffect.join_effects_text(on_play_self_effects)
+		var on_play_self_text = CardEffect.join_effects_text(character, on_play_self_effects)
 		if on_play_self_text:
 			description += "On Play: %s" % on_play_self_text
-		var on_kill_text = CardEffect.join_effects_text(on_kill_effects)
+		var on_kill_text = CardEffect.join_effects_text(character, on_kill_effects)
 		if on_kill_text:
 			description += "On Kill: %s" % on_kill_text
 	return description

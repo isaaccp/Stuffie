@@ -73,6 +73,7 @@ func _get_reference_value(character: Character):
 func get_field(character: Character, field: Field):
 	match field:
 		Field.TOTAL_HIT_POINTS: return character.total_hit_points
+		Field.BLOCK: return character.block
 	assert(false)
 
 func get_read_only_field(character: Character, field: ReadOnlyField):
@@ -92,11 +93,11 @@ func get_field_name():
 	elif value_field_type == ValueFieldType.READ_ONLY:
 		return get_read_only_field_name(read_only_field)
 
-func get_value_string():
+func get_value_string(character: Character):
 	if value_type == ValueType.ABSOLUTE:
 		return "%d" % absolute_value
 	if value_type == ValueType.REFERENCE:
-		return "%d%% of %s" % [reference_fraction * 100, get_field_name()]
+		return "%d%% of %s (%d)" % [reference_fraction * 100, get_field_name(), get_value(character)]
 
 func is_negative():
 	if value_type == ValueType.ABSOLUTE and absolute_value < 0:

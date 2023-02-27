@@ -10,5 +10,5 @@ var turns_left = 2
 func _ready():
 	def = common[randi() % common.size()]
 
-func get_description():
-	return CardEffect.join_effects_text(def.effects)
+func get_description(character: Character):
+	return CardEffect.join_effects_text(character, def.effects)

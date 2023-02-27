@@ -29,10 +29,10 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 	for character in characters:
 		StatsManager.add(character, Stats.Field.CAMPS_VISITED, 1)
 
-func add_choice(choice: CampChoice):
+func add_choice(character: Character, choice: CampChoice):
 	var button = Button.new()
 	button.text = choice.title
-	button.tooltip_text = CardEffect.join_effects_text(choice.effects)
+	button.tooltip_text = CardEffect.join_effects_text(character, choice.effects)
 	button.pressed.connect(_on_button_pressed.bind(choice))
 	choice_container.add_child(button)
 
@@ -47,9 +47,9 @@ func _process(delta):
 		# TODO: Have a base choice for all characters (rest) and make other choices per
 		# character.
 		for choice in camp_choices:
-			add_choice(choice)
+			add_choice(character, choice)
 		for choice in character.camp_choices():
-			add_choice(choice)
+			add_choice(character, choice)
 		state = CampState.CHOOSING
 
 func _next_character():
