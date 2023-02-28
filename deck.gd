@@ -16,7 +16,7 @@ func reset():
 	hand.clear()
 	discard.clear()
 	for card in cards:
-		deck.push_back(card)
+		deck.push_back(card.duplicate(true))
 	shuffle()
 
 func add_card(card: Card):
