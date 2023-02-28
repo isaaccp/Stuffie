@@ -10,6 +10,7 @@ class_name CharacterPortrait
 @export var block_label: Label
 @export var power_label: Label
 @export var relics_container: Container
+@export var powers_container: Container
 
 var character: Character
 
@@ -30,6 +31,7 @@ func _update_character():
 	_set_hit_points(character.hit_points, character.total_hit_points)
 	_set_block(character.block)
 	_set_power(character.power)
+	_set_powers(character.temp_relics)
 
 func _set_portrait_texture(texture: Texture):
 	portrait.texture_normal = texture
@@ -41,6 +43,21 @@ func _set_relics(relics: Array[Relic]):
 		label.tooltip_text = relic.tooltip
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		relics_container.add_child(label)
+
+func _set_powers(powers: Array[Relic]):
+	for child in powers_container.get_children():
+		child.queue_free()
+	var title_label = Label.new()
+	title_label.text = "Powers"
+	title_label.tooltip_text = "Powers are active until end of combat"
+	title_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	powers_container.add_child(title_label)
+	for power in powers:
+		var label = Label.new()
+		label.text = power.name
+		label.tooltip_text = power.tooltip
+		label.mouse_filter = Control.MOUSE_FILTER_PASS
+		powers_container.add_child(label)
 
 func _set_move_points(pending_move_cost: int, move_points: int, total_move_points: int):
 	var color

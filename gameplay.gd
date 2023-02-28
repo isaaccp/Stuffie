@@ -453,7 +453,7 @@ func apply_undo():
 		character.set_id_position(undo_state.position)
 		var reverted_move_points = undo_state.move_points - character.move_points
 		character.move_points = undo_state.move_points
-		StatsManager.remove(active_character, Stats.Field.MP_USED, reverted_move_points)
+		StatsManager.remove(character, Stats.Field.MP_USED, reverted_move_points)
 	# No need to reset as it should now match.
 	undo_button.hide()
 
@@ -662,7 +662,10 @@ func handle_character_death(character: Character):
 func play_card():
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
 	# Discard card first.
-	active_character.deck.discard_card(current_card_index)
+	if current_card.should_exhaust():
+		active_character.deck.exhaust_card(current_card_index)
+	else:
+		active_character.deck.discard_card(current_card_index)
 	# Take snapshot of current state before playing card.
 	active_character.snap()
 	if current_card.target_mode == Card.TargetMode.SELF:
