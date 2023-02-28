@@ -1,10 +1,19 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://qy8mps4hkyur"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://qy8mps4hkyur"]
 
 [ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="1_bde3y"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_nfk26"]
 [ext_resource type="Script" path="res://card.gd" id="3_lcaxs"]
 [ext_resource type="Script" path="res://card_effect.gd" id="3_t28pl"]
 [ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="4_d2ipr"]
+
+[sub_resource type="Resource" id="Resource_4n5jg"]
+script = ExtResource("2_nfk26")
+value_type = 1
+absolute_value = 8
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
 
 [sub_resource type="Resource" id="Resource_gldr8"]
 script = ExtResource("2_nfk26")
@@ -32,7 +41,8 @@ cost = 1
 texture = ExtResource("4_d2ipr")
 target_mode = 3
 target_distance = 1
-damage = 8
+damage = 0
+damage_value = SubResource("Resource_4n5jg")
 on_play_self_effects = Array[ExtResource("3_t28pl")]([SubResource("Resource_ggxew")])
 on_play_effects = Array[ExtResource("3_t28pl")]([])
 on_kill_effects = Array[ExtResource("3_t28pl")]([])

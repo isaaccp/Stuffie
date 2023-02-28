@@ -28,7 +28,6 @@ enum AreaType {
 @export var texture: Texture2D
 @export var target_mode: TargetMode
 @export var target_distance: int
-@export var damage: int
 @export var damage_value: CardEffectValue
 # Use on_play_self_effects when creating a card that has
 # extra side effect on self besides target.
@@ -92,8 +91,6 @@ func should_exhaust():
 	return false
 
 func regular_damage(character: Character):
-	if damage != 0:
-		return damage
 	if damage_value:
 		return damage_value.get_value(character)
 	return 0
@@ -109,7 +106,7 @@ func effective_damage(character: Character):
 	return int(new_damage)
 
 func get_damage_description(character: Character):
-	if damage == 0 and damage_value == null:
+	if damage_value == null:
 		return ""
 	var regular_damage = regular_damage(character)
 	var damage_text = "%d" % regular_damage
@@ -134,7 +131,7 @@ func apply_enemy(character: Character, enemy: Enemy):
 	return false
 
 func is_attack():
-	return damage != 0 or damage_value
+	return damage_value != null
 
 func get_target_text() -> String:
 	var target_text = ""
