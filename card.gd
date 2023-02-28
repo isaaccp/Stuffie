@@ -39,6 +39,7 @@ enum AreaType {
 @export var area_length: int = 1
 # Area width should in general be odd.
 @export var area_width: int = 1
+@export var power_relic: Relic
 
 # Returns a list of tiles that will be affected
 # by card, with (0, 0) being the tile chosen by
@@ -72,6 +73,8 @@ func apply_on_play_effects(character: Character):
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
+	if power_relic:
+		character.add_temp_relic(power_relic)
 	apply_on_play_effects(character)
 	character.refresh()
 
@@ -82,6 +85,11 @@ func apply_ally(character: Character, ally: Character):
 	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
 	apply_on_play_effects(character)
 	apply_self_effects(character)
+
+func should_exhaust():
+	if power_relic:
+		return true
+	return false
 
 func regular_damage(character: Character):
 	if damage != 0:
@@ -148,6 +156,8 @@ func get_description(character: Character) -> String:
 	var description = ""
 	var target_text = get_target_text()
 	if target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
+		if power_relic:
+			description += "Power: %s (%s)\n" % [power_relic.name, power_relic.tooltip]
 		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
 			description += "On Play(%s): %s" % [target_text, on_play_text]

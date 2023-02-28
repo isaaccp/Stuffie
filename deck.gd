@@ -68,6 +68,9 @@ func shuffle_discard():
 func discard_card(index: int):
 	discard.append(hand.pop_at(index))
 
+func exhaust_card(index: int):
+	hand.remove_at(index)
+
 func discard_hand():
 	var discarded = 0
 	while not hand.is_empty():

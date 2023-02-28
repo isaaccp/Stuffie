@@ -55,7 +55,6 @@ func add(character: Character.CharacterType, field: Field, value: int):
 # undoing a move.
 func remove(character: Character.CharacterType, field: Field, value: int):
 	assert(character in stats)
-	stats[character] = {}
 	var character_stats = stats[character]
 	assert(field in character_stats)
 	character_stats[field] -= value

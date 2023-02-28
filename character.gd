@@ -23,6 +23,7 @@ var power: int
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var relics: Array[Relic]
+var temp_relics: Array[Relic]
 var shared_bag: SharedBag
 
 @export var health_bar: HealthDisplay3D
@@ -96,6 +97,10 @@ func add_relic(relic: Relic, update_stats=true):
 	if update_stats:
 		StatsManager.add(self, Stats.Field.RELICS_ACQUIRED, 1)
 
+func add_temp_relic(relic: Relic):
+	temp_relics.push_back(relic)
+	relic.connect_signals(self)
+
 func begin_stage():
 	deck.reset()
 	stage_started.emit(self)
@@ -103,6 +108,7 @@ func begin_stage():
 func end_stage():
 	power = 0
 	stage_ended.emit(self)
+	temp_relics.clear()
 	refresh()
 
 func begin_turn():
@@ -216,8 +222,9 @@ func add_gold(gold: int):
 
 func apply_relic_damage_change(damage: int):
 	var dmg = damage
-	for relic in relics:
-		dmg = relic.apply_damage_change(dmg, self)
+	for relic_list in [relics, temp_relics]:
+		for relic in relic_list:
+			dmg = relic.apply_damage_change(dmg, self)
 	return dmg
 
 func apply_damage(damage: int, blockable=true):
