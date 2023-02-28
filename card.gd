@@ -69,13 +69,13 @@ func effect_area(direction: Vector2):
 	return new_effect_area
 
 func apply_on_play_effects(character: Character):
-	CardEffect.apply_effects_to_character(character, on_play_effects)
+	await CardEffect.apply_effects_to_character(character, on_play_effects)
 
 func apply_self(character: Character):
 	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
 	if power_relic:
 		character.add_temp_relic(power_relic)
-	apply_on_play_effects(character)
+	await apply_on_play_effects(character)
 	character.refresh()
 
 func apply_self_effects(character: Character):

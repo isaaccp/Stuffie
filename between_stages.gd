@@ -12,7 +12,7 @@ enum BetweenStagesState {
 	CHOOSING,
 }
 
-const num_cards_selection = 3
+const default_options = 3
 
 var state = BetweenStagesState.NEW_CHARACTER
 
@@ -21,6 +21,7 @@ var current_character = 0
 var current_cards: Array[Card]
 var card_ui_scene = preload("res://card_ui.tscn")
 var shared_bag: SharedBag
+var options: int
 
 const NO_CARD_GOLD = 5
 
@@ -29,9 +30,10 @@ signal between_stages_done(stats: Stats)
 func _ready():
 	pass
 
-func initialize(characters: Array[Character], shared_bag: SharedBag):
+func initialize(characters: Array[Character], shared_bag: SharedBag, options=default_options):
 	self.characters = characters
 	self.shared_bag = shared_bag
+	self.options = options
 
 func _process(delta):
 	if state == BetweenStagesState.NEW_CHARACTER:
@@ -40,7 +42,7 @@ func _process(delta):
 			return
 		var character = characters[current_character]
 		character_portrait.set_character(character)
-		current_cards = character.extra_cards.choose(num_cards_selection)
+		current_cards = character.extra_cards.choose(options)
 		var i = 0
 		for card in current_cards:
 			var new_card = card_ui_scene.instantiate() as CardUI

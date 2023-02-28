@@ -13,7 +13,9 @@ enum Effect {
 	DISCARD_HAND,
 	DRAW_CARDS,
 	DRAW_ATTACKS,
-	COLLECTION_UPGRADE
+	COLLECTION_UPGRADE,
+	PICK_CARDS,
+	PICK_ATTACKS,
 }
 
 @export var effect_value: CardEffectValue
@@ -36,8 +38,13 @@ func apply_to_character(character: Character):
 				character.draw_cards(value)
 			Effect.DRAW_ATTACKS:
 				character.draw_attacks(value)
+			Effect.PICK_CARDS:
+				await character.pick_cards(value)
+			Effect.PICK_ATTACKS:
+				await character.pick_attacks(value)
 			Effect.COLLECTION_UPGRADE:
-				character.upgrade_cards(value)
+				# TODO: This ignores value and just upgrades one as of now.
+				await character.upgrade_cards(value)
 	elif effect_type == EffectType.FIELD:
 		match target_field:
 			CardEffectValue.Field.MOVE_POINTS: character.move_points += value
@@ -80,6 +87,8 @@ func get_description(character: Character) -> String:
 			Effect.DISCARD_HAND: effect_text = "discard your hand"
 			Effect.DRAW_CARDS: effect_text = "draw %s cards" % value_text
 			Effect.DRAW_ATTACKS: effect_text = "draw %s attack cards" % value_text
+			Effect.PICK_CARDS: effect_text = "shuffle discard into deck and pick %s cards" % value_text
+			Effect.PICK_ATTACKS: effect_text = "shuffle discard into deck and pick %s attack cards" % value_text
 			Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
 	elif effect_type == EffectType.FIELD:
 		var prefix_text = "add"
@@ -98,4 +107,4 @@ static func join_effects_text(character: Character, effects: Array[CardEffect]) 
 
 static func apply_effects_to_character(character: Character, effects: Array[CardEffect]):
 	for effect in effects:
-		effect.apply_to_character(character)
+		await effect.apply_to_character(character)

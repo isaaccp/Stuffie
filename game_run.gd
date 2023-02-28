@@ -33,6 +33,7 @@ class StageDef:
 	var blacksmith_removals: int
 	var blacksmith_upgrades: int
 	var blacksmith_relics: int
+	var card_reward_options: int
 
 	func _init(stage_type: StageType):
 		super()
@@ -56,8 +57,10 @@ class StageDef:
 		stage_def.blacksmith_relics = relics
 		return stage_def
 
-	static func card_reward():
-		return StageDef.new(StageType.CARD_REWARD)
+	static func card_reward(options: int = 5):
+		var stage_def = StageDef.new(StageType.CARD_REWARD)
+		stage_def.card_reward_options = options
+		return stage_def
 
 	static func camp():
 		return StageDef.new(StageType.CAMP)
@@ -151,9 +154,9 @@ func set_run_type(run_type: RunType):
 		added_levels = 3
 		shared_bag.add_gold(100)
 		run = [
-			StageDef.card_reward(),
-			StageDef.card_reward(),
-			StageDef.card_reward(),
+			StageDef.card_reward(5),
+			StageDef.card_reward(5),
+			StageDef.card_reward(5),
 			StageDef.blacksmith(4, 4, 3),
 			StageDef.combat(0),
 			StageDef.combat(1),
@@ -230,7 +233,7 @@ func _on_within_stage_entered():
 		stage_parent.add_child(camp)
 	elif stage_def.stage_type == StageType.CARD_REWARD:
 		var card_reward = get_card_reward_stage()
-		card_reward.initialize(characters, shared_bag)
+		card_reward.initialize(characters, shared_bag, stage_def.card_reward_options)
 		card_reward.between_stages_done.connect(stage_finished.bind(StageType.CARD_REWARD))
 		stage_parent.add_child(card_reward)
 

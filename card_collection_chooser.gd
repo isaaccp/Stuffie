@@ -7,12 +7,14 @@ class_name CardCollectionChooser
 enum Filter {
 	ALL,
 	UPGRADABLE,
+	DECK,
 }
 
 var card_ui_scene = preload("res://card_ui.tscn")
 
 var cards: Array
 var cards_per_row = 5  # TODO: Do something smart with screen size later.
+var chosen_card: Card
 
 signal card_chosen(card: Card)
 
@@ -21,7 +23,8 @@ func reset():
 	for child in vbox.get_children():
 		child.queue_free()
 
-func initialize_from_character(character: Character, filter=Filter.ALL):
+func initialize_from_character(character: Character, filter=Filter.ALL, condition: Callable = func(c): return true):
+	# TODO: Replace "filter" with "condition" and add a new enum to choose between COLLECTION, DECK, etc.
 	if filter == Filter.ALL:
 		initialize_from_cards(character, character.deck.cards)
 	elif filter == Filter.UPGRADABLE:
@@ -30,6 +33,12 @@ func initialize_from_character(character: Character, filter=Filter.ALL):
 			if character.get_card_upgrades(card).size() > 0:
 				upgradable_cards.push_back(card)
 		initialize_from_cards(character, upgradable_cards)
+	elif filter == Filter.DECK:
+		var filtered_cards: Array[Card] = []
+		for card in character.deck.deck:
+			if condition.call(card):
+				filtered_cards.push_back(card)
+		initialize_from_cards(character, filtered_cards)
 
 func initialize_from_upgrades_to_card(character: Character, card: Card):
 	var upgrades = character.get_card_upgrades(card)
@@ -53,4 +62,5 @@ func initialize_from_cards(character: Character, cards: Array):
 		vbox.add_child(hbox)
 
 func _on_card_pressed(card_idx: int):
-	card_chosen.emit(cards[card_idx])
+	chosen_card = cards[card_idx]
+	card_chosen.emit(chosen_card)

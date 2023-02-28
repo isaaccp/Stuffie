@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://43jvwvho4c8a"]
+
+[ext_resource type="Resource" uid="uid://ca5npfi16uihh" path="res://resources/cards/warrior/improvise.tres" id="1_brspj"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_hndun"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_mvf3p"]
+[ext_resource type="Script" path="res://card.gd" id="4_575i4"]
+[ext_resource type="Texture2D" uid="uid://dlxiy5hbuev16" path="res://resources/improvise.png" id="5_oltw3"]
+
+[sub_resource type="Resource" id="Resource_qg5pt"]
+script = ExtResource("2_hndun")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_7dv1t"]
+script = ExtResource("3_mvf3p")
+effect_value = SubResource("Resource_qg5pt")
+effect_type = 2
+target_field = 0
+effect = 3
+
+[sub_resource type="Resource" id="Resource_wuaks"]
+script = ExtResource("2_hndun")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_1oelf"]
+script = ExtResource("3_mvf3p")
+effect_value = SubResource("Resource_wuaks")
+effect_type = 1
+target_field = 5
+effect = 0
+
+[resource]
+script = ExtResource("4_575i4")
+card_name = "Fast Improvisation"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_brspj")
+cost = 0
+texture = ExtResource("5_oltw3")
+target_mode = 0
+target_distance = 0
+damage = 0
+on_play_self_effects = Array[ExtResource("3_mvf3p")]([])
+on_play_effects = Array[ExtResource("3_mvf3p")]([SubResource("Resource_7dv1t"), SubResource("Resource_1oelf")])
+on_kill_effects = Array[ExtResource("3_mvf3p")]([])
+area_type = 0
+area_length = 1
+area_width = 1

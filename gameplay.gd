@@ -669,9 +669,9 @@ func play_card():
 	# Take snapshot of current state before playing card.
 	active_character.snap()
 	if current_card.target_mode == Card.TargetMode.SELF:
-		current_card.apply_self(active_character)
+		await current_card.apply_self(active_character)
 	elif current_card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
-		current_card.apply_self_effects(active_character)
+		await current_card.apply_self_effects(active_character)
 		var affected_tiles = current_card.effect_area(direction)
 		for tile_offset in affected_tiles:
 			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
@@ -802,7 +802,7 @@ func _unhandled_input(event):
 					handle_move(mouse_event.position)
 				elif human_turn_state == HumanTurnState.ACTION_TARGET:
 					if valid_target:
-						play_card()
+						await play_card()
 		elif event is InputEventMouseMotion:
 			update_position_direction(event.position)
 

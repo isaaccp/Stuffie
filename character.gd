@@ -34,6 +34,7 @@ var shared_bag: SharedBag
 
 var card_upgrades: Dictionary
 var upgrade_scene = preload("res://card_upgrade.tscn")
+var chooser_scene = preload("res://card_collection_chooser.tscn")
 
 signal changed
 signal made_active(active: bool)
@@ -154,6 +155,30 @@ func draw_cards(number: int):
 func draw_attacks(number: int):
 	var drawn = deck.draw_attacks(number)
 	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
+
+func pick_cards_condition(number: int, condition: Callable = func(c): return true):
+	# TODO: Support picking more than 1.
+	assert(number == 1)
+	# Shuffle discard into deck before choosing.
+	deck.shuffle_discard()
+	var tree = get_tree().current_scene
+	var chooser = chooser_scene.instantiate() as CardCollectionChooser
+	chooser.initialize_from_character(self, CardCollectionChooser.Filter.DECK, condition)
+	tree.add_child(chooser)
+	# Not sure if there is a way to get the card that is a parameter of the signal easily.
+	await chooser.card_chosen
+	var card = chooser.chosen_card
+	deck.hand.push_back(card)
+	deck.deck.erase(card)
+	chooser.queue_free()
+	# TODO: Check if we actually upgraded.
+	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, number)
+
+func pick_cards(number: int):
+	pick_cards_condition(number)
+
+func pick_attacks(number: int):
+	await pick_cards_condition(number, func(c): return c.is_attack())
 
 func upgrade_cards(number: int):
 	# TODO: Support upgrading more than 1 in CardUpgrade.
