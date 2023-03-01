@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dpmhsv5nb62v5"]
+
+[ext_resource type="Script" path="res://power/add_damage_attacks_played.gd" id="1_m754a"]
+[ext_resource type="Resource" uid="uid://bhrfomakaj0gb" path="res://resources/cards/warrior/fury.tres" id="1_n5xdq"]
+[ext_resource type="Script" path="res://card.gd" id="2_cw8jw"]
+[ext_resource type="Texture2D" uid="uid://t8osakyq4ctj" path="res://resources/fury.png" id="4_n26rx"]
+
+[sub_resource type="Resource" id="Resource_5oavm"]
+script = ExtResource("1_m754a")
+extra_damage = 2
+name = "Fury"
+tooltip = "Adds 2 extra damage to each attack with explicit damage played"
+
+[resource]
+script = ExtResource("2_cw8jw")
+card_name = "Deep Fury"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_n5xdq")
+cost = 2
+texture = ExtResource("4_n26rx")
+target_mode = 0
+target_distance = 0
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+power_relic = SubResource("Resource_5oavm")

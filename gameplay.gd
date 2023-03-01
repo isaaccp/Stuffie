@@ -684,6 +684,7 @@ func play_card():
 	StatsManager.add(active_character, Stats.Field.CARDS_PLAYED, 1)
 	StatsManager.add(active_character, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
+	active_character.card_played.emit(active_character, current_card)
 	draw_hand()
 	# Consider wrapping all this into a method.
 	current_card_index = -1

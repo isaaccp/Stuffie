@@ -41,6 +41,7 @@ signal stage_started(character: Character)
 signal stage_ended(character: Character)
 signal turn_started(character: Character)
 signal turn_ended(character: Character)
+signal card_played(character: Character, card: Card)
 signal attacked(character: Character)
 signal killed_enemy(character: Character)
 

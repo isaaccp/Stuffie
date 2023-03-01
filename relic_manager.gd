@@ -11,6 +11,7 @@ func connect_signals(character: Character):
 	character.attacked.connect(_on_attack)
 	character.turn_started.connect(_on_start_turn)
 	character.turn_ended.connect(_on_end_turn)
+	character.card_played.connect(_on_card_played)
 	StatsManager.stats_added.connect(_on_stats_added)
 
 func add_relic(relic: Relic):
@@ -56,6 +57,9 @@ func _on_start_turn(character: Character):
 
 func _on_end_turn(character: Character):
 	_call_all_relics("_on_end_turn", [character])
+
+func _on_card_played(character: Character, card: Card):
+	_call_all_relics("_on_card_played", [character, card])
 
 func _on_stats_added(character: Character, field: Stats.Field, value: int):
 	_call_all_relics("_on_stats_added", [character, field, value])

@@ -20,6 +20,9 @@ func _on_start_turn(character: Character):
 func _on_end_turn(character: Character):
 	pass
 
+func _on_card_played(character: Character, card: Card):
+	pass
+
 func _on_stats_added(character: Character, field: Stats.Field, value: int):
 	pass
 
