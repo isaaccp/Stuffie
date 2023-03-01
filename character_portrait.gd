@@ -21,7 +21,7 @@ func set_character(character: Character):
 	_update_character()
 	# TODO: If relics can change in the lifetime of portrait,
 	# handle that later.
-	_set_relics(character.relics)
+	_set_relics(character.relic_manager.relics)
 
 
 func _update_character():
@@ -31,7 +31,7 @@ func _update_character():
 	_set_hit_points(character.hit_points, character.total_hit_points)
 	_set_block(character.block)
 	_set_power(character.power)
-	_set_powers(character.temp_relics)
+	_set_powers(character.relic_manager.temp_relics)
 
 func _set_portrait_texture(texture: Texture):
 	portrait.texture_normal = texture

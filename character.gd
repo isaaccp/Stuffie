@@ -22,8 +22,7 @@ var block: int
 var power: int
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
-var relics: Array[Relic]
-var temp_relics: Array[Relic]
+var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
 
 @export var health_bar: HealthDisplay3D
@@ -68,6 +67,7 @@ func _ready():
 	process_cards()
 	changed.connect(_on_changed)
 	heal_full()
+	relic_manager.connect_signals(self)
 	snap()
 
 func process_cards():
@@ -93,14 +93,12 @@ func get_card_upgrades(card: Card):
 	return card_upgrades[card.card_name].duplicate()
 
 func add_relic(relic: Relic, update_stats=true):
-	relics.push_back(relic)
-	relic.connect_signals(self)
+	relic_manager.add_relic(relic)
 	if update_stats:
 		StatsManager.add(self, Stats.Field.RELICS_ACQUIRED, 1)
 
 func add_temp_relic(relic: Relic):
-	temp_relics.push_back(relic)
-	relic.connect_signals(self)
+	relic_manager.add_temp_relic(relic)
 
 func begin_stage():
 	deck.reset()
@@ -109,7 +107,7 @@ func begin_stage():
 func end_stage():
 	power = 0
 	stage_ended.emit(self)
-	temp_relics.clear()
+	relic_manager.clear_temp_relics()
 	refresh()
 
 func begin_turn():
@@ -246,11 +244,7 @@ func add_gold(gold: int):
 	StatsManager.add(self, Stats.Field.GOLD_EARNED, gold)
 
 func apply_relic_damage_change(damage: int):
-	var dmg = damage
-	for relic_list in [relics, temp_relics]:
-		for relic in relic_list:
-			dmg = relic.apply_damage_change(dmg, self)
-	return dmg
+	return relic_manager.apply_damage_change(self, damage)
 
 func apply_damage(damage: int, blockable=true):
 	if blockable:
@@ -278,8 +272,4 @@ func apply_attack(enemy: Enemy):
 	apply_damage(damage)
 
 func camp_choices():
-	var camp_choices = [camp_choice]
-	for relic in relics:
-		for choice in relic.camp_choices():
-			camp_choices.push_back(choice)
-	return camp_choices
+	return [camp_choice] + relic_manager.camp_choices()
