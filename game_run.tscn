@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dj104xsf5urdk"]
+[gd_scene load_steps=3 format=3 uid="uid://dj104xsf5urdk"]
 
 [ext_resource type="Script" path="res://game_run.gd" id="1_0svbp"]
-[ext_resource type="PackedScene" uid="uid://chh0sy5tad4lg" path="res://warrior.tscn" id="2_33vft"]
 [ext_resource type="Script" path="res://shared_bag.gd" id="3_1wd2t"]
 
 [node name="GameRun" type="Node" node_paths=PackedStringArray("shared_bag", "party", "stage_parent")]
@@ -11,9 +10,6 @@ party = NodePath("Party")
 stage_parent = NodePath("StageParent")
 
 [node name="Party" type="Node" parent="."]
-
-[node name="Warrior" parent="Party" instance=ExtResource("2_33vft")]
-total_hit_points = 60
 
 [node name="StageParent" type="Node" parent="."]
 

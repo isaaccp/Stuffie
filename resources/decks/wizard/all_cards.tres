@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=3 format=3 uid="uid://boikmqlmjpm0l"]
+
+[ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_mpdpp"]
+[ext_resource type="Script" path="res://card_selection_set.gd" id="2_a8yqu"]
+
+[resource]
+script = ExtResource("2_a8yqu")
+cards = Array[Resource("res://card.gd")]([ExtResource("1_mpdpp")])

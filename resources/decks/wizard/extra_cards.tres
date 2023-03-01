@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=2 format=3 uid="uid://dlhyp8id25va7"]
+
+[ext_resource type="Script" path="res://card_selection_set.gd" id="1_hklcm"]
+
+[resource]
+script = ExtResource("1_hklcm")
+cards = Array[Resource("res://card.gd")]([])

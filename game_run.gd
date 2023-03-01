@@ -124,18 +124,20 @@ signal run_finished
 func _ready():
 	state.connect_signals(self)
 	relic_list.reset()
+
+func set_starting_characters(starting_characters: Array[Character]):
 	# Improve this character initialization.
-	for character in party.get_children():
+	for character in starting_characters:
 		var initial_relic = character.initial_relic
 		relic_list.mark_used(initial_relic.name)
 		character.shared_bag = shared_bag
 		character.add_relic(initial_relic, false)
 		characters.push_back(character)
+		party.add_child(character)
 		if run_type == RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards
 		elif run_type == RunType.TEST_CAMP:
 			character.hit_points -= 30
-	state.change_state(MAP)
 
 func set_run_type(run_type: RunType):
 	self.run_type = run_type
@@ -186,6 +188,9 @@ func set_run_type(run_type: RunType):
 		stages = [
 			[preload("res://stages/simple.stage")],
 		]
+
+func start():
+	state.change_state(MAP)
 
 func current_stage_def():
 	return run[stage_number]

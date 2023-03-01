@@ -1,16 +1,31 @@
-[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://dfuxoy21you0f"]
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://dfuxoy21you0f"]
 
 [ext_resource type="Script" path="res://card.gd" id="1_h8ay4"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_q0lnf"]
 [ext_resource type="Texture2D" uid="uid://65ksrh2l7fwr" path="res://resources/magic_missile.jpg" id="2_r3cv0"]
+
+[sub_resource type="Resource" id="Resource_72sy0"]
+script = ExtResource("1_q0lnf")
+value_type = 1
+absolute_value = 8
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
 
 [resource]
 script = ExtResource("1_h8ay4")
 card_name = "Magic Missile"
+basic = true
+upgrade_level = 0
 cost = 1
 texture = ExtResource("2_r3cv0")
 target_mode = 3
 target_distance = 5
-damage = 5
+damage_value = SubResource("Resource_72sy0")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
 area_type = 0
 area_length = 1
 area_width = 1
