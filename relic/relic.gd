@@ -3,7 +3,12 @@ extends Resource
 class_name Relic
 
 @export var name: String
-@export var tooltip: String
+var tooltip:
+	get:
+		return _tooltip()
+
+func _tooltip():
+	assert(false)
 
 func _on_start_stage(character: Character):
 	pass

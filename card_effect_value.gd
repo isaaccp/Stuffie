@@ -61,8 +61,10 @@ func get_value(character: Character):
 	if value_type == ValueType.ABSOLUTE:
 		return absolute_value
 	if value_type == ValueType.REFERENCE:
-		var original_value = _get_reference_value(character)
-		return int(original_value * reference_fraction)
+		if character != null:
+			var original_value = _get_reference_value(character)
+			return int(original_value * reference_fraction)
+		return 0
 
 func _get_reference_value(character: Character):
 	if value_field_type == ValueFieldType.REGULAR:

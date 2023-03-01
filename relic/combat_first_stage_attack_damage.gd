@@ -6,6 +6,9 @@ class_name CombatFirstStageAttackDamageRelic
 
 var used = false
 
+func _tooltip():
+	return "First attack on each stage does %d extra damage" % extra_damage
+
 func _on_start_stage(character: Character):
 	used = false
 
