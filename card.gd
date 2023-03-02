@@ -18,6 +18,7 @@ enum TargetMode {
 enum AreaType {
 	RECTANGLE,
 	FRONT_AND_SIDES,  # Covers 3 tiles in front and both sides.
+	CONE,             # Starts in front of player at given width, and expands outwards.
 }
 
 @export var card_name: String
@@ -38,6 +39,7 @@ enum AreaType {
 @export var area_length: int = 1
 # Area width should in general be odd.
 @export var area_width: int = 1
+@export var cone_step: int = 1
 @export var power_relic: Relic
 
 # Returns a list of tiles that will be affected
@@ -56,6 +58,12 @@ func effect_area(direction: Vector2):
 			Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, -1),
 			Vector2i(-1, -1), Vector2i(-1, 1)
 		]
+	elif area_type == AreaType.CONE:
+		var width_idx = (area_width-1)/2
+		for i in range(area_length):
+			for j in range(-width_idx, width_idx+1):
+				tiles.push_back(Vector2i(i, j))
+			width_idx += cone_step
 
 	var new_effect_area = []
 	var angle = Vector2.RIGHT.angle_to(direction)
