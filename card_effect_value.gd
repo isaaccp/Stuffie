@@ -26,6 +26,7 @@ enum Field {
 	POWER,
 	WEAKNESS,
 	GOLD,
+	DODGE,
 }
 
 const field_name = {
@@ -39,6 +40,7 @@ const field_name = {
 	Field.POWER: "[url]power[/url]",
 	Field.WEAKNESS: "weakness",
 	Field.GOLD: "🪙",
+	Field.DODGE: "[url]dodge[/url]",
 }
 
 enum ReadOnlyField {

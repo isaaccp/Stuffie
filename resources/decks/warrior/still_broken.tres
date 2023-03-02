@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=19 format=3 uid="uid://cqmvranirdbgc"]
+
+[ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/rage.tres" id="3_i5oyq"]
+[ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/shield.tres" id="4_7i3eu"]
+[ext_resource type="Resource" uid="uid://dsj8uc8l5ps70" path="res://resources/cards/warrior/power_cleave.tres" id="5_sns57"]
+[ext_resource type="Resource" uid="uid://b62kpw0duqn6u" path="res://resources/cards/warrior/strong_slash.tres" id="8_fj12h"]
+[ext_resource type="Resource" uid="uid://b2cfup10xv7f" path="res://resources/cards/warrior/sweeping_slash.tres" id="8_g36hd"]
+[ext_resource type="Resource" uid="uid://dplfqiqipmmlq" path="res://resources/cards/warrior/strong_shield.tres" id="8_gqiom"]
+[ext_resource type="Resource" uid="uid://bpsnyvo00otit" path="res://resources/cards/warrior/new_plan.tres" id="8_yffwj"]
+[ext_resource type="Script" path="res://card_selection_set.gd" id="9_2el75"]
+[ext_resource type="Resource" uid="uid://cmxrjrycyegii" path="res://resources/cards/warrior/strong_lunge.tres" id="9_6yeon"]
+[ext_resource type="Resource" uid="uid://d3etj70kx2c4t" path="res://resources/cards/warrior/plan_and_rush.tres" id="9_ym8i3"]
+[ext_resource type="Resource" uid="uid://0bouhw2l5ja7" path="res://resources/cards/warrior/quick_plan.tres" id="11_fo84w"]
+[ext_resource type="Resource" uid="uid://c5d3tmlasaaah" path="res://resources/cards/warrior/quick_shield_bash.tres" id="12_b3poa"]
+[ext_resource type="Resource" uid="uid://baauj7cb1ei5j" path="res://resources/cards/warrior/strong_sweeping_slash.tres" id="13_m0xii"]
+[ext_resource type="Resource" uid="uid://b4cpdkd74oqih" path="res://resources/cards/warrior/quick_fortify.tres" id="13_ygi7k"]
+[ext_resource type="Resource" uid="uid://bdi2htf3fr7we" path="res://resources/cards/warrior/shield_bash.tres" id="14_l3ulf"]
+[ext_resource type="Resource" uid="uid://bfhwdfwipn4lf" path="res://resources/cards/warrior/through_cleave.tres" id="14_p0ya6"]
+[ext_resource type="Resource" uid="uid://xmmx2myyod2p" path="res://resources/cards/warrior/wide_sweeping_slash.tres" id="16_3th0x"]
+[ext_resource type="Resource" uid="uid://c4igkofn7lu6o" path="res://resources/cards/warrior/wild_rage.tres" id="20_vrlt1"]
+
+[resource]
+script = ExtResource("9_2el75")
+cards = Array[Resource("res://card.gd")]([ExtResource("8_yffwj"), ExtResource("9_ym8i3"), ExtResource("5_sns57"), ExtResource("13_ygi7k"), ExtResource("11_fo84w"), ExtResource("12_b3poa"), ExtResource("3_i5oyq"), ExtResource("4_7i3eu"), ExtResource("14_l3ulf"), ExtResource("9_6yeon"), ExtResource("8_gqiom"), ExtResource("8_fj12h"), ExtResource("13_m0xii"), ExtResource("8_g36hd"), ExtResource("14_p0ya6"), ExtResource("16_3th0x"), ExtResource("20_vrlt1")])

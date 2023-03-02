@@ -32,7 +32,6 @@ cost = 1
 texture = ExtResource("3_aveed")
 target_mode = 0
 target_distance = 0
-damage = 0
 on_play_self_effects = Array[ExtResource("3_2bvtr")]([])
 on_play_effects = Array[ExtResource("3_2bvtr")]([SubResource("Resource_xmbwa")])
 on_kill_effects = Array[ExtResource("3_2bvtr")]([])

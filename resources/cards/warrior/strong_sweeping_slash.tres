@@ -24,7 +24,6 @@ cost = 2
 texture = ExtResource("2_dw4g6")
 target_mode = 4
 target_distance = 1
-damage = 0
 damage_value = SubResource("Resource_rt7fd")
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])

@@ -30,7 +30,6 @@ cost = 1
 texture = ExtResource("2_4r8hr")
 target_mode = 0
 target_distance = 0
-damage = 0
 on_play_self_effects = Array[ExtResource("3_ldfs2")]([])
 on_play_effects = Array[ExtResource("3_ldfs2")]([SubResource("Resource_0iqws")])
 on_kill_effects = Array[ExtResource("3_ldfs2")]([])

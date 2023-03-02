@@ -8,6 +8,7 @@ var character: Character
 var keyword_tooltips = {
 	"power": "If character has any power, damage +50%.\nRemove 1 power per turn.",
 	"block": "If character has block, block is reduced before HP when receiving damage.\nAll block is removed at beginning of next turn.",
+	"dodge": "If character has dodge, ignore all damage from the next attack and remove 1 dodge. Up to 1 dodge carries to next turn.",
 	"weakness": "If character has weakness, attack damage is reduced to 50%.\nRemove 1 weakness per turn.",
 	"MP": "Move points. Used to move the character. Can be raised over Total MP.",
 }

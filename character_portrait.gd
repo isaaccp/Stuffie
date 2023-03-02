@@ -8,6 +8,7 @@ class_name CharacterPortrait
 @export var move_points_label: RichTextLabel
 @export var hit_points_label: RichTextLabel
 @export var block_label: Label
+@export var dodge_label: Label
 @export var power_label: Label
 @export var relics_container: Container
 @export var powers_container: Container
@@ -23,13 +24,13 @@ func set_character(character: Character):
 	# handle that later.
 	_set_relics(character.relic_manager.relics)
 
-
 func _update_character():
 	_set_portrait_texture(character.portrait_texture.texture)
 	_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
 	_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
 	_set_hit_points(character.hit_points, character.total_hit_points)
 	_set_block(character.block)
+	_set_dodge(character.dodge)
 	_set_power(character.power)
 	_set_powers(character.relic_manager.temp_relics)
 
@@ -47,6 +48,8 @@ func _set_relics(relics: Array[Relic]):
 func _set_powers(powers: Array[Relic]):
 	for child in powers_container.get_children():
 		child.queue_free()
+	if powers.size() == 0:
+		return
 	var title_label = Label.new()
 	title_label.text = "Powers"
 	title_label.tooltip_text = "Powers are active until end of combat"
@@ -98,14 +101,26 @@ func _set_hit_points(hit_points: int, total_hit_points: int):
 func _set_block(block: int):
 	if block == 0:
 		block_label.text = ""
+		block_label.hide()
 	else:
 		block_label.text = "Block: %d" % block
+		block_label.show()
+
+func _set_dodge(dodge: int):
+	if dodge == 0:
+		dodge_label.text = ""
+		dodge_label.hide()
+	else:
+		dodge_label.text = "Dodge: %d" % dodge
+		dodge_label.show()
 
 func _set_power(power: int):
 	if power == 0:
 		power_label.text = ""
+		power_label.hide()
 	else:
 		power_label.text = "Power: %d⌚" % power
+		power_label.show()
 
 func _set_active(active: bool):
 	active_marker.visible = active

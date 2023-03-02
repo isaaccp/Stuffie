@@ -30,4 +30,3 @@ effects = Array[ExtResource("2_phf3t")]([SubResource("Resource_icppm")])
 script = ExtResource("3_du3u0")
 camp_choice = SubResource("Resource_x56or")
 name = "Wrench"
-tooltip = "Adds option to upgrade card in camp"

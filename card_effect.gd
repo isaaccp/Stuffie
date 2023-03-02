@@ -56,6 +56,8 @@ func apply_to_character(character: Character):
 					character.heal(value)
 			CardEffectValue.Field.BLOCK:
 				character.add_block(value)
+			CardEffectValue.Field.DODGE:
+				character.add_dodge(value)
 			CardEffectValue.Field.POWER:
 				character.add_power(value)
 			CardEffectValue.Field.GOLD:
