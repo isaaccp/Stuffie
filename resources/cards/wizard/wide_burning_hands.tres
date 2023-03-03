@@ -23,6 +23,7 @@ base_card = ExtResource("1_3nncv")
 cost = 2
 texture = ExtResource("4_ulopj")
 target_mode = 4
+target_animation = 5
 target_distance = 1
 damage_value = SubResource("Resource_5siub")
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
