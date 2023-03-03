@@ -7,7 +7,6 @@
 [sub_resource type="Resource" id="Resource_mt0wy"]
 script = ExtResource("1_qtpip")
 name = "Permanent Block"
-tooltip = "Do not remove block at beginning of turn"
 
 [resource]
 script = ExtResource("1_04q05")
@@ -18,11 +17,12 @@ cost = 3
 texture = ExtResource("3_cxpgo")
 target_mode = 0
 target_distance = 0
-damage = 0
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
 on_kill_effects = Array[Resource("res://card_effect.gd")]([])
 area_type = 0
 area_length = 1
 area_width = 1
+cone_step = 1
 power_relic = SubResource("Resource_mt0wy")

@@ -190,6 +190,7 @@ func get_random_empty_tile():
 			var pos = Vector2i(i, j)
 			if not is_solid(pos):
 				choices.push_back(pos)
+
 	return choices[randi() % choices.size()]
 
 func add_treasure(pos: Vector2i, treasure: Treasure):

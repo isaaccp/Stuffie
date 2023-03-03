@@ -16,6 +16,7 @@ enum Effect {
 	COLLECTION_UPGRADE,
 	PICK_CARDS,
 	PICK_ATTACKS,
+	TELEPORT,
 }
 
 @export var effect_value: CardEffectValue
@@ -45,6 +46,9 @@ func apply_to_character(character: Character):
 			Effect.COLLECTION_UPGRADE:
 				# TODO: This ignores value and just upgrades one as of now.
 				await character.upgrade_cards(value)
+			Effect.TELEPORT:
+				# TODO: Assert this is not invoked outside of combat.
+				await character.teleport(value)
 	elif effect_type == EffectType.FIELD:
 		match target_field:
 			CardEffectValue.Field.MOVE_POINTS: character.move_points += value
@@ -56,6 +60,8 @@ func apply_to_character(character: Character):
 					character.heal(value)
 			CardEffectValue.Field.BLOCK:
 				character.add_block(value)
+			CardEffectValue.Field.DODGE:
+				character.add_dodge(value)
 			CardEffectValue.Field.POWER:
 				character.add_power(value)
 			CardEffectValue.Field.GOLD:
@@ -90,6 +96,7 @@ func get_description(character: Character) -> String:
 			Effect.PICK_CARDS: effect_text = "shuffle discard into deck and pick %s cards" % value_text
 			Effect.PICK_ATTACKS: effect_text = "shuffle discard into deck and pick %s attack cards" % value_text
 			Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
+			Effect.TELEPORT: effect_text = "teleport up to %s tiles" % value_text
 	elif effect_type == EffectType.FIELD:
 		var prefix_text = "add"
 		if effect_value.is_negative():

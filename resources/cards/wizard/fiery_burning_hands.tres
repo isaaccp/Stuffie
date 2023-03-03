@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://24meqh31cvlp"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_0i7or"]
+[ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_eqdtr"]
+[ext_resource type="Script" path="res://card.gd" id="2_2v8dr"]
+
+[sub_resource type="Resource" id="Resource_5siub"]
+script = ExtResource("1_0i7or")
+value_type = 1
+absolute_value = 8
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[resource]
+script = ExtResource("2_2v8dr")
+card_name = "Burning Hands"
+basic = false
+upgrade_level = 0
+base_card = ExtResource("1_eqdtr")
+cost = 2
+target_mode = 4
+target_distance = 1
+damage_value = SubResource("Resource_5siub")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 2
+area_length = 2
+area_width = 1
+cone_step = 1

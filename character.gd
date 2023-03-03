@@ -20,10 +20,15 @@ var move_points: int
 var hit_points: int
 var block: int
 var power: int
+var dodge: int
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
+# TODO: Remove this. As of now, this is required because character.teleport()
+# needs access to the gameplay to e.g. display a cursor for the move, etc.
+# Figure out a cleaner way.
+var gameplay: Gameplay
 
 @export var health_bar: HealthDisplay3D
 @export var deck: Deck
@@ -51,6 +56,7 @@ class Snapshot:
 	var hit_points: int
 	var block: int
 	var power: int
+	var dodge: int
 	var num_hand_cards: int
 
 	func _init(character: Character):
@@ -59,6 +65,7 @@ class Snapshot:
 		hit_points = character.hit_points
 		block = character.block
 		power = character.power
+		dodge = character.dodge
 		num_hand_cards = character.num_hand_cards()
 
 var snapshot: Snapshot
@@ -101,12 +108,15 @@ func add_relic(relic: Relic, update_stats=true):
 func add_temp_relic(relic: Relic):
 	relic_manager.add_temp_relic(relic)
 
-func begin_stage():
+func begin_stage(gameplay: Gameplay):
+	self.gameplay = gameplay
 	deck.reset()
 	stage_started.emit(self)
 
 func end_stage():
+	gameplay = null
 	power = 0
+	dodge = 0
 	stage_ended.emit(self)
 	relic_manager.clear_temp_relics()
 	refresh()
@@ -116,6 +126,9 @@ func begin_turn():
 	action_points = total_action_points
 	move_points = total_move_points
 	block = 0
+	# At most can carry 1 dodge.
+	if dodge > 0:
+		dodge = 1
 	if power > 0:
 		power -= 1
 	draw_new_hand()
@@ -127,6 +140,7 @@ func end_stage_restore():
 	move_points = total_move_points
 	block = 0
 	power = 0
+	dodge = 0
 	deck.reset()
 	clear_pending_move_cost()
 	clear_pending_action_cost()
@@ -201,6 +215,14 @@ func add_block(block_amount: int):
 	StatsManager.add(self, Stats.Field.BLOCK_ACQUIRED, block_amount)
 	refresh()
 
+func add_dodge(dodge_amount: int):
+	dodge += dodge_amount
+	StatsManager.add(self, Stats.Field.DODGE_ACQUIRED, dodge_amount)
+	refresh()
+
+func teleport(distance: int):
+	await gameplay.teleport(self, distance)
+
 func refresh():
 	changed.emit()
 
@@ -247,7 +269,15 @@ func add_gold(gold: int):
 func apply_relic_damage_change(damage: int):
 	return relic_manager.apply_damage_change(self, damage)
 
-func apply_damage(damage: int, blockable=true):
+func apply_damage(damage: int, blockable=true, dodgeable=true):
+	StatsManager.add(self, Stats.Field.ATTACKS_RECEIVED, 1)
+	# Handle dodge.
+	if dodgeable:
+		if dodge > 0:
+			dodge -= 1
+			StatsManager.add(self, Stats.Field.ATTACKS_DODGED, 1)
+			refresh()
+			return
 	if blockable:
 		var blocked_damage = 0
 		if block > 0:

@@ -8,7 +8,6 @@
 script = ExtResource("1_rd7jn")
 extra_damage = 1
 name = "Fury"
-tooltip = "Adds 1 extra damage to each attack with explicit damage played"
 
 [resource]
 script = ExtResource("2_gmtmm")
@@ -21,8 +20,10 @@ target_mode = 0
 target_distance = 0
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
 on_kill_effects = Array[Resource("res://card_effect.gd")]([])
 area_type = 0
 area_length = 1
 area_width = 1
+cone_step = 1
 power_relic = SubResource("Resource_5oavm")

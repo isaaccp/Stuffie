@@ -26,6 +26,7 @@ enum Field {
 	POWER,
 	WEAKNESS,
 	GOLD,
+	DODGE,
 }
 
 const field_name = {
@@ -39,6 +40,7 @@ const field_name = {
 	Field.POWER: "[url]power[/url]",
 	Field.WEAKNESS: "weakness",
 	Field.GOLD: "🪙",
+	Field.DODGE: "[url]dodge[/url]",
 }
 
 enum ReadOnlyField {
@@ -91,9 +93,9 @@ static func get_read_only_field_name(field: ReadOnlyField):
 
 func get_field_name():
 	if value_field_type == ValueFieldType.REGULAR:
-		return get_regular_field_name(regular_field)
+		return CardEffectValue.get_regular_field_name(regular_field)
 	elif value_field_type == ValueFieldType.READ_ONLY:
-		return get_read_only_field_name(read_only_field)
+		return CardEffectValue.get_read_only_field_name(read_only_field)
 
 func get_value_string(character: Character):
 	if value_type == ValueType.ABSOLUTE:

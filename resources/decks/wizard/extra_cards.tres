@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=2 format=3 uid="uid://dlhyp8id25va7"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=4 format=3 uid="uid://dlhyp8id25va7"]
 
 [ext_resource type="Script" path="res://card_selection_set.gd" id="1_hklcm"]
+[ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_pf766"]
+[ext_resource type="Resource" uid="uid://24meqh31cvlp" path="res://resources/cards/wizard/fiery_burning_hands.tres" id="2_p1vea"]
 
 [resource]
 script = ExtResource("1_hklcm")
-cards = Array[Resource("res://card.gd")]([])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_pf766"), ExtResource("2_p1vea")])

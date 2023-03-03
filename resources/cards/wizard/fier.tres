@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://co2ginpquw63i"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_643se"]
+[ext_resource type="Script" path="res://card.gd" id="2_nv1rq"]
+
+[sub_resource type="Resource" id="Resource_5siub"]
+script = ExtResource("1_643se")
+value_type = 1
+absolute_value = 12
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[resource]
+script = ExtResource("2_nv1rq")
+card_name = "Fiery Burning Hands"
+basic = false
+upgrade_level = 1
+cost = 2
+target_mode = 4
+target_distance = 1
+damage_value = SubResource("Resource_5siub")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 2
+area_length = 2
+area_width = 1
+cone_step = 1

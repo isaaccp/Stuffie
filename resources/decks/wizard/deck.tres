@@ -1,9 +1,12 @@
-[gd_resource type="Resource" script_class="Deck" load_steps=3 format=3 uid="uid://cvsjkf03h2d8e"]
+[gd_resource type="Resource" script_class="Deck" load_steps=6 format=3 uid="uid://cvsjkf03h2d8e"]
 
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_6vdks"]
 [ext_resource type="Script" path="res://deck.gd" id="1_o7flb"]
+[ext_resource type="Resource" uid="uid://dwn6073xrsesh" path="res://resources/cards/wizard/magic_shield.tres" id="2_3gn0k"]
+[ext_resource type="Resource" uid="uid://dyxojn7o3mmub" path="res://resources/cards/wizard/mirror_image.tres" id="2_gk1qw"]
+[ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="3_j700s"]
 
 [resource]
 resource_name = "wizard"
 script = ExtResource("1_o7flb")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("2_3gn0k"), ExtResource("2_3gn0k"), ExtResource("2_3gn0k"), ExtResource("3_j700s"), ExtResource("2_gk1qw")])

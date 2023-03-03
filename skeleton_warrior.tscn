@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dm3exbag2fdec" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_warrior.gltf" id="2_nqrh5"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="3_kynnm"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_embms"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_m83y5"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("health_bar")]
@@ -23,4 +23,4 @@ health_bar = NodePath("HealthDisplay3D")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("3_kynnm")]
-texture = SubResource("ViewportTexture_embms")
+texture = SubResource("ViewportTexture_m83y5")
