@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=9 format=3 uid="uid://boikmqlmjpm0l"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=10 format=3 uid="uid://boikmqlmjpm0l"]
 
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_mpdpp"]
 [ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_xwfyn"]
@@ -7,8 +7,9 @@
 [ext_resource type="Resource" uid="uid://24meqh31cvlp" path="res://resources/cards/wizard/fiery_burning_hands.tres" id="3_7ir3o"]
 [ext_resource type="Resource" uid="uid://dyxojn7o3mmub" path="res://resources/cards/wizard/mirror_image.tres" id="3_mji2p"]
 [ext_resource type="Resource" uid="uid://cawnc6v7elebt" path="res://resources/cards/wizard/wide_burning_hands.tres" id="4_2gx48"]
+[ext_resource type="Resource" uid="uid://dwn6073xrsesh" path="res://resources/cards/wizard/magic_shield.tres" id="5_033it"]
 [ext_resource type="Resource" uid="uid://s85f87dqk4kk" path="res://resources/cards/wizard/mirror_image_blink.tres" id="6_hbcgo"]
 
 [resource]
 script = ExtResource("2_a8yqu")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_n0m4j"), ExtResource("3_7ir3o"), ExtResource("1_mpdpp"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("4_2gx48")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_n0m4j"), ExtResource("3_7ir3o"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("4_2gx48")])

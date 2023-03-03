@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://bkyynu075ihog"]
+
+[ext_resource type="Resource" uid="uid://dwn6073xrsesh" path="res://resources/cards/wizard/magic_shield.tres" id="1_htv10"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_450f4"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_vyyao"]
+[ext_resource type="Script" path="res://card.gd" id="4_qu8xr"]
+
+[sub_resource type="Resource" id="Resource_wb42i"]
+script = ExtResource("2_450f4")
+value_type = 1
+absolute_value = 9
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_tgdul"]
+script = ExtResource("3_vyyao")
+effect_value = SubResource("Resource_wb42i")
+effect_type = 1
+target_field = 7
+effect = 0
+
+[resource]
+script = ExtResource("4_qu8xr")
+card_name = "Strong Magic Shield"
+basic = true
+upgrade_level = 1
+base_card = ExtResource("1_htv10")
+cost = 1
+target_mode = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("3_vyyao")]([])
+on_play_effects = Array[ExtResource("3_vyyao")]([SubResource("Resource_tgdul")])
+on_play_after_effects = Array[ExtResource("3_vyyao")]([])
+on_kill_effects = Array[ExtResource("3_vyyao")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1

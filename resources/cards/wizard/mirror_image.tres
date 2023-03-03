@@ -24,7 +24,7 @@ effect = 0
 [resource]
 script = ExtResource("3_pwv7k")
 card_name = "Mirror Image"
-basic = true
+basic = false
 upgrade_level = 0
 cost = 1
 texture = ExtResource("4_2wcr4")
