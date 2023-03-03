@@ -21,6 +21,7 @@ upgrade_level = 0
 cost = 2
 texture = ExtResource("3_q8085")
 target_mode = 4
+target_animation = 5
 target_distance = 1
 damage_value = SubResource("Resource_5siub")
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])

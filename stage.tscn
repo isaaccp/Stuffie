@@ -4,9 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 
-[node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "enemies_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
+[node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
 world = NodePath("World")
+effects = NodePath("World/Effects")
 enemies_node = NodePath("World/Enemies")
 hand_ui = NodePath("UI/CardAreaHBox/Hand")
 deck_ui = NodePath("UI/CardAreaHBox/Deck")
@@ -32,6 +33,8 @@ move_path = NodePath("World/Path")
 [node name="Path" type="Line2D" parent="World"]
 
 [node name="Treasures" type="Node" parent="World"]
+
+[node name="Effects" type="Node" parent="World"]
 
 [node name="UI" type="CanvasLayer" parent="."]
 

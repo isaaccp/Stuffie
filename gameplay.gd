@@ -30,6 +30,7 @@ var turn_number = 0
 var portrait_scene = preload("res://character_portrait.tscn")
 var card_ui_scene = preload("res://card_ui.tscn")
 var treasure_scene = preload("res://treasure.tscn")
+
 var active_character: Character
 # Direction of mouse position respect active character.
 # E.g. Vector2.right if it's more to the right than up/down.
@@ -67,8 +68,12 @@ var enemy_turn_calculated = false
 var enemy_moving = false
 var enemy_turn = EnemyTurn.new()
 
+var animation_manager = AnimationManager.new()
+
 # New stages are added to this world.
 @export var world: Node
+# Effects go under this node.
+@export var effects: Node
 # Enemies are under this node.
 @export var enemies_node: Node
 @export var hand_ui: Control
@@ -680,8 +685,6 @@ func handle_enemy_death(enemy: Enemy):
 	map_manager.remove_enemy(pos)
 	enemy.queue_free()
 	enemy_died.emit()
-	if map_manager.enemy_locs.is_empty():
-		all_enemies_died.emit()
 
 func handle_character_death(character: Character):
 	var pos = character.get_id_position()
@@ -696,6 +699,10 @@ func handle_character_death(character: Character):
 	else:
 		game_over.emit()
 
+func clear_effects():
+	for effect in effects.get_children():
+		effect.queue_free()
+
 func play_card():
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
 	# Discard card first.
@@ -709,21 +716,39 @@ func play_card():
 		await current_card.apply_self(active_character)
 	elif current_card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
 		await current_card.apply_self_effects(active_character)
+		var target_tile = tile_map_pos
 		var affected_tiles = current_card.effect_area(direction)
+		var effect_time = 0
 		for tile_offset in affected_tiles:
-			if map_manager.enemy_locs.has(tile_map_pos + tile_offset):
-				var enemy = map_manager.enemy_locs[tile_map_pos + tile_offset]
+			var tile = target_tile + tile_offset
+			var effect = animation_manager.get_effect(current_card.target_animation)
+			if effect != null:
+				effect.position = map_manager.get_world_position(tile)
+				effects.add_child(effect)
+				# Those should all be the same for a given card.
+				effect_time = effect.apply_effect_time()
+		if effects.get_child_count() != 0:
+			await get_tree().create_timer(effect_time).timeout
+		for tile_offset in affected_tiles:
+			var tile = target_tile + tile_offset
+			if map_manager.enemy_locs.has(tile):
+				var enemy = map_manager.enemy_locs[tile]
 				# TODO: Move this inside character.
 				if current_card.apply_enemy(active_character, enemy):
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
 		active_character.attacked.emit(active_character)
+	for effect in effects.get_children():
+		await effect.finished()
+	clear_effects()
 	await current_card.apply_after_effects(active_character)
 	StatsManager.add(active_character, Stats.Field.CARDS_PLAYED, 1)
 	StatsManager.add(active_character, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
 	active_character.card_played.emit(active_character, current_card)
 	draw_hand()
+	if map_manager.enemy_locs.is_empty():
+		all_enemies_died.emit()
 	# Consider wrapping all this into a method.
 	current_card_index = -1
 	current_card = null

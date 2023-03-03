@@ -21,6 +21,16 @@ enum AreaType {
 	CONE,             # Starts in front of player at given width, and expands outwards.
 }
 
+# Animation to play on target tiles when cast.
+enum TargetAnimationType {
+	NO_ANIMATION,
+	SLASH,
+	PROJECTILE,
+	BUFF,
+	DEBUFF,
+	FIRE,
+}
+
 @export var card_name: String
 @export var basic = false
 @export var upgrade_level = 0
@@ -28,6 +38,7 @@ enum AreaType {
 @export var cost: int
 @export var texture: Texture2D
 @export var target_mode: TargetMode
+@export var target_animation: TargetAnimationType
 @export var target_distance: int
 @export var damage_value: CardEffectValue
 # Use on_play_self_effects when creating a card that has
