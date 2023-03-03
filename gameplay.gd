@@ -1,5 +1,7 @@
 extends Node3D
 
+class_name Gameplay
+
 enum GameState {
   HUMAN_TURN,
   CPU_TURN,
@@ -20,6 +22,8 @@ enum HumanTurnState {
 	ACTION_TARGET,
 	# Playing a card. No actions can be chosen, no character change, etc.
 	PLAYING_CARD,
+	# Teleporting as part of playing a card.
+	PLAY_TELEPORTING,
 }
 
 var turn_number = 0
@@ -43,7 +47,9 @@ var tile_map_pos: Vector2i = Vector2i(0, 0)
 var current_card_index: int = -1
 var current_card: Card
 var target_cursor: CardTargetHighlight
+var single_cursor: SingleCursorHighlight
 var target_area: AreaDistanceHighlight
+var teleport_area: AreaDistanceHighlight
 var player_move_area: TilesHighlight
 var enemy_move_area: TilesHighlight
 var enemy_attack_area: TilesHighlight
@@ -90,6 +96,9 @@ var undo_states: Dictionary
 var party: Node
 var shared_bag: SharedBag
 
+var teleport_distance: int
+signal teleport_finished
+
 var enemy_walkable_cache: Dictionary
 var enemy_attackable_cache: Dictionary
 
@@ -131,7 +140,7 @@ func initialize_stage(stage: Stage):
 	world.add_child(stage)
 	var i = 0
 	for character in party.get_children():
-		character.begin_stage()
+		character.begin_stage(self)
 		character.set_id_position(stage.starting_positions[i])
 		i += 1
 	turn_number = 0
@@ -247,15 +256,21 @@ func create_cursor(pos: Vector2i, direction: Vector2):
 	target_cursor.refresh()
 	world.add_child(target_cursor)
 
+func create_single_cursor(pos: Vector2i):
+	single_cursor = SingleCursorHighlight.new(map_manager, pos)
+	single_cursor.set_width(3)
+	single_cursor.refresh()
+	world.add_child(single_cursor)
+
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
 	var unprojected = camera.unproject_position(world_pos)
 	line.add_point(unprojected)
 
-func create_target_area(pos: Vector2i):
-	# TODO: Respect line-of-sight here.
+func create_target_area(pos: Vector2i, distance: int):
+	# TODO: Optionally (parameter) respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
-	target_area = AreaDistanceHighlight.new(map_manager, pos, current_card.target_distance)
+	target_area = AreaDistanceHighlight.new(map_manager, pos, distance)
 	target_area.refresh()
 	world.add_child(target_area)
 
@@ -505,12 +520,15 @@ func change_human_turn_state(new_state):
 	elif new_state == HumanTurnState.ACTION_TARGET:
 		end_turn_button.disabled = true
 		clear_path()
-		create_target_area(active_character.get_id_position())
+		create_target_area(active_character.get_id_position(), current_card.target_distance)
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
 		end_turn_button.disabled = true
 	elif new_state == HumanTurnState.PLAYING_CARD:
 		end_turn_button.disabled = true
+	elif new_state == HumanTurnState.PLAY_TELEPORTING:
+		create_target_area(active_character.get_id_position(), teleport_distance)
+		create_single_cursor(tile_map_pos)
 	human_turn_state = new_state
 
 func _on_end_turn_button_pressed():
@@ -523,7 +541,7 @@ func curve_from_path(path: PackedVector2Array) -> Curve3D:
 		curve.add_point(world_pos)
 	return curve
 
-func handle_move(mouse_pos: Vector2):
+func handle_move():
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
 		return
@@ -550,6 +568,21 @@ func handle_move(mouse_pos: Vector2):
 	character_moved.emit(final_pos)
 	clear_enemy_info_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
+
+func handle_teleport():
+	if map_manager.is_solid(tile_map_pos):
+		return
+	var distance = map_manager.distance(active_character.get_id_position(), tile_map_pos)
+	if distance > teleport_distance:
+		return
+	# TODO: Handle teleport "animation".
+	active_character.set_id_position(tile_map_pos)
+	character_moved.emit(tile_map_pos)
+	clear_enemy_info_cache()
+	target_area.queue_free()
+	single_cursor.queue_free()
+	change_human_turn_state(HumanTurnState.PLAYING_CARD)
+	teleport_finished.emit()
 
 func _input(event):
 	if Input.is_action_pressed("ui_cancel"):
@@ -681,6 +714,7 @@ func play_card():
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
 		active_character.attacked.emit(active_character)
+	await current_card.apply_after_effects(active_character)
 	StatsManager.add(active_character, Stats.Field.CARDS_PLAYED, 1)
 	StatsManager.add(active_character, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
@@ -695,6 +729,11 @@ func play_card():
 	reset_undo()
 	clear_enemy_info_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
+
+func teleport(character: Character, distance: int):
+	teleport_distance = distance
+	change_human_turn_state(HumanTurnState.PLAY_TELEPORTING)
+	await teleport_finished
 
 func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	valid_target = false
@@ -758,8 +797,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 
 	# Ideally instead of this long method we can make all those
 	# cursors, etc different objects, and have tile_changed,
-	# direction_changed, camera_changed signals and have them
-	# react to that on their own.
+	# direction_changed signal and have them react to that on their own.
 	if tile_changed:
 		if map_manager.enemy_locs.has(new_tile_map_pos):
 			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
@@ -770,11 +808,11 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			treasure_info.text = "Treasure: %s (%d turns left)" % [treasure.get_description(active_character), treasure.turns_left]
 		else:
 			treasure_info.text = ""
-		# If targeting, there should be a cursor and the cursor can be move around.
-		# Likely this is only if target_mode is not SELF, will need to take that into account.
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.WAITING:
 				calculate_path(new_tile_map_pos)
+			elif human_turn_state == HumanTurnState.PLAY_TELEPORTING:
+				single_cursor.update(new_tile_map_pos)
 	if tile_changed or direction_changed:
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
@@ -800,7 +838,9 @@ func _unhandled_input(event):
 			if mouse_event.button_index == 1 and mouse_event.pressed:
 				# move
 				if human_turn_state == HumanTurnState.WAITING:
-					handle_move(mouse_event.position)
+					handle_move()
+				elif human_turn_state == HumanTurnState.PLAY_TELEPORTING:
+					handle_teleport()
 				elif human_turn_state == HumanTurnState.ACTION_TARGET:
 					if valid_target:
 						await play_card()

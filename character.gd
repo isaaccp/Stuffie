@@ -25,6 +25,10 @@ var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
+# TODO: Remove this. As of now, this is required because character.teleport()
+# needs access to the gameplay to e.g. display a cursor for the move, etc.
+# Figure out a cleaner way.
+var gameplay: Gameplay
 
 @export var health_bar: HealthDisplay3D
 @export var deck: Deck
@@ -104,11 +108,13 @@ func add_relic(relic: Relic, update_stats=true):
 func add_temp_relic(relic: Relic):
 	relic_manager.add_temp_relic(relic)
 
-func begin_stage():
+func begin_stage(gameplay: Gameplay):
+	self.gameplay = gameplay
 	deck.reset()
 	stage_started.emit(self)
 
 func end_stage():
+	gameplay = null
 	power = 0
 	dodge = 0
 	stage_ended.emit(self)
@@ -213,6 +219,9 @@ func add_dodge(dodge_amount: int):
 	dodge += dodge_amount
 	StatsManager.add(self, Stats.Field.DODGE_ACQUIRED, dodge_amount)
 	refresh()
+
+func teleport(distance: int):
+	await gameplay.teleport(self, distance)
 
 func refresh():
 	changed.emit()

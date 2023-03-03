@@ -23,6 +23,7 @@ target_distance = 1
 damage_value = SubResource("Resource_5siub")
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
 on_kill_effects = Array[Resource("res://card_effect.gd")]([])
 area_type = 2
 area_length = 2
