@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dwn6073xrsesh"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://dwn6073xrsesh"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_q3nns"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_hnwdr"]
 [ext_resource type="Script" path="res://card.gd" id="3_rfjpx"]
+[ext_resource type="Texture2D" uid="uid://cx8tgjjps24h1" path="res://resources/magic_shield.png" id="4_7xdej"]
 
 [sub_resource type="Resource" id="Resource_wb42i"]
 script = ExtResource("1_q3nns")
@@ -26,6 +27,7 @@ card_name = "Magic Shield"
 basic = true
 upgrade_level = 0
 cost = 1
+texture = ExtResource("4_7xdej")
 target_mode = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("2_hnwdr")]([])

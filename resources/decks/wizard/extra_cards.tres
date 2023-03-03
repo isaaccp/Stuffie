@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://card_selection_set.gd" id="1_hklcm"]
 [ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_pf766"]
-[ext_resource type="Resource" uid="uid://24meqh31cvlp" path="res://resources/cards/wizard/fiery_burning_hands.tres" id="2_p1vea"]
+[ext_resource type="Resource" uid="uid://dyxojn7o3mmub" path="res://resources/cards/wizard/mirror_image.tres" id="3_dmqnt"]
 
 [resource]
 script = ExtResource("1_hklcm")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_pf766"), ExtResource("2_p1vea")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_pf766"), ExtResource("3_dmqnt")])
