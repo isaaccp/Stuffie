@@ -725,6 +725,8 @@ func play_card():
 			if effect != null:
 				effect.position = map_manager.get_world_position(tile)
 				effects.add_child(effect)
+				var offset = effect.global_position - active_character.global_position
+				effect.look_at(effect.global_position + offset)
 				# Those should all be the same for a given card.
 				effect_time = effect.apply_effect_time()
 		if effects.get_child_count() != 0:
