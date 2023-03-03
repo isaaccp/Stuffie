@@ -570,15 +570,19 @@ func handle_move():
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func handle_teleport():
-	if map_manager.is_solid(tile_map_pos):
-		return
-	var distance = map_manager.distance(active_character.get_id_position(), tile_map_pos)
-	if distance > teleport_distance:
-		return
-	# TODO: Handle teleport "animation".
-	active_character.set_id_position(tile_map_pos)
-	character_moved.emit(tile_map_pos)
-	clear_enemy_info_cache()
+	# Allow to "skip" by allowing teleporting to current location.
+	if tile_map_pos != active_character.get_id_position():
+		# Don't teleport on top of something, except a treasure.
+		if map_manager.is_solid(tile_map_pos, true, true, false):
+			return
+		var distance = map_manager.distance(active_character.get_id_position(), tile_map_pos)
+		if distance > teleport_distance:
+			return
+		# TODO: Handle teleport "animation".
+		await map_manager.move_character(active_character.get_id_position(), tile_map_pos)
+		active_character.set_id_position(tile_map_pos)
+		character_moved.emit(tile_map_pos)
+		clear_enemy_info_cache()
 	target_area.queue_free()
 	single_cursor.queue_free()
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)

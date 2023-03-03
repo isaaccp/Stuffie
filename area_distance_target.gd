@@ -17,7 +17,7 @@ func _refresh_tiles():
 		while j <= area_distance:
 			var offset = Vector2i(i, j)
 			var new_pos = id_position + offset
-			if map.in_bounds(new_pos) and not map.is_solid(new_pos, false, false):
+			if map.in_bounds(new_pos) and not map.is_solid(new_pos, false, false, false):
 				if map.distance(id_position, new_pos) <= area_distance:
 					tiles.push_back(new_pos)
 			j += 1
