@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=13 format=3 uid="uid://boikmqlmjpm0l"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=15 format=3 uid="uid://boikmqlmjpm0l"]
 
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_mpdpp"]
 [ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_xwfyn"]
@@ -11,8 +11,10 @@
 [ext_resource type="Resource" uid="uid://cus7a1e5w7ao1" path="res://resources/cards/wizard/fireball.tres" id="4_oju8y"]
 [ext_resource type="Resource" uid="uid://dwn6073xrsesh" path="res://resources/cards/wizard/magic_shield.tres" id="5_033it"]
 [ext_resource type="Resource" uid="uid://s85f87dqk4kk" path="res://resources/cards/wizard/mirror_image_blink.tres" id="6_hbcgo"]
+[ext_resource type="Resource" uid="uid://benn8w7bnhbns" path="res://resources/cards/wizard/massive_fireball.tres" id="8_vx7ln"]
 [ext_resource type="Resource" uid="uid://bkyynu075ihog" path="res://resources/cards/wizard/strong_magic_shield.tres" id="9_50eph"]
+[ext_resource type="Resource" uid="uid://st1xni4txotx" path="res://resources/cards/wizard/nova_fireball.tres" id="11_1gw42"]
 
 [resource]
 script = ExtResource("2_a8yqu")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_n0m4j"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("4_gm3u8"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("9_50eph"), ExtResource("4_2gx48")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_n0m4j"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("4_gm3u8"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("11_1gw42"), ExtResource("9_50eph"), ExtResource("4_2gx48")])
