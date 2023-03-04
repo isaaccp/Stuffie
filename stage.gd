@@ -26,6 +26,7 @@ var gridmap: GridMap
 @export var reach_position_target: Vector2i
 @export var kill_n_enemies_target: int
 @export var survive_n_turns_target: int
+@export var triggers: Array[StageTrigger]
 
 @export var solid_tiles: Array[Vector2i]
 @export var view_blocking_tiles: Array[Vector2i]
