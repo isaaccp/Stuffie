@@ -69,6 +69,7 @@ var enemy_moving = false
 var enemy_turn = EnemyTurn.new()
 
 var animation_manager = AnimationManager.new()
+var stage_trigger_manager: StageTriggerManager
 
 # New stages are added to this world.
 @export var world: Node
@@ -142,6 +143,8 @@ func initialize_stage(stage: Stage):
 	connect("all_enemies_died", stage.all_enemies_died_handler)
 	connect("new_turn_started", stage.new_turn_started_handler)
 	stage.connect("stage_completed", next_stage)
+	stage_trigger_manager = StageTriggerManager.new(stage.triggers)
+	stage_trigger_manager.connect_signals(self)
 	world.add_child(stage)
 	var i = 0
 	for character in party.get_children():
@@ -491,11 +494,8 @@ func begin_turn():
 		if treasure.turns_left == 0:
 			var pos = treasure.get_id_position()
 			map_manager.remove_treasure(pos)
-	# TODO: Make this less sketchy.
-	if turn_number == 2:
-		spawn_treasure()
-	human_turn_state = HumanTurnState.WAITING
 	new_turn_started.emit(turn_number)
+	change_human_turn_state(HumanTurnState.WAITING)
 
 func spawn_treasure():
 	var treasure = treasure_scene.instantiate() as Treasure

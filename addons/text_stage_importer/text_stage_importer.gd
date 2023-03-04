@@ -110,6 +110,7 @@ class StageLoader:
 		_parse_stage_completion()
 		_parse_enemy_map()
 		_parse_map()
+		_parse_triggers()
 		_add_starting_positions()
 
 	func get_stage():
@@ -152,7 +153,12 @@ class StageLoader:
 
 	func _parse_map():
 		print("Parsing map")
-		map = lines.slice(pline)
+		map = []
+		while pline < lines.size() and lines[pline] != '-':
+			map.push_back(lines[pline])
+			pline += 1
+		# Skip '-' if present.
+		pline += 1
 		var mesh_lib = preload("res://resources/kaykit-dungeon/kaykit_dungeon.meshlib")
 		item_map = _get_mesh_lib_items(mesh_lib)
 		gridmap = GridMap.new()
@@ -190,6 +196,25 @@ class StageLoader:
 				elif tile == '@':
 					assert(stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION)
 					stage.reach_position_target = Vector2i(x, y)
+
+	func _parse_triggers():
+		print("Parsing triggers")
+		# Add default triggers unless 'SKIP_DEFAULT_TRIGGERS' is specified.
+		if pline >= lines.size():
+			_add_default_triggers()
+		else:
+			if lines[pline] == 'SKIP_DEFAULT_TRIGGERS':
+				pline += 1
+			else:
+				_add_default_triggers()
+		# TODO: Parse more triggers.
+
+	func _add_default_triggers():
+		var trigger = StageTrigger.new()
+		trigger.trigger_type = StageTrigger.TriggerType.BEGIN_TURN
+		trigger.turn = 2
+		trigger.effect_type = StageTrigger.EffectType.SPAWN_CHEST
+		stage.triggers.push_back(trigger)
 
 	func _add_starting_positions():
 		assert(starting_positions.size() > 0)

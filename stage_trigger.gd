@@ -15,10 +15,10 @@ enum EffectType {
   CLOSE_DOOR,
 }
 
-var trigger_type: TriggerType
-var turn: int
-var enemies_killed: int
-var switch_pos: Vector2i
+@export var trigger_type: TriggerType
+@export var turn: int
+@export var enemies_killed: int
+@export var switch_pos: Vector2i
 
-var effect_type: EffectType
-var door_pos: Vector2i
+@export var effect_type: EffectType
+@export var door_pos: Vector2i
