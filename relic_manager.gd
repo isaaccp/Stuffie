@@ -28,7 +28,7 @@ func apply_damage_change(character: Character, damage: int):
 	for relic_list in [relics, temp_relics]:
 		for relic in relic_list:
 			dmg = relic.apply_damage_change(character, dmg)
-	return damage
+	return dmg
 
 func camp_choices() -> Array:
 	var choices = []
