@@ -77,6 +77,7 @@ var stage_trigger_manager: StageTriggerManager
 @export var effects: Node
 # Enemies are under this node.
 @export var enemies_node: Node
+@export var doors_node: Node
 @export var hand_ui: Control
 @export var deck_ui: Control
 @export var discard_ui: Control
@@ -185,11 +186,17 @@ func next_stage():
 	stage_done.emit()
 
 func initialize_map_manager(stage: Stage):
-	map_manager.initialize(stage)
+	map_manager.initialize(stage, doors_node)
 	map_manager.set_party(party.get_children())
 	map_manager.set_enemies(enemies_node.get_children())
 	map_manager.initialize_a_star()
 	enemy_turn.initialize(map_manager)
+
+func open_door(pos: Vector2i):
+	map_manager.open_door(pos)
+
+func close_door(pos: Vector2i):
+	map_manager.close_door(pos)
 
 func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.

@@ -176,8 +176,10 @@ class StageLoader:
 		gridmap.owner = stage
 		gridmap.mesh_library = mesh_lib
 		gridmap.cell_size = CELL_SIZE
-		for x in range(max_x):
-			for y in range(max_y):
+		# This order of iteration matters as this way we go down line by
+		# line, which is the order used for doors, etc in triggers.
+		for y in range(max_y):
+			for x in range(max_x):
 				var tile = _get_tile(x, y)
 				if tile != ' ':
 					_set_gridmap_tile(x, y, 0, Item.GROUND)
@@ -187,10 +189,15 @@ class StageLoader:
 					stage.solid_tiles.push_back(Vector2i(x, y))
 					if tile == '#':
 						stage.view_blocking_tiles.push_back(Vector2i(x, y))
-				elif tile == '+':
+				elif tile == '+' or tile == '-':
 					var item = _choose_door_item(x, y)
 					_set_gridmap_tile(x, y, 1, item.item, item.orientation)
-					stage.solid_tiles.push_back(Vector2i(x, y))
+					var door_state: Door.DoorState
+					if tile == '+':
+						door_state = Door.DoorState.CLOSED
+					else:
+						door_state = Door.DoorState.OPEN
+					stage.doors.push_back(DoorDef.create(Vector2i(x, y), door_state))
 				elif tile.is_valid_int():
 					starting_positions[int(tile)] = Vector2i(x, y)
 				elif enemy_map.has(tile):
@@ -214,7 +221,38 @@ class StageLoader:
 				pline += 1
 			else:
 				_add_default_triggers()
-		# TODO: Parse more triggers.
+		while pline < lines.size() and lines[pline] != '-':
+			var trigger = StageTrigger.new()
+			var parts = lines[pline].split(':')
+			assert(parts.size() == 2)
+			var trigger_parts = parts[0].split(' ')
+			var effect_parts = parts[1].split(' ')
+			trigger.trigger_type = trigger.TriggerType.get(trigger_parts[0])
+			assert(trigger.trigger_type != null)
+			match trigger.trigger_type:
+				trigger.TriggerType.BEGIN_TURN,trigger.TriggerType.END_TURN:
+					assert(trigger_parts.size() == 2)
+					assert(trigger_parts[1].is_valid_int())
+					trigger.turn = int(trigger_parts[1])
+				trigger.TriggerType.ENEMIES_KILLED:
+					assert(trigger_parts.size() == 2)
+					assert(trigger_parts[1].is_valid_int())
+					trigger.enemies_killed = int(trigger_parts[1])
+				trigger.TriggerType.SWITCH:
+					assert(trigger_parts.size() == 2)
+					assert(trigger_parts[1].is_valid_int())
+					# trigger.switch_pos = TODO
+			trigger.effect_type = trigger.EffectType.get(effect_parts[0])
+			assert(trigger.effect_type != null)
+			match trigger.effect_type:
+				trigger.EffectType.SPAWN_CHEST:
+					assert(effect_parts.size() == 1)
+				trigger.EffectType.OPEN_DOOR,trigger.EffectType.CLOSE_DOOR:
+					assert(effect_parts.size() == 2)
+					assert(effect_parts[1].is_valid_int())
+					trigger.door_pos = stage.doors[int(effect_parts[1])].pos
+			stage.triggers.push_back(trigger)
+			pline += 1
 
 	func _add_default_triggers():
 		var trigger = StageTrigger.new()
@@ -268,7 +306,7 @@ class StageLoader:
 				if right == tile:
 					return _wall_item(tile, WallItemType.WALL, Vector3.FORWARD)
 				else:
-					return _wall_item(tile, WallItemType.WALL, Vector3.RIGHT)
+					return _wall_item(tile, WallItemType.WALL, Vector3.LEFT)
 			else:
 				if back == tile:
 					if left == tile:
@@ -305,7 +343,7 @@ class StageLoader:
 		if right == wall_item:
 			return _wall_item(wall_item, WallItemType.DOOR, Vector3.FORWARD)
 		else:
-			return _wall_item(wall_item, WallItemType.DOOR, Vector3.RIGHT)
+			return _wall_item(wall_item, WallItemType.DOOR, Vector3.LEFT)
 
 
 

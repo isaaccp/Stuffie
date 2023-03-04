@@ -198,7 +198,8 @@ func current_stage_def():
 func get_combat_stage(difficulty: int):
 	assert(difficulty < stages.size())
 	var options = stages[difficulty]
-	var stage = options[randi() % options.size()].instantiate() as Stage
+	var scene = options[randi() % options.size()]
+	var stage = scene.instantiate() as Stage
 	return stage
 
 func get_blacksmith_stage():
@@ -222,10 +223,10 @@ func _on_within_stage_entered():
 		var stage = get_combat_stage(stage_def.combat_difficulty)
 		for enemy in stage.enemies:
 			enemy.level += added_levels + stage_def.combat_added_levels
+		stage_parent.add_child(stage_player)
 		stage_player.initialize(stage, party, shared_bag)
 		stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
 		stage_player.game_over.connect(game_over)
-		stage_parent.add_child(stage_player)
 	elif stage_def.stage_type == StageType.BLACKSMITH:
 		var blacksmith = get_blacksmith_stage()
 		blacksmith.initialize(characters, shared_bag, relic_list, stage_def.blacksmith_removals, stage_def.blacksmith_upgrades, stage_def.blacksmith_relics)

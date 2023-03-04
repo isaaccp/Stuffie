@@ -21,6 +21,7 @@ var enemy_scenes = {
 
 var gridmap: GridMap
 @export var enemies: Array[EnemyPosition]
+@export var doors: Array[DoorDef]
 @export var starting_positions: Array[Vector2i]
 @export var stage_completion_type: StageCompletionType
 @export var reach_position_target: Vector2i

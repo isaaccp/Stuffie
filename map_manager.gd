@@ -11,8 +11,11 @@ var cell_size: Vector3
 var character_locs: Dictionary
 var enemy_locs: Dictionary
 var treasure_locs: Dictionary
+var door_locs: Dictionary
 
-func initialize(stage: Stage):
+var door_scene = preload("res://door.tscn")
+
+func initialize(stage: Stage, doors_node: Node):
 	cell_size = stage.gridmap.cell_size
 	map_rect = stage.rect
 
@@ -21,6 +24,17 @@ func initialize(stage: Stage):
 
 	for loc in stage.view_blocking_tiles:
 		base_view_blocking_locations[loc] = true
+
+	for door_def in stage.doors:
+		var door = door_scene.instantiate() as Door
+		var gridmap_pos = Vector3i(door_def.pos.x, 1, door_def.pos.y)
+		# Need to set state before adding child as the door will 'open'
+		# on _ready if state is OPEN.
+		door.state = door_def.state
+		door_locs[door_def.pos] = door
+		doors_node.add_child(door)
+		door.global_position = get_world_position(door_def.pos)
+		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
 
 # Needs to be called after set_characters and set_enemies.
 # Think about something better once it's clear how we'll use it.
@@ -36,6 +50,9 @@ func initialize_a_star():
 		a_star.set_point_solid(loc)
 	for loc in enemy_locs.keys():
 		a_star.set_point_solid(loc)
+	for loc in door_locs.keys():
+		if door_locs[loc].solid():
+			a_star.set_point_solid(loc)
 
 func set_party(characters: Array):
 	character_locs.clear()
@@ -74,6 +91,16 @@ func remove_character(from: Vector2i):
 	character_locs.erase(from)
 	a_star.set_point_solid(from, false)
 
+func open_door(pos: Vector2i):
+	assert(pos in door_locs)
+	door_locs[pos].open()
+	a_star.set_point_solid(pos, false)
+
+func close_door(pos: Vector2i):
+	assert(pos in door_locs)
+	door_locs[pos].close()
+	a_star.set_point_solid(pos)
+
 func get_path(from: Vector2i, to: Vector2i):
 	if a_star.is_in_boundsv(to):
 		return a_star.get_id_path(from, to)
@@ -93,11 +120,14 @@ func get_enemy_path(from: Vector2i, to: Vector2i):
 	set_enemies_solid(true)
 	return path
 
+# TODO: Convert the arguments here into a mask.
 func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true, treasures: bool=true):
 	if temp_not_solid_locations.has(pos):
 		return false
 	if base_solid_locations.has(pos):
 		return true
+	if door_locs.has(pos):
+		return door_locs[pos].solid()
 	if party and character_locs.has(pos):
 		return true
 	if enemies and enemy_locs.has(pos):
