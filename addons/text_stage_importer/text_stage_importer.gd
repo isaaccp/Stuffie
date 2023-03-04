@@ -72,9 +72,10 @@ class StageLoader:
 		CORNER,
 		T,
 		CROSS,
+		DOOR,
 	}
 
-	func _make_wall_item_dict(wall, corner, t, cross):
+	func _make_wall_item_dict(wall, corner, t, cross, door):
 		var dict = {}
 		if wall:
 			dict[WallItemType.WALL] = wall
@@ -84,11 +85,13 @@ class StageLoader:
 			dict[WallItemType.T] = t
 		if cross:
 			dict[WallItemType.CROSS] = cross
+		if door:
+			dict[WallItemType.DOOR] = door
 		return dict
 
 	var wall_items = {
-		'#': _make_wall_item_dict(Item.WALL, Item.WALL_CORNER, Item.WALL_T, Item.WALL_CROSS),
-		'X': _make_wall_item_dict(Item.WALL_GATE, Item.WALL_GATE_CORNER, null, null),
+		'#': _make_wall_item_dict(Item.WALL, Item.WALL_CORNER, Item.WALL_T, Item.WALL_CROSS, Item.WALL_DOOR),
+		'X': _make_wall_item_dict(Item.WALL_GATE, Item.WALL_GATE_CORNER, null, null, null),
 	}
 
 	var enemy_map = {}
@@ -184,6 +187,10 @@ class StageLoader:
 					stage.solid_tiles.push_back(Vector2i(x, y))
 					if tile == '#':
 						stage.view_blocking_tiles.push_back(Vector2i(x, y))
+				elif tile == '+':
+					var item = _choose_door_item(x, y)
+					_set_gridmap_tile(x, y, 1, item.item, item.orientation)
+					stage.solid_tiles.push_back(Vector2i(x, y))
 				elif tile.is_valid_int():
 					starting_positions[int(tile)] = Vector2i(x, y)
 				elif enemy_map.has(tile):
@@ -249,13 +256,13 @@ class StageLoader:
 		elif count == 3:
 			# TODO: Fix those.
 			if back != tile:
-				return _wall_item(tile, WallItemType.T, Vector3.RIGHT)
-			elif left != tile:
 				return _wall_item(tile, WallItemType.T, Vector3.BACK)
-			elif forward != tile:
+			elif left != tile:
 				return _wall_item(tile, WallItemType.T, Vector3.LEFT)
+			elif forward != tile:
+				return _wall_item(tile, WallItemType.T, Vector3.FORWARD)
 			elif right != tile:
-				return _wall_item(tile, WallItemType.T, Vector3.UP)
+				return _wall_item(tile, WallItemType.T, Vector3.RIGHT)
 		elif count == 2:
 			if forward == back or left == right:
 				if right == tile:
@@ -276,6 +283,31 @@ class StageLoader:
 		else:
 			# TODO: Make this different depending on # or X?
 			return _item(Item.PILLAR)
+
+	func _choose_door_item(x: int, y: int):
+		var forward = _get_tile(x, y-1)
+		var back = _get_tile(x, y+1)
+		var left = _get_tile(x-1, y)
+		var right = _get_tile(x+1, y)
+
+		var wall_item_count = 0
+		var wall_item = ''
+		for tile in [forward, back, left, right]:
+			if tile in wall_items.keys():
+				if wall_item == '':
+					wall_item = tile
+				else:
+					# All tiles surrounding a door should be of same wall type.
+					assert(wall_item, tile)
+				wall_item_count += 1
+		# A door should be surrounded by exactly two walls.
+		assert(wall_item_count == 2)
+		if right == wall_item:
+			return _wall_item(wall_item, WallItemType.DOOR, Vector3.FORWARD)
+		else:
+			return _wall_item(wall_item, WallItemType.DOOR, Vector3.RIGHT)
+
+
 
 	func _set_gridmap_tile(x: int, y: int, floor: int, item: Item, orientation=0):
 		var item_id = item_map[item]
