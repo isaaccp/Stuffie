@@ -10,12 +10,9 @@ gradient = ExtResource("2_s1ygy")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w2i7v"]
 emission_shape = 1
 emission_sphere_radius = 0.4
-direction = Vector3(0, 1, 0)
-spread = 0.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
 gravity = Vector3(0, 0, 0)
-initial_velocity_min = 1.0
-initial_velocity_max = 1.0
-angular_velocity_max = 40.0
 linear_accel_min = 1.0
 linear_accel_max = 4.0
 angle_max = 360.0
@@ -46,7 +43,7 @@ particles = NodePath("GPUParticles3D")
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 amount = 200
-lifetime = 0.5
+lifetime = 0.2
 randomness = 1.0
 draw_order = 3
 process_material = SubResource("ParticleProcessMaterial_w2i7v")
