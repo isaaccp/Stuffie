@@ -132,7 +132,8 @@ func is_solid(pos: Vector2i, party: bool=true, enemies: bool=true, treasures: bo
 	if base_solid_locations.has(pos):
 		return true
 	if door_locs.has(pos):
-		return door_locs[pos].solid()
+		if door_locs[pos].solid():
+			return true
 	if party and character_locs.has(pos):
 		return true
 	if enemies and enemy_locs.has(pos):
@@ -151,12 +152,22 @@ func distance(from: Vector2i, to: Vector2i) -> float:
 func move_cost(from: Vector2i, to: Vector2i):
 	return distance(from, to) * 2
 
-func get_surrounding_cells(pos: Vector2i):
+func get_accessible_surrounding_cells(pos: Vector2i):
 	var neighbors = []
 	for i in [-1, 0, 1]:
 		for j in [-1, 0, 1]:
-			if i != 0 or j != 0:
-				neighbors.push_back(Vector2i(pos[0]+i, pos[1]+j))
+			if i == 0 and j == 0:
+				continue
+			var new_pos = Vector2i(pos[0]+i, pos[1]+j)
+			if is_solid(new_pos):
+				continue
+			if i != 0 and j != 0:
+				# Diagonal, check if either of the sides is accessible.
+				var side1 = Vector2i(pos[0]+i, pos[1])
+				var side2 = Vector2i(pos[0], pos[1]+j)
+				if is_solid(side1) and is_solid(side2):
+					continue
+			neighbors.push_back(new_pos)
 	return neighbors
 
 func get_walkable_cells(from: Vector2i, move_points: int, ignore_tiles=[]) -> Array:
@@ -197,9 +208,7 @@ func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 		# We then look at the `current` cell's neighbors and, if they're not occupied and we haven't
 		# visited them already, we add them to the stack for the next iteration.
 		# This mechanism keeps the loop running until we found all cells the unit can walk.
-		for neighbor in get_surrounding_cells(pos):
-			if is_solid(neighbor):
-				continue
+		for neighbor in get_accessible_surrounding_cells(pos):
 			if neighbor in reachable_cost and reachable_cost[neighbor] <= cost:
 				continue
 			# This is where we extend the stack.

@@ -186,7 +186,8 @@ func set_run_type(run_type: RunType):
 			StageDef.combat(0),
 		]
 		stages = [
-			[preload("res://stages/simple.stage")],
+			# [preload("res://stages/simple.stage")],
+			[preload("res://stages/death_cage.stage")],
 		]
 
 func start():

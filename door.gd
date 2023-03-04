@@ -6,7 +6,6 @@ enum DoorState {
 	NO_STATE,
 	OPEN,
 	CLOSED,
-	LOCKED
 }
 
 @export var animation_player: AnimationPlayer

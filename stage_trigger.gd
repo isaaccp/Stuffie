@@ -13,6 +13,7 @@ enum EffectType {
   SPAWN_CHEST,
   OPEN_DOOR,
   CLOSE_DOOR,
+  LOCK_DOOR,
 }
 
 @export var trigger_type: TriggerType
