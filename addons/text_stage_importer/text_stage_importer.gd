@@ -52,6 +52,7 @@ class StageLoader:
 		WALL_DOOR,
 		WALL_GATE,
 		WALL_GATE_CORNER,
+		WALL_GATE_DOOR,
 		PILLAR,
 	}
 
@@ -64,6 +65,7 @@ class StageLoader:
 		Item.WALL_DOOR: "wall_door",
 		Item.WALL_GATE: "wall_gate",
 		Item.WALL_GATE_CORNER: "wall_gateCorner",
+		Item.WALL_GATE_DOOR: "wall_gateDoor",
 		Item.PILLAR: "pillar",
 	}
 
@@ -91,7 +93,7 @@ class StageLoader:
 
 	var wall_items = {
 		'#': _make_wall_item_dict(Item.WALL, Item.WALL_CORNER, Item.WALL_T, Item.WALL_CROSS, Item.WALL_DOOR),
-		'X': _make_wall_item_dict(Item.WALL_GATE, Item.WALL_GATE_CORNER, null, null, null),
+		'X': _make_wall_item_dict(Item.WALL_GATE, Item.WALL_GATE_CORNER, Item.WALL_GATE, Item.WALL_GATE, Item.WALL_GATE_DOOR),
 	}
 
 	var enemy_map = {}
@@ -185,7 +187,8 @@ class StageLoader:
 					_set_gridmap_tile(x, y, 0, Item.GROUND)
 				if tile == '#' or tile == 'X':
 					var item = _choose_wall_item(tile, x, y)
-					_set_gridmap_tile(x, y, 1, item.item, item.orientation)
+					if item != null:
+						_set_gridmap_tile(x, y, 1, item.item, item.orientation)
 					stage.solid_tiles.push_back(Vector2i(x, y))
 					if tile == '#':
 						stage.view_blocking_tiles.push_back(Vector2i(x, y))
@@ -197,7 +200,12 @@ class StageLoader:
 						door_state = Door.DoorState.CLOSED
 					else:
 						door_state = Door.DoorState.OPEN
-					stage.doors.push_back(DoorDef.create(Vector2i(x, y), door_state))
+					var wall_type: DoorDef.WallType
+					if item.item == Item.WALL_DOOR:
+						wall_type = DoorDef.WallType.NORMAL
+					else:
+						wall_type = DoorDef.WallType.CAGE
+					stage.doors.push_back(DoorDef.create(Vector2i(x, y), door_state, wall_type))
 				elif tile.is_valid_int():
 					starting_positions[int(tile)] = Vector2i(x, y)
 				elif enemy_map.has(tile):
@@ -288,7 +296,10 @@ class StageLoader:
 		var left = _get_tile(x-1, y)
 		var right = _get_tile(x+1, y)
 
-		var count = [forward, back, left, right].count(tile)
+		var count = 0
+		for wall_type in [forward, back, left, right]:
+			if wall_type in wall_items.keys():
+				count += 1
 		if count == 4:
 			return _wall_item(tile, WallItemType.CROSS)
 		elif count == 3:
@@ -318,6 +329,8 @@ class StageLoader:
 						return _wall_item(tile, WallItemType.CORNER, Vector3.RIGHT)
 					else:
 						return _wall_item(tile, WallItemType.CORNER, Vector3.BACK)
+		elif count == 1:
+			return null
 		else:
 			# TODO: Make this different depending on # or X?
 			return _item(Item.PILLAR)
@@ -344,8 +357,6 @@ class StageLoader:
 			return _wall_item(wall_item, WallItemType.DOOR, Vector3.FORWARD)
 		else:
 			return _wall_item(wall_item, WallItemType.DOOR, Vector3.LEFT)
-
-
 
 	func _set_gridmap_tile(x: int, y: int, floor: int, item: Item, orientation=0):
 		var item_id = item_map[item]

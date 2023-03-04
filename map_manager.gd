@@ -14,6 +14,7 @@ var treasure_locs: Dictionary
 var door_locs: Dictionary
 
 var door_scene = preload("res://door.tscn")
+var cage_door_scene = preload("res://cage_door.tscn")
 
 func initialize(stage: Stage, doors_node: Node):
 	cell_size = stage.gridmap.cell_size
@@ -26,7 +27,11 @@ func initialize(stage: Stage, doors_node: Node):
 		base_view_blocking_locations[loc] = true
 
 	for door_def in stage.doors:
-		var door = door_scene.instantiate() as Door
+		var door: Door
+		if door_def.wall_type == door_def.WallType.NORMAL:
+			door = door_scene.instantiate() as Door
+		else:
+			door = cage_door_scene.instantiate() as Door
 		var gridmap_pos = Vector3i(door_def.pos.x, 1, door_def.pos.y)
 		# Need to set state before adding child as the door will 'open'
 		# on _ready if state is OPEN.
