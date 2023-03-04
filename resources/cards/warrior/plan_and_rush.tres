@@ -53,6 +53,7 @@ base_card = ExtResource("1_lbc1m")
 cost = 1
 texture = ExtResource("4_iuglk")
 target_mode = 0
+target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("2_6u4us")]([])
 on_play_effects = Array[ExtResource("2_6u4us")]([SubResource("Resource_cvc3o"), SubResource("Resource_q0sws"), SubResource("Resource_eu354")])

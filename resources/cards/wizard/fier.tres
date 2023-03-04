@@ -19,6 +19,7 @@ basic = false
 upgrade_level = 1
 cost = 2
 target_mode = 4
+target_animation = 0
 target_distance = 1
 damage_value = SubResource("Resource_5siub")
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])

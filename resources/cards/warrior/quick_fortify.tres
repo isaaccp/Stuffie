@@ -18,6 +18,7 @@ base_card = ExtResource("1_nlr5b")
 cost = 2
 texture = ExtResource("3_hi3gg")
 target_mode = 0
+target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])

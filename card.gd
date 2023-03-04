@@ -29,6 +29,7 @@ enum TargetAnimationType {
 	BUFF,
 	DEBUFF,
 	FIRE,
+	ARCANE,
 }
 
 @export var card_name: String

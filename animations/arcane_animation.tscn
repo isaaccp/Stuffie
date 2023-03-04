@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://bx4ekjhha2jd"]
+
+[ext_resource type="Script" path="res://animations/arcane_animation.gd" id="1_2uy2l"]
+[ext_resource type="Texture2D" uid="uid://dxs64ypbrawne" path="res://resources/animations/smoke30frames.png" id="2_eymd8"]
+[ext_resource type="Gradient" uid="uid://dywvq8h4jckap" path="res://resources/animations/arcane_gradient.tres" id="2_s1ygy"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nba6r"]
+gradient = ExtResource("2_s1ygy")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w2i7v"]
+emission_shape = 1
+emission_sphere_radius = 0.4
+direction = Vector3(0, 1, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+angular_velocity_max = 40.0
+linear_accel_min = 1.0
+linear_accel_max = 4.0
+angle_max = 360.0
+color_ramp = SubResource("GradientTexture1D_nba6r")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+anim_offset_max = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6f68m"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_eymd8")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_w271v"]
+material = SubResource("StandardMaterial3D_6f68m")
+
+[node name="ArcaneAnimation" type="Node3D" node_paths=PackedStringArray("particles")]
+script = ExtResource("1_2uy2l")
+particles = NodePath("GPUParticles3D")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+amount = 200
+lifetime = 0.5
+randomness = 1.0
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_w2i7v")
+draw_pass_1 = SubResource("QuadMesh_w271v")

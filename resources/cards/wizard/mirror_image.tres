@@ -29,6 +29,7 @@ upgrade_level = 0
 cost = 1
 texture = ExtResource("4_2wcr4")
 target_mode = 0
+target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("2_iybgd")]([])
 on_play_effects = Array[ExtResource("2_iybgd")]([SubResource("Resource_aso44")])

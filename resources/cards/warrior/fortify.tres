@@ -16,6 +16,7 @@ upgrade_level = 0
 cost = 3
 texture = ExtResource("3_cxpgo")
 target_mode = 0
+target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])

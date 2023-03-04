@@ -31,6 +31,7 @@ base_card = ExtResource("1_htv10")
 cost = 1
 texture = ExtResource("5_depln")
 target_mode = 0
+target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("3_vyyao")]([])
 on_play_effects = Array[ExtResource("3_vyyao")]([SubResource("Resource_tgdul")])
