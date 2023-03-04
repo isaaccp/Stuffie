@@ -4,7 +4,7 @@ a SKELETON_ARCHER 0
 -
 #############
 #a.........a#
-#XXXXXXXXXXX#
+#XXXXX+XXXXX#
 #...........#
 #.....1.....#
 #...........#
@@ -24,3 +24,5 @@ a SKELETON_ARCHER 0
 #.....@.....#
 #...........#
 #############
+-
+BEGIN_TURN 2:OPEN_DOOR 0
