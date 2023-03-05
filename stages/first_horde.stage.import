@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://80rch44730l0"
+path="res://.godot/imported/first_horde.stage-bf02981a3f225c3191c298687815eef0.tscn"
+
+[deps]
+
+source_file="res://stages/first_horde.stage"
+dest_files=["res://.godot/imported/first_horde.stage-bf02981a3f225c3191c298687815eef0.tscn"]
+
+[params]
+

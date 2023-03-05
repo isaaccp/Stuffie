@@ -90,6 +90,9 @@ var stages = [
 	[
 		preload("res://stages/6w_4a.stage"),
 	],
+	[
+		preload("res://stages/first_horde.stage"),
+	],
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
@@ -157,10 +160,11 @@ func set_run_type(run_type: RunType):
 			StageDef.combat(4),
 		]
 	elif run_type == RunType.REGULAR_PARTY:
-		shared_bag.add_gold(40)
+		shared_bag.add_gold(20)
 		run = [
-			StageDef.combat(5),
+			StageDef.combat(6),
 			StageDef.blacksmith(),
+			StageDef.combat(6),
 		]
 	elif run_type == RunType.REGULAR_PLUS:
 		added_levels = 3

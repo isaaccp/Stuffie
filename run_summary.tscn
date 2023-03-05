@@ -29,3 +29,4 @@ vertical_alignment = 1
 
 [node name="CharactersStatsContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+alignment = 1
