@@ -304,3 +304,6 @@ func apply_attack(enemy: Enemy):
 
 func camp_choices():
 	return [camp_choice] + relic_manager.camp_choices()
+
+func get_map_path(map_manager: MapManager, to: Vector2i):
+	return map_manager.get_path(get_id_position(), to)

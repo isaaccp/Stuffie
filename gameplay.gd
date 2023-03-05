@@ -558,25 +558,18 @@ func handle_move():
 	if !valid_path or too_long_path:
 		return
 	change_human_turn_state(HumanTurnState.MOVING)
-	# Handle move "animation".
-	var curve = map_manager.curve_from_path(current_path)
-	# Save final position as it may change while moving.
+	# Save positions as they change.
+	var original_pos = active_character.get_id_position()
 	var final_pos = tile_map_pos
-	# Moving 1 "baked point" per 0.01 seconds, each point being
-	# at a distance of 0.2 from each other.
-	for point in curve.get_baked_points():
-		active_character.look_at(point)
-		active_character.position = point
-		await get_tree().create_timer(0.01).timeout
+	await active_character.move(map_manager, final_pos)
 	var move_cost = path_cost(current_path)
 	active_character.reduce_move(move_cost)
 	StatsManager.add(active_character, Stats.Field.MP_USED, move_cost)
-	var can_undo = await map_manager.move_character(active_character.get_id_position(), final_pos)
+	var can_undo = await map_manager.move_character(original_pos, final_pos)
 	if can_undo:
 		undo_button.show()
 	else:
 		reset_undo()
-	active_character.set_id_position(final_pos)
 	character_moved.emit(final_pos)
 	clear_enemy_info_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
