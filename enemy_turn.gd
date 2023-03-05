@@ -35,7 +35,6 @@ func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
 	return ret
 
 func top_move_option(enemy: Enemy, move_options: Array):
-	# For now, let's just say the closer to a character the better.
 	var character_locs = map_manager.character_locs.keys()
 	var best_move = null
 	var best_target = null
