@@ -9,8 +9,16 @@ var main_menu_scene = preload("res://main_menu.tscn")
 var character_selection_scene = preload("res://character_selection.tscn")
 var game_run_scene = preload("res://game_run.tscn")
 
+var warrior = preload("res://warrior.tscn")
+var wizard = preload("res://wizard.tscn")
+
+var character_scenes = [
+	warrior,
+	wizard,
+]
+
 var run_type: GameRun.RunType
-var character: Character
+var characters: Array[Character]
 
 func _ready():
 	state.connect_signals(self)
@@ -30,6 +38,9 @@ func _on_main_menu_exited():
 
 func _on_character_select_entered():
 	var character_selection = character_selection_scene.instantiate() as CharacterSelection
+	for character_scene in character_scenes:
+		var character = character_scene.instantiate() as Character
+		character_selection.characters.push_back(character)
 	add_child(character_selection)
 	character_selection.character_selected.connect(start_run)
 
@@ -39,7 +50,7 @@ func _on_character_select_exited():
 func _on_within_run_entered():
 	StatsManager.add_level(StatsManager.Level.GAME_RUN)
 	var game_run = game_run_scene.instantiate() as GameRun
-	game_run.set_starting_characters([character])
+	game_run.set_starting_characters(characters)
 	game_run.set_run_type(run_type)
 	game_run.run_finished.connect(finish_run)
 	add_child(game_run)
@@ -51,10 +62,15 @@ func _on_within_run_exited():
 
 func select_character(run_type: GameRun.RunType):
 	self.run_type = run_type
+	if run_type == GameRun.RunType.REGULAR_PARTY:
+		characters.push_back(warrior.instantiate())
+		characters.push_back(wizard.instantiate())
+		state.change_state(WITHIN_RUN)
+		return
 	state.change_state(CHARACTER_SELECT)
 
 func start_run(character: Character):
-	self.character = character
+	characters.push_back(character)
 	state.change_state(WITHIN_RUN)
 
 func finish_run():
