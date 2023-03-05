@@ -10,6 +10,7 @@ var keyword_tooltips = {
 	"block": "If character has block, block is reduced before HP when receiving damage.\nAll block is removed at beginning of next turn.",
 	"dodge": "If character has dodge, ignore all damage from the next attack and remove 1 dodge. Up to 1 dodge carries to next turn.",
 	"weakness": "If character has weakness, attack damage is reduced to 50%.\nRemove 1 weakness per turn.",
+	"paralysis": "If character has paralysis, do not act this turn.\nRemove 1 paralysis per turn.",
 	"MP": "Move points. Used to move the character. Can be raised over Total MP.",
 }
 

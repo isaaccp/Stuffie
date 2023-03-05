@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cw2srnpuoqdnj" path="res://resources/kaykit-skeletons/assets/gltf/skeleton_bow.gltf.glb" id="4_ndcf2"]
 [ext_resource type="PackedScene" uid="uid://cpwwdyimw3pbq" path="res://resources/kaykit-skeletons/assets/gltf/arrow_green.gltf.glb" id="5_7oi7g"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_1uwt2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_s612d"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("health_bar", "weapon")]
@@ -24,7 +24,7 @@ health_bar = NodePath("HealthDisplay3D")
 weapon = NodePath("Weapon")
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("3_oxvrd")]
-texture = SubResource("ViewportTexture_1uwt2")
+texture = SubResource("ViewportTexture_s612d")
 
 [node name="character_skeleton_archer" parent="." instance=ExtResource("3_ca0c1")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

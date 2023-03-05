@@ -300,7 +300,7 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):
 	var damage = enemy.effective_damage(self)
-	apply_damage(damage)
+	return apply_damage(damage)
 
 func camp_choices():
 	return [camp_choice] + relic_manager.camp_choices()

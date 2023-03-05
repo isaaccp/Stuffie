@@ -13,6 +13,7 @@ class_name BlacksmithStage
 # attach sub-screen under advanced_option_parent.
 @export var advanced_option_parent: Control
 @export var shared_bag_gold_ui: SharedBagGoldUI
+@export var character_selection: CharacterSelection
 
 var state = StateMachine.new()
 var CHOOSING_OPTION = state.add("choosing_option")
@@ -31,6 +32,7 @@ var available_upgrades: int
 var relics_to_show: int
 
 var characters: Array[Character]
+var active_character: Character
 var shared_bag: SharedBag
 var relic_list: RelicList
 var current_cards: Array[Card]
@@ -56,9 +58,16 @@ func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list:
 	shared_bag_gold_ui.set_shared_bag(shared_bag)
 	for character in characters:
 		StatsManager.add(character, Stats.Field.BLACKSMITHS_VISITED, 1)
+	active_character = characters[0]
+	character_selection.characters = characters
+	character_selection.one_off = false
+	character_selection.character_selected.connect(on_character_changed)
 	update_upgrades()
 	update_removals()
 	prepare_relics()
+
+func on_character_changed(character: Character):
+	active_character = character
 
 func prepare_relics():
 	var relics = relic_list.choose(relics_to_show)
@@ -79,7 +88,7 @@ func _on_choosing_option_exited():
 
 func _on_removal_entered():
 	var removal = removal_scene.instantiate() as CardRemoval
-	removal.initialize(characters)
+	removal.initialize([active_character])
 	removal.connect("done", _on_removal_done)
 	removal.connect("canceled", _on_removal_canceled)
 	advanced_option_parent.add_child(removal)
@@ -90,7 +99,7 @@ func _on_removal_exited():
 
 func _on_upgrade_entered():
 	var upgrade = upgrade_scene.instantiate() as CardUpgrade
-	upgrade.initialize(characters)
+	upgrade.initialize([active_character])
 	upgrade.connect("done", _on_upgrade_done)
 	upgrade.connect("canceled", _on_upgrade_canceled)
 	advanced_option_parent.add_child(upgrade)
@@ -181,8 +190,8 @@ func _on_relic_selected(relic_button: RelicButton):
 	shared_bag.spend_gold(relic_cost)
 	relic_list.mark_used(relic_button.relic.name)
 	# TODO: Allow to select which character gets the relic.
-	characters[0].add_relic(relic_button.relic)
-	StatsManager.add(characters[0], Stats.Field.GOLD_SPENT, relic_cost)
+	active_character.add_relic(relic_button.relic)
+	StatsManager.add(active_character, Stats.Field.GOLD_SPENT, relic_cost)
 	refresh()
 
 func _on_done_pressed():

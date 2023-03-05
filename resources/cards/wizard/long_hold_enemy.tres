@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://ciukn6t74lny0"]
+
+[ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/hold_enemy.tres" id="1_hi3us"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_eh8ys"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_dkdkh"]
+[ext_resource type="Script" path="res://card.gd" id="4_djuob"]
+
+[sub_resource type="Resource" id="Resource_3xpor"]
+script = ExtResource("2_eh8ys")
+value_type = 1
+absolute_value = 2
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_h5ocp"]
+script = ExtResource("3_dkdkh")
+effect_value = SubResource("Resource_3xpor")
+effect_type = 1
+target_field = 12
+effect = 0
+
+[resource]
+script = ExtResource("4_djuob")
+card_name = "Long Hold Enemy"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_hi3us")
+cost = 1
+target_mode = 3
+target_animation = 4
+target_distance = 5
+on_play_self_effects = Array[ExtResource("3_dkdkh")]([])
+on_play_effects = Array[ExtResource("3_dkdkh")]([SubResource("Resource_h5ocp")])
+on_play_after_effects = Array[ExtResource("3_dkdkh")]([])
+on_kill_effects = Array[ExtResource("3_dkdkh")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1

@@ -14,6 +14,8 @@ func get_enemy_walkable_cells(enemy: Enemy) -> Array:
 func calculate_moves():
 	enemy_moves.clear()
 	for enemy in map_manager.enemy_locs.values():
+		if enemy.paralysis > 0:
+			continue
 		var move_options = get_enemy_walkable_cells(enemy)
 		var result = top_move_option(enemy, move_options)
 		var top_move = result[0]

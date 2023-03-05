@@ -87,6 +87,12 @@ var stages = [
 	[
 		preload("res://stages/big_bad_skeleton.stage"),
 	],
+	[
+		preload("res://stages/6w_4a.stage"),
+	],
+	[
+		preload("res://stages/first_horde.stage"),
+	],
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
@@ -96,6 +102,7 @@ var summary_scene = preload("res://run_summary.tscn")
 enum RunType {
 	REGULAR,
 	REGULAR_PLUS,
+	REGULAR_PARTY,
 	TEST_BLACKSMITH,
 	TEST_CAMP,
 	TEST_AFTER_STAGE,
@@ -151,6 +158,17 @@ func set_run_type(run_type: RunType):
 			StageDef.combat(3),
 			StageDef.blacksmith(),
 			StageDef.combat(4),
+		]
+	elif run_type == RunType.REGULAR_PARTY:
+		added_levels = 4
+		shared_bag.add_gold(20)
+		run = [
+			StageDef.combat(2),
+			StageDef.combat(3),
+			StageDef.blacksmith(2, 2),
+			StageDef.combat(5),
+			StageDef.camp(),
+			StageDef.combat(6),
 		]
 	elif run_type == RunType.REGULAR_PLUS:
 		added_levels = 3

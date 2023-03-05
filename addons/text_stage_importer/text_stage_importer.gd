@@ -54,6 +54,11 @@ class StageLoader:
 		WALL_GATE_CORNER,
 		WALL_GATE_DOOR,
 		PILLAR,
+		BOOKCASE_FILLED,
+		BOOKCASE_FILLED_BROKEN,
+		BOOKCASE_WIDE_FILLED,
+		BOOKCASE_WIDE_FILLED_BROKEN,
+		TABLE_MEDIUM,
 	}
 
 	var item_mesh_map = {
@@ -67,7 +72,20 @@ class StageLoader:
 		Item.WALL_GATE_CORNER: "wall_gateCorner",
 		Item.WALL_GATE_DOOR: "wall_gateDoor",
 		Item.PILLAR: "pillar",
+		Item.BOOKCASE_FILLED: "bookcaseFilled",
+		Item.BOOKCASE_FILLED_BROKEN: "bookcaseFilled_broken",
+		Item.BOOKCASE_WIDE_FILLED: "bookcaseWideFilled",
+		Item.BOOKCASE_WIDE_FILLED_BROKEN: "bookcaseWideFilled_broken",
+		Item.TABLE_MEDIUM: "tableMedium",
 	}
+
+	var obstacles = [
+		Item.BOOKCASE_FILLED,
+		Item.BOOKCASE_FILLED_BROKEN,
+		Item.BOOKCASE_WIDE_FILLED,
+		Item.BOOKCASE_WIDE_FILLED_BROKEN,
+		Item.TABLE_MEDIUM,
+	]
 
 	enum WallItemType {
 		WALL,
@@ -206,6 +224,11 @@ class StageLoader:
 					else:
 						wall_type = DoorDef.WallType.CAGE
 					stage.doors.push_back(DoorDef.create(Vector2i(x, y), door_state, wall_type))
+				elif tile == 'x':
+					# Non-view blocking obstacle.
+					var item = _choose_obstacle_item()
+					_set_gridmap_tile(x, y, 1, item.item, item.orientation)
+					stage.solid_tiles.push_back(Vector2i(x, y))
 				elif tile.is_valid_int():
 					starting_positions[int(tile)] = Vector2i(x, y)
 				elif enemy_map.has(tile):
@@ -357,6 +380,12 @@ class StageLoader:
 			return _wall_item(wall_item, WallItemType.DOOR, Vector3.FORWARD)
 		else:
 			return _wall_item(wall_item, WallItemType.DOOR, Vector3.LEFT)
+
+	func _choose_obstacle_item():
+		# Random item and random orientation.
+		var item = obstacles[randi() % obstacles.size()]
+		var orientation = [Vector3.FORWARD, Vector3.BACK, Vector3.RIGHT, Vector3.LEFT][randi() % 4]
+		return _item(item, orientation)
 
 	func _set_gridmap_tile(x: int, y: int, floor: int, item: Item, orientation=0):
 		var item_id = item_map[item]

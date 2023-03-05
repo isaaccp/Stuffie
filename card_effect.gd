@@ -82,6 +82,9 @@ func apply_to_enemy(character: Character, enemy: Enemy):
 			CardEffectValue.Field.WEAKNESS:
 				enemy.weakness += value
 				StatsManager.add(character, Stats.Field.WEAKNESS_APPLIED, value)
+			CardEffectValue.Field.PARALYSIS:
+				enemy.paralysis += value
+				StatsManager.add(character, Stats.Field.PARALYSIS_APPLIED, value)
 
 func get_description(character: Character) -> String:
 	var effect_text = ""
