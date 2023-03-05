@@ -28,6 +28,7 @@ var level: int
 var move_points: float
 var hit_points: int
 var weakness: int
+var paralysis: int
 # TODO: Implement effect of this.
 var vulnerability: int
 var done: bool
@@ -65,6 +66,8 @@ func end_turn():
 		weakness -= 1
 	if vulnerability > 0:
 		vulnerability -= 1
+	if paralysis > 0:
+		paralysis -= 1
 
 func info_text() -> String:
 	var damage_text = "%s" % total_damage
@@ -81,6 +84,7 @@ func info_text() -> String:
 		"total_hit_points": total_hit_points,
 		"weakness": weakness,
 		"vulnerability": vulnerability,
+		"paralysis": paralysis,
 	}
 	var text = (
 		"[b]{name}[/b]\n" +
@@ -92,6 +96,8 @@ func info_text() -> String:
 	text += "Range: {attack_range}\n"
 	if weakness > 0:
 		text += "[url]Weakness[/url]: {weakness}\n"
+	if vulnerability > 0:
+		text += "[url]Paralysis[/url]: {paralysis}\n"
 	if vulnerability > 0:
 		text += "[url]Vulnerability[/url]: {vulnerability}\n"
 	var formatted_text = text.format(format_vars)
