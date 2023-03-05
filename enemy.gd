@@ -96,7 +96,7 @@ func info_text() -> String:
 	text += "Range: {attack_range}\n"
 	if weakness > 0:
 		text += "[url]Weakness[/url]: {weakness}\n"
-	if vulnerability > 0:
+	if paralysis > 0:
 		text += "[url]Paralysis[/url]: {paralysis}\n"
 	if vulnerability > 0:
 		text += "[url]Vulnerability[/url]: {vulnerability}\n"

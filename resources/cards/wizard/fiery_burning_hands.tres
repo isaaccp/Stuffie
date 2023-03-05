@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_5siub"]
 script = ExtResource("1_0i7or")
 value_type = 1
-absolute_value = 8
+absolute_value = 13
 reference_fraction = 1.0
 value_field_type = 0
 regular_field = 0
