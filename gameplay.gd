@@ -440,13 +440,7 @@ func _process(delta):
 				var enemy = move[0]
 				var loc = move[1]
 				var targets = move[2]
-				var path = map_manager.get_enemy_path(enemy.get_id_position(), loc)
-				var curve = curve_from_path(path)
-				for point in curve.get_baked_points():
-					enemy.look_at(point)
-					enemy.position = point
-					await get_tree().create_timer(0.01).timeout
-				enemy.set_id_position(loc)
+				await enemy.move(map_manager, loc)
 				# Find first target which is not dead yet.
 				var chosen_target = null
 				var target_character = null
@@ -559,20 +553,13 @@ func change_human_turn_state(new_state):
 func _on_end_turn_button_pressed():
 	change_state(GameState.CPU_TURN)
 
-func curve_from_path(path: PackedVector2Array) -> Curve3D:
-	var curve = Curve3D.new()
-	for pos in path:
-		var world_pos = map_manager.get_world_position(pos)
-		curve.add_point(world_pos)
-	return curve
-
 func handle_move():
 	# Current path is empty, so we can't move. Do nothing.
 	if !valid_path or too_long_path:
 		return
 	change_human_turn_state(HumanTurnState.MOVING)
 	# Handle move "animation".
-	var curve = curve_from_path(current_path)
+	var curve = map_manager.curve_from_path(current_path)
 	# Save final position as it may change while moving.
 	var final_pos = tile_map_pos
 	# Moving 1 "baked point" per 0.01 seconds, each point being

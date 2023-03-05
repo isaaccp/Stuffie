@@ -178,6 +178,13 @@ func get_walkable_cells(from: Vector2i, move_points: int, ignore_tiles=[]) -> Ar
 		temp_not_solid_locations.erase(tile)
 	return cells
 
+func curve_from_path(path: PackedVector2Array) -> Curve3D:
+	var curve = Curve3D.new()
+	for pos in path:
+		var world_pos = get_world_position(pos)
+		curve.add_point(world_pos)
+	return curve
+
 func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 	# This is a dictionary of reachable tiles with their current cost.
 	var reachable_cost: Dictionary

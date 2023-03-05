@@ -112,5 +112,14 @@ func effective_damage(character: Character):
 func attack_range():
 	return total_attack_range
 
+func move(map_manager: MapManager, to: Vector2i):
+	var path = map_manager.get_enemy_path(get_id_position(), to)
+	var curve = map_manager.curve_from_path(path)
+	for point in curve.get_baked_points():
+		look_at(point)
+		position = point
+		await get_tree().create_timer(0.01).timeout
+	set_id_position(to)
+
 func refresh():
 	health_bar.update_health(hit_points, total_hit_points)
