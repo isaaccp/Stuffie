@@ -161,7 +161,6 @@ func set_run_type(run_type: RunType):
 		run = [
 			StageDef.combat(5),
 			StageDef.blacksmith(),
-			StageDef.camp(),
 		]
 	elif run_type == RunType.REGULAR_PLUS:
 		added_levels = 3
