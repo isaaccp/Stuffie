@@ -32,6 +32,7 @@ var card_ui_scene = preload("res://card_ui.tscn")
 var treasure_scene = preload("res://treasure.tscn")
 
 var active_character: Character
+var active_character_index: int
 # Direction of mouse position respect active character.
 # E.g. Vector2.right if it's more to the right than up/down.
 var direction: Vector2
@@ -226,6 +227,9 @@ func draw_hand():
 	deck_ui.tooltip_text = "%d cards on deck" % active_character.deck.stage_deck_size()
 
 func set_active_character(index: int):
+	if index >= party.get_child_count():
+		index -= party.get_child_count()
+
 	var i = 0
 
 	for character in party.get_children():
@@ -237,6 +241,7 @@ func set_active_character(index: int):
 			character.set_active(false)
 			character.clear_pending_move_cost()
 		i += 1
+	active_character_index = index
 
 func _on_card_pressed(index: int):
 	if state != GameState.HUMAN_TURN:
@@ -416,6 +421,10 @@ func _process(delta):
 		if Input.is_action_pressed("ui_rotate_right"):
 			camera_pivot.rotate_y(camera_rotate*delta)
 			camera_modified = true
+		if Input.is_action_just_released("ui_zoom_in"):
+			camera_pivot.position += forward.cross(Vector3.RIGHT) * 5
+		if Input.is_action_just_released("ui_zoom_out"):
+			camera_pivot.position -= forward.cross(Vector3.RIGHT) * 5
 		if camera_modified:
 			update_position_direction(get_viewport().get_mouse_position())
 	elif state == GameState.CPU_TURN:
@@ -611,10 +620,12 @@ func _input(event):
 				target_area.queue_free()
 				active_character.clear_pending_action_cost()
 				change_human_turn_state(HumanTurnState.WAITING)
-	elif Input.is_action_pressed("ui_showenemymove"):
+	if Input.is_action_pressed("ui_showenemymove"):
 		show_enemy_moves()
-	elif Input.is_action_just_released("ui_showenemymove"):
+	if Input.is_action_just_released("ui_showenemymove"):
 		clear_enemy_info()
+	if Input.is_action_just_released("ui_focus_next"):
+		set_active_character(active_character_index+1)
 
 func show_enemy_moves():
 	var final_walkable_cells = Dictionary()
