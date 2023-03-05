@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c6koifjk7n8ku"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://c6koifjk7n8ku"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_5gb4e"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_voyje"]
 [ext_resource type="Script" path="res://card.gd" id="3_xm4r8"]
+[ext_resource type="Texture2D" uid="uid://de55b41p0pm2" path="res://resources/hold_enemy.png" id="4_tve24"]
 
 [sub_resource type="Resource" id="Resource_3xpor"]
 script = ExtResource("1_5gb4e")
@@ -26,6 +27,7 @@ card_name = "Hold Enemy"
 basic = false
 upgrade_level = 0
 cost = 1
+texture = ExtResource("4_tve24")
 target_mode = 3
 target_animation = 4
 target_distance = 5

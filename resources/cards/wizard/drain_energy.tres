@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://bxlxb6qanclms"]
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://bxlxb6qanclms"]
 
 [ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/hold_enemy.tres" id="1_1vsk1"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_yeeup"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_8lko6"]
 [ext_resource type="Script" path="res://card.gd" id="3_7nric"]
+[ext_resource type="Texture2D" uid="uid://de55b41p0pm2" path="res://resources/hold_enemy.png" id="5_y0c7x"]
 
 [sub_resource type="Resource" id="Resource_4oep5"]
 script = ExtResource("1_yeeup")
@@ -44,6 +45,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_1vsk1")
 cost = 1
+texture = ExtResource("5_y0c7x")
 target_mode = 3
 target_animation = 4
 target_distance = 5
