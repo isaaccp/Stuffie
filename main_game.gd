@@ -50,8 +50,8 @@ func _on_character_select_exited():
 func _on_within_run_entered():
 	StatsManager.add_level(StatsManager.Level.GAME_RUN)
 	var game_run = game_run_scene.instantiate() as GameRun
-	game_run.set_starting_characters(characters)
 	game_run.set_run_type(run_type)
+	game_run.set_starting_characters(characters)
 	game_run.run_finished.connect(finish_run)
 	add_child(game_run)
 	# Needs to be called after it's already added.
