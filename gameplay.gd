@@ -719,6 +719,7 @@ func handle_character_death(character: Character):
 		set_active_character(0)
 		reset_undo()
 	else:
+		StatsManager.remove_level(StatsManager.Level.TURN)
 		game_over.emit()
 
 func clear_effects():
