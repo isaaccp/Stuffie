@@ -191,7 +191,6 @@ func initialize_map_manager(stage: Stage):
 	map_manager.set_party(party.get_children())
 	map_manager.set_enemies(enemies_node.get_children())
 	map_manager.initialize_a_star()
-	enemy_turn.initialize(map_manager)
 
 func open_door(pos: Vector2i):
 	map_manager.open_door(pos)
@@ -529,6 +528,7 @@ func change_state(new_state):
 		for character in party.get_children():
 			character.end_turn()
 		enemy_turn_calculated = false
+		enemy_turn.initialize(map_manager)
 		enemy_turn_thread.start(_async_enemy_turn)
 	turn_state_info.text = "%s: %d" % [state_text[state], turn_number]
 
@@ -561,11 +561,10 @@ func handle_move():
 	# Save positions as they change.
 	var original_pos = active_character.get_id_position()
 	var final_pos = tile_map_pos
-	await active_character.move(map_manager, final_pos)
+	var can_undo = await active_character.move(map_manager, final_pos)
 	var move_cost = path_cost(current_path)
 	active_character.reduce_move(move_cost)
 	StatsManager.add(active_character, Stats.Field.MP_USED, move_cost)
-	var can_undo = await map_manager.move_character(original_pos, final_pos)
 	if can_undo:
 		undo_button.show()
 	else:

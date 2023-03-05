@@ -6,7 +6,7 @@ var map_manager: MapManager
 var enemy_moves: Array
 
 func initialize(map: MapManager):
-	map_manager = map
+	map_manager = map.duplicate()
 
 func get_enemy_walkable_cells(enemy: Enemy) -> Array:
 	return map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
@@ -17,14 +17,12 @@ func calculate_moves():
 		if enemy.paralysis > 0:
 			continue
 		var move_options = get_enemy_walkable_cells(enemy)
+		print_debug(move_options)
 		var result = top_move_option(enemy, move_options)
 		var top_move = result[0]
 		var targets = result[1]
 		enemy_moves.append([enemy, top_move, targets])
-		# Need to do this now so we calculate moves correctly.
-		# I guess it would be neat if this was an "overlay" over the real state
-		# and then we would update all the "real" stuff at the same time, but
-		# as long as we update the nodes right after this it should be fine.
+		# This is just an overlay. Need to do the actual move later on the real map.
 		map_manager.move_enemy(enemy.get_id_position(), top_move)
 
 func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:

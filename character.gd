@@ -305,5 +305,12 @@ func apply_attack(enemy: Enemy):
 func camp_choices():
 	return [camp_choice] + relic_manager.camp_choices()
 
-func get_map_path(map_manager: MapManager, to: Vector2i):
-	return map_manager.get_path(get_id_position(), to)
+func move(map_manager: MapManager, to: Vector2i) -> bool:
+	var from = get_id_position()
+	await move_path(map_manager, map_manager.get_path(from, to))
+	set_id_position(to)
+	var can_undo = await map_manager.move_character(from, to)
+	return can_undo
+
+func on_move_map_update(map_manager: MapManager, from: Vector2i, to: Vector2i):
+	map_manager.move_character(from, to)

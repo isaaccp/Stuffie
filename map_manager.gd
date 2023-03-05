@@ -12,6 +12,7 @@ var character_locs: Dictionary
 var enemy_locs: Dictionary
 var treasure_locs: Dictionary
 var door_locs: Dictionary
+var is_overlay = false
 
 var door_scene = preload("res://door.tscn")
 var cage_door_scene = preload("res://cage_door.tscn")
@@ -40,6 +41,37 @@ func initialize(stage: Stage, doors_node: Node):
 		doors_node.add_child(door)
 		door.global_position = get_world_position(door_def.pos)
 		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
+
+func duplicate():
+	var new = MapManager.new()
+	new.is_overlay = true
+	# Immutable, okay to have refs.
+	new.map_rect = map_rect
+	new.cell_size = cell_size
+	# Mutable, need a copy.
+	new.a_star = duplicate_a_star()
+	new.base_solid_locations = base_solid_locations.duplicate()
+	new.temp_not_solid_locations = temp_not_solid_locations.duplicate()
+	new.base_view_blocking_locations = base_view_blocking_locations.duplicate()
+	new.character_locs = character_locs.duplicate()
+	new.enemy_locs = enemy_locs.duplicate()
+	new.treasure_locs = treasure_locs.duplicate()
+	new.door_locs = door_locs.duplicate()
+	return new
+
+func duplicate_a_star():
+	var new = AStarGrid2D.new()
+	var old = a_star
+	new.size = old.size
+	new.cell_size = old.cell_size
+	new.diagonal_mode = old.diagonal_mode
+	new.update()
+	for i in new.size.x:
+		for j in new.size.y:
+			var loc = Vector2i(i, j)
+			if old.is_point_solid(loc):
+				new.set_point_solid(loc)
+	return new
 
 # Needs to be called after set_characters and set_enemies.
 # Think about something better once it's clear how we'll use it.
@@ -82,6 +114,7 @@ func move_character(from: Vector2i, to: Vector2i) -> bool:
 	return true
 
 func move_enemy(from: Vector2i, to: Vector2i):
+	print_debug("on move_enemy, from: ", from, " to: ", to, " is_overlay:", is_overlay)
 	var enemy = enemy_locs[from]
 	enemy_locs.erase(from)
 	enemy_locs[to] = enemy

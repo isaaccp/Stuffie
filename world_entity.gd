@@ -15,8 +15,7 @@ func set_id_position(id_pos: Vector2i):
 func get_id_position() -> Vector2i:
 	return id_position
 
-func move(map_manager: MapManager, to: Vector2i):
-	var path = get_map_path(map_manager, to)
+func move_path(map_manager: MapManager, path: PackedVector2Array):
 	var curve = map_manager.curve_from_path(path)
 	# Moving 1 "baked point" per 0.01 seconds, each point being
 	# at a distance of 0.2 from each other.
@@ -24,7 +23,3 @@ func move(map_manager: MapManager, to: Vector2i):
 		look_at(point)
 		position = point
 		await get_tree().create_timer(0.01).timeout
-	set_id_position(to)
-
-func get_map_path(map_manager: MapManager, to: Vector2i):
-	assert(false)
