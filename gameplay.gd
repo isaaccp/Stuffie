@@ -422,9 +422,13 @@ func _process(delta):
 			camera_pivot.rotate_y(camera_rotate*delta)
 			camera_modified = true
 		if Input.is_action_just_released("ui_zoom_in"):
-			camera_pivot.position += forward.cross(Vector3.RIGHT) * 5
+			# Prevent from zooming through stage.
+			var adjusted_position = camera_pivot.position - forward.cross(Vector3.RIGHT) * 5
+			# Yay magic number.
+			if adjusted_position.y > -10:
+				camera_pivot.position = adjusted_position
 		if Input.is_action_just_released("ui_zoom_out"):
-			camera_pivot.position -= forward.cross(Vector3.RIGHT) * 5
+			camera_pivot.position += forward.cross(Vector3.RIGHT) * 5
 		if camera_modified:
 			update_position_direction(get_viewport().get_mouse_position())
 	elif state == GameState.CPU_TURN:
