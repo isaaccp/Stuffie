@@ -118,5 +118,25 @@ func move(map_manager: MapManager, to: Vector2i):
 	set_id_position(to)
 	map_manager.move_enemy(from, to)
 
+func draw_attack(target: Character):
+	if not weapon:
+		return
+	weapon.show()
+	var direction = (weapon.global_position - target.global_position).normalized()
+	weapon.look_at(target.global_position, Vector3.UP)
+	direction.y = 0
+	var prev_distance = -1
+	while true:
+		var diff = weapon.global_position - target.global_position
+		diff.y = 0
+		var new_distance = diff.length()
+		if prev_distance != -1 and prev_distance < new_distance:
+			break
+		prev_distance = new_distance
+		weapon.global_position -= (direction * 0.5)
+		await get_tree().create_timer(0.02).timeout
+	weapon.position = Vector3(0, 0, 0)
+	weapon.hide()
+
 func refresh():
 	health_bar.update_health(hit_points, total_hit_points)

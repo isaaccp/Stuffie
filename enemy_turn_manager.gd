@@ -8,12 +8,14 @@ var enemy_turn: EnemyTurn
 
 var map_manager: MapManager
 
+signal character_died(character: Character)
+
 func initialize(map_manager: MapManager):
 	self.map_manager = map_manager
 
-func moves():
+func execute_moves(map_manager: MapManager):
 	assert(fresh)
-	return enemy_turn.enemy_moves
+	await enemy_turn.execute_moves(map_manager)
 
 func update():
 	fresh = false
@@ -25,7 +27,7 @@ func update():
 
 func _async_enemy_turn(thread: Thread):
 	var start = Time.get_ticks_msec()
-	var result = enemy_turn.calculate_moves()
+	var result = enemy_turn.calculate()
 	var end = Time.get_ticks_msec()
 	if result:
 		print_debug("Enemy turn time ", end-start)
@@ -38,3 +40,7 @@ func _wait_enemy_turn_completed(thread: Thread):
 	var result = thread.wait_to_finish()
 	if thread_id == current_thread_id:
 		fresh = result
+		enemy_turn.character_died.connect(_on_character_died)
+
+func _on_character_died(character: Character):
+	character_died.emit(character)

@@ -6,6 +6,8 @@ var map_manager: MapManager
 var enemy_moves: Array
 var aborted: bool
 
+signal character_died(character: Character)
+
 func _init(map: MapManager):
 	map_manager = map.duplicate()
 	aborted = false
@@ -16,11 +18,20 @@ func abort():
 func get_enemy_walkable_cells(enemy: Enemy) -> Array:
 	return map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
 
-func calculate_moves() -> bool:
+func calculate() -> bool:
+	calculate_moves()
+	if aborted:
+		return false
+	play_attacks()
+	if aborted:
+		return false
+	return true
+
+func calculate_moves():
 	enemy_moves.clear()
 	for enemy in map_manager.enemy_locs.values():
 		if aborted:
-			return false
+			return
 		if enemy.paralysis > 0:
 			continue
 		var move_options = get_enemy_walkable_cells(enemy)
@@ -30,7 +41,43 @@ func calculate_moves() -> bool:
 		enemy_moves.append([enemy, top_move, targets])
 		# This is just an overlay. Need to do the actual move later on the real map.
 		map_manager.move_enemy(enemy.get_id_position(), top_move)
-	return true
+
+func play_attacks():
+	execute_moves(map_manager)
+
+func execute_moves(map: MapManager):
+	var simulation = map.is_overlay
+	if simulation:
+		return
+	for move in enemy_moves:
+		# Move enemy.
+		var enemy = move[0]
+		var loc = move[1]
+		var targets = move[2]
+		await enemy.move(map, loc)
+		# Find first target which is not dead yet.
+		var chosen_target = null
+		var target_character = null
+		for target_distance in targets:
+			var target = target_distance[0]
+			if map.character_locs.has(target):
+				chosen_target = target_distance
+				target_character = map.character_locs[target]
+				break
+		# If no targets, continue.
+		if chosen_target == null:
+			continue
+		if chosen_target[1] > enemy.attack_range():
+			continue
+		if not simulation:
+			await enemy.draw_attack(target_character)
+		# We found a target within range, attack and destroy character if it died.
+		if target_character.apply_attack(enemy):
+			if simulation:
+				# TODO: Keep track of death characters
+				map.remove_character(target_character.get_id_position())
+			else:
+				character_died.emit(target_character)
 
 func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
 	var ret = []

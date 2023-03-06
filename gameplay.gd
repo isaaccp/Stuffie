@@ -159,6 +159,7 @@ func initialize_stage(stage: Stage):
 	set_active_character(0)
 	initialize_map_manager(stage)
 	enemy_turn_manager.initialize(map_manager)
+	enemy_turn_manager.character_died.connect(handle_character_death)
 	player_move_area = TilesHighlight.new(map_manager)
 	enemy_move_area = TilesHighlight.new(map_manager)
 	enemy_attack_area = TilesHighlight.new(map_manager)
@@ -372,26 +373,6 @@ func calculate_path(tile_map_pos):
 			player_move_area.set_tiles(walkable_cells)
 			player_move_area.show()
 
-func draw_attack(enemy: Enemy, target: Character):
-	if not enemy.weapon:
-		return
-	enemy.weapon.show()
-	var direction = (enemy.weapon.global_position - target.global_position).normalized()
-	enemy.weapon.look_at(target.global_position, Vector3.UP)
-	direction.y = 0
-	var prev_distance = -1
-	while true:
-		var diff = enemy.weapon.global_position - target.global_position
-		diff.y = 0
-		var new_distance = diff.length()
-		if prev_distance != -1 and prev_distance < new_distance:
-			break
-		prev_distance = new_distance
-		enemy.weapon.global_position -= (direction * 0.5)
-		await get_tree().create_timer(0.02).timeout
-	enemy.weapon.position = Vector3(0, 0, 0)
-	enemy.weapon.hide()
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if state == GameState.HUMAN_TURN:
@@ -433,32 +414,7 @@ func _process(delta):
 		if enemy_turn_manager.fresh and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
 			enemy_moving = true
-			for move in enemy_turn_manager.moves():
-				# Move enemy.
-				var enemy = move[0]
-				var loc = move[1]
-				var targets = move[2]
-				await enemy.move(map_manager, loc)
-				# Find first target which is not dead yet.
-				var chosen_target = null
-				var target_character = null
-				for target_distance in targets:
-					var target = target_distance[0]
-					if map_manager.character_locs.has(target):
-						chosen_target = target_distance
-						target_character = map_manager.character_locs[target]
-						break
-				# If no targets, continue.
-				if chosen_target == null:
-					continue
-				if chosen_target[1] > enemy.attack_range():
-					continue
-				await draw_attack(enemy, target_character)
-				# We found a target within range, attack and destroy character if it died.
-				if target_character.apply_attack(enemy):
-					handle_character_death(target_character)
-					if party.get_child_count() == 0:
-						return
+			await enemy_turn_manager.execute_moves(map_manager)
 			enemy_moving = false
 			change_state(GameState.HUMAN_TURN)
 
