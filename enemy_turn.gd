@@ -85,7 +85,6 @@ func execute_moves(map: MapManager):
 	if simulation:
 		for loc in map.character_locs:
 			record_damage(map.character_locs[loc])
-	print_debug(damage_taken)
 
 func record_damage(character: Character):
 	damage_taken.push_back([character.get_id_position(), character.snapshot.hit_points - character.hit_points])

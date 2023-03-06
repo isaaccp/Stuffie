@@ -160,6 +160,8 @@ func initialize_stage(stage: Stage):
 	initialize_map_manager(stage)
 	enemy_turn_manager.initialize(map_manager)
 	enemy_turn_manager.character_died.connect(handle_character_death)
+	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
+	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)
 	player_move_area = TilesHighlight.new(map_manager)
 	enemy_move_area = TilesHighlight.new(map_manager)
 	enemy_attack_area = TilesHighlight.new(map_manager)
@@ -179,6 +181,16 @@ func initialize_stage(stage: Stage):
 	# Usually "turn stats" are created at beginning of enemy turn, create here the first time.
 	StatsManager.add_level(StatsManager.Level.TURN)
 	change_state(GameState.HUMAN_TURN)
+
+func on_enemy_turn_calculated(damage_taken: Array):
+	for info in damage_taken:
+		var loc = info[0]
+		var damage = info[1]
+		map_manager.character_locs[loc].set_pending_damage(damage)
+
+func on_enemy_turn_invalidated():
+	for character in party.get_children():
+		character.clear_pending_damage()
 
 func next_stage():
 	StatsManager.remove_level(StatsManager.Level.TURN)

@@ -28,7 +28,7 @@ func _update_character():
 	_set_portrait_texture(character.portrait_texture.texture)
 	_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
 	_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
-	_set_hit_points(character.hit_points, character.total_hit_points)
+	_set_hit_points(character.pending_damage_set, character.pending_damage, character.hit_points, character.total_hit_points)
 	_set_block(character.block)
 	_set_dodge(character.dodge)
 	_set_power(character.power)
@@ -88,14 +88,30 @@ func _set_action_points(pending_action_cost: int, action_points: int, total_acti
 	var bb_code = "AP💢: [color=%s]%d[/color] / %d" % [color, actions_left, total_action_points]
 	action_points_label.parse_bbcode(bb_code)
 
-func _set_hit_points(hit_points: int, total_hit_points: int):
-	var color
+func _set_hit_points(pending_damage_set: bool, pending_damage: int, hit_points: int, total_hit_points: int):
+	var color: String
+
 	if hit_points / total_hit_points < 0.5:
 		color = "red"
 	else:
 		color = "white"
 
-	var bb_code = "HP: [color=%s]%d[/color] / %d" % [color, hit_points, total_hit_points]
+	var pending_color: String
+	var pending_damage_text = ""
+	if pending_damage_set:
+		var lethal_text = ""
+		if pending_damage >= hit_points:
+			lethal_text = "💀"
+		if pending_damage > 0:
+			pending_color = "red"
+		elif pending_damage < 0:
+			pending_color = "green"
+		else:
+			pending_color = "white"
+		pending_damage_text = "Next HP: %s [color=%s]%d[/color]" % [lethal_text, pending_color, hit_points - pending_damage]
+	else:
+		pending_damage_text = "Next HP: ?"
+	var bb_code = "HP: [color=%s]%d[/color] / %d\n%s" % [color, hit_points, total_hit_points, pending_damage_text]
 	hit_points_label.parse_bbcode(bb_code)
 
 func _set_block(block: int):

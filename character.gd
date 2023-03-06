@@ -23,6 +23,8 @@ var power: int
 var dodge: int
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
+var pending_damage_set = false
+var pending_damage: int = 0
 var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
 var is_mock = false
@@ -156,6 +158,7 @@ func end_stage_restore():
 	deck.reset()
 	clear_pending_move_cost()
 	clear_pending_action_cost()
+	clear_pending_damage()
 	refresh()
 
 func end_turn():
@@ -249,6 +252,15 @@ func set_pending_action_cost(pending_cost: int):
 
 func clear_pending_action_cost():
 	pending_action_cost = -1
+	refresh()
+
+func set_pending_damage(pending_damage: int):
+	pending_damage_set = true
+	self.pending_damage = pending_damage
+	refresh()
+
+func clear_pending_damage():
+	pending_damage_set = false
 	refresh()
 
 func reduce_move(move_cost: int):

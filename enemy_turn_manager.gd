@@ -8,6 +8,8 @@ var enemy_turn: EnemyTurn
 
 var map_manager: MapManager
 
+signal calculated(damage_taken: Array)
+signal invalidated
 signal character_died(character: Character)
 
 func initialize(map_manager: MapManager):
@@ -19,6 +21,7 @@ func execute_moves(map: MapManager):
 
 func update():
 	fresh = false
+	invalidated.emit()
 	if current_thread.is_alive():
 		enemy_turn.abort()
 	current_thread = Thread.new()
@@ -40,6 +43,7 @@ func _wait_enemy_turn_completed(thread: Thread):
 	var result = thread.wait_to_finish()
 	if thread_id == current_thread_id:
 		fresh = result
+		calculated.emit(enemy_turn.damage_taken)
 		enemy_turn.character_died.connect(_on_character_died)
 
 func _on_character_died(character: Character):
