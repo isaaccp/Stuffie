@@ -448,6 +448,7 @@ func apply_undo():
 		StatsManager.remove(character, Stats.Field.MP_USED, reverted_move_points)
 	# No need to reset as it should now match.
 	undo_button.hide()
+	enemy_turn_manager.update()
 
 func begin_turn():
 	for enemy in enemies_node.get_children():
