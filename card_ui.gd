@@ -12,6 +12,7 @@ var keyword_tooltips = {
 	"weakness": "If character has weakness, attack damage is reduced to 50%.\nRemove 1 weakness per turn.",
 	"paralysis": "If character has paralysis, do not act this turn.\nRemove 1 paralysis per turn.",
 	"MP": "Move points. Used to move the character. Can be raised over Total MP.",
+	"exhaust": "When played, remove the card from play until next stage.",
 }
 
 @export var card_name: Label

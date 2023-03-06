@@ -56,6 +56,7 @@ enum TargetAnimationType {
 @export var area_width: int = 1
 @export var cone_step: int = 1
 @export var power_relic: Relic
+@export var exhaust: bool
 
 # Returns a list of tiles that will be affected
 # by card, with (0, 0) being the tile chosen by
@@ -117,6 +118,10 @@ func apply_ally(character: Character, ally: Character):
 	apply_self_effects(character)
 
 func should_exhaust():
+	if exhaust:
+		return true
+	# Consider manually setting "exhaust" in power
+	# so some of them could not "exhaust".
 	if power_relic:
 		return true
 	return false
@@ -185,6 +190,8 @@ func on_play_after_effect_text(character: Character) -> String:
 
 func get_description(character: Character) -> String:
 	var description = ""
+	if should_exhaust():
+		description = "[url=exhaust]Exhaust[/url]\n"
 	var target_text = get_target_text()
 	if target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
 		if power_relic:
