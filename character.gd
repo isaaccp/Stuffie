@@ -25,6 +25,7 @@ var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
+var is_mock = false
 # TODO: Remove this. As of now, this is required because character.teleport()
 # needs access to the gameplay to e.g. display a cursor for the move, etc.
 # Figure out a cleaner way.
@@ -78,6 +79,21 @@ func _ready():
 	relic_manager.connect_signals(self)
 	snap()
 
+func mock():
+	var m = Character.new()
+	m.is_mock = true
+	m.id_position = id_position
+	m.hit_points = hit_points
+	m.block = block
+	m.dodge = dodge
+	m.snap()
+	return m
+
+func add_stat(field: Stats.Field, value: int):
+	if is_mock:
+		return
+	StatsManager.add(self, field, value)
+
 func process_cards():
 	for card in all_cards.cards:
 		if card.base_card:
@@ -87,10 +103,6 @@ func process_cards():
 
 func _on_changed():
 	health_bar.update_health(hit_points, total_hit_points)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
 
 func snap():
 	snapshot = Snapshot.new(self)
@@ -103,7 +115,7 @@ func get_card_upgrades(card: Card):
 func add_relic(relic: Relic, update_stats=true):
 	relic_manager.add_relic(relic)
 	if update_stats:
-		StatsManager.add(self, Stats.Field.RELICS_ACQUIRED, 1)
+		add_stat(Stats.Field.RELICS_ACQUIRED, 1)
 
 func add_temp_relic(relic: Relic):
 	relic_manager.add_temp_relic(relic)
@@ -152,10 +164,12 @@ func end_turn():
 
 func discard_hand():
 	var discarded = deck.discard_hand()
-	StatsManager.add(self, Stats.Field.DISCARDED_CARDS, discarded)
+	add_stat(Stats.Field.DISCARDED_CARDS, discarded)
 
 func num_hand_cards():
-	return deck.num_hand_cards()
+	if deck:
+		return deck.num_hand_cards()
+	return 0
 
 func draw_new_hand():
 	deck.discard_hand()
@@ -163,11 +177,11 @@ func draw_new_hand():
 
 func draw_cards(number: int):
 	var drawn = deck.draw_cards(number)
-	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
+	add_stat(Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 
 func draw_attacks(number: int):
 	var drawn = deck.draw_attacks(number)
-	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, drawn)
+	add_stat(Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 
 func pick_cards_condition(number: int, condition: Callable = func(c): return true):
 	# TODO: Support picking more than 1.
@@ -185,7 +199,7 @@ func pick_cards_condition(number: int, condition: Callable = func(c): return tru
 	deck.deck.erase(card)
 	chooser.queue_free()
 	# TODO: Check if we actually upgraded.
-	StatsManager.add(self, Stats.Field.EXTRA_CARDS_DRAWN, number)
+	add_stat(Stats.Field.EXTRA_CARDS_DRAWN, number)
 
 func pick_cards(number: int):
 	pick_cards_condition(number)
@@ -203,21 +217,21 @@ func upgrade_cards(number: int):
 	await upgrade.done
 	upgrade.queue_free()
 	# TODO: Check if we actually upgraded.
-	StatsManager.add(self, Stats.Field.CARDS_UPGRADED, number)
+	add_stat(Stats.Field.CARDS_UPGRADED, number)
 
 func add_power(power_amount: int):
 	self.power += power_amount
-	StatsManager.add(self, Stats.Field.POWER_ACQUIRED, power_amount)
+	add_stat(Stats.Field.POWER_ACQUIRED, power_amount)
 	refresh()
 
 func add_block(block_amount: int):
 	block += block_amount
-	StatsManager.add(self, Stats.Field.BLOCK_ACQUIRED, block_amount)
+	add_stat(Stats.Field.BLOCK_ACQUIRED, block_amount)
 	refresh()
 
 func add_dodge(dodge_amount: int):
 	dodge += dodge_amount
-	StatsManager.add(self, Stats.Field.DODGE_ACQUIRED, dodge_amount)
+	add_stat(Stats.Field.DODGE_ACQUIRED, dodge_amount)
 	refresh()
 
 func teleport(distance: int):
@@ -255,7 +269,7 @@ func heal(hp: int):
 	hit_points += hp
 	if hit_points > total_hit_points:
 		hit_points = total_hit_points
-	StatsManager.add(self, Stats.Field.HP_HEALED, hit_points - original_hp)
+	add_stat(Stats.Field.HP_HEALED, hit_points - original_hp)
 	refresh()
 
 func heal_full():
@@ -264,18 +278,18 @@ func heal_full():
 
 func add_gold(gold: int):
 	shared_bag.add_gold(gold)
-	StatsManager.add(self, Stats.Field.GOLD_EARNED, gold)
+	add_stat(Stats.Field.GOLD_EARNED, gold)
 
 func apply_relic_damage_change(damage: int):
 	return relic_manager.apply_damage_change(self, damage)
 
 func apply_damage(damage: int, blockable=true, dodgeable=true):
-	StatsManager.add(self, Stats.Field.ATTACKS_RECEIVED, 1)
+	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
 	# Handle dodge.
 	if dodgeable:
 		if dodge > 0:
 			dodge -= 1
-			StatsManager.add(self, Stats.Field.ATTACKS_DODGED, 1)
+			add_stat(Stats.Field.ATTACKS_DODGED, 1)
 			refresh()
 			return
 	if blockable:
@@ -290,8 +304,8 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 				blocked_damage = block
 				block = 0
 		if blocked_damage:
-			StatsManager.add(self, Stats.Field.DAMAGE_BLOCKED, blocked_damage)
-	StatsManager.add(self, Stats.Field.DAMAGE_TAKEN, damage)
+			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
+	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
 	if hit_points <= 0:
 		return true

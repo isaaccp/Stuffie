@@ -42,7 +42,7 @@ func initialize(stage: Stage, doors_node: Node):
 		door.global_position = get_world_position(door_def.pos)
 		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
 
-func duplicate():
+func clone(mock_entities=false):
 	var new = MapManager.new()
 	new.is_overlay = true
 	# Immutable, okay to have refs.
@@ -53,10 +53,16 @@ func duplicate():
 	new.base_solid_locations = base_solid_locations.duplicate()
 	new.temp_not_solid_locations = temp_not_solid_locations.duplicate()
 	new.base_view_blocking_locations = base_view_blocking_locations.duplicate()
-	new.character_locs = character_locs.duplicate()
-	new.enemy_locs = enemy_locs.duplicate()
 	new.treasure_locs = treasure_locs.duplicate()
 	new.door_locs = door_locs.duplicate()
+	if mock_entities:
+		for loc in character_locs:
+			new.character_locs[loc] = character_locs[loc].mock()
+		for loc in enemy_locs:
+			new.enemy_locs[loc] = enemy_locs[loc].mock()
+	else:
+		new.character_locs = character_locs.duplicate()
+		new.enemy_locs = enemy_locs.duplicate()
 	return new
 
 func duplicate_a_star():

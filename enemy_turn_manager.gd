@@ -13,9 +13,9 @@ signal character_died(character: Character)
 func initialize(map_manager: MapManager):
 	self.map_manager = map_manager
 
-func execute_moves(map_manager: MapManager):
+func execute_moves(map: MapManager):
 	assert(fresh)
-	await enemy_turn.execute_moves(map_manager)
+	await enemy_turn.execute_moves(map)
 
 func update():
 	fresh = false

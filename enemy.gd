@@ -33,6 +33,8 @@ var paralysis: int
 var vulnerability: int
 var done: bool
 
+var is_mock = false
+
 @export var enemy_name: String
 @export var health_bar: HealthDisplay3D
 @export var attack_style: AttackStyle
@@ -45,9 +47,14 @@ func _ready():
 		if weapon:
 			weapon.hide()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func mock():
+	var m = Enemy.new()
+	m.is_mock = true
+	m.id_position = id_position
+	m.total_move_points = total_move_points
+	m.total_damage = total_damage
+	m.total_attack_range = total_attack_range
+	return m
 
 func initialize(pos: Vector2i, level: int):
 	self.level = level
@@ -114,11 +121,14 @@ func attack_range():
 
 func move(map_manager: MapManager, to: Vector2i):
 	var from = get_id_position()
-	await move_path(map_manager, map_manager.get_enemy_path(from, to))
+	if not is_mock:
+		await move_path(map_manager, map_manager.get_enemy_path(from, to))
 	set_id_position(to)
 	map_manager.move_enemy(from, to)
 
 func draw_attack(target: Character):
+	if is_mock:
+		return
 	if not weapon:
 		return
 	weapon.show()

@@ -16,9 +16,6 @@ func get_id_position() -> Vector2i:
 	return id_position
 
 func move_path(map_manager: MapManager, path: PackedVector2Array):
-	# No-op if overlay.
-	if map_manager.is_overlay:
-		return
 	var curve = map_manager.curve_from_path(path)
 	# Moving 1 "baked point" per 0.01 seconds, each point being
 	# at a distance of 0.2 from each other.

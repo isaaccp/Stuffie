@@ -2,21 +2,24 @@ extends RefCounted
 
 class_name EnemyTurn
 
-var map_manager: MapManager
-var enemy_moves: Array
+var calculation_map: MapManager
+var execution_map: MapManager
 var aborted: bool
+var enemy_moves: Array
+var damage_taken: Array
 
 signal character_died(character: Character)
 
 func _init(map: MapManager):
-	map_manager = map.duplicate()
+	calculation_map = map.clone()
+	execution_map = map.clone(true)
 	aborted = false
 
 func abort():
 	aborted = true
 
 func get_enemy_walkable_cells(enemy: Enemy) -> Array:
-	return map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
+	return calculation_map.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
 
 func calculate() -> bool:
 	calculate_moves()
@@ -29,7 +32,7 @@ func calculate() -> bool:
 
 func calculate_moves():
 	enemy_moves.clear()
-	for enemy in map_manager.enemy_locs.values():
+	for enemy in calculation_map.enemy_locs.values():
 		if aborted:
 			return
 		if enemy.paralysis > 0:
@@ -38,20 +41,22 @@ func calculate_moves():
 		var result = top_move_option(enemy, move_options)
 		var top_move = result[0]
 		var targets = result[1]
-		enemy_moves.append([enemy, top_move, targets])
+		enemy_moves.append([enemy.get_id_position(), top_move, targets])
 		# This is just an overlay. Need to do the actual move later on the real map.
-		map_manager.move_enemy(enemy.get_id_position(), top_move)
+		calculation_map.move_enemy(enemy.get_id_position(), top_move)
 
 func play_attacks():
-	execute_moves(map_manager)
+	execute_moves(execution_map)
 
 func execute_moves(map: MapManager):
 	var simulation = map.is_overlay
-	if simulation:
-		return
+	if not simulation:
+		pass
 	for move in enemy_moves:
+		if aborted:
+			return
 		# Move enemy.
-		var enemy = move[0]
+		var enemy = map.enemy_locs[move[0]]
 		var loc = move[1]
 		var targets = move[2]
 		await enemy.move(map, loc)
@@ -69,25 +74,31 @@ func execute_moves(map: MapManager):
 			continue
 		if chosen_target[1] > enemy.attack_range():
 			continue
-		if not simulation:
-			await enemy.draw_attack(target_character)
+		await enemy.draw_attack(target_character)
 		# We found a target within range, attack and destroy character if it died.
 		if target_character.apply_attack(enemy):
 			if simulation:
-				# TODO: Keep track of death characters
+				record_damage(target_character)
 				map.remove_character(target_character.get_id_position())
 			else:
 				character_died.emit(target_character)
+	if simulation:
+		for loc in map.character_locs:
+			record_damage(map.character_locs[loc])
+	print_debug(damage_taken)
+
+func record_damage(character: Character):
+	damage_taken.push_back([character.get_id_position(), character.snapshot.hit_points - character.hit_points])
 
 func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
 	var ret = []
 	for cloc in character_locs:
-		ret.append([cloc, map_manager.distance(loc, cloc)])
+		ret.append([cloc, calculation_map.distance(loc, cloc)])
 	ret.sort_custom(func(a, b): return a[1] < b[1])
 	return ret
 
 func top_move_option(enemy: Enemy, move_options: Array):
-	var character_locs = map_manager.character_locs.keys()
+	var character_locs = calculation_map.character_locs.keys()
 	var best_move = null
 	var best_target = null
 	var max_distance_sum = 0
@@ -95,7 +106,7 @@ func top_move_option(enemy: Enemy, move_options: Array):
 		var reachable_targets = 0
 		var distance_sum = 0
 		for loc in character_locs:
-			var distance = map_manager.distance(move, loc)
+			var distance = calculation_map.distance(move, loc)
 			if distance <= enemy.attack_range():
 				reachable_targets += 1
 			distance_sum += distance
@@ -110,7 +121,7 @@ func top_move_option(enemy: Enemy, move_options: Array):
 	var min_distance = 100000
 	for move in move_options:
 		for loc in character_locs:
-			var distance = map_manager.distance(move, loc)
+			var distance = calculation_map.distance(move, loc)
 			if distance < min_distance:
 				min_distance = distance
 				best_move = move
