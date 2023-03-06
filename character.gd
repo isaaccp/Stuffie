@@ -81,11 +81,16 @@ func _ready():
 	relic_manager.connect_signals(self)
 	snap()
 
+# Creates a mock of this character to use in turn simulation.
+# All the stats that could be needed to simulate an enemy turn
+# need to be here. E.g. if we later add relics that prevent damage
+# somehow, then we'd need to have the relics here.
 func mock():
 	var m = Character.new()
 	m.is_mock = true
 	m.id_position = id_position
 	m.hit_points = hit_points
+	m.total_hit_points = total_hit_points
 	m.block = block
 	m.dodge = dodge
 	m.snap()
