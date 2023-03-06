@@ -13,6 +13,9 @@ var state_text = {
 }
 
 enum HumanTurnState {
+	# When turn starts. So we can differentiate beginning of turn transitions
+	# to WAITING.
+	STARTING,
 	# Waiting for move or action to be chosen.
 	# During this move we show move paths based on mouse pointer.
 	WAITING,
@@ -37,7 +40,7 @@ var active_character_index: int
 # E.g. Vector2.right if it's more to the right than up/down.
 var direction: Vector2
 var state: GameState
-var human_turn_state: HumanTurnState
+var human_turn_state = HumanTurnState.STARTING
 var map_manager = MapManager.new()
 var current_path: PackedVector2Array = PackedVector2Array()
 var valid_path: bool = false
@@ -64,11 +67,8 @@ var camera_rotation_speed = 100
 var tile_size: int = 2
 var half_tile2 = Vector2(tile_size/2, tile_size/2)
 var half_tile3 = Vector3(tile_size/2, 0, tile_size/2)
-var enemy_turn_thread = Thread.new()
-var enemy_turn_calculated = false
 var enemy_moving = false
-var enemy_turn = EnemyTurn.new()
-
+var enemy_turn_manager = EnemyTurnManager.new()
 var animation_manager = AnimationManager.new()
 var stage_trigger_manager: StageTriggerManager
 
@@ -158,6 +158,7 @@ func initialize_stage(stage: Stage):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager(stage)
+	enemy_turn_manager.initialize(map_manager)
 	player_move_area = TilesHighlight.new(map_manager)
 	enemy_move_area = TilesHighlight.new(map_manager)
 	enemy_attack_area = TilesHighlight.new(map_manager)
@@ -324,11 +325,9 @@ func update_move_area(move_positions: Array, attack_positions: Array):
 	var start = Time.get_ticks_msec()
 	enemy_move_area.set_tiles(move_positions)
 	enemy_move_area.visible = true
-	print_debug("Cost of set tiles move area ", Time.get_ticks_msec() - start)
 	start = Time.get_ticks_msec()
 	enemy_attack_area.set_tiles(attack_positions)
 	enemy_attack_area.visible = true
-	print_debug("Cost of set tiles attack area ", Time.get_ticks_msec() - start)
 
 func path_cost(path: PackedVector2Array) -> int:
 	var cost = 0
@@ -431,10 +430,10 @@ func _process(delta):
 		if camera_modified:
 			update_position_direction(get_viewport().get_mouse_position())
 	elif state == GameState.CPU_TURN:
-		if enemy_turn_calculated and not enemy_moving:
+		if enemy_turn_manager.fresh and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
 			enemy_moving = true
-			for move in enemy_turn.enemy_moves:
+			for move in enemy_turn_manager.moves():
 				# Move enemy.
 				var enemy = move[0]
 				var loc = move[1]
@@ -462,17 +461,6 @@ func _process(delta):
 						return
 			enemy_moving = false
 			change_state(GameState.HUMAN_TURN)
-
-func _async_enemy_turn():
-	var start = Time.get_ticks_msec()
-	enemy_turn.calculate_moves()
-	var end = Time.get_ticks_msec()
-	print_debug("Enemy turn time ", end-start)
-	_wait_enemy_turn_completed.call_deferred()
-
-func _wait_enemy_turn_completed():
-	var results = enemy_turn_thread.wait_to_finish()
-	enemy_turn_calculated = true
 
 func reset_undo():
 	undo_button.hide()
@@ -508,6 +496,8 @@ func begin_turn():
 			var pos = treasure.get_id_position()
 			map_manager.remove_treasure(pos)
 	new_turn_started.emit(turn_number)
+	# To trigger beginning of turn effects.
+	change_human_turn_state(HumanTurnState.STARTING)
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func spawn_treasure():
@@ -527,14 +517,13 @@ func change_state(new_state):
 		StatsManager.add_level(StatsManager.Level.TURN)
 		for character in party.get_children():
 			character.end_turn()
-		enemy_turn_calculated = false
-		enemy_turn.initialize(map_manager)
-		enemy_turn_thread.start(_async_enemy_turn)
 	turn_state_info.text = "%s: %d" % [state_text[state], turn_number]
 
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:
 		end_turn_button.disabled = false
+		if human_turn_state in [HumanTurnState.STARTING, HumanTurnState.MOVING, HumanTurnState.PLAYING_CARD]:
+			enemy_turn_manager.update()
 		clear_path()
 	elif new_state == HumanTurnState.ACTION_TARGET:
 		end_turn_button.disabled = true
@@ -668,7 +657,6 @@ func update_enemy_info(enemy: Enemy):
 	var start = Time.get_ticks_msec()
 	var walkable_cells = get_enemy_walkable_cells(enemy)
 	var attackable_cells = get_enemy_attackable_not_walkable_cells(enemy)
-	print_debug("Get walkable/attackable cells time: ", Time.get_ticks_msec() - start)
 	start = Time.get_ticks_msec()
 	update_move_area(walkable_cells, attackable_cells)
 	print_debug("Update move area time: ", Time.get_ticks_msec() - start)

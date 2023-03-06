@@ -1,8 +1,15 @@
 @tool
 extends EditorScript
 
+func test():
+	pass
+
 func _run():
-	var foo = [1, 2, 3]
-	print_debug(foo)
-	foo = foo.slice(1)
-	print_debug(foo)
+	var thread = Thread.new()
+	thread.start(test)
+	OS.delay_msec(100)
+	print_debug(thread.get_id())
+	print_debug("is_alive: ", thread.is_alive())
+	thread.wait_to_finish()
+	print_debug(thread.get_id())
+	print_debug("is_alive: ", thread.is_alive())

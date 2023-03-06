@@ -4,26 +4,33 @@ class_name EnemyTurn
 
 var map_manager: MapManager
 var enemy_moves: Array
+var aborted: bool
 
-func initialize(map: MapManager):
+func _init(map: MapManager):
 	map_manager = map.duplicate()
+	aborted = false
+
+func abort():
+	aborted = true
 
 func get_enemy_walkable_cells(enemy: Enemy) -> Array:
 	return map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
 
-func calculate_moves():
+func calculate_moves() -> bool:
 	enemy_moves.clear()
 	for enemy in map_manager.enemy_locs.values():
+		if aborted:
+			return false
 		if enemy.paralysis > 0:
 			continue
 		var move_options = get_enemy_walkable_cells(enemy)
-		print_debug(move_options)
 		var result = top_move_option(enemy, move_options)
 		var top_move = result[0]
 		var targets = result[1]
 		enemy_moves.append([enemy, top_move, targets])
 		# This is just an overlay. Need to do the actual move later on the real map.
 		map_manager.move_enemy(enemy.get_id_position(), top_move)
+	return true
 
 func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
 	var ret = []

@@ -114,7 +114,6 @@ func move_character(from: Vector2i, to: Vector2i) -> bool:
 	return true
 
 func move_enemy(from: Vector2i, to: Vector2i):
-	print_debug("on move_enemy, from: ", from, " to: ", to, " is_overlay:", is_overlay)
 	var enemy = enemy_locs[from]
 	enemy_locs.erase(from)
 	enemy_locs[to] = enemy
