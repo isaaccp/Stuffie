@@ -188,6 +188,11 @@ func on_play_effect_text(character: Character) -> String:
 func on_play_after_effect_text(character: Character) -> String:
 	return CardEffect.join_effects_text(character, on_play_after_effects)
 
+func apply_card_change(change: CardChange):
+	cost += change.cost_change
+	if change.exhaust:
+		exhaust = true
+
 func get_description(character: Character) -> String:
 	var description = ""
 	if should_exhaust():

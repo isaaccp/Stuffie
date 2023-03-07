@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="Card" load_steps=12 format=3 uid="uid://dicil2nu2n7ee"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_ooixu"]
+[ext_resource type="Script" path="res://card_change.gd" id="2_anv8u"]
+[ext_resource type="Script" path="res://card_filter.gd" id="2_g6v5s"]
+[ext_resource type="Script" path="res://card_effect_metadata.gd" id="3_p574u"]
+[ext_resource type="Script" path="res://card_effect.gd" id="4_kt1h6"]
+[ext_resource type="Script" path="res://card.gd" id="5_fp6ut"]
+
+[sub_resource type="Resource" id="Resource_nrhuh"]
+script = ExtResource("1_ooixu")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_00wvh"]
+script = ExtResource("2_g6v5s")
+property = 1
+
+[sub_resource type="Resource" id="Resource_270he"]
+script = ExtResource("2_anv8u")
+cost_change = -1
+exhaust = true
+
+[sub_resource type="Resource" id="Resource_qj0ks"]
+script = ExtResource("3_p574u")
+copied_card_change = SubResource("Resource_270he")
+card_filter = SubResource("Resource_00wvh")
+
+[sub_resource type="Resource" id="Resource_ay3yw"]
+script = ExtResource("4_kt1h6")
+effect_value = SubResource("Resource_nrhuh")
+effect_type = 2
+target_field = 0
+effect = 8
+metadata = SubResource("Resource_qj0ks")
+
+[resource]
+script = ExtResource("5_fp6ut")
+card_name = "Multicast"
+basic = false
+upgrade_level = 0
+cost = 1
+target_mode = 0
+target_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("4_kt1h6")]([])
+on_play_effects = Array[ExtResource("4_kt1h6")]([SubResource("Resource_ay3yw")])
+on_play_after_effects = Array[ExtResource("4_kt1h6")]([])
+on_kill_effects = Array[ExtResource("4_kt1h6")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

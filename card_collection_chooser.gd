@@ -3,18 +3,20 @@ extends PanelContainer
 class_name CardCollectionChooser
 
 @export var vbox: VBoxContainer
+@export var skip_button: Button
 
 enum Filter {
 	ALL,
 	UPGRADABLE,
 	DECK,
+	HAND,
 }
 
 var card_ui_scene = preload("res://card_ui.tscn")
 
 var cards: Array
 var cards_per_row = 5  # TODO: Do something smart with screen size later.
-var chosen_card: Card
+var chosen_card: Card = null
 
 signal card_chosen(card: Card)
 
@@ -39,6 +41,12 @@ func initialize_from_character(character: Character, filter=Filter.ALL, conditio
 			if condition.call(card):
 				filtered_cards.push_back(card)
 		initialize_from_cards(character, filtered_cards)
+	elif filter == Filter.HAND:
+		var filtered_cards: Array[Card] = []
+		for card in character.deck.hand:
+			if condition.call(card):
+				filtered_cards.push_back(card)
+		initialize_from_cards(character, filtered_cards)
 
 func initialize_from_upgrades_to_card(character: Character, card: Card):
 	var upgrades = character.get_card_upgrades(card)
@@ -60,7 +68,11 @@ func initialize_from_cards(character: Character, cards: Array):
 			card_idx += 1
 			hbox.add_child(card_ui)
 		vbox.add_child(hbox)
+	skip_button.pressed.connect(_on_skip_button_pressed)
 
 func _on_card_pressed(card_idx: int):
 	chosen_card = cards[card_idx]
+	card_chosen.emit(chosen_card)
+
+func _on_skip_button_pressed():
 	card_chosen.emit(chosen_card)
