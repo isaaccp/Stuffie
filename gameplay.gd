@@ -54,7 +54,6 @@ var current_card: Card
 var target_cursor: CardTargetHighlight
 var single_cursor: SingleCursorHighlight
 var target_area: AreaDistanceHighlight
-var teleport_area: AreaDistanceHighlight
 var player_move_area: TilesHighlight
 var enemy_move_area: TilesHighlight
 var enemy_attack_area: TilesHighlight
@@ -303,7 +302,7 @@ func create_target_area(pos: Vector2i, distance: int):
 	# TODO: Optionally (parameter) respect line-of-sight here.
 	if is_instance_valid(target_area):
 			target_area.queue_free()
-	target_area = AreaDistanceHighlight.new(map_manager, pos, distance)
+	target_area = AreaDistanceHighlight.new(map_manager, pos, distance, true)
 	target_area.refresh()
 	world.add_child(target_area)
 
@@ -732,7 +731,8 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	elif current_card.target_mode == Card.TargetMode.ENEMY:
 		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
-		if distance > current_card.target_distance:
+		var visible_tiles = map_manager.fov.get_fov(active_character.get_id_position())
+		if distance > current_card.target_distance or not new_tile_map_pos in visible_tiles:
 			valid_target = false
 			target_cursor.set_color(Color(0, 0, 0, 1))
 		else:
@@ -744,7 +744,8 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	elif current_card.target_mode == Card.TargetMode.AREA:
 		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
-		if distance > current_card.target_distance:
+		var visible_tiles = map_manager.fov.get_fov(active_character.get_id_position())
+		if distance > current_card.target_distance or not new_tile_map_pos in visible_tiles:
 			valid_target = false
 			target_cursor.set_color(Color(0, 0, 0, 1))
 		else:

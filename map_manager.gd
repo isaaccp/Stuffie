@@ -3,6 +3,7 @@ extends RefCounted
 class_name MapManager
 
 var a_star = AStarGrid2D.new()
+var fov: FieldOfView
 var base_solid_locations: Dictionary
 var temp_not_solid_locations: Dictionary
 var base_view_blocking_locations: Dictionary
@@ -27,6 +28,7 @@ func initialize(stage: Stage, doors_node: Node):
 	for loc in stage.view_blocking_tiles:
 		base_view_blocking_locations[loc] = true
 
+	# TODO: Update FoV for doors.
 	for door_def in stage.doors:
 		var door: Door
 		if door_def.wall_type == door_def.WallType.NORMAL:
@@ -41,6 +43,7 @@ func initialize(stage: Stage, doors_node: Node):
 		doors_node.add_child(door)
 		door.global_position = get_world_position(door_def.pos)
 		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
+	fov = FieldOfView.new(self)
 
 func clone(mock_entities=false):
 	var new = MapManager.new()
