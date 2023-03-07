@@ -60,3 +60,8 @@ randomness = 1.0
 draw_order = 3
 process_material = SubResource("ParticleProcessMaterial_w2i7v")
 draw_pass_1 = SubResource("QuadMesh_w271v")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.360784, 0.172549, 1)
+omni_range = 20.0
+omni_attenuation = 0.5
