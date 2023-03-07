@@ -190,6 +190,8 @@ func on_play_after_effect_text(character: Character) -> String:
 
 func apply_card_change(change: CardChange):
 	cost += change.cost_change
+	if cost < 0:
+		cost = 0
 	if change.exhaust:
 		exhaust = true
 

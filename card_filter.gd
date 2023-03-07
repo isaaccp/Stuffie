@@ -14,6 +14,11 @@ var property_conditions = {
 
 @export var property: Property
 
+func get_description():
+	match property:
+		Property.ANY: return "cards"
+		Property.ATTACK: return "attack cards"
+
 func condition():
 	assert(property in property_conditions)
 	return property_conditions[property]

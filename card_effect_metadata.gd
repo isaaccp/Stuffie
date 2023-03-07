@@ -14,3 +14,8 @@ func card_filter_condition():
 	if card_filter:
 		return card_filter.condition()
 	return func(c: Card): return true
+
+func card_filter_description():
+	if card_filter:
+		return card_filter.get_description()
+	return "cards"

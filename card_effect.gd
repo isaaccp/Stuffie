@@ -54,7 +54,6 @@ func apply_to_character(character: Character):
 				# TODO: Assert this is not invoked outside of combat.
 				await character.teleport(value)
 			Effect.DUPLICATE_CARD:
-				# This ignores value for now and just duplicates one card.
 				await character.duplicate_cards(value, metadata)
 	elif effect_type == EffectType.FIELD:
 		match target_field:
@@ -107,7 +106,7 @@ func get_description(character: Character) -> String:
 			Effect.PICK_ATTACKS: effect_text = "shuffle discard into deck and pick %s attack cards" % value_text
 			Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
 			Effect.TELEPORT: effect_text = "teleport up to %s tiles" % value_text
-			Effect.DUPLICATE_CARD: effect_text = "duplicate %s cards in your hand\n%s" % [value_text, metadata_description()]
+			Effect.DUPLICATE_CARD: effect_text = "create %s copies of %s in your hand\n%s" % [value_text, metadata_card_filter(), metadata_extra_description()]
 	elif effect_type == EffectType.FIELD:
 		var prefix_text = "add"
 		if effect_value.is_negative():
@@ -117,14 +116,29 @@ func get_description(character: Character) -> String:
 		effect_text = "%s %s %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(target_field)]
 	return effect_text
 
-func metadata_description():
+func metadata_card_filter():
+	var property: CardFilter.Property
+	if metadata.card_filter:
+		property = metadata.card_filter.property
+	else:
+		property = CardFilter.Property.ANY
+	match effect:
+		Effect.DUPLICATE_CARD:
+			match property:
+				CardFilter.Property.ANY:
+					return "a card"
+				CardFilter.Property.ATTACK:
+					return "an attack card"
+	assert(false)
+
+func metadata_extra_description():
 	var description = ""
 	match effect:
 		Effect.DUPLICATE_CARD:
 			if metadata.original_card_change:
-				description += "Original card: %s" % metadata.original_card_change.get_description()
+				description += "Original card: %s\n" % metadata.original_card_change.get_description()
 			if metadata.copied_card_change:
-				description += "New card: %s" % metadata.copied_card_change.get_description()
+				description += "New card(s): %s\n" % metadata.copied_card_change.get_description()
 	return description
 
 static func join_effects_text(character: Character, effects: Array[CardEffect]) -> String:

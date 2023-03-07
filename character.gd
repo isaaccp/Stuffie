@@ -230,7 +230,6 @@ func upgrade_cards(number: int):
 	add_stat(Stats.Field.CARDS_UPGRADED, number)
 
 func duplicate_cards(number: int, metadata: CardEffectMetadata):
-	assert(number == 1)
 	var tree = get_tree().current_scene
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
 	chooser.initialize_from_character(self, CardCollectionChooser.Filter.HAND, metadata.card_filter_condition())
@@ -239,12 +238,14 @@ func duplicate_cards(number: int, metadata: CardEffectMetadata):
 	await chooser.card_chosen
 	var card = chooser.chosen_card
 	if card != null:
-		var new_card = card.duplicate()
+		var card_copy = card.duplicate()
 		if metadata.original_card_change:
 			card.apply_card_change(metadata.original_card_change)
-		if metadata.copied_card_change:
-			new_card.apply_card_change(metadata.copied_card_change)
-		deck.hand.push_back(new_card)
+		for i in range(number):
+			var new_card = card_copy.duplicate()
+			if metadata.copied_card_change:
+				new_card.apply_card_change(metadata.copied_card_change)
+			deck.hand.push_back(new_card)
 	chooser.queue_free()
 
 func add_power(power_amount: int):

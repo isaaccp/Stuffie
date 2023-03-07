@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=20 format=3 uid="uid://boikmqlmjpm0l"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=22 format=3 uid="uid://boikmqlmjpm0l"]
 
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_mpdpp"]
 [ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_xwfyn"]
@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://bxlxb6qanclms" path="res://resources/cards/wizard/drain_energy.tres" id="2_o0bek"]
 [ext_resource type="Resource" uid="uid://24meqh31cvlp" path="res://resources/cards/wizard/fiery_burning_hands.tres" id="3_7ir3o"]
 [ext_resource type="Resource" uid="uid://dyxojn7o3mmub" path="res://resources/cards/wizard/mirror_image.tres" id="3_mji2p"]
+[ext_resource type="Resource" uid="uid://c2dhxq4vmw3xk" path="res://resources/cards/wizard/enhancing_multicast.tres" id="3_t31xo"]
 [ext_resource type="Resource" uid="uid://cawnc6v7elebt" path="res://resources/cards/wizard/wide_burning_hands.tres" id="4_2gx48"]
 [ext_resource type="Resource" uid="uid://cio48rnfcl4fs" path="res://resources/cards/wizard/instant_magic_shield.tres" id="4_gm3u8"]
 [ext_resource type="Resource" uid="uid://cus7a1e5w7ao1" path="res://resources/cards/wizard/fireball.tres" id="4_oju8y"]
@@ -19,7 +20,8 @@
 [ext_resource type="Resource" uid="uid://st1xni4txotx" path="res://resources/cards/wizard/nova_fireball.tres" id="11_1gw42"]
 [ext_resource type="Resource" uid="uid://dicil2nu2n7ee" path="res://resources/cards/wizard/multicast.tres" id="15_uukfo"]
 [ext_resource type="Resource" uid="uid://dkti3wvg3r08v" path="res://resources/cards/wizard/powerful_magic_missile.tres" id="16_s4sck"]
+[ext_resource type="Resource" uid="uid://di14luh8exo83" path="res://resources/cards/wizard/powerful_multicast.tres" id="18_45f2r"]
 
 [resource]
 script = ExtResource("2_a8yqu")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_o0bek"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("5_4qp42"), ExtResource("4_gm3u8"), ExtResource("8_fx2sj"), ExtResource("9_rvudy"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("15_uukfo"), ExtResource("11_1gw42"), ExtResource("16_s4sck"), ExtResource("9_50eph"), ExtResource("4_2gx48")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_o0bek"), ExtResource("3_t31xo"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("5_4qp42"), ExtResource("4_gm3u8"), ExtResource("8_fx2sj"), ExtResource("9_rvudy"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("15_uukfo"), ExtResource("11_1gw42"), ExtResource("16_s4sck"), ExtResource("18_45f2r"), ExtResource("9_50eph"), ExtResource("4_2gx48")])
