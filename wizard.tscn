@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="4_cbcsb"]
 [ext_resource type="PackedScene" uid="uid://ddsimr8wumis7" path="res://resources/kaykit-dungeon/models/characters/gltf/character_mage.gltf" id="4_e1b5r"]
-[ext_resource type="Resource" uid="uid://boikmqlmjpm0l" path="res://resources/decks/wizard/all_cards.tres" id="4_lmkd8"]
+[ext_resource type="Resource" uid="uid://boikmqlmjpm0l" path="res://resources/decks/wizard/all_cards.tres" id="5_dr8sx"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_qtq1g"]
 [ext_resource type="Script" path="res://card_effect.gd" id="7_vbhnd"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="8_4cd50"]
@@ -33,7 +33,7 @@ script = ExtResource("8_4cd50")
 title = "Entertain"
 effects = Array[ExtResource("7_vbhnd")]([SubResource("Resource_xu2cw")])
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_7sshv"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_oms2x"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Wizard" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
@@ -48,7 +48,7 @@ portrait_texture = NodePath("Portrait")
 health_bar = NodePath("HealthDisplay3D")
 deck = ExtResource("2_r0eug")
 extra_cards = ExtResource("3_4pj7e")
-all_cards = ExtResource("4_lmkd8")
+all_cards = ExtResource("5_dr8sx")
 camp_choice = SubResource("Resource_bmlki")
 
 [node name="Portrait" type="TextureRect" parent="."]
@@ -68,4 +68,4 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("4_cbcsb")]
-texture = SubResource("ViewportTexture_7sshv")
+texture = SubResource("ViewportTexture_oms2x")
