@@ -199,15 +199,17 @@ func pick_cards_condition(number: int, condition: Callable = func(c): return tru
 	var tree = get_tree().current_scene
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
 	chooser.initialize_from_character(self, CardCollectionChooser.Filter.DECK, condition)
+	chooser.set_skippable()
 	tree.add_child(chooser)
 	# Not sure if there is a way to get the card that is a parameter of the signal easily.
 	await chooser.card_chosen
 	var card = chooser.chosen_card
-	deck.hand.push_back(card)
-	deck.deck.erase(card)
+	if card == null:
+		deck.hand.push_back(card)
+		deck.deck.erase(card)
+		add_stat(Stats.Field.EXTRA_CARDS_DRAWN, number)
 	chooser.queue_free()
-	# TODO: Check if we actually upgraded.
-	add_stat(Stats.Field.EXTRA_CARDS_DRAWN, number)
+
 
 func pick_cards(number: int):
 	pick_cards_condition(number)
@@ -232,6 +234,7 @@ func duplicate_cards(number: int, metadata: CardEffectMetadata):
 	var tree = get_tree().current_scene
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
 	chooser.initialize_from_character(self, CardCollectionChooser.Filter.HAND, metadata.card_filter_condition())
+	chooser.set_skippable()
 	tree.add_child(chooser)
 	await chooser.card_chosen
 	var card = chooser.chosen_card

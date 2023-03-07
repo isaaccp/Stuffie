@@ -25,6 +25,10 @@ func reset():
 	for child in vbox.get_children():
 		child.queue_free()
 
+func set_skippable():
+	skip_button.show()
+	skip_button.pressed.connect(_on_skip_button_pressed)
+
 func initialize_from_character(character: Character, filter=Filter.ALL, condition: Callable = func(c): return true):
 	# TODO: Replace "filter" with "condition" and add a new enum to choose between COLLECTION, DECK, etc.
 	if filter == Filter.ALL:
@@ -68,7 +72,6 @@ func initialize_from_cards(character: Character, cards: Array):
 			card_idx += 1
 			hbox.add_child(card_ui)
 		vbox.add_child(hbox)
-	skip_button.pressed.connect(_on_skip_button_pressed)
 
 func _on_card_pressed(card_idx: int):
 	chosen_card = cards[card_idx]
