@@ -1,12 +1,8 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=7 format=3 uid="uid://dlhyp8id25va7"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=3 format=3 uid="uid://dlhyp8id25va7"]
 
 [ext_resource type="Script" path="res://card_selection_set.gd" id="1_hklcm"]
-[ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_pf766"]
-[ext_resource type="Resource" uid="uid://cus7a1e5w7ao1" path="res://resources/cards/wizard/fireball.tres" id="2_8wvsn"]
-[ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/hold_enemy.tres" id="3_4m52d"]
-[ext_resource type="Resource" uid="uid://dyxojn7o3mmub" path="res://resources/cards/wizard/mirror_image.tres" id="3_dmqnt"]
 [ext_resource type="Resource" uid="uid://dicil2nu2n7ee" path="res://resources/cards/wizard/multicast.tres" id="5_s6jls"]
 
 [resource]
 script = ExtResource("1_hklcm")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_pf766"), ExtResource("2_8wvsn"), ExtResource("3_4m52d"), ExtResource("3_dmqnt"), ExtResource("5_s6jls")])
+cards = Array[Resource("res://card.gd")]([ExtResource("5_s6jls")])
