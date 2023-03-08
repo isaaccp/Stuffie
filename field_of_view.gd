@@ -11,6 +11,9 @@ func _init(map: MapManager):
 	mrpas = MRPAS.new(map.map_rect.size)
 	for loc in map.base_view_blocking_locations:
 		mrpas.set_transparent(loc, false)
+	for loc in map.door_locs:
+		if map.door_locs[loc].solid():
+			mrpas.set_transparent(loc, false)
 
 func get_fov(pos: Vector2i):
 	mutex.lock()
@@ -22,7 +25,15 @@ func get_fov(pos: Vector2i):
 	mutex.unlock()
 	return result
 
-func invalidate():
+func set_solid(pos: Vector2i, solid: bool = true):
+	var transparent = not solid
+	if mrpas.is_transparent(pos) == transparent:
+		return
+	mutex.lock()
+	mrpas.set_transparent(pos, transparent)
+	_invalidate()
+
+func _invalidate():
 	mutex.lock()
 	cache.clear()
 	mutex.unlock()

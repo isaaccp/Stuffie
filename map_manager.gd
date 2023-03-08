@@ -28,7 +28,6 @@ func initialize(stage: Stage, doors_node: Node):
 	for loc in stage.view_blocking_tiles:
 		base_view_blocking_locations[loc] = true
 
-	# TODO: Update FoV for doors.
 	for door_def in stage.doors:
 		var door: Door
 		if door_def.wall_type == door_def.WallType.NORMAL:
@@ -58,6 +57,9 @@ func clone(mock_entities=false):
 	new.base_view_blocking_locations = base_view_blocking_locations.duplicate()
 	new.treasure_locs = treasure_locs.duplicate()
 	new.door_locs = door_locs.duplicate()
+	# This depends on map-rect, base_view_blocking_locations and door_locs.
+	new.fov = FieldOfView.new(new)
+
 	if mock_entities:
 		for loc in character_locs:
 			new.character_locs[loc] = character_locs[loc].mock()
@@ -140,11 +142,13 @@ func remove_character(from: Vector2i):
 func open_door(pos: Vector2i):
 	assert(pos in door_locs)
 	door_locs[pos].open()
+	fov.set_solid(pos, false)
 	a_star.set_point_solid(pos, false)
 
 func close_door(pos: Vector2i):
 	assert(pos in door_locs)
 	door_locs[pos].close()
+	fov.set_solid(pos)
 	a_star.set_point_solid(pos)
 
 func get_path(from: Vector2i, to: Vector2i):
