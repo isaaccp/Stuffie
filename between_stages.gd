@@ -10,6 +10,7 @@ extends Control
 enum BetweenStagesState {
 	NEW_CHARACTER,
 	CHOOSING,
+	DONE,
 }
 
 const default_options = 3
@@ -37,9 +38,6 @@ func initialize(characters: Array[Character], shared_bag: SharedBag, options=def
 
 func _process(delta):
 	if state == BetweenStagesState.NEW_CHARACTER:
-		if current_character == characters.size():
-			between_stages_done.emit()
-			return
 		var character = characters[current_character]
 		character_portrait.set_character(character)
 		current_cards = character.extra_cards.choose(options)
@@ -57,7 +55,12 @@ func _next_character():
 	for card in card_container.get_children():
 		card.queue_free()
 	current_character += 1
-	state = BetweenStagesState.NEW_CHARACTER
+	if current_character < characters.size():
+		state = BetweenStagesState.NEW_CHARACTER
+	else:
+		state = BetweenStagesState.DONE
+		between_stages_done.emit()
+
 
 func _on_card_pressed(card_number: int):
 	characters[current_character].deck.add_card(current_cards[card_number])
