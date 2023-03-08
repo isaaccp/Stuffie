@@ -98,6 +98,7 @@ var stages = [
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 var camp_scene = preload("res://stages/camp.tscn")
 var summary_scene = preload("res://run_summary.tscn")
+var transition_screen = preload("res://transition_screen.tscn")
 
 enum RunType {
 	REGULAR,
@@ -262,6 +263,7 @@ func _on_within_stage_entered():
 		stage_parent.add_child(card_reward)
 
 func _on_within_stage_exited():
+	await transition()
 	for node in stage_parent.get_children():
 		node.queue_free()
 	if current_stage_def().stage_type == StageType.COMBAT:
@@ -294,6 +296,7 @@ func _on_map_entered():
 	run_map.done.connect(next_stage)
 
 func _on_map_exited():
+	await transition()
 	for node in stage_parent.get_children():
 		node.queue_free()
 
@@ -332,3 +335,9 @@ func game_over():
 
 func finish_run():
 	run_finished.emit()
+
+func transition():
+	var transition = transition_screen.instantiate()
+	transition.transition()
+	add_child(transition)
+	return transition.blacked_out
