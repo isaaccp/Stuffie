@@ -332,10 +332,8 @@ func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
 	return attack_positions.keys()
 
 func update_move_area(move_positions: Array, attack_positions: Array):
-	var start = Time.get_ticks_msec()
 	enemy_move_area.set_tiles(move_positions)
 	enemy_move_area.visible = true
-	start = Time.get_ticks_msec()
 	enemy_attack_area.set_tiles(attack_positions)
 	enemy_attack_area.visible = true
 
@@ -620,12 +618,9 @@ func update_enemy_info(enemy: Enemy):
 	if Input.is_action_pressed("ui_showenemymove"):
 		return
 	enemy_info.text = enemy.info_text()
-	var start = Time.get_ticks_msec()
 	var walkable_cells = get_enemy_walkable_cells(enemy)
 	var attackable_cells = get_enemy_attackable_not_walkable_cells(enemy)
-	start = Time.get_ticks_msec()
 	update_move_area(walkable_cells, attackable_cells)
-	print_debug("Update move area time: ", Time.get_ticks_msec() - start)
 
 func clear_enemy_info():
 	enemy_info.text = ""
