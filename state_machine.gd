@@ -25,18 +25,15 @@ class State:
 var id: int
 var state: State
 var states: Array[State]
-
+var obj: Object
 
 func _init():
 	self.id = Time.get_ticks_usec()
-	self.states = states
 	state = null
 
 func add(name: String):
 	var state = State.new(name, id)
 	states.push_back(state)
-	add_user_signal(state.enter_signal())
-	add_user_signal(state.exit_signal())
 	return state
 
 func is_state(state: State):
@@ -48,13 +45,12 @@ func change_state(new_state: State):
 	if state != null:
 		if state.name == new_state.name:
 			return
-		emit_signal(state.exit_signal())
+		await obj.call(state.exit_method())
 	state = new_state
-	emit_signal(new_state.enter_signal())
+	await obj.call(state.enter_method())
 
 func connect_signals(obj: Object):
+	self.obj = obj
 	for s in states:
 		assert(obj.has_method(s.enter_method()))
 		assert(obj.has_method(s.exit_method()))
-		connect(s.enter_signal(), Callable(obj, s.enter_method()))
-		connect(s.exit_signal(), Callable(obj, s.exit_method()))
