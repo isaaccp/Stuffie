@@ -204,7 +204,7 @@ func set_run_type(run_type: RunType):
 			StageDef.combat(0),
 		]
 		stages = [
-			[preload("res://stages/6w_4a.stage")],
+			[preload("res://stages/fov_test.stage")],
 		]
 
 func start():

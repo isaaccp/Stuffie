@@ -11,7 +11,9 @@ var damage_taken: Array
 signal character_died(character: Character)
 
 func _init(map: MapManager):
-	calculation_map = map.clone()
+	# No need to mock entities, but need to clone fov.
+	calculation_map = map.clone(false, true)
+	# Mock entities, but no need to clone fov.
 	execution_map = map.clone(true)
 	aborted = false
 
@@ -99,22 +101,32 @@ func _characters_with_distance(loc: Vector2i, character_locs: Array) -> Array:
 func top_move_option(enemy: Enemy, move_options: Array):
 	var character_locs = calculation_map.character_locs.keys()
 	var best_move = null
-	var best_target = null
+	var best_targets = null
 	var max_distance_sum = 0
 	for move in move_options:
 		var reachable_targets = 0
 		var distance_sum = 0
+		var targets = []
 		for loc in character_locs:
 			var distance = calculation_map.distance(move, loc)
 			if distance <= enemy.attack_range():
-				reachable_targets += 1
+				var visible_tiles = calculation_map.fov.get_fov(move)
+				if loc in visible_tiles:
+					reachable_targets += 1
+					targets.push_back(loc)
 			distance_sum += distance
 		if reachable_targets:
 			if distance_sum > max_distance_sum:
 				max_distance_sum = distance_sum
 				best_move = move
+				best_targets = targets
 	if best_move:
-		return [best_move, _characters_with_distance(best_move, character_locs)]
+		# For selected move, return characters sorted by distance.
+		# We'll attack closest, but if they die, continue to next one.
+		return [best_move, _characters_with_distance(best_move, best_targets)]
+	# TODO: As of now, enemies can get stuck on areas that are close
+	# to the player but can't possibly reach them. Should fix that at some point.
+
 	# If there are no tiles in which we can reach the character to attack,
 	# just get as close as possible.
 	var min_distance = 100000
@@ -124,6 +136,4 @@ func top_move_option(enemy: Enemy, move_options: Array):
 			if distance < min_distance:
 				min_distance = distance
 				best_move = move
-	# For selected move, return characters sorted by distance.
-	# We'll attack closest, but if they die, continue to next one.
-	return [best_move, _characters_with_distance(best_move, character_locs)]
+	return [best_move, []]

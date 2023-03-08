@@ -321,15 +321,13 @@ func offsets_within_distance(distance: int) -> Array[Vector2i]:
 	return tiles
 
 func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
-	var move_positions = Dictionary()
 	var attack_positions: Dictionary
-	for pos in positions:
-		move_positions[pos] = true
 	var offsets = offsets_within_distance(enemy.attack_range())
 	for pos in positions:
+		var visible_tiles = map_manager.fov.get_fov(pos)
 		for offset in offsets:
 			var tile = pos + offset
-			if map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false):
+			if map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false) and tile in visible_tiles:
 				attack_positions[tile] = true
 	return attack_positions.keys()
 

@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://btc3f817iqo36"
+path="res://.godot/imported/fov_test.stage-13631889a54b155d1415d328c9c19fa9.tscn"
+
+[deps]
+
+source_file="res://stages/fov_test.stage"
+dest_files=["res://.godot/imported/fov_test.stage-13631889a54b155d1415d328c9c19fa9.tscn"]
+
+[params]
+

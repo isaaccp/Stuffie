@@ -44,7 +44,7 @@ func initialize(stage: Stage, doors_node: Node):
 		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
 	fov = FieldOfView.new(self)
 
-func clone(mock_entities=false):
+func clone(mock_entities=false, clone_fov=false):
 	var new = MapManager.new()
 	new.is_overlay = true
 	# Immutable, okay to have refs.
@@ -58,7 +58,8 @@ func clone(mock_entities=false):
 	new.treasure_locs = treasure_locs.duplicate()
 	new.door_locs = door_locs.duplicate()
 	# This depends on map-rect, base_view_blocking_locations and door_locs.
-	new.fov = FieldOfView.new(new)
+	if clone_fov:
+		new.fov = FieldOfView.new(new)
 
 	if mock_entities:
 		for loc in character_locs:
