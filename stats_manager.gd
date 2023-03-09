@@ -10,6 +10,9 @@ enum Level {
 
 var stack: StatsStack
 
+var stats:
+	get: return stack
+	set(stats): stack = stats
 var overall_stats:
 	get: return stack.get_level(Level.OVERALL)
 var run_stats:
