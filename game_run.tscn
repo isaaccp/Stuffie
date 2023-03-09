@@ -45,4 +45,5 @@ text = "Save & Quit (WIP)"
 layout_mode = 2
 text = "Abandon Run"
 
+[connection signal="pressed" from="Menu/Save & Quit" to="." method="_on_save_quit_pressed"]
 [connection signal="pressed" from="Menu/Abandon Run" to="." method="_on_abandon_run_pressed"]

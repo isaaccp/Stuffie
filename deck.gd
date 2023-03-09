@@ -5,11 +5,11 @@ class_name Deck
 # Set of cards in the deck.
 @export var cards: Array[Card]
 # Current cards in deck during stage.
-var deck: Array[Card]
+@export var deck: Array[Card]
 # Current cards in hand during stage.
-var hand: Array[Card]
+@export var hand: Array[Card]
 # Current cards in discard pile during stage.
-var discard: Array[Card]
+@export var discard: Array[Card]
 
 func reset():
 	deck.clear()

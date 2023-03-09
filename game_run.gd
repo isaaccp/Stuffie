@@ -125,7 +125,7 @@ var characters: Array[Character]
 # Whether the last stage requires rewards.
 var rewards_type = RewardsType.NONE
 
-var relic_list = preload("res://resources/relic_list.tres")
+var relic_list = preload("res://resources/relic_list.tres").duplicate()
 var all_cards = Dictionary()
 var run_type: RunType
 var added_levels = 0
@@ -143,6 +143,7 @@ func set_starting_characters(starting_characters: Array[Character]):
 		relic_list.mark_used(initial_relic.name)
 		character.shared_bag = shared_bag
 		character.add_relic(initial_relic, false)
+		character.initialize()
 		characters.push_back(character)
 		party.add_child(character)
 		if run_type == RunType.TEST_BLACKSMITH:
@@ -271,7 +272,10 @@ func _on_within_stage_exited():
 		node.queue_free()
 	if current_stage_def().stage_type == StageType.COMBAT:
 		for character in characters:
-			character.end_stage()
+			# TODO: Consider not destroying the character, just marking it as dead.
+			# This would also help with resurrect, etc.
+			if is_instance_valid(character):
+				character.end_stage()
 	stage_number += 1
 
 func _on_between_stages_entered():
@@ -358,3 +362,49 @@ func _on_abandon_run_pressed():
 	menu.hide()
 	get_tree().paused = false
 	game_over()
+
+func _on_save_quit_pressed():
+	var main_game = $/root/MainGame
+	main_game.save_game_state()
+	get_tree().paused = false
+	get_tree().quit()
+
+func get_save_state():
+	var run_state = RunSaveState.new()
+	run_state.run_type = run_type
+	run_state.state = state.current_state_name()
+	run_state.stage_number = stage_number
+	run_state.gold = shared_bag.gold
+	run_state.relic_list = relic_list
+	for character in characters:
+		run_state.characters.push_back(character.get_save_state())
+	if state.is_state(MAP):
+		# If we are on map, this is the easiest situation. Just
+		# need to restore to map, nothing extra to save.
+		pass
+	else:
+		run_state.stage_type = current_stage_def().stage_type
+		match run_state.stage_type:
+			StageType.COMBAT:
+				pass
+			StageType.BLACKSMITH:
+				pass
+			StageType.CAMP:
+				pass
+			StageType.CARD_REWARD:
+				pass
+	return run_state
+
+func load_save_state(run_state: RunSaveState):
+	set_run_type(run_state.run_type)
+	stage_number = run_state.stage_number
+	shared_bag.gold = run_state.gold
+	relic_list = run_state.relic_list
+	for character_data in run_state.characters:
+		var character = Character.restore(character_data)
+		character.shared_bag = shared_bag
+		characters.push_back(character)
+		party.add_child(character)
+	match run_state.state:
+		MAP.name:
+			state.change_state(MAP)

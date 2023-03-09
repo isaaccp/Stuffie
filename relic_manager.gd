@@ -1,9 +1,9 @@
-extends RefCounted
+extends Resource
 
 class_name RelicManager
 
-var relics: Array[Relic]
-var temp_relics: Array[Relic]
+@export var relics: Array[Relic]
+@export var temp_relics: Array[Relic]
 
 func connect_signals(character: Character):
 	character.stage_started.connect(_on_start_stage)

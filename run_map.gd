@@ -80,7 +80,7 @@ func _input(event):
 			done.emit()
 
 func can_save():
-	return false
+	return true
 
 # Invoked when abandoning run while this stage is on.
 func cleanup():

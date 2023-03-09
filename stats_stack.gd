@@ -28,6 +28,12 @@ func remove_level(level: StatsManager.Level):
 	assert(stack.size() != 1)
 	stack.pop_back()
 
+# This shouldn't be used in general, just temporarily during coding.
+func trim_to_level(level: StatsManager.Level):
+	print_debug("This function shouldn't be called long-term, remove")
+	while stack.size() > level + 1:
+		remove_level(stack.size()-1)
+
 func get_level(level: StatsManager.Level):
 	assert(level < stack.size())
 	return stack[level]

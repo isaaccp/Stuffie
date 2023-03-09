@@ -36,6 +36,9 @@ func add(name: String):
 	states.push_back(state)
 	return state
 
+func current_state_name():
+	return state.name
+
 func is_state(state: State):
 	assert(state.id == id)
 	return self.state == state
@@ -54,3 +57,6 @@ func connect_signals(obj: Object):
 	for s in states:
 		assert(obj.has_method(s.enter_method()))
 		assert(obj.has_method(s.exit_method()))
+
+func build_state(name: String):
+	return State.new(name, id)

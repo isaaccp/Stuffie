@@ -34,7 +34,8 @@ var is_mock = false
 var gameplay: Gameplay
 
 @export var health_bar: HealthDisplay3D
-@export var deck: Deck
+@export var original_deck: Deck
+var deck: Deck
 @export var extra_cards: CardSelectionSet
 @export var all_cards: CardSelectionSet
 @export var camp_choice: CampChoice
@@ -75,9 +76,15 @@ var snapshot: Snapshot
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
+
+func initialize(full=true):
+	# Used when starting a run, but not when loading.
+	if full:
+		deck = original_deck.duplicate()
+		heal_full()
 	process_cards()
 	changed.connect(_on_changed)
-	heal_full()
 	relic_manager.connect_signals(self)
 	snap()
 
@@ -366,3 +373,48 @@ func move(map_manager: MapManager, to: Vector2i) -> bool:
 
 func on_move_map_update(map_manager: MapManager, from: Vector2i, to: Vector2i):
 	map_manager.move_character(from, to)
+
+func get_save_state():
+	var save_state = CharacterSaveState.new()
+	save_state.character_type = character_type
+	save_state.id_position = get_id_position()
+	save_state.total_action_points = total_action_points
+	save_state.total_move_points = total_move_points
+	save_state.total_hit_points = total_hit_points
+	save_state.cards_per_turn = cards_per_turn
+	save_state.action_points = action_points
+	save_state.move_points = move_points
+	save_state.hit_points = hit_points
+	save_state.block = block
+	save_state.power = power
+	save_state.dodge = dodge
+	save_state.relic_manager = relic_manager
+	save_state.deck = deck
+	return save_state
+
+static func restore(save_state: CharacterSaveState) -> Character:
+	# For restoring, probably should be moved somewhere else unique.
+	var warrior = preload("res://warrior.tscn")
+	var wizard = preload("res://wizard.tscn")
+
+	var character: Character
+	match save_state.character_type:
+		CharacterType.WARRIOR:
+			character = warrior.instantiate() as Character
+		CharacterType.WIZARD:
+			character = wizard.instantiate() as Character
+	character.set_id_position(save_state.id_position)
+	character.total_action_points = save_state.total_action_points
+	character.total_move_points = save_state.total_move_points
+	character.total_hit_points = save_state.total_hit_points
+	character.cards_per_turn = save_state.cards_per_turn
+	character.action_points = save_state.action_points
+	character.move_points = save_state.move_points
+	character.hit_points = save_state.hit_points
+	character.block = save_state.block
+	character.power = save_state.power
+	character.dodge = save_state.dodge
+	character.relic_manager = save_state.relic_manager
+	character.deck = save_state.deck
+	character.initialize(false)
+	return character

@@ -546,7 +546,7 @@ func handle_teleport():
 	teleport_finished.emit()
 
 func _input(event):
-	if Input.is_action_pressed("ui_cancel"):
+	if Input.is_action_just_released("ui_cancel"):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				hand_ui.get_child(current_card_index).set_highlight(false)
@@ -835,7 +835,9 @@ func _on_undo_button_pressed():
 	apply_undo()
 
 func can_save():
-	return state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING
+	# TODO: Change to below when supported.
+	return false
+	# return state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING
 
 # Invoked when abandoning run while this stage is on.
 func cleanup():

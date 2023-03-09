@@ -33,7 +33,7 @@ script = ExtResource("7_j2akc")
 title = "Train"
 effects = Array[ExtResource("7_0sito")]([SubResource("Resource_roygk")])
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_f5gn7"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_47a0v"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
@@ -46,7 +46,7 @@ cards_per_turn = 5
 initial_relic = ExtResource("2_i4ij4")
 portrait_texture = NodePath("Portrait")
 health_bar = NodePath("HealthDisplay3D")
-deck = ExtResource("2_d5bu5")
+original_deck = ExtResource("2_d5bu5")
 extra_cards = ExtResource("3_t8tph")
 all_cards = ExtResource("5_6bt2n")
 camp_choice = SubResource("Resource_gq1ff")
@@ -66,4 +66,4 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("5_stldu")]
-texture = SubResource("ViewportTexture_f5gn7")
+texture = SubResource("ViewportTexture_47a0v")
