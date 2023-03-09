@@ -836,3 +836,7 @@ func _on_undo_button_pressed():
 
 func can_save():
 	return state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING
+
+# Invoked when abandoning run while this stage is on.
+func cleanup():
+	StatsManager.remove_level(StatsManager.Level.TURN)

@@ -74,3 +74,7 @@ func _on_skip_pressed():
 
 func can_save():
 	return false
+
+# Invoked when abandoning run while this stage is on.
+func cleanup():
+	pass

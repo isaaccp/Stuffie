@@ -65,3 +65,7 @@ func _on_button_pressed(choice: CampChoice):
 
 func can_save():
 	return false
+
+# Invoked when abandoning run while this stage is on.
+func cleanup():
+	pass

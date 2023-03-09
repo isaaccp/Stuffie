@@ -348,5 +348,13 @@ func _input(event):
 			get_tree().paused = false
 		else:
 			menu.show()
-			save_and_quit_button.disabled = not stage.can_save()
+			save_and_quit_button.disabled = (stage and not stage.can_save())
 			get_tree().paused = true
+
+func _on_abandon_run_pressed():
+	var stage = stage_parent.get_child(0)
+	if stage:
+		stage.cleanup()
+	menu.hide()
+	get_tree().paused = false
+	game_over()
