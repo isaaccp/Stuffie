@@ -78,3 +78,6 @@ func _input(event):
 		if event.button_index == 1 and event.pressed:
 			finished = true
 			done.emit()
+
+func can_save():
+	return false

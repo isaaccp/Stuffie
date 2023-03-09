@@ -71,3 +71,6 @@ func _on_skip_pressed():
 	shared_bag.add_gold(NO_CARD_GOLD)
 	StatsManager.add(characters[current_character], Stats.Field.GOLD_EARNED, NO_CARD_GOLD)
 	_next_character()
+
+func can_save():
+	return false

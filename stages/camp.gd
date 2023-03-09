@@ -62,3 +62,6 @@ func _on_button_pressed(choice: CampChoice):
 	for effect in choice.effects:
 		effect.apply_to_character(characters[current_character])
 	_next_character()
+
+func can_save():
+	return false

@@ -196,3 +196,6 @@ func _on_relic_selected(relic_button: RelicButton):
 
 func _on_done_pressed():
 	stage_done.emit()
+
+func can_save():
+	return false
