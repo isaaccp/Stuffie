@@ -556,6 +556,7 @@ func _input(event):
 				target_area.queue_free()
 				active_character.clear_pending_action_cost()
 				change_human_turn_state(HumanTurnState.WAITING)
+				get_viewport().set_input_as_handled()
 	if Input.is_action_pressed("ui_showenemymove"):
 		show_enemy_moves()
 	if Input.is_action_just_released("ui_showenemymove"):
@@ -680,7 +681,7 @@ func play_card():
 				# Those should all be the same for a given card.
 				effect_time = effect.apply_effect_time()
 		if effects.get_child_count() != 0:
-			await get_tree().create_timer(effect_time).timeout
+			await get_tree().create_timer(effect_time, false).timeout
 		for tile_offset in affected_tiles:
 			var tile = target_tile + tile_offset
 			if map_manager.enemy_locs.has(tile):
@@ -830,6 +831,8 @@ func _unhandled_input(event):
 		elif event is InputEventMouseMotion:
 			update_position_direction(event.position)
 
-
 func _on_undo_button_pressed():
 	apply_undo()
+
+func can_save():
+	return state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING

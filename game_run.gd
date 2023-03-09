@@ -118,6 +118,10 @@ var characters: Array[Character]
 
 @export var party: Node
 @export var stage_parent: Node
+@export var menu: Control
+@export var save_and_quit_button: Button
+@export var abandon_button: Button
+
 # Whether the last stage requires rewards.
 var rewards_type = RewardsType.NONE
 
@@ -334,3 +338,15 @@ func game_over():
 
 func finish_run():
 	run_finished.emit()
+
+func _input(event):
+	# TODO: Implement can_save() in all stage things.
+	if Input.is_action_just_released("ui_cancel"):
+		var stage = stage_parent.get_child(0)
+		if menu.visible:
+			menu.hide()
+			get_tree().paused = false
+		else:
+			menu.show()
+			save_and_quit_button.disabled = not stage.can_save()
+			get_tree().paused = true

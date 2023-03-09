@@ -22,4 +22,5 @@ func move_path(map_manager: MapManager, path: PackedVector2Array):
 	for point in curve.get_baked_points():
 		look_at(point)
 		position = point
-		await get_tree().create_timer(0.01).timeout
+		# Set timer to not pass time during pause.
+		await get_tree().create_timer(0.01, false).timeout

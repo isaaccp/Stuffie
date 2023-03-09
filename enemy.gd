@@ -144,7 +144,7 @@ func draw_attack(target: Character):
 			break
 		prev_distance = new_distance
 		weapon.global_position -= (direction * 0.5)
-		await get_tree().create_timer(0.02).timeout
+		await get_tree().create_timer(0.02, false).timeout
 	weapon.position = Vector3(0, 0, 0)
 	weapon.hide()
 
