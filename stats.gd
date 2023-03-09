@@ -1,4 +1,4 @@
-extends RefCounted
+extends Resource
 
 class_name Stats
 
@@ -37,7 +37,7 @@ enum Field {
 
 var reverse_field_lookup: Dictionary
 
-var stats: Dictionary
+@export var stats: Dictionary
 
 func _init():
 	super()

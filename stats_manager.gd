@@ -8,50 +8,39 @@ enum Level {
 	MAX,
 }
 
-var stack: Array[Stats]
+var stack: StatsStack
 
 var overall_stats:
-	get: return stack[Level.OVERALL]
+	get: return stack.get_level(Level.OVERALL)
 var run_stats:
-	get: return stack[Level.GAME_RUN]
+	get: return stack.get_level(Level.GAME_RUN)
 var stage_stats:
-	get: return stack[Level.STAGE]
+	get: return stack.get_level(Level.STAGE)
 var turn_stats:
-	get: return stack[Level.TURN]
+	get: return stack.get_level(Level.TURN)
+
 
 signal stats_added(character: Character, field: Stats.Field, value: int)
 
 func _init():
 	super()
-	add_level(Level.OVERALL)
+	stack = StatsStack.new()
 
 func add_level(level: Level):
-	assert(stack.size() == level)
-	assert(level != Level.MAX)
-	stack.push_back(Stats.new())
+	stack.add_level(level)
 
 func remove_level(level: Level):
-	assert((stack.size() - 1) == level)
-	# OVERALL aggregation shouldn't be removed.
-	assert(stack.size() != 1)
-	stack.pop_back()
+	stack.remove_level(level)
 
 func add(character: Character, field: Stats.Field, value: int):
-	print(overall_stats.get_field_name(field), " ", value)
-	var character_type = character.character_type
-	for level in range(stack.size()):
-		stack[level].add(character_type, field, value)
+	stack.add(character, field, value)
 	stats_added.emit(character, field, value)
 
 func remove(character: Character, field: Stats.Field, value: int):
-	var character_type = character.character_type
-	for level in range(stack.size()):
-		stack[level].remove(character_type, field, value)
+	stack.remove(character, field, value)
 
 func get_value(level: Level, character: Character, field: Stats.Field) -> int:
-	assert(level <= stack.size())
-	return stack[level].get_value(character, field)
+	return stack.get_value(level, character, field)
 
 func print(level: Level):
-	assert(level <= stack.size())
-	stack[level].print()
+	stack.print(level)
