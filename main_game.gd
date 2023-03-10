@@ -127,7 +127,6 @@ func load_game_state():
 	loaded_save_state = load("user://stuffie_save.tres") as SaveState
 	StatsManager.stats = loaded_save_state.stats
 	if loaded_save_state.main_game_state == WITHIN_RUN.name:
-		StatsManager.stats.trim_to_level(StatsManager.Level.GAME_RUN)
 		save_state_within_run = true
 
 func save_game_state():

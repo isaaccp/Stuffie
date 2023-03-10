@@ -35,6 +35,7 @@ var done: bool
 
 var is_mock = false
 
+@export var enemy_type: Stage.EnemyId
 @export var enemy_name: String
 @export var health_bar: HealthDisplay3D
 @export var attack_style: AttackStyle
@@ -150,3 +151,43 @@ func draw_attack(target: Character):
 
 func refresh():
 	health_bar.update_health(hit_points, total_hit_points)
+
+func get_save_state():
+	var save_state = EnemySaveState.new()
+	save_state.enemy_type = enemy_type
+	save_state.id_position = get_id_position()
+	save_state.total_move_points = total_move_points
+	save_state.total_hit_points = total_hit_points
+	save_state.total_damage = total_damage
+	save_state.total_attack_range = total_attack_range
+	save_state.level = level
+	save_state.move_points = move_points
+	save_state.hit_points = hit_points
+	save_state.weakness = weakness
+	save_state.paralysis = paralysis
+	save_state.vulnerability = vulnerability
+	return save_state
+
+static func restore(save_state: EnemySaveState) -> Enemy:
+	# For restoring, probably should be moved somewhere else unique.
+	var skeleton_warrior = preload("res://skeleton_warrior.tscn")
+	var skeleton_archer = preload("res://skeleton_archer.tscn")
+
+	var enemy: Enemy
+	match save_state.enemy_type:
+		Stage.EnemyId.SKELETON_WARRIOR:
+			enemy = skeleton_warrior.instantiate() as Enemy
+		Stage.EnemyId.SKELETON_ARCHER:
+			enemy = skeleton_archer.instantiate() as Enemy
+	enemy.set_id_position(save_state.id_position)
+	enemy.total_move_points = save_state.total_move_points
+	enemy.total_hit_points = save_state.total_hit_points
+	enemy.total_damage = save_state.total_damage
+	enemy.total_attack_range = save_state.total_attack_range
+	enemy.level = save_state.level
+	enemy.move_points = save_state.move_points
+	enemy.hit_points = save_state.hit_points
+	enemy.weakness = save_state.weakness
+	enemy.paralysis = save_state.paralysis
+	enemy.vulnerability = save_state.vulnerability
+	return enemy

@@ -12,6 +12,11 @@ var stage_player_scene = preload("res://stage.tscn")
 var between_stages_scene = preload("res://between_stages.tscn")
 var run_map_scene = preload("res://run_map.tscn")
 
+var stage_name: String
+var stage_impl: Node
+var load_stage_from_save = false
+var combat_state: CombatSaveState
+
 var run_victory = false
 
 enum StageType {
@@ -65,34 +70,14 @@ class StageDef:
 	static func camp():
 		return StageDef.new(StageType.CAMP)
 
-var stages = [
-	# Super simple stage for easy testing of stage transitions, etc.
-	# [ preload("res://stages/diff0/stage_simple.stage")],
-	[
-		preload("res://stages/4w.stage"),
-		preload("res://stages/1w_2a.stage"),
-	],
-	[
-		preload("res://stages/3w_2a.stage"),
-		preload("res://stages/cages.stage"),
-	],
-	[
-		preload("res://stages/death_wall.stage"),
-		preload("res://stages/tight_corridor.stage"),
-	],
-	[
-		preload("res://stages/death_cage.stage"),
-		preload("res://stages/corridor.stage"),
-	],
-	[
-		preload("res://stages/big_bad_skeleton.stage"),
-	],
-	[
-		preload("res://stages/6w_4a.stage"),
-	],
-	[
-		preload("res://stages/first_horde.stage"),
-	],
+var stages  = [
+	["4w", "1w_2a"],
+	["3w_2a", "cages"],
+	["death_wall", "tight_corridor"],
+	["death_cage", "corridor"],
+	["big_bad_skeleton"],
+	["6w_4a"],
+	["first_horde"],
 ]
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
@@ -209,7 +194,7 @@ func set_run_type(run_type: RunType):
 			StageDef.combat(0),
 		]
 		stages = [
-			[preload("res://stages/fov_test.stage")],
+			["fov_test"],
 		]
 
 func start():
@@ -218,12 +203,17 @@ func start():
 func current_stage_def():
 	return run[stage_number]
 
+func load_stage(stage_name: String) -> Stage:
+	var path = "res://stages/" + stage_name + ".stage"
+	var scene = load(path) as PackedScene
+	var stage = scene.instantiate() as Stage
+	return stage
+
 func get_combat_stage(difficulty: int):
 	assert(difficulty < stages.size())
 	var options = stages[difficulty]
-	var scene = options[randi() % options.size()]
-	var stage = scene.instantiate() as Stage
-	return stage
+	stage_name = options[randi() % options.size()]
+	return load_stage(stage_name)
 
 func get_blacksmith_stage():
 	var stage = blacksmith_scene.instantiate() as BlacksmithStage
@@ -240,31 +230,44 @@ func get_card_reward_stage():
 func _on_within_stage_entered():
 	var stage_def = current_stage_def()
 	rewards_type = stage_def.rewards_type()
-	if stage_def.stage_type == StageType.COMBAT:
-		StatsManager.add_level(StatsManager.Level.STAGE)
+	if load_stage_from_save:
 		var stage_player = stage_player_scene.instantiate()
-		var stage = get_combat_stage(stage_def.combat_difficulty)
-		for enemy in stage.enemies:
-			enemy.level += added_levels + stage_def.combat_added_levels
+		var stage = load_stage(stage_name)
 		stage_parent.add_child(stage_player)
-		stage_player.initialize(stage, party, shared_bag)
+		stage_player.initialize(stage, party, shared_bag, combat_state)
 		stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
 		stage_player.game_over.connect(game_over)
-	elif stage_def.stage_type == StageType.BLACKSMITH:
-		var blacksmith = get_blacksmith_stage()
-		blacksmith.initialize(characters, shared_bag, relic_list, stage_def.blacksmith_removals, stage_def.blacksmith_upgrades, stage_def.blacksmith_relics)
-		blacksmith.stage_done.connect(stage_finished.bind(StageType.BLACKSMITH))
-		stage_parent.add_child(blacksmith)
-	elif stage_def.stage_type == StageType.CAMP:
-		var camp = get_camp_stage()
-		camp.initialize(characters, shared_bag)
-		camp.stage_done.connect(stage_finished.bind(StageType.CAMP))
-		stage_parent.add_child(camp)
-	elif stage_def.stage_type == StageType.CARD_REWARD:
-		var card_reward = get_card_reward_stage()
-		card_reward.initialize(characters, shared_bag, stage_def.card_reward_options)
-		card_reward.between_stages_done.connect(stage_finished.bind(StageType.CARD_REWARD))
-		stage_parent.add_child(card_reward)
+		stage_impl = stage_player
+	else:
+		if stage_def.stage_type == StageType.COMBAT:
+			StatsManager.add_level(StatsManager.Level.STAGE)
+			var stage_player = stage_player_scene.instantiate()
+			var stage = get_combat_stage(stage_def.combat_difficulty)
+			for enemy in stage.enemies:
+				enemy.level += added_levels + stage_def.combat_added_levels
+			stage_parent.add_child(stage_player)
+			stage_player.initialize(stage, party, shared_bag)
+			stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
+			stage_player.game_over.connect(game_over)
+			stage_impl = stage_player
+		elif stage_def.stage_type == StageType.BLACKSMITH:
+			var blacksmith = get_blacksmith_stage()
+			blacksmith.initialize(characters, shared_bag, relic_list, stage_def.blacksmith_removals, stage_def.blacksmith_upgrades, stage_def.blacksmith_relics)
+			blacksmith.stage_done.connect(stage_finished.bind(StageType.BLACKSMITH))
+			stage_parent.add_child(blacksmith)
+			stage_impl = blacksmith
+		elif stage_def.stage_type == StageType.CAMP:
+			var camp = get_camp_stage()
+			camp.initialize(characters, shared_bag)
+			camp.stage_done.connect(stage_finished.bind(StageType.CAMP))
+			stage_parent.add_child(camp)
+			stage_impl = camp
+		elif stage_def.stage_type == StageType.CARD_REWARD:
+			var card_reward = get_card_reward_stage()
+			card_reward.initialize(characters, shared_bag, stage_def.card_reward_options)
+			card_reward.between_stages_done.connect(stage_finished.bind(StageType.CARD_REWARD))
+			stage_parent.add_child(card_reward)
+			stage_impl = card_reward
 
 func _on_within_stage_exited():
 	await TransitionScreen.create(self)
@@ -386,7 +389,8 @@ func get_save_state():
 		run_state.stage_type = current_stage_def().stage_type
 		match run_state.stage_type:
 			StageType.COMBAT:
-				pass
+				run_state.stage_name = stage_name
+				run_state.combat_state = stage_impl.get_save_state()
 			StageType.BLACKSMITH:
 				pass
 			StageType.CAMP:
@@ -408,3 +412,10 @@ func load_save_state(run_state: RunSaveState):
 	match run_state.state:
 		MAP.name:
 			state.change_state(MAP)
+		WITHIN_STAGE.name:
+			match run_state.stage_type:
+				StageType.COMBAT:
+					load_stage_from_save = true
+					stage_name = run_state.stage_name
+					combat_state = run_state.combat_state
+					state.change_state(WITHIN_STAGE)

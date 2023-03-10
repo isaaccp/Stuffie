@@ -39,12 +39,11 @@ var killed_enemies = 0
 signal stage_completed
 
 func _ready():
-	pass
-
-func initialize(enemies_node: Node):
 	# TODO: I was unable to save the gridmap as a exported node path in the stage importer,
 	# so need to set it here.
 	gridmap = $GridMap
+
+func initialize(enemies_node: Node):
 	for enemy_position in enemies:
 		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
 		enemy.initialize(enemy_position.position, enemy_position.level)

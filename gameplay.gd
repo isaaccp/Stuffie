@@ -102,12 +102,12 @@ class UndoState:
 var undo_states: Dictionary
 var party: Node
 var shared_bag: SharedBag
-
 var teleport_distance: int
 signal teleport_finished
 
 var enemy_walkable_cache: Dictionary
 var enemy_attackable_cache: Dictionary
+var restored_from_save = false
 
 signal enemy_died
 signal character_moved(pos: Vector2i)
@@ -121,7 +121,7 @@ signal game_over
 func _ready():
 	undo_button.hide()
 
-func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
+func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, combat_state: CombatSaveState = null):
 	self.shared_bag = shared_bag
 	shared_bag_gold_ui.set_shared_bag(shared_bag)
 	party = character_party
@@ -135,10 +135,27 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag):
 		# Hook character selection.
 		character_portrait.portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
-	initialize_stage(stage)
+	initialize_stage(stage, combat_state)
 
-func initialize_stage(stage: Stage):
-	stage.initialize(enemies_node)
+func initialize_stage(stage: Stage, combat_state: CombatSaveState):
+	if combat_state == null:
+		stage.initialize(enemies_node)
+		var i = 0
+		for character in party.get_children():
+			character.begin_stage(self)
+			character.set_id_position(stage.starting_positions[i])
+			i += 1
+		# Usually "turn stats" are created at beginning of enemy turn, create here the first time.
+		StatsManager.add_level(StatsManager.Level.TURN)
+		turn_number = 0
+	else:
+		for enemy_data in combat_state.enemies:
+			var enemy = Enemy.restore(enemy_data)
+			enemies_node.add_child(enemy)
+			# To show healthbar if they are hurt.
+			enemy.refresh()
+		turn_number = combat_state.turn_number
+		restored_from_save = true
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
@@ -147,12 +164,6 @@ func initialize_stage(stage: Stage):
 	stage_trigger_manager = StageTriggerManager.new(stage.triggers)
 	stage_trigger_manager.connect_signals(self)
 	world.add_child(stage)
-	var i = 0
-	for character in party.get_children():
-		character.begin_stage(self)
-		character.set_id_position(stage.starting_positions[i])
-		i += 1
-	turn_number = 0
 	# As of now, some bits of the game require active_character to be set,
 	# so set it now before changing state.
 	set_active_character(0)
@@ -177,8 +188,6 @@ func initialize_stage(stage: Stage):
 		stage.add_child(objective_highlight)
 	stage_info.text = "Stage"
 	objective_info.text = stage.get_objective_string()
-	# Usually "turn stats" are created at beginning of enemy turn, create here the first time.
-	StatsManager.add_level(StatsManager.Level.TURN)
 	change_state(GameState.HUMAN_TURN)
 
 func on_enemy_turn_calculated(damage_taken: Array):
@@ -473,7 +482,14 @@ func spawn_treasure():
 func change_state(new_state):
 	state = new_state
 	if state == GameState.HUMAN_TURN:
-		begin_turn()
+		# If restored_from_save, don't trigger begin_turn on first human turn.
+		if restored_from_save:
+			# Need to go through STARTING to trigger enemy updater.
+			change_human_turn_state(HumanTurnState.STARTING)
+			change_human_turn_state(HumanTurnState.WAITING)
+			restored_from_save = false
+		else:
+			begin_turn()
 	elif state == GameState.CPU_TURN:
 		StatsManager.turn_stats.print()
 		# Re-start turn stats so we can use enemy turn stats in cards next run.
@@ -834,10 +850,15 @@ func _unhandled_input(event):
 func _on_undo_button_pressed():
 	apply_undo()
 
+func get_save_state():
+	var combat_state = CombatSaveState.new()
+	combat_state.turn_number = turn_number
+	for enemy in enemies_node.get_children():
+		combat_state.enemies.push_back(enemy.get_save_state())
+	return combat_state
+
 func can_save():
-	# TODO: Change to below when supported.
-	return false
-	# return state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING
+	return state == GameState.HUMAN_TURN and human_turn_state == HumanTurnState.WAITING
 
 # Invoked when abandoning run while this stage is on.
 func cleanup():
