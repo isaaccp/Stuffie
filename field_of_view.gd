@@ -5,6 +5,8 @@ class_name FieldOfView
 var mrpas: MRPAS
 var cache: Dictionary
 var mutex = Mutex.new()
+var tiles_cached = 0
+var visible_tiles_cached = 0
 const MAX_DISTANCE = 10
 
 func _init(map: MapManager):
@@ -21,6 +23,8 @@ func get_fov(pos: Vector2i):
 		mrpas.clear_field_of_view()
 		mrpas.compute_field_of_view(pos, MAX_DISTANCE)
 		cache[pos] = mrpas.fov_tiles()
+		tiles_cached += 1
+		visible_tiles_cached += len(cache[pos])
 	var result = cache[pos]
 	mutex.unlock()
 	return result
@@ -32,8 +36,10 @@ func set_solid(pos: Vector2i, solid: bool = true):
 	mutex.lock()
 	mrpas.set_transparent(pos, transparent)
 	_invalidate()
+	mutex.unlock()
 
 func _invalidate():
-	mutex.lock()
+	# Must be called with mutex held.
+	tiles_cached = 0
+	visible_tiles_cached = 0
 	cache.clear()
-	mutex.unlock()

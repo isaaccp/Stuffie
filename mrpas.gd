@@ -53,7 +53,7 @@ var _size: Vector2i
 var _transparent_cells: Array = []
 # A bool for each cell indicating that it is currently in view.
 var _fov_cells: Array = []
-var _fov_map: Dictionary = {}
+var _fov_map: Dictionary
 
 
 # Initialize the algorithm for a map of a particular size.
@@ -72,7 +72,7 @@ func _init(size: Vector2i) -> void:
 
 		_transparent_cells.push_back(transparent_row)
 		_fov_cells.push_back(fov_row)
-
+	_fov_map = {}
 
 # Returns true if a cell is marked as transparent.
 func is_transparent(position: Vector2i) -> bool:
@@ -107,7 +107,7 @@ func clear_field_of_view() -> void:
 	for y in range(_size.y):
 		for x in range(_size.x):
 			_fov_cells[y][x] = false
-	_fov_map.clear()
+	_fov_map = {}
 
 
 # Compute the viewable cells from a particular view position by doing
@@ -124,7 +124,6 @@ func compute_field_of_view(view_position: Vector2, max_distance: int) -> void:
 
 	_compute_octant(_MajorAxis.X_AXIS, 1, -1, view_position, max_distance)
 	_compute_octant(_MajorAxis.X_AXIS, 1, 1, view_position, max_distance)
-
 
 # Compute all visibile cells for one octant of the viewpoint.
 func _compute_octant(
