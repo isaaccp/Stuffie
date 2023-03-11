@@ -290,11 +290,10 @@ func get_random_empty_tile():
 
 	return choices[randi() % choices.size()]
 
-func add_treasure(pos: Vector2i, treasure: Treasure):
-	assert(not is_solid(pos))
-	treasure.set_id_position(pos)
+func add_treasure(treasure: Treasure):
+	assert(not is_solid(treasure.get_id_position()))
 	# Do not update A* as we want the character to be able to walk into it.
-	treasure_locs[pos] = treasure
+	treasure_locs[treasure.get_id_position()] = treasure
 
 func pick_up_treasure(pos: Vector2i, character: Character):
 	var treasure: Treasure = treasure_locs[pos]

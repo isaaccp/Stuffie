@@ -168,6 +168,11 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	# so set it now before changing state.
 	set_active_character(0)
 	initialize_map_manager(stage)
+	if combat_state != null:
+		for treasure_state in combat_state.treasures:
+			var treasure = Treasure.restore(treasure_state)
+			map_manager.add_treasure(treasure)
+			treasures.add_child(treasure)
 	enemy_turn_manager.initialize(map_manager)
 	enemy_turn_manager.character_died.connect(handle_character_death)
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
@@ -475,8 +480,9 @@ func begin_turn():
 
 func spawn_treasure():
 	var treasure = treasure_scene.instantiate() as Treasure
-	var loc = map_manager.get_random_empty_tile()
-	map_manager.add_treasure(loc, treasure)
+	treasure.initialize()
+	treasure.set_id_position(map_manager.get_random_empty_tile())
+	map_manager.add_treasure(treasure)
 	treasures.add_child(treasure)
 
 func change_state(new_state):
@@ -855,6 +861,8 @@ func get_save_state():
 	combat_state.turn_number = turn_number
 	for enemy in enemies_node.get_children():
 		combat_state.enemies.push_back(enemy.get_save_state())
+	for treasure in treasures.get_children():
+		combat_state.treasures.push_back(treasure.get_save_state())
 	return combat_state
 
 func can_save():
