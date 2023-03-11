@@ -271,6 +271,10 @@ func _on_within_stage_entered():
 
 func _on_within_stage_exited():
 	await TransitionScreen.create(self)
+	# If we had restore state from a save, drop it as we have
+	# now finished the stage.
+	load_stage_from_save = false
+	combat_state = null
 	for node in stage_parent.get_children():
 		node.queue_free()
 	if current_stage_def().stage_type == StageType.COMBAT:
