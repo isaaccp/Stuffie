@@ -15,10 +15,10 @@ func connect_signals(character: Character):
 	StatsManager.stats_added.connect(_on_stats_added)
 
 func add_relic(relic: Relic):
-	relics.push_back(relic)
+	relics.push_back(relic.duplicate())
 
 func add_temp_relic(relic: Relic):
-	temp_relics.push_back(relic)
+	temp_relics.push_back(relic.duplicate())
 
 func clear_temp_relics():
 	temp_relics.clear()

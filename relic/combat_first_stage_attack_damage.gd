@@ -4,7 +4,7 @@ class_name CombatFirstStageAttackDamageRelic
 
 @export var extra_damage: int
 
-var used = false
+@export var used = false
 
 func _tooltip():
 	return "First attack on each stage does %d extra damage" % extra_damage
