@@ -27,7 +27,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag):
 	self.characters = characters
 	self.shared_bag = shared_bag
 	for character in characters:
-		StatsManager.add(character, Stats.Field.CAMPS_VISITED, 1)
+		StatsManager.add(character.character_type, Stats.Field.CAMPS_VISITED, 1)
 
 func add_choice(character: Character, choice: CampChoice):
 	var button = Button.new()

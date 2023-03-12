@@ -293,7 +293,7 @@ func _on_between_stages_entered():
 	else:
 		shared_bag.add_gold(GOLD_PER_STAGE)
 		for character in characters:
-			StatsManager.add(character, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/characters.size())
+			StatsManager.add(character.character_type, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/characters.size())
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters, shared_bag)
 		stage_parent.add_child(between_stages)
@@ -325,7 +325,7 @@ func _on_run_summary_exited():
 
 func add_stat(field: Stats.Field, value: int):
 	for character in characters:
-		StatsManager.add(character, field, value)
+		StatsManager.add(character.character_type, field, value)
 
 func stage_finished(stage_type: StageType):
 	if stage_type == StageType.COMBAT:
@@ -409,7 +409,7 @@ func load_save_state(run_state: RunSaveState):
 	shared_bag.gold = run_state.gold
 	relic_list = run_state.relic_list
 	for character_data in run_state.characters:
-		var character = Character.restore(character_data)
+		var character = CharacterLoader.restore(character_data)
 		character.shared_bag = shared_bag
 		characters.push_back(character)
 		party.add_child(character)

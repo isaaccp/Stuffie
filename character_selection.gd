@@ -4,14 +4,6 @@ class_name CharacterSelection
 
 @export var character_container: Container
 
-var warrior = preload("res://warrior.tscn")
-var wizard = preload("res://wizard.tscn")
-
-var character_scenes = [
-	warrior,
-	wizard,
-]
-
 var characters = []
 var portrait_scene = preload("res://character_portrait.tscn")
 var one_off = true

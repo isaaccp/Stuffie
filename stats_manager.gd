@@ -23,7 +23,7 @@ var turn_stats:
 	get: return stack.get_level(Level.TURN)
 
 
-signal stats_added(character: Character, field: Stats.Field, value: int)
+signal stats_added(character: Enum.CharacterId, field: Stats.Field, value: int)
 
 func _init():
 	super()
@@ -35,14 +35,14 @@ func add_level(level: Level):
 func remove_level(level: Level):
 	stack.remove_level(level)
 
-func add(character: Character, field: Stats.Field, value: int):
+func add(character: Enum.CharacterId, field: Stats.Field, value: int):
 	stack.add(character, field, value)
 	stats_added.emit(character, field, value)
 
-func remove(character: Character, field: Stats.Field, value: int):
+func remove(character: Enum.CharacterId, field: Stats.Field, value: int):
 	stack.remove(character, field, value)
 
-func get_value(level: Level, character: Character, field: Stats.Field) -> int:
+func get_value(level: Level, character: Enum.CharacterId, field: Stats.Field) -> int:
 	return stack.get_value(level, character, field)
 
 func print(level: Level):
