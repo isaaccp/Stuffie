@@ -156,7 +156,7 @@ func get_damage_description(character: Character):
 func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
 	var attack_damage = effective_damage(character)
-	StatsManager.add(character, Stats.Field.DAMAGE_DEALT, attack_damage)
+	StatsManager.add(character.character_type, Stats.Field.DAMAGE_DEALT, attack_damage)
 	enemy.hit_points -= attack_damage
 	for effect in on_play_effects:
 		effect.apply_to_enemy(character, enemy)

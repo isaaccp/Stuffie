@@ -64,12 +64,12 @@ func _next_character():
 
 func _on_card_pressed(card_number: int):
 	characters[current_character].deck.add_card(current_cards[card_number])
-	StatsManager.add(characters[current_character], Stats.Field.CARDS_ACQUIRED, 1)
+	StatsManager.add(characters[current_character].character_type, Stats.Field.CARDS_ACQUIRED, 1)
 	_next_character()
 
 func _on_skip_pressed():
 	shared_bag.add_gold(NO_CARD_GOLD)
-	StatsManager.add(characters[current_character], Stats.Field.GOLD_EARNED, NO_CARD_GOLD)
+	StatsManager.add(characters[current_character].character_type, Stats.Field.GOLD_EARNED, NO_CARD_GOLD)
 	_next_character()
 
 func can_save():

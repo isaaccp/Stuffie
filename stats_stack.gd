@@ -38,18 +38,16 @@ func get_level(level: StatsManager.Level):
 	assert(level < stack.size())
 	return stack[level]
 
-func add(character: Character, field: Stats.Field, value: int):
+func add(character: Enum.CharacterId, field: Stats.Field, value: int):
 	print(overall_stats.get_field_name(field), " ", value)
-	var character_type = character.character_type
 	for level in range(stack.size()):
-		stack[level].add(character_type, field, value)
+		stack[level].add(character, field, value)
 
-func remove(character: Character, field: Stats.Field, value: int):
-	var character_type = character.character_type
+func remove(character: Enum.CharacterId, field: Stats.Field, value: int):
 	for level in range(stack.size()):
-		stack[level].remove(character_type, field, value)
+		stack[level].remove(character, field, value)
 
-func get_value(level: StatsManager.Level, character: Character, field: Stats.Field) -> int:
+func get_value(level: StatsManager.Level, character: Enum.CharacterId, field: Stats.Field) -> int:
 	assert(level <= stack.size())
 	return stack[level].get_value(character, field)
 

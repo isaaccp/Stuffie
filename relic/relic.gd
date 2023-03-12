@@ -3,6 +3,7 @@ extends Resource
 class_name Relic
 
 @export var name: String
+
 var tooltip:
 	get:
 		return _tooltip()

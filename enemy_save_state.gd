@@ -2,7 +2,7 @@ extends Resource
 
 class_name EnemySaveState
 
-@export var enemy_type: Stage.EnemyId
+@export var enemy_type: Enum.EnemyId
 @export var id_position: Vector2i
 @export var total_move_points: int
 @export var total_hit_points: int

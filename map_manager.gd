@@ -301,7 +301,7 @@ func pick_up_treasure(pos: Vector2i, character: Character):
 	for effect in treasure.def.effects:
 		await effect.apply_to_character(character)
 	treasure.queue_free()
-	StatsManager.add(character, Stats.Field.CHESTS_ACQUIRED, 1)
+	StatsManager.add(character.character_type, Stats.Field.CHESTS_ACQUIRED, 1)
 
 func remove_treasure(pos: Vector2i):
 	var treasure = treasure_locs[pos]

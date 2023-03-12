@@ -84,13 +84,13 @@ func apply_to_enemy(character: Character, enemy: Enemy):
 			CardEffectValue.Field.MOVE_POINTS:
 				enemy.move_points += value
 				if value < 0:
-					StatsManager.add(character, Stats.Field.ENEMY_MP_REMOVED, value)
+					StatsManager.add(character.character_type, Stats.Field.ENEMY_MP_REMOVED, value)
 			CardEffectValue.Field.WEAKNESS:
 				enemy.weakness += value
-				StatsManager.add(character, Stats.Field.WEAKNESS_APPLIED, value)
+				StatsManager.add(character.character_type, Stats.Field.WEAKNESS_APPLIED, value)
 			CardEffectValue.Field.PARALYSIS:
 				enemy.paralysis += value
-				StatsManager.add(character, Stats.Field.PARALYSIS_APPLIED, value)
+				StatsManager.add(character.character_type, Stats.Field.PARALYSIS_APPLIED, value)
 
 func get_description(character: Character) -> String:
 	var effect_text = ""

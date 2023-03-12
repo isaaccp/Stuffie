@@ -9,16 +9,6 @@ enum StageCompletionType {
 	SURVIVE_N_TURNS,
 }
 
-enum EnemyId {
-	SKELETON_WARRIOR,
-	SKELETON_ARCHER,
-}
-
-var enemy_scenes = {
-	EnemyId.SKELETON_WARRIOR: preload("res://skeleton_warrior.tscn"),
-	EnemyId.SKELETON_ARCHER: preload("res://skeleton_archer.tscn"),
-}
-
 var gridmap: GridMap
 @export var enemies: Array[EnemyPosition]
 @export var doors: Array[DoorDef]
@@ -45,7 +35,7 @@ func _ready():
 
 func initialize(enemies_node: Node):
 	for enemy_position in enemies:
-		var enemy = enemy_scenes[enemy_position.enemy_id].instantiate() as Enemy
+		var enemy = EnemyLoader.create(enemy_position.enemy_id)
 		enemy.initialize(enemy_position.position, enemy_position.level)
 		enemies_node.add_child(enemy)
 

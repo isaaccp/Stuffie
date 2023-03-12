@@ -47,7 +47,7 @@ func _init():
 func _field_name(field: Field) -> String:
 	return reverse_field_lookup[field]
 
-func add(character: Character.CharacterType, field: Field, value: int):
+func add(character: Enum.CharacterId, field: Field, value: int):
 	if character not in stats:
 		stats[character] = {}
 	var character_stats = stats[character]
@@ -57,7 +57,7 @@ func add(character: Character.CharacterType, field: Field, value: int):
 
 # Used in very rare occassions in which we have to take something back, e.g.
 # undoing a move.
-func remove(character: Character.CharacterType, field: Field, value: int):
+func remove(character: Enum.CharacterId, field: Field, value: int):
 	assert(character in stats)
 	var character_stats = stats[character]
 	assert(field in character_stats)
@@ -76,8 +76,7 @@ func get_pretty_field_name(field: Field):
 func get_field_name(field: Field):
 	return _field_name(field)
 
-func get_value(character: Character, field: Field):
-	var character_type = character.character_type
+func get_value(character_type: Enum.CharacterId, field: Field):
 	if not character_type in stats:
 		return 0
 	var character_stats = stats[character_type]

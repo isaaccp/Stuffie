@@ -32,7 +32,6 @@ enum HumanTurnState {
 var turn_number = 0
 var portrait_scene = preload("res://character_portrait.tscn")
 var card_ui_scene = preload("res://card_ui.tscn")
-var treasure_scene = preload("res://treasure.tscn")
 
 var active_character: Character
 var active_character_index: int
@@ -150,7 +149,7 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 		turn_number = 0
 	else:
 		for enemy_data in combat_state.enemies:
-			var enemy = Enemy.restore(enemy_data)
+			var enemy = EnemyLoader.restore(enemy_data)
 			enemies_node.add_child(enemy)
 			# To show healthbar if they are hurt.
 			enemy.refresh()
@@ -180,7 +179,7 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	initialize_map_manager(stage)
 	if combat_state != null:
 		for treasure_state in combat_state.treasures:
-			var treasure = Treasure.restore(treasure_state)
+			var treasure = TreasureLoader.restore(treasure_state)
 			map_manager.add_treasure(treasure)
 			treasures.add_child(treasure)
 	enemy_turn_manager.initialize(map_manager)
@@ -464,7 +463,7 @@ func apply_undo():
 		character.set_id_position(undo_state.position)
 		var reverted_move_points = undo_state.move_points - character.move_points
 		character.move_points = undo_state.move_points
-		StatsManager.remove(character, Stats.Field.MP_USED, reverted_move_points)
+		StatsManager.remove(character.character_type, Stats.Field.MP_USED, reverted_move_points)
 	# No need to reset as it should now match.
 	undo_button.hide()
 	enemy_turn_manager.update()
@@ -489,7 +488,7 @@ func begin_turn():
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func spawn_treasure():
-	var treasure = treasure_scene.instantiate() as Treasure
+	var treasure = TreasureLoader.create()
 	treasure.initialize()
 	treasure.set_id_position(map_manager.get_random_empty_tile())
 	map_manager.add_treasure(treasure)
@@ -549,7 +548,7 @@ func handle_move():
 	var can_undo = await active_character.move(map_manager, final_pos)
 	var move_cost = path_cost(current_path)
 	active_character.reduce_move(move_cost)
-	StatsManager.add(active_character, Stats.Field.MP_USED, move_cost)
+	StatsManager.add(active_character.character_type, Stats.Field.MP_USED, move_cost)
 	if can_undo:
 		undo_button.show()
 	else:
@@ -663,7 +662,7 @@ func clear_enemy_info():
 	enemy_attack_area.visible = false
 
 func handle_enemy_death(enemy: Enemy):
-	StatsManager.add(active_character, Stats.Field.ENEMIES_KILLED, 1)
+	StatsManager.add(active_character.character_type, Stats.Field.ENEMIES_KILLED, 1)
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
 	enemy.queue_free()
@@ -727,8 +726,8 @@ func play_card():
 		await effect.finished()
 	clear_effects()
 	await current_card.apply_after_effects(active_character)
-	StatsManager.add(active_character, Stats.Field.CARDS_PLAYED, 1)
-	StatsManager.add(active_character, Stats.Field.AP_USED, current_card.cost)
+	StatsManager.add(active_character.character_type, Stats.Field.CARDS_PLAYED, 1)
+	StatsManager.add(active_character.character_type, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
 	active_character.card_played.emit(active_character, current_card)
 	draw_hand()

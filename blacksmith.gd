@@ -57,7 +57,7 @@ func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list:
 	relics_to_show = relics
 	shared_bag_gold_ui.set_shared_bag(shared_bag)
 	for character in characters:
-		StatsManager.add(character, Stats.Field.BLACKSMITHS_VISITED, 1)
+		StatsManager.add(character.character_type, Stats.Field.BLACKSMITHS_VISITED, 1)
 	active_character = characters[0]
 	character_selection.characters = characters
 	character_selection.one_off = false
@@ -163,8 +163,8 @@ func _on_removal_done(character: Character):
 	# TODO: For now, cards removed through blacksmith are tracked here.
 	# When we refactor this to support multiple characters properly, we could
 	# likely move this to a method in character and get rid of this.
-	StatsManager.add(character, Stats.Field.CARDS_REMOVED, 1)
-	StatsManager.add(character, Stats.Field.GOLD_SPENT, removal_cost)
+	StatsManager.add(character.character_type, Stats.Field.CARDS_REMOVED, 1)
+	StatsManager.add(character.character_type, Stats.Field.GOLD_SPENT, removal_cost)
 	refresh()
 	state.change_state(CHOOSING_OPTION)
 
@@ -178,8 +178,8 @@ func _on_upgrade_done(character: Character):
 	# Cards upgraded through cards/treasures are handled in character.upgrade_card().
 	# When we refactor this to support multiple characters properly, we could
 	# likely use character.upgrade_card() and get rid of this.
-	StatsManager.add(character, Stats.Field.CARDS_UPGRADED, 1)
-	StatsManager.add(character, Stats.Field.GOLD_SPENT, upgrade_cost)
+	StatsManager.add(character.character_type, Stats.Field.CARDS_UPGRADED, 1)
+	StatsManager.add(character.character_type, Stats.Field.GOLD_SPENT, upgrade_cost)
 	refresh()
 	state.change_state(CHOOSING_OPTION)
 
@@ -191,7 +191,7 @@ func _on_relic_selected(relic_button: RelicButton):
 	relic_list.mark_used(relic_button.relic.name)
 	# TODO: Allow to select which character gets the relic.
 	active_character.add_relic(relic_button.relic)
-	StatsManager.add(active_character, Stats.Field.GOLD_SPENT, relic_cost)
+	StatsManager.add(active_character.character_type, Stats.Field.GOLD_SPENT, relic_cost)
 	refresh()
 
 func _on_done_pressed():

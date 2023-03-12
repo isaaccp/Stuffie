@@ -11,12 +11,9 @@ var main_menu_scene = preload("res://main_menu.tscn")
 var character_selection_scene = preload("res://character_selection.tscn")
 var game_run_scene = preload("res://game_run.tscn")
 
-var warrior = preload("res://warrior.tscn")
-var wizard = preload("res://wizard.tscn")
-
-var character_scenes = [
-	warrior,
-	wizard,
+var character_ids = [
+	Enum.CharacterId.WARRIOR,
+	Enum.CharacterId.WIZARD,
 ]
 
 var run_type: GameRun.RunType
@@ -47,8 +44,8 @@ func _on_main_menu_exited():
 
 func _on_character_select_entered():
 	var character_selection = character_selection_scene.instantiate() as CharacterSelection
-	for character_scene in character_scenes:
-		var character = character_scene.instantiate() as Character
+	for character_id in character_ids:
+		var character = CharacterLoader.create(character_id)
 		character_selection.characters.push_back(character)
 	add_child(character_selection)
 	character_selection.character_selected.connect(start_run)
@@ -89,8 +86,8 @@ func _on_progress_exited():
 func select_character(run_type: GameRun.RunType):
 	self.run_type = run_type
 	if run_type == GameRun.RunType.REGULAR_PARTY:
-		characters.push_back(warrior.instantiate())
-		characters.push_back(wizard.instantiate())
+		characters.push_back(CharacterLoader.create(Enum.CharacterId.WARRIOR))
+		characters.push_back(CharacterLoader.create(Enum.CharacterId.WIZARD))
 		state.change_state(WITHIN_RUN)
 		return
 	state.change_state(CHARACTER_SELECT)

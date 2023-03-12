@@ -2,13 +2,7 @@ extends WorldEntity
 
 class_name Character
 
-enum CharacterType {
-	NO_CHARACTER,
-	WARRIOR,
-	WIZARD,
-}
-
-@export var character_type: CharacterType
+@export var character_type: Enum.CharacterId
 @export var total_action_points: int
 @export var total_move_points: int
 @export var total_hit_points: int
@@ -106,7 +100,7 @@ func mock():
 func add_stat(field: Stats.Field, value: int):
 	if is_mock:
 		return
-	StatsManager.add(self, field, value)
+	StatsManager.add(character_type, field, value)
 
 func process_cards():
 	for card in all_cards.cards:
@@ -394,14 +388,14 @@ func get_save_state():
 
 static func restore(save_state: CharacterSaveState) -> Character:
 	# For restoring, probably should be moved somewhere else unique.
-	var warrior = preload("res://warrior.tscn")
-	var wizard = preload("res://wizard.tscn")
+	var warrior = load("res://warrior.tscn")
+	var wizard = load("res://wizard.tscn")
 
 	var character: Character
 	match save_state.character_type:
-		CharacterType.WARRIOR:
+		Enum.CharacterId.WARRIOR:
 			character = warrior.instantiate() as Character
-		CharacterType.WIZARD:
+		Enum.CharacterId.WIZARD:
 			character = wizard.instantiate() as Character
 	character.set_id_position(save_state.id_position)
 	character.total_action_points = save_state.total_action_points
