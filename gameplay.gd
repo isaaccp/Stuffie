@@ -700,7 +700,6 @@ func play_card():
 				effect.origin = active_character.global_position
 				effect.target = map_manager.get_world_position(tile)
 				effects.add_child(effect)
-				# Those should all be the same for a given card.
 				effect_time = effect.apply_effect_time()
 		if effects.get_child_count() != 0:
 			await get_tree().create_timer(effect_time, false).timeout
