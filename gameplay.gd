@@ -156,6 +156,16 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 			enemy.refresh()
 		turn_number = combat_state.turn_number
 		restored_from_save = true
+		# Update doors' state in stage ahead of creating them.
+		var updated_doors = 0
+		assert(combat_state.doors.size() == stage.doors.size())
+		for door_def in combat_state.doors:
+			for stage_door_def in stage.doors:
+				if door_def.pos == stage_door_def.pos:
+					stage_door_def.state = door_def.state
+					updated_doors += 1
+					break
+		assert(updated_doors == combat_state.doors.size())
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
@@ -863,6 +873,10 @@ func get_save_state():
 		combat_state.enemies.push_back(enemy.get_save_state())
 	for treasure in treasures.get_children():
 		combat_state.treasures.push_back(treasure.get_save_state())
+	for loc in map_manager.door_locs:
+		var door = map_manager.door_locs[loc]
+		var door_def = DoorDef.create(loc, door.state, 0)
+		combat_state.doors.push_back(door_def)
 	return combat_state
 
 func can_save():
