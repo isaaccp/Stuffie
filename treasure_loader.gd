@@ -7,9 +7,7 @@ const treasure_scene = preload("res://treasure.tscn")
 static func create():
 	return treasure_scene.instantiate() as Treasure
 
-static func restore(state: TreasureSaveState) -> Treasure:
+static func restore(save_state: TreasureSaveState) -> Treasure:
 	var treasure = TreasureLoader.create()
-	treasure.def = state.def
-	treasure.turns_left = state.turns_left
-	treasure.set_id_position(state.position)
+	treasure.load_save_state(save_state)
 	return treasure

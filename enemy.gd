@@ -166,3 +166,16 @@ func get_save_state():
 	save_state.paralysis = paralysis
 	save_state.vulnerability = vulnerability
 	return save_state
+
+func load_save_state(save_state: EnemySaveState):
+	set_id_position(save_state.id_position)
+	total_move_points = save_state.total_move_points
+	total_hit_points = save_state.total_hit_points
+	total_damage = save_state.total_damage
+	total_attack_range = save_state.total_attack_range
+	level = save_state.level
+	move_points = save_state.move_points
+	hit_points = save_state.hit_points
+	weakness = save_state.weakness
+	paralysis = save_state.paralysis
+	vulnerability = save_state.vulnerability

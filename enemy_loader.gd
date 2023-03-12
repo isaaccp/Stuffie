@@ -12,15 +12,5 @@ static func create(enemy_id: Enum.EnemyId) -> Enemy:
 
 static func restore(save_state: EnemySaveState) -> Enemy:
 	var enemy = EnemyLoader.create(save_state.enemy_type)
-	enemy.set_id_position(save_state.id_position)
-	enemy.total_move_points = save_state.total_move_points
-	enemy.total_hit_points = save_state.total_hit_points
-	enemy.total_damage = save_state.total_damage
-	enemy.total_attack_range = save_state.total_attack_range
-	enemy.level = save_state.level
-	enemy.move_points = save_state.move_points
-	enemy.hit_points = save_state.hit_points
-	enemy.weakness = save_state.weakness
-	enemy.paralysis = save_state.paralysis
-	enemy.vulnerability = save_state.vulnerability
+	enemy.load_save_state(save_state)
 	return enemy

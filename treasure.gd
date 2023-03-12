@@ -19,3 +19,8 @@ func get_save_state():
 	state.turns_left = turns_left
 	state.position = get_id_position()
 	return state
+
+func load_save_state(save_state: TreasureSaveState):
+	def = save_state.def
+	turns_left = save_state.turns_left
+	set_id_position(save_state.position)

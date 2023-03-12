@@ -386,29 +386,18 @@ func get_save_state():
 	save_state.deck = deck
 	return save_state
 
-static func restore(save_state: CharacterSaveState) -> Character:
-	# For restoring, probably should be moved somewhere else unique.
-	var warrior = load("res://warrior.tscn")
-	var wizard = load("res://wizard.tscn")
-
-	var character: Character
-	match save_state.character_type:
-		Enum.CharacterId.WARRIOR:
-			character = warrior.instantiate() as Character
-		Enum.CharacterId.WIZARD:
-			character = wizard.instantiate() as Character
-	character.set_id_position(save_state.id_position)
-	character.total_action_points = save_state.total_action_points
-	character.total_move_points = save_state.total_move_points
-	character.total_hit_points = save_state.total_hit_points
-	character.cards_per_turn = save_state.cards_per_turn
-	character.action_points = save_state.action_points
-	character.move_points = save_state.move_points
-	character.hit_points = save_state.hit_points
-	character.block = save_state.block
-	character.power = save_state.power
-	character.dodge = save_state.dodge
-	character.relic_manager = save_state.relic_manager
-	character.deck = save_state.deck
-	character.initialize(false)
-	return character
+func load_save_state(save_state: CharacterSaveState):
+	set_id_position(save_state.id_position)
+	total_action_points = save_state.total_action_points
+	total_move_points = save_state.total_move_points
+	total_hit_points = save_state.total_hit_points
+	cards_per_turn = save_state.cards_per_turn
+	action_points = save_state.action_points
+	move_points = save_state.move_points
+	hit_points = save_state.hit_points
+	block = save_state.block
+	power = save_state.power
+	dodge = save_state.dodge
+	relic_manager = save_state.relic_manager
+	deck = save_state.deck
+	initialize(false)
