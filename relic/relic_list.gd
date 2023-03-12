@@ -4,7 +4,7 @@ class_name RelicList
 
 @export var relics: Array[Relic]
 
-var available_relics: Dictionary
+@export var available_relics: Dictionary
 
 func reset():
 	# TODO: Filter out not unlocked relics.
