@@ -711,7 +711,8 @@ func play_card():
 				if current_card.apply_enemy(active_character, enemy):
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
-		active_character.attacked.emit(active_character)
+		if current_card.is_attack():
+			active_character.attacked.emit(active_character)
 	for effect in effects.get_children():
 		await effect.finished()
 	clear_effects()
