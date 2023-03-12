@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://c2dhxq4vmw3xk"]
+[gd_resource type="Resource" script_class="Card" load_steps=15 format=3 uid="uid://c2dhxq4vmw3xk"]
 
 [ext_resource type="Resource" uid="uid://dicil2nu2n7ee" path="res://resources/cards/wizard/multicast.tres" id="1_5omuu"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_x4ydf"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://card_effect_metadata.gd" id="4_yjsi4"]
 [ext_resource type="Script" path="res://card_effect.gd" id="5_o8jxv"]
 [ext_resource type="Script" path="res://card.gd" id="6_j8nqk"]
+[ext_resource type="Texture2D" uid="uid://bj00uixn1flyr" path="res://resources/multicast.png" id="8_jhroq"]
 
 [sub_resource type="Resource" id="Resource_nrhuh"]
 script = ExtResource("1_x4ydf")
@@ -52,6 +53,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_5omuu")
 cost = 1
+texture = ExtResource("8_jhroq")
 target_mode = 0
 target_animation = 0
 target_distance = 0
