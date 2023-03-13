@@ -304,7 +304,7 @@ func _on_card_pressed(index: int):
 
 func create_cursor(pos: Vector2i, direction: Vector2):
 	var cursor_pos = pos
-	if current_card.target_mode == Card.TargetMode.SELF:
+	if current_card.target_mode == Enum.TargetMode.SELF:
 		cursor_pos = active_character.get_id_position()
 	target_cursor = CardTargetHighlight.new(map_manager, cursor_pos, direction, current_card)
 	target_cursor.set_width(3)
@@ -695,9 +695,9 @@ func play_card():
 		active_character.deck.discard_card(current_card_index)
 	# Take snapshot of current state before playing card.
 	active_character.snap()
-	if current_card.target_mode == Card.TargetMode.SELF:
+	if current_card.target_mode == Enum.TargetMode.SELF:
 		await current_card.apply_self(active_character)
-	elif current_card.target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
+	elif current_card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
 		await current_card.apply_self_effects(active_character)
 		var target_tile = tile_map_pos
 		var affected_tiles = current_card.effect_area(direction)
@@ -751,9 +751,9 @@ func teleport(character: Character, distance: int):
 func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	valid_target = false
 	# For target mode SELF, allow clicking anywhere.
-	if current_card.target_mode == Card.TargetMode.SELF:
+	if current_card.target_mode == Enum.TargetMode.SELF:
 		valid_target = true
-	elif current_card.target_mode == Card.TargetMode.ENEMY:
+	elif current_card.target_mode == Enum.TargetMode.ENEMY:
 		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
 		var visible_tiles = map_manager.fov.get_fov(active_character.get_id_position())
@@ -766,7 +766,7 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 				valid_target = true
 			else:
 				target_cursor.set_color(Color(1, 1, 1, 1))
-	elif current_card.target_mode == Card.TargetMode.AREA:
+	elif current_card.target_mode == Enum.TargetMode.AREA:
 		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
 		var visible_tiles = map_manager.fov.get_fov(active_character.get_id_position())

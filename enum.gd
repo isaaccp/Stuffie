@@ -20,3 +20,27 @@ enum StatsLevel {
 	TURN,
 	MAX,
 }
+
+enum TargetMode {
+	# Targets self.
+	SELF,
+	# Targets ally.
+	ALLY,
+	# Targets self or ally.
+	SELF_ALLY,
+	# Needs to target an enemy.
+	ENEMY,
+	# Can target any location within range.
+	AREA,
+}
+
+# Animation to play on target tiles when cast.
+enum TargetAnimationType {
+	NO_ANIMATION,
+	SLASH,
+	PROJECTILE,
+	BUFF,
+	DEBUFF,
+	FIRE,
+	ARCANE,
+}

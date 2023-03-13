@@ -2,35 +2,11 @@ extends Resource
 
 class_name Card
 
-enum TargetMode {
-	# Targets self.
-	SELF,
-	# Targets ally.
-	ALLY,
-	# Targets self or ally.
-	SELF_ALLY,
-	# Needs to target an enemy.
-	ENEMY,
-	# Can target any location within range.
-	AREA,
-}
-
 enum AreaType {
 	RECTANGLE,
 	FRONT_AND_SIDES,  # Covers 3 tiles in front and both sides.
 	CONE,             # Starts in front of player at given width, and expands outwards for length, expanding by cone step.
 	DIAMOND,          # Starts in position and expands outwards based on area_length. 1 is a "cross".
-}
-
-# Animation to play on target tiles when cast.
-enum TargetAnimationType {
-	NO_ANIMATION,
-	SLASH,
-	PROJECTILE,
-	BUFF,
-	DEBUFF,
-	FIRE,
-	ARCANE,
 }
 
 @export var card_name: String
@@ -39,8 +15,8 @@ enum TargetAnimationType {
 @export var base_card: Card
 @export var cost: int
 @export var texture: Texture2D
-@export var target_mode: TargetMode
-@export var target_animation: TargetAnimationType
+@export var target_mode: Enum.TargetMode
+@export var target_animation: Enum.TargetAnimationType
 @export var target_distance: int
 @export var damage_value: CardEffectValue
 # Use on_play_self_effects when creating a card that has
@@ -100,7 +76,7 @@ func apply_on_play_effects(character: Character):
 	await CardEffect.apply_effects_to_character(character, on_play_effects)
 
 func apply_self(character: Character):
-	assert(target_mode == TargetMode.SELF or target_mode == TargetMode.SELF_ALLY)
+	assert(target_mode == Enum.TargetMode.SELF or target_mode == Enum.TargetMode.SELF_ALLY)
 	if power_relic:
 		character.add_temp_relic(power_relic)
 	await apply_on_play_effects(character)
@@ -113,7 +89,7 @@ func apply_after_effects(character: Character):
 	await CardEffect.apply_effects_to_character(character, on_play_after_effects)
 
 func apply_ally(character: Character, ally: Character):
-	assert(target_mode == TargetMode.SELF_ALLY or target_mode == TargetMode.ALLY)
+	assert(target_mode == Enum.TargetMode.SELF_ALLY or target_mode == Enum.TargetMode.ALLY)
 	apply_on_play_effects(character)
 	apply_self_effects(character)
 
@@ -154,7 +130,7 @@ func get_damage_description(character: Character):
 	return damage_text
 
 func apply_enemy(character: Character, enemy: Enemy):
-	assert(target_mode == TargetMode.ENEMY or target_mode == TargetMode.AREA)
+	assert(target_mode == Enum.TargetMode.ENEMY or target_mode == Enum.TargetMode.AREA)
 	var attack_damage = effective_damage(character)
 	StatsManager.add(character.character_type, Stats.Field.DAMAGE_DEALT, attack_damage)
 	enemy.hit_points -= attack_damage
@@ -171,13 +147,13 @@ func is_attack():
 
 func get_target_text() -> String:
 	var target_text = ""
-	if target_mode == Card.TargetMode.SELF:
+	if target_mode == Enum.TargetMode.SELF:
 		target_text = "self"
-	elif target_mode == Card.TargetMode.SELF_ALLY:
+	elif target_mode == Enum.TargetMode.SELF_ALLY:
 		target_text = "self or ally"
-	elif target_mode == Card.TargetMode.ALLY:
+	elif target_mode == Enum.TargetMode.ALLY:
 		target_text = "ally"
-	elif target_mode == Card.TargetMode.AREA:
+	elif target_mode == Enum.TargetMode.AREA:
 		var area_size = effect_area(Vector2.RIGHT).size()
 		target_text = "area (%d tiles)" % area_size
 	return target_text
@@ -200,13 +176,13 @@ func get_description(character: Character) -> String:
 	if should_exhaust():
 		description = "[url=exhaust]Exhaust[/url]\n"
 	var target_text = get_target_text()
-	if target_mode in [Card.TargetMode.SELF, Card.TargetMode.SELF_ALLY or Card.TargetMode.SELF_ALLY]:
+	if target_mode in [Enum.TargetMode.SELF, Enum.TargetMode.SELF_ALLY or Enum.TargetMode.SELF_ALLY]:
 		if power_relic:
 			description += "Power: %s (%s)\n" % [power_relic.name, power_relic.tooltip]
 		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
 			description += "On Play(%s): %s\n" % [target_text, on_play_text]
-	elif target_mode in [Card.TargetMode.ENEMY, Card.TargetMode.AREA]:
+	elif target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
 		var on_play_self_text = CardEffect.join_effects_text(character, on_play_self_effects)
 		if on_play_self_text:
 			description += "Before Play: %s\n" % on_play_self_text
