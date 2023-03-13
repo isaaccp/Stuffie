@@ -145,7 +145,7 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 			character.set_id_position(stage.starting_positions[i])
 			i += 1
 		# Usually "turn stats" are created at beginning of enemy turn, create here the first time.
-		StatsManager.add_level(StatsManager.Level.TURN)
+		StatsManager.add_level(Enum.StatsLevel.TURN)
 		turn_number = 0
 	else:
 		for enemy_data in combat_state.enemies:
@@ -215,7 +215,7 @@ func on_enemy_turn_invalidated():
 		character.clear_pending_damage()
 
 func next_stage():
-	StatsManager.remove_level(StatsManager.Level.TURN)
+	StatsManager.remove_level(Enum.StatsLevel.TURN)
 	# Restore AP, MP, remove block/power, etc so it doesn't appear in non-combat
 	# stages.
 	for character in party.get_children():
@@ -508,8 +508,8 @@ func change_state(new_state):
 	elif state == GameState.CPU_TURN:
 		StatsManager.turn_stats.print()
 		# Re-start turn stats so we can use enemy turn stats in cards next run.
-		StatsManager.remove_level(StatsManager.Level.TURN)
-		StatsManager.add_level(StatsManager.Level.TURN)
+		StatsManager.remove_level(Enum.StatsLevel.TURN)
+		StatsManager.add_level(Enum.StatsLevel.TURN)
 		for character in party.get_children():
 			character.end_turn()
 	turn_state_info.text = "%s: %d" % [state_text[state], turn_number]
@@ -679,7 +679,7 @@ func handle_character_death(character: Character):
 		set_active_character(0)
 		reset_undo()
 	else:
-		StatsManager.remove_level(StatsManager.Level.TURN)
+		StatsManager.remove_level(Enum.StatsLevel.TURN)
 		game_over.emit()
 
 func clear_effects():
@@ -883,4 +883,4 @@ func can_save():
 
 # Invoked when abandoning run while this stage is on.
 func cleanup():
-	StatsManager.remove_level(StatsManager.Level.TURN)
+	StatsManager.remove_level(Enum.StatsLevel.TURN)

@@ -1,26 +1,18 @@
 extends Node
 
-enum Level {
-	OVERALL,
-	GAME_RUN,
-	STAGE,
-	TURN,
-	MAX,
-}
-
 var stack: StatsStack
 
 var stats:
 	get: return stack
 	set(stats): stack = stats
 var overall_stats:
-	get: return stack.get_level(Level.OVERALL)
+	get: return stack.get_level(Enum.StatsLevel.OVERALL)
 var run_stats:
-	get: return stack.get_level(Level.GAME_RUN)
+	get: return stack.get_level(Enum.StatsLevel.GAME_RUN)
 var stage_stats:
-	get: return stack.get_level(Level.STAGE)
+	get: return stack.get_level(Enum.StatsLevel.STAGE)
 var turn_stats:
-	get: return stack.get_level(Level.TURN)
+	get: return stack.get_level(Enum.StatsLevel.TURN)
 
 
 signal stats_added(character: Enum.CharacterId, field: Stats.Field, value: int)
@@ -29,10 +21,10 @@ func _init():
 	super()
 	stack = StatsStack.new()
 
-func add_level(level: Level):
+func add_level(level: Enum.StatsLevel):
 	stack.add_level(level)
 
-func remove_level(level: Level):
+func remove_level(level: Enum.StatsLevel):
 	stack.remove_level(level)
 
 func add(character: Enum.CharacterId, field: Stats.Field, value: int):
@@ -42,8 +34,8 @@ func add(character: Enum.CharacterId, field: Stats.Field, value: int):
 func remove(character: Enum.CharacterId, field: Stats.Field, value: int):
 	stack.remove(character, field, value)
 
-func get_value(level: Level, character: Enum.CharacterId, field: Stats.Field) -> int:
+func get_value(level: Enum.StatsLevel, character: Enum.CharacterId, field: Stats.Field) -> int:
 	return stack.get_value(level, character, field)
 
-func print(level: Level):
+func print(level: Enum.StatsLevel):
 	stack.print(level)

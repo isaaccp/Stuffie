@@ -59,7 +59,7 @@ func _on_within_run_entered():
 	if save_state_within_run:
 		game_run.load_save_state(loaded_save_state.run_state)
 	else:
-		StatsManager.add_level(StatsManager.Level.GAME_RUN)
+		StatsManager.add_level(Enum.StatsLevel.GAME_RUN)
 		game_run.set_run_type(run_type)
 		game_run.set_starting_characters(characters)
 		game_run.start()
@@ -76,7 +76,7 @@ func _on_progress_entered():
 	progress.call_deferred()
 
 func progress():
-	StatsManager.remove_level(StatsManager.Level.GAME_RUN)
+	StatsManager.remove_level(Enum.StatsLevel.GAME_RUN)
 	save_game_state()
 	state.change_state(MAIN_MENU)
 
@@ -109,9 +109,9 @@ func _on_abandon_run_entered():
 	# Do something better here, like showing progress. Probably can be
 	# merged with PROGRESS state.
 	save_state_within_run = false
-	StatsManager.stats.trim_to_level(StatsManager.Level.GAME_RUN)
+	StatsManager.stats.trim_to_level(Enum.StatsLevel.GAME_RUN)
 	# Show progress, then.
-	StatsManager.stats.trim_to_level(StatsManager.Level.OVERALL)
+	StatsManager.stats.trim_to_level(Enum.StatsLevel.OVERALL)
 	save_game_state()
 	state.change_state.call_deferred(MAIN_MENU)
 

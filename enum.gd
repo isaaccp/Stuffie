@@ -12,3 +12,11 @@ enum EnemyId {
 	SKELETON_WARRIOR,
 	SKELETON_ARCHER,
 }
+
+enum StatsLevel {
+	OVERALL,
+	GAME_RUN,
+	STAGE,
+	TURN,
+	MAX,
+}

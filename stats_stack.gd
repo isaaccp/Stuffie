@@ -5,36 +5,36 @@ class_name StatsStack
 @export var stack: Array[Stats]
 
 var overall_stats:
-	get: return stack[StatsManager.Level.OVERALL]
+	get: return stack[Enum.StatsLevel.OVERALL]
 var run_stats:
-	get: return stack[StatsManager.Level.GAME_RUN]
+	get: return stack[Enum.StatsLevel.GAME_RUN]
 var stage_stats:
-	get: return stack[StatsManager.Level.STAGE]
+	get: return stack[Enum.StatsLevel.STAGE]
 var turn_stats:
-	get: return stack[StatsManager.Level.TURN]
+	get: return stack[Enum.StatsLevel.TURN]
 
 func _init():
 	super()
-	add_level(StatsManager.Level.OVERALL)
+	add_level(Enum.StatsLevel.OVERALL)
 
-func add_level(level: StatsManager.Level):
+func add_level(level: Enum.StatsLevel):
 	assert(stack.size() == level)
-	assert(level != StatsManager.Level.MAX)
+	assert(level != Enum.StatsLevel.MAX)
 	stack.push_back(Stats.new())
 
-func remove_level(level: StatsManager.Level):
+func remove_level(level: Enum.StatsLevel):
 	assert((stack.size() - 1) == level)
 	# OVERALL aggregation shouldn't be removed.
 	assert(stack.size() != 1)
 	stack.pop_back()
 
 # This shouldn't be used in general, just temporarily during coding.
-func trim_to_level(level: StatsManager.Level):
+func trim_to_level(level: Enum.StatsLevel):
 	print_debug("This function shouldn't be called long-term, remove")
 	while stack.size() > level + 1:
 		remove_level(stack.size()-1)
 
-func get_level(level: StatsManager.Level):
+func get_level(level: Enum.StatsLevel):
 	assert(level < stack.size())
 	return stack[level]
 
@@ -47,10 +47,10 @@ func remove(character: Enum.CharacterId, field: Stats.Field, value: int):
 	for level in range(stack.size()):
 		stack[level].remove(character, field, value)
 
-func get_value(level: StatsManager.Level, character: Enum.CharacterId, field: Stats.Field) -> int:
+func get_value(level: Enum.StatsLevel, character: Enum.CharacterId, field: Stats.Field) -> int:
 	assert(level <= stack.size())
 	return stack[level].get_value(character, field)
 
-func print(level: StatsManager.Level):
+func print(level: Enum.StatsLevel):
 	assert(level <= stack.size())
 	stack[level].print()

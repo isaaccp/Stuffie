@@ -240,7 +240,7 @@ func _on_within_stage_entered():
 		stage_impl = stage_player
 	else:
 		if stage_def.stage_type == StageType.COMBAT:
-			StatsManager.add_level(StatsManager.Level.STAGE)
+			StatsManager.add_level(Enum.StatsLevel.STAGE)
 			var stage_player = stage_player_scene.instantiate()
 			var stage = get_combat_stage(stage_def.combat_difficulty)
 			for enemy in stage.enemies:
@@ -329,7 +329,7 @@ func add_stat(field: Stats.Field, value: int):
 
 func stage_finished(stage_type: StageType):
 	if stage_type == StageType.COMBAT:
-		StatsManager.remove_level(StatsManager.Level.STAGE)
+		StatsManager.remove_level(Enum.StatsLevel.STAGE)
 		add_stat(Stats.Field.COMBAT_STAGES_FINISHED, 1)
 	StatsManager.run_stats.print()
 	if stage_number + 1 == run.size():
@@ -343,7 +343,7 @@ func next_stage():
 	state.change_state(WITHIN_STAGE)
 
 func game_over():
-	StatsManager.remove_level(StatsManager.Level.STAGE)
+	StatsManager.remove_level(Enum.StatsLevel.STAGE)
 	add_stat(Stats.Field.RUNS_DEFEAT, 1)
 	state.change_state(RUN_SUMMARY)
 
