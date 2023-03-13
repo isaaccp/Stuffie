@@ -42,7 +42,10 @@ func initialize(stage: Stage, doors_node: Node):
 		doors_node.add_child(door)
 		door.global_position = get_world_position(door_def.pos)
 		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
-	fov = FieldOfView.new(self)
+	initialize_fov()
+
+func initialize_fov():
+	fov = FieldOfView.new(map_rect.size, base_view_blocking_locations, door_locs)
 
 func clone(mock_entities=false, clone_fov=false):
 	var new = MapManager.new()
@@ -59,7 +62,7 @@ func clone(mock_entities=false, clone_fov=false):
 	new.door_locs = door_locs.duplicate()
 	# This depends on map-rect, base_view_blocking_locations and door_locs.
 	if clone_fov:
-		new.fov = FieldOfView.new(new)
+		new.initialize_fov()
 
 	if mock_entities:
 		for loc in character_locs:

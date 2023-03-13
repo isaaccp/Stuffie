@@ -9,12 +9,12 @@ var tiles_cached = 0
 var visible_tiles_cached = 0
 const MAX_DISTANCE = 10
 
-func _init(map: MapManager):
-	mrpas = MRPAS.new(map.map_rect.size)
-	for loc in map.base_view_blocking_locations:
+func _init(size: Vector2i, view_blocking_locs: Dictionary, door_locs: Dictionary):
+	mrpas = MRPAS.new(size)
+	for loc in view_blocking_locs:
 		mrpas.set_transparent(loc, false)
-	for loc in map.door_locs:
-		if map.door_locs[loc].solid():
+	for loc in door_locs:
+		if door_locs[loc].solid():
 			mrpas.set_transparent(loc, false)
 
 func get_fov(pos: Vector2i):
