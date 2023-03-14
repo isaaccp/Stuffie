@@ -16,7 +16,7 @@ var character_ids = [
 	Enum.CharacterId.WIZARD,
 ]
 
-var run_type: GameRun.RunType
+var run_type: RunDef.RunType
 var game_run: GameRun
 var characters: Array[Character]
 var loaded_save_state: SaveState
@@ -43,6 +43,7 @@ func _on_main_menu_exited():
 	clear_children()
 
 func _on_character_select_entered():
+	characters.clear()
 	var character_selection = character_selection_scene.instantiate() as CharacterSelection
 	for character_id in character_ids:
 		var character = CharacterLoader.create(character_id)
@@ -83,9 +84,9 @@ func progress():
 func _on_progress_exited():
 	pass
 
-func select_character(run_type: GameRun.RunType):
+func select_character(run_type: RunDef.RunType):
 	self.run_type = run_type
-	if run_type == GameRun.RunType.REGULAR_PARTY:
+	if run_type == RunDef.RunType.REGULAR_PARTY:
 		characters.push_back(CharacterLoader.create(Enum.CharacterId.WARRIOR))
 		characters.push_back(CharacterLoader.create(Enum.CharacterId.WIZARD))
 		state.change_state(WITHIN_RUN)

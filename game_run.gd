@@ -19,82 +19,11 @@ var combat_state: CombatSaveState
 
 var run_victory = false
 
-enum StageType {
-	COMBAT,
-	BLACKSMITH,
-	CAMP,
-	CARD_REWARD,
-}
-
-enum RewardsType {
-	NONE,
-	REGULAR,
-}
-
-class StageDef:
-	var stage_type: StageType
-	var combat_difficulty: int
-	var combat_added_levels: int
-	var blacksmith_removals: int
-	var blacksmith_upgrades: int
-	var blacksmith_relics: int
-	var card_reward_options: int
-
-	func _init(stage_type: StageType):
-		super()
-		self.stage_type = stage_type
-
-	func rewards_type():
-		if stage_type == StageType.COMBAT:
-			return RewardsType.REGULAR
-		return RewardsType.NONE
-
-	static func combat(difficulty: int, added_levels=0) -> StageDef:
-		var stage_def = StageDef.new(StageType.COMBAT)
-		stage_def.combat_difficulty = difficulty
-		stage_def.combat_added_levels = added_levels
-		return stage_def
-
-	static func blacksmith(removals: int = 1, upgrades: int = 1, relics: int = 2):
-		var stage_def = StageDef.new(StageType.BLACKSMITH)
-		stage_def.blacksmith_removals = removals
-		stage_def.blacksmith_upgrades = upgrades
-		stage_def.blacksmith_relics = relics
-		return stage_def
-
-	static func card_reward(options: int = 5):
-		var stage_def = StageDef.new(StageType.CARD_REWARD)
-		stage_def.card_reward_options = options
-		return stage_def
-
-	static func camp():
-		return StageDef.new(StageType.CAMP)
-
-var stages  = [
-	["4w", "1w_2a"],
-	["3w_2a", "cages"],
-	["death_wall", "tight_corridor"],
-	["death_cage", "corridor"],
-	["big_bad_skeleton"],
-	["6w_4a"],
-	["first_horde"],
-]
-
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 var camp_scene = preload("res://stages/camp.tscn")
 var summary_scene = preload("res://run_summary.tscn")
-
-enum RunType {
-	REGULAR,
-	REGULAR_PLUS,
-	REGULAR_PARTY,
-	TEST_BLACKSMITH,
-	TEST_CAMP,
-	TEST_AFTER_STAGE,
-}
-
-var run = []
-
+var run: RunDef
+var level_number = 0
 var stage_number = 0
 @export var shared_bag: SharedBag
 const GOLD_PER_STAGE = 10
@@ -108,11 +37,11 @@ var characters: Array[Character]
 @export var abandon_button: Button
 
 # Whether the last stage requires rewards.
-var rewards_type = RewardsType.NONE
+var rewards_type = StageDef.RewardsType.NONE
 
 var relic_list = preload("res://resources/relic_list.tres").duplicate()
 var all_cards = Dictionary()
-var run_type: RunType
+var run_type: RunDef.RunType
 var added_levels = 0
 
 signal run_finished
@@ -131,77 +60,21 @@ func set_starting_characters(starting_characters: Array[Character]):
 		character.initialize()
 		characters.push_back(character)
 		party.add_child(character)
-		if run_type == RunType.TEST_BLACKSMITH:
+		if run_type == RunDef.RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards
-		elif run_type == RunType.TEST_CAMP:
+		elif run_type == RunDef.RunType.TEST_CAMP:
 			character.hit_points -= 30
 
-func set_run_type(run_type: RunType):
+func set_run_type(run_type: RunDef.RunType):
 	self.run_type = run_type
-	if run_type == RunType.REGULAR:
-		run = [
-			StageDef.combat(0),
-			StageDef.combat(1),
-			StageDef.blacksmith(),
-			StageDef.combat(2),
-			StageDef.camp(),
-			StageDef.combat(3),
-			StageDef.blacksmith(),
-			StageDef.combat(4),
-		]
-	elif run_type == RunType.REGULAR_PARTY:
-		added_levels = 4
-		shared_bag.add_gold(20)
-		run = [
-			StageDef.combat(2),
-			StageDef.combat(3),
-			StageDef.blacksmith(2, 2),
-			StageDef.combat(5),
-			StageDef.camp(),
-			StageDef.combat(6),
-		]
-	elif run_type == RunType.REGULAR_PLUS:
-		added_levels = 3
-		shared_bag.add_gold(100)
-		run = [
-			StageDef.card_reward(5),
-			StageDef.card_reward(5),
-			StageDef.card_reward(5),
-			StageDef.blacksmith(4, 4, 3),
-			StageDef.combat(0),
-			StageDef.combat(1),
-			StageDef.blacksmith(),
-			StageDef.combat(2),
-			StageDef.camp(),
-			StageDef.combat(3),
-			StageDef.blacksmith(),
-			StageDef.combat(4),
-		]
-	elif run_type == RunType.TEST_BLACKSMITH:
-		shared_bag.add_gold(30)
-		run = [
-			StageDef.blacksmith(),
-			StageDef.combat(0),
-		]
-	elif run_type == RunType.TEST_CAMP:
-		run = [
-			StageDef.camp(),
-			StageDef.combat(0),
-		]
-	elif run_type == RunType.TEST_AFTER_STAGE:
-		run = [
-			StageDef.combat(0),
-			StageDef.combat(0),
-		]
-		stages = [
-			["fov_test"],
-		]
+	run = RunDef.get_run(run_type)
+	shared_bag.add_gold(run.shared_bag_gold)
 
 func start():
 	state.change_state(MAP)
 
 func current_stage_def():
-	return run[stage_number]
+	return run.get_stage(level_number, stage_number)
 
 func load_stage(stage_name: String) -> Stage:
 	var path = "res://stages/" + stage_name + ".stage"
@@ -210,8 +83,8 @@ func load_stage(stage_name: String) -> Stage:
 	return stage
 
 func get_combat_stage(difficulty: int):
-	assert(difficulty < stages.size())
-	var options = stages[difficulty]
+	assert(difficulty < run.stages.size())
+	var options = run.stages[difficulty]
 	stage_name = options[randi() % options.size()]
 	return load_stage(stage_name)
 
@@ -235,37 +108,37 @@ func _on_within_stage_entered():
 		var stage = load_stage(stage_name)
 		stage_parent.add_child(stage_player)
 		stage_player.initialize(stage, party, shared_bag, combat_state)
-		stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
+		stage_player.stage_done.connect(stage_finished.bind(StageDef.StageType.COMBAT))
 		stage_player.game_over.connect(game_over)
 		stage_impl = stage_player
 	else:
-		if stage_def.stage_type == StageType.COMBAT:
+		if stage_def.stage_type == StageDef.StageType.COMBAT:
 			StatsManager.add_level(Enum.StatsLevel.STAGE)
 			var stage_player = stage_player_scene.instantiate()
 			var stage = get_combat_stage(stage_def.combat_difficulty)
 			for enemy in stage.enemies:
-				enemy.level += added_levels + stage_def.combat_added_levels
+				enemy.level += run.added_levels + stage_def.combat_added_levels
 			stage_parent.add_child(stage_player)
 			stage_player.initialize(stage, party, shared_bag)
-			stage_player.stage_done.connect(stage_finished.bind(StageType.COMBAT))
+			stage_player.stage_done.connect(stage_finished.bind(StageDef.StageType.COMBAT))
 			stage_player.game_over.connect(game_over)
 			stage_impl = stage_player
-		elif stage_def.stage_type == StageType.BLACKSMITH:
+		elif stage_def.stage_type == StageDef.StageType.BLACKSMITH:
 			var blacksmith = get_blacksmith_stage()
 			blacksmith.initialize(characters, shared_bag, relic_list, stage_def.blacksmith_removals, stage_def.blacksmith_upgrades, stage_def.blacksmith_relics)
-			blacksmith.stage_done.connect(stage_finished.bind(StageType.BLACKSMITH))
+			blacksmith.stage_done.connect(stage_finished.bind(StageDef.StageType.BLACKSMITH))
 			stage_parent.add_child(blacksmith)
 			stage_impl = blacksmith
-		elif stage_def.stage_type == StageType.CAMP:
+		elif stage_def.stage_type == StageDef.StageType.CAMP:
 			var camp = get_camp_stage()
 			camp.initialize(characters, shared_bag)
-			camp.stage_done.connect(stage_finished.bind(StageType.CAMP))
+			camp.stage_done.connect(stage_finished.bind(StageDef.StageType.CAMP))
 			stage_parent.add_child(camp)
 			stage_impl = camp
-		elif stage_def.stage_type == StageType.CARD_REWARD:
+		elif stage_def.stage_type == StageDef.StageType.CARD_REWARD:
 			var card_reward = get_card_reward_stage()
 			card_reward.initialize(characters, shared_bag, stage_def.card_reward_options)
-			card_reward.between_stages_done.connect(stage_finished.bind(StageType.CARD_REWARD))
+			card_reward.between_stages_done.connect(stage_finished.bind(StageDef.StageType.CARD_REWARD))
 			stage_parent.add_child(card_reward)
 			stage_impl = card_reward
 
@@ -277,18 +150,21 @@ func _on_within_stage_exited():
 	combat_state = null
 	for node in stage_parent.get_children():
 		node.queue_free()
-	if current_stage_def().stage_type == StageType.COMBAT:
+	if current_stage_def().stage_type == StageDef.StageType.COMBAT:
 		for character in characters:
 			# TODO: Consider not destroying the character, just marking it as dead.
 			# This would also help with resurrect, etc.
 			if is_instance_valid(character):
 				character.end_stage()
 	stage_number += 1
+	if stage_number == run.get_level(level_number).stages.size():
+		stage_number = 0
+		level_number += 1
 
 func _on_between_stages_entered():
 	# Possibly just push this into between_stages and
 	# handle it there. Or rename "between_stages" to "rewards_stage".
-	if rewards_type == RewardsType.NONE:
+	if rewards_type == StageDef.RewardsType.NONE:
 		state.change_state.call_deferred(MAP)
 	else:
 		shared_bag.add_gold(GOLD_PER_STAGE)
@@ -305,7 +181,7 @@ func _on_between_stages_exited():
 
 func _on_map_entered():
 	var run_map = run_map_scene.instantiate() as RunMap
-	run_map.initialize(run, stage_number, shared_bag)
+	run_map.initialize(run, level_number, stage_number, shared_bag)
 	stage_parent.add_child(run_map)
 	run_map.done.connect(next_stage)
 
@@ -327,15 +203,18 @@ func add_stat(field: Stats.Field, value: int):
 	for character in characters:
 		StatsManager.add(character.character_type, field, value)
 
-func stage_finished(stage_type: StageType):
-	if stage_type == StageType.COMBAT:
+func stage_finished(stage_type: StageDef.StageType):
+	if stage_type == StageDef.StageType.COMBAT:
 		StatsManager.remove_level(Enum.StatsLevel.STAGE)
 		add_stat(Stats.Field.COMBAT_STAGES_FINISHED, 1)
 	StatsManager.run_stats.print()
-	if stage_number + 1 == run.size():
-		add_stat(Stats.Field.RUNS_VICTORY, 1)
-		run_victory = true
-		state.change_state(RUN_SUMMARY)
+	if stage_number + 1 == run.get_level(level_number).stages.size():
+		if level_number + 1 == run.levels.size():
+			add_stat(Stats.Field.RUNS_VICTORY, 1)
+			run_victory = true
+			state.change_state(RUN_SUMMARY)
+		else:
+			state.change_state(BETWEEN_STAGES)
 	else:
 		state.change_state(BETWEEN_STAGES)
 
@@ -392,14 +271,14 @@ func get_save_state():
 	else:
 		run_state.stage_type = current_stage_def().stage_type
 		match run_state.stage_type:
-			StageType.COMBAT:
+			StageDef.StageType.COMBAT:
 				run_state.stage_name = stage_name
 				run_state.combat_state = stage_impl.get_save_state()
-			StageType.BLACKSMITH:
+			StageDef.StageType.BLACKSMITH:
 				pass
-			StageType.CAMP:
+			StageDef.StageType.CAMP:
 				pass
-			StageType.CARD_REWARD:
+			StageDef.StageType.CARD_REWARD:
 				pass
 	return run_state
 
@@ -418,7 +297,7 @@ func load_save_state(run_state: RunSaveState):
 			state.change_state(MAP)
 		WITHIN_STAGE.name:
 			match run_state.stage_type:
-				StageType.COMBAT:
+				StageDef.StageType.COMBAT:
 					load_stage_from_save = true
 					stage_name = run_state.stage_name
 					combat_state = run_state.combat_state

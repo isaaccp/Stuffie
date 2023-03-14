@@ -1,6 +1,6 @@
 extends Control
 
-signal run_type_selected(run_type: GameRun.RunType)
+signal run_type_selected(run_type: RunDef.RunType)
 signal continue_run_selected
 signal abandon_run_selected
 
@@ -17,12 +17,12 @@ signal abandon_run_selected
 @export var abandon_run_button: Button
 
 func _ready():
-	new_game_button.pressed.connect(start_run.bind(GameRun.RunType.REGULAR))
-	new_game_plus_button.pressed.connect(start_run.bind(GameRun.RunType.REGULAR_PLUS))
-	new_game_full_party_button.pressed.connect(start_run.bind(GameRun.RunType.REGULAR_PARTY))
-	test_blacksmith_button.pressed.connect(start_run.bind(GameRun.RunType.TEST_BLACKSMITH))
-	test_camp_button.pressed.connect(start_run.bind(GameRun.RunType.TEST_CAMP))
-	test_after_stage_button.pressed.connect(start_run.bind(GameRun.RunType.TEST_AFTER_STAGE))
+	new_game_button.pressed.connect(start_run.bind(RunDef.RunType.REGULAR))
+	new_game_plus_button.pressed.connect(start_run.bind(RunDef.RunType.REGULAR_PLUS))
+	new_game_full_party_button.pressed.connect(start_run.bind(RunDef.RunType.REGULAR_PARTY))
+	test_blacksmith_button.pressed.connect(start_run.bind(RunDef.RunType.TEST_BLACKSMITH))
+	test_camp_button.pressed.connect(start_run.bind(RunDef.RunType.TEST_CAMP))
+	test_after_stage_button.pressed.connect(start_run.bind(RunDef.RunType.TEST_AFTER_STAGE))
 	continue_run_button.pressed.connect(continue_run_button_pressed)
 	abandon_run_button.pressed.connect(abandon_run_button_pressed)
 
@@ -34,7 +34,7 @@ func set_new_run(new_run: bool):
 		new_run_buttons.hide()
 		continue_run_buttons.show()
 
-func start_run(run_type: GameRun.RunType):
+func start_run(run_type: RunDef.RunType):
 	run_type_selected.emit(run_type)
 
 func continue_run_button_pressed():
