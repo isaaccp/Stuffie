@@ -3,6 +3,8 @@ extends RefCounted
 class_name FieldOfView
 
 var mrpas: MRPAS
+# Size of the cache could get very big as it quadratic with number of tiles,
+# may need to make it an LRU or similar with max number of entries.
 var cache: Dictionary
 var mutex = Mutex.new()
 var tiles_cached = 0

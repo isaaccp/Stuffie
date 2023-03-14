@@ -16,7 +16,6 @@ func _refresh_tiles():
 	var visible_tiles = {}
 	if los:
 		visible_tiles = map.fov.get_fov(id_position)
-		print_debug("fov: %s, pos: %s, visible tiles: %s" % [map.fov, id_position, len(visible_tiles)])
 	for i in range(-area_distance, area_distance+1):
 		for j in range(-area_distance, area_distance+1):
 			var offset = Vector2i(i, j)
