@@ -68,7 +68,8 @@ func initialize_from_cards(character: Character, cards: Array):
 				break
 			var card = cards[card_idx]
 			var card_ui = card_ui_scene.instantiate() as CardUI
-			card_ui.initialize(card, character, _on_card_pressed.bind(card_idx))
+			card_ui.initialize(card, character)
+			card_ui.pressed.connect(_on_card_pressed.bind(card_idx))
 			card_idx += 1
 			hbox.add_child(card_ui)
 		vbox.add_child(hbox)

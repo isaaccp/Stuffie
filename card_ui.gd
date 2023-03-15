@@ -2,7 +2,6 @@ extends Control
 
 class_name CardUI
 
-var cb: Callable
 var card: Card
 var character: Character
 var keyword_tooltips = {
@@ -17,12 +16,16 @@ var keyword_tooltips = {
 
 @export var card_name: Label
 @export var cost: Label
-@export var playing: Label
 @export var description: RichTextLabel
 @export var tooltip: Label
 @export var image: TextureRect
 var stylebox: StyleBoxFlat
-var highlight = false
+
+var selected = false
+var focused = false
+var tw: Tween
+
+signal pressed
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,10 +38,9 @@ func _ready():
 func _process(delta):
 	pass
 
-func initialize(card: Card, character: Character, callback: Callable):
+func initialize(card: Card, character: Character):
 	self.card = card
 	self.character = character
-	cb = callback
 	refresh()
 
 func get_description_text() -> String:
@@ -59,19 +61,37 @@ func refresh():
 	image.texture = card.texture
 	description.text = get_description_text()
 
-func set_highlight(highlight: bool):
-	self.highlight = highlight
-	if highlight:
-		stylebox.shadow_color = Color(1.0, 0, 1.0)
-		stylebox.shadow_size = 10
-	else:
-		stylebox.shadow_size = 0
+func set_selected(selected: bool):
+	var changed = selected != self.selected
+	self.selected = selected
+	_on_highlight_change(changed, false)
+
+func set_focused(focused: bool):
+	var changed = focused != self.focused
+	self.focused = focused
+	_on_highlight_change(false, changed)
+
+func _on_highlight_change(selected_changed: bool, focused_changed: bool):
+	if selected_changed:
+		if not selected and tw :
+			tw.stop()
+		if selected:
+			stylebox.shadow_color = Color(1.0, 0, 1.0)
+			tw = create_tween()
+			tw.tween_property(stylebox, "shadow_size", 30, 0.75)
+			tw.tween_property(stylebox, "shadow_size", 5, 0.75)
+			tw.set_loops()
+	if not selected:
+		if focused:
+			stylebox.shadow_color = Color(1.0, 0, 1.0)
+			stylebox.shadow_size = 5
+		else:
+			stylebox.shadow_size = 0
 
 func _gui_input(event):
 		if event is InputEventMouseButton:
 			if event.button_index == 1 and event.pressed:
-				if cb.is_valid():
-					cb.call()
+				pressed.emit()
 				accept_event()
 
 func _on_description_meta_hover_started(meta):
@@ -83,3 +103,9 @@ func _on_description_meta_hover_started(meta):
 func _on_description_meta_hover_ended(meta):
 	tooltip.hide()
 	image.show()
+
+func _on_mouse_entered():
+	set_focused(true)
+
+func _on_mouse_exited():
+	set_focused(false)

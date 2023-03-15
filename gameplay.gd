@@ -247,7 +247,8 @@ func draw_hand():
 	for j in active_character.deck.hand.size():
 		var card = active_character.deck.hand[j]
 		var new_card = card_ui_scene.instantiate() as CardUI
-		new_card.initialize(card, active_character, _on_card_pressed.bind(j))
+		new_card.initialize(card, active_character)
+		new_card.pressed.connect(_on_card_pressed.bind(j))
 		hand_ui.add_child(new_card)
 	# Clear discard.
 	for child in discard_ui.get_children():
@@ -255,7 +256,7 @@ func draw_hand():
 	# Display last discarded card.
 	if not active_character.deck.discard.is_empty():
 		var new_card = card_ui_scene.instantiate() as CardUI
-		new_card.initialize(active_character.deck.discard.back(), active_character, Callable())
+		new_card.initialize(active_character.deck.discard.back(), active_character)
 		discard_ui.add_child(new_card)
 		new_card.tooltip_text = "%d cards on discard pile" % active_character.deck.discard.size()
 	# Set deck tooltip.
@@ -285,14 +286,14 @@ func _on_card_pressed(index: int):
 		return
 
 	if current_card_index != -1:
-		hand_ui.get_child(current_card_index).set_highlight(false)
+		hand_ui.get_child(current_card_index).set_selected(false)
 		target_area.queue_free()
 		target_cursor.queue_free()
 		active_character.clear_pending_action_cost()
 
 	var card = active_character.deck.hand[index]
 	if card.cost <= active_character.action_points:
-		hand_ui.get_child(index).set_highlight(true)
+		hand_ui.get_child(index).set_selected(true)
 		current_card_index = index
 		current_card = card
 		# Update prospective cost in character.
@@ -580,7 +581,7 @@ func _input(event):
 	if Input.is_action_just_released("ui_cancel"):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
-				hand_ui.get_child(current_card_index).set_highlight(false)
+				hand_ui.get_child(current_card_index).set_selected(false)
 				current_card_index = -1
 				current_card = null
 				target_cursor.queue_free()

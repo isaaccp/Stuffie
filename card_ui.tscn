@@ -28,7 +28,7 @@ bg_color = Color(0.835294, 0.839216, 0.2, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8d27"]
 
-[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("card_name", "cost", "playing", "description", "tooltip", "image")]
+[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("card_name", "cost", "description", "tooltip", "image")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -42,7 +42,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_3vkew")
 script = ExtResource("1_h04yd")
 card_name = NodePath("NameControl/Name/NameLabel")
 cost = NodePath("CostControl/Cost/CostLabel")
-playing = NodePath("PanelContainer/Margin/PanelContainer/VBox/Playing")
 description = NodePath("PanelContainer/Margin/PanelContainer/VBox/Description")
 tooltip = NodePath("PanelContainer/Margin/PanelContainer/VBox/PanelContainer/Tooltip")
 image = NodePath("PanelContainer/Margin/PanelContainer/VBox/PanelContainer/Image")
@@ -162,11 +161,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eqbxn")
 [node name="VBox" type="VBoxContainer" parent="PanelContainer/Margin/PanelContainer"]
 layout_mode = 2
 
-[node name="Playing" type="Label" parent="PanelContainer/Margin/PanelContainer/VBox"]
-visible = false
-layout_mode = 2
-text = "Playing"
-
 [node name="PanelContainer" type="PanelContainer" parent="PanelContainer/Margin/PanelContainer/VBox"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
@@ -193,5 +187,7 @@ bbcode_enabled = true
 text = "Sample description"
 fit_content = true
 
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="meta_hover_ended" from="PanelContainer/Margin/PanelContainer/VBox/Description" to="." method="_on_description_meta_hover_ended"]
 [connection signal="meta_hover_started" from="PanelContainer/Margin/PanelContainer/VBox/Description" to="." method="_on_description_meta_hover_started"]

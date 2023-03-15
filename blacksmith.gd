@@ -34,7 +34,6 @@ var active_character: Character
 var shared_bag: SharedBag
 var relic_list: RelicList
 var current_cards: Array[Card]
-var card_ui_scene = preload("res://card_ui.tscn")
 var removal_scene = preload("res://card_removal.tscn")
 var upgrade_scene = preload("res://card_upgrade.tscn")
 

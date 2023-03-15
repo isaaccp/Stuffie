@@ -44,7 +44,8 @@ func _process(delta):
 		var i = 0
 		for card in current_cards:
 			var new_card = card_ui_scene.instantiate() as CardUI
-			new_card.initialize(card, character, _on_card_pressed.bind(i))
+			new_card.initialize(card, character)
+			new_card.pressed.connect(_on_card_pressed.bind(i))
 			card_container.add_child(new_card)
 			i += 1
 		skip.text = "Skip (get %d🪙)" % NO_CARD_GOLD

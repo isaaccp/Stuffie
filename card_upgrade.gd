@@ -30,7 +30,7 @@ func initialize(characters: Array[Character]):
 func _on_card_chosen(card: Card):
 	upgrade_chooser.initialize_from_upgrades_to_card(active_character, card)
 	card_to_upgrade = card
-	card_to_upgrade_ui.initialize(card, active_character, Callable())
+	card_to_upgrade_ui.initialize(card, active_character)
 	upgrade_box.show()
 
 func _on_upgrade_card_chosen(card: Card):
