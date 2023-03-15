@@ -1,22 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4dta4t8dn1ew"]
+[gd_scene load_steps=5 format=3 uid="uid://d4dta4t8dn1ew"]
 
+[ext_resource type="Theme" uid="uid://dsleg1rkb5v12" path="res://resources/theme.tres" id="1_2o7jq"]
 [ext_resource type="Script" path="res://blacksmith.gd" id="1_2sanr"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_nj5pa"]
 [ext_resource type="PackedScene" uid="uid://d1mjm2leahgdg" path="res://character_selection.tscn" id="3_g5kfe"]
 
-[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_panel", "removal_panel_label", "upgrade_panel", "upgrade_panel_label", "relic_container", "done_button", "advanced_option_parent", "shared_bag_gold_ui", "character_selection")]
+[node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_button", "upgrade_button", "relic_container", "done_button", "advanced_option_parent", "shared_bag_gold_ui", "character_selection")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_2o7jq")
 script = ExtResource("1_2sanr")
 main = NodePath("MainScreen")
-removal_panel = NodePath("MainScreen/VBoxContainer/HBoxContainer/Removal")
-removal_panel_label = NodePath("MainScreen/VBoxContainer/HBoxContainer/Removal/Label")
-upgrade_panel = NodePath("MainScreen/VBoxContainer/HBoxContainer/Upgrade")
-upgrade_panel_label = NodePath("MainScreen/VBoxContainer/HBoxContainer/Upgrade/Label")
+removal_button = NodePath("MainScreen/VBoxContainer/HBoxContainer/RemovalButton")
+upgrade_button = NodePath("MainScreen/VBoxContainer/HBoxContainer/UpgradeButton")
 relic_container = NodePath("MainScreen/VBoxContainer/HBoxContainer/Relics/HBoxContainer")
 done_button = NodePath("MainScreen/VBoxContainer/HBoxContainer/Done")
 advanced_option_parent = NodePath("AdvancedOptionParent")
@@ -79,19 +79,11 @@ text = "Relics"
 [node name="HBoxContainer" type="HBoxContainer" parent="MainScreen/VBoxContainer/HBoxContainer/Relics"]
 layout_mode = 2
 
-[node name="Removal" type="PanelContainer" parent="MainScreen/VBoxContainer/HBoxContainer"]
+[node name="RemovalButton" type="Button" parent="MainScreen/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainScreen/VBoxContainer/HBoxContainer/Removal"]
+[node name="UpgradeButton" type="Button" parent="MainScreen/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Remove card"
-
-[node name="Upgrade" type="PanelContainer" parent="MainScreen/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MainScreen/VBoxContainer/HBoxContainer/Upgrade"]
-layout_mode = 2
-text = "Upgrade card"
 
 [node name="Done" type="Button" parent="MainScreen/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -111,6 +103,6 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="gui_input" from="MainScreen/VBoxContainer/HBoxContainer/Removal" to="." method="_on_removal_gui_input"]
-[connection signal="gui_input" from="MainScreen/VBoxContainer/HBoxContainer/Upgrade" to="." method="_on_upgrade_gui_input"]
+[connection signal="pressed" from="MainScreen/VBoxContainer/HBoxContainer/RemovalButton" to="." method="_on_removal_button_pressed"]
+[connection signal="pressed" from="MainScreen/VBoxContainer/HBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="MainScreen/VBoxContainer/HBoxContainer/Done" to="." method="_on_done_pressed"]

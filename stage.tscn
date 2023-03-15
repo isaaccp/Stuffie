@@ -10,9 +10,9 @@ world = NodePath("World")
 effects = NodePath("World/Effects")
 enemies_node = NodePath("World/Enemies")
 doors_node = NodePath("World/Doors")
-hand_ui = NodePath("UI/CardAreaHBox/Hand")
-deck_ui = NodePath("UI/CardAreaHBox/Deck")
-discard_ui = NodePath("UI/CardAreaHBox/Discard")
+hand_ui = NodePath("UI/MarginContainer/CardAreaHBox/Hand")
+deck_ui = NodePath("UI/MarginContainer/CardAreaHBox/Deck")
+discard_ui = NodePath("UI/MarginContainer/CardAreaHBox/Discard")
 character_state_ui = NodePath("UI/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 camera_pivot = NodePath("Pivot")
@@ -98,32 +98,37 @@ fit_content = true
 layout_mode = 2
 text = "Undo"
 
-[node name="CardAreaHBox" type="HBoxContainer" parent="UI"]
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -92.5
-offset_top = -200.0
-offset_right = 92.5
+offset_left = -38.0
+offset_top = -40.0
+offset_right = 38.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/margin_bottom = 15
 
-[node name="Hand" type="HBoxContainer" parent="UI/CardAreaHBox"]
+[node name="CardAreaHBox" type="HBoxContainer" parent="UI/MarginContainer"]
 layout_mode = 2
 
-[node name="Deck" type="MarginContainer" parent="UI/CardAreaHBox"]
+[node name="Hand" type="HBoxContainer" parent="UI/MarginContainer/CardAreaHBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Deck" type="MarginContainer" parent="UI/MarginContainer/CardAreaHBox"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="CardBack" type="TextureRect" parent="UI/CardAreaHBox/Deck"]
+[node name="CardBack" type="TextureRect" parent="UI/MarginContainer/CardAreaHBox/Deck"]
 layout_mode = 2
 texture = ExtResource("3_ciuq7")
 expand_mode = 3
 
-[node name="Discard" type="PanelContainer" parent="UI/CardAreaHBox"]
+[node name="Discard" type="PanelContainer" parent="UI/MarginContainer/CardAreaHBox"]
 layout_mode = 2
 
 [node name="Pivot" type="Node3D" parent="."]

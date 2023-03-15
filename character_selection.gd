@@ -15,7 +15,7 @@ func _ready():
 	for character  in characters:
 		var portrait = portrait_scene.instantiate() as CharacterPortrait
 		portrait.set_character(character)
-		portrait.portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
+		portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		character_container.add_child(portrait)
 		i += 1
 	if not one_off:

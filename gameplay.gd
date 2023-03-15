@@ -132,7 +132,7 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, comb
 		# Set portrait on character so it can update when e.g. move points change
 		character_portrait.set_character(character)
 		# Hook character selection.
-		character_portrait.portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
+		character_portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1
 	initialize_stage(stage, combat_state)
 

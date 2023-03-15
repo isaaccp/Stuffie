@@ -2,7 +2,7 @@ extends PanelContainer
 
 class_name CharacterPortrait
 
-@export var portrait: TextureButton
+@export var portrait: TextureRect
 @export var active_marker: TextureRect
 @export var action_points_label: RichTextLabel
 @export var move_points_label: RichTextLabel
@@ -14,6 +14,8 @@ class_name CharacterPortrait
 @export var powers_container: Container
 
 var character: Character
+
+signal pressed
 
 func set_character(character: Character):
 	self.character = character
@@ -35,7 +37,7 @@ func _update_character():
 	_set_powers(character.relic_manager.temp_relics)
 
 func _set_portrait_texture(texture: Texture):
-	portrait.texture_normal = texture
+	portrait.texture = texture
 
 func _set_relics(relics: Array[Relic]):
 	for relic in relics:
@@ -140,3 +142,8 @@ func _set_power(power: int):
 
 func _set_active(active: bool):
 	active_marker.visible = active
+
+func _on_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == 1 and event.pressed == true:
+			pressed.emit()

@@ -33,7 +33,7 @@ script = ExtResource("8_4cd50")
 title = "Entertain"
 effects = Array[ExtResource("7_vbhnd")]([SubResource("Resource_xu2cw")])
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_sjf8s"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ia0tj"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Wizard" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
@@ -68,4 +68,4 @@ omni_range = 20.0
 omni_attenuation = 0.5
 
 [node name="HealthDisplay3D" parent="." instance=ExtResource("4_cbcsb")]
-texture = SubResource("ViewportTexture_sjf8s")
+texture = SubResource("ViewportTexture_ia0tj")

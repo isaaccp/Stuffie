@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bstc04njnjap7"]
+[gd_scene load_steps=10 format=3 uid="uid://bstc04njnjap7"]
 
+[ext_resource type="Theme" uid="uid://dsleg1rkb5v12" path="res://resources/theme.tres" id="1_emtdr"]
 [ext_resource type="Script" path="res://stages/camp.gd" id="1_iynco"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_84e0o"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="2_iw1lg"]
@@ -34,6 +35,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_emtdr")
 script = ExtResource("1_iynco")
 character_portrait = NodePath("HBoxContainer/CharacterPortrait")
 choice_container = NodePath("HBoxContainer/VBoxContainer/HBoxContainer")

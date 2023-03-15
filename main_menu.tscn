@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://pjppgje5w3mh"]
+[gd_scene load_steps=3 format=3 uid="uid://pjppgje5w3mh"]
 
+[ext_resource type="Theme" uid="uid://dsleg1rkb5v12" path="res://resources/theme.tres" id="1_54o42"]
 [ext_resource type="Script" path="res://main_menu.gd" id="1_x8lvv"]
 
 [node name="Control" type="Control" node_paths=PackedStringArray("new_run_buttons", "continue_run_buttons", "new_game_button", "new_game_plus_button", "new_game_full_party_button", "test_blacksmith_button", "test_camp_button", "test_after_stage_button", "continue_run_button", "abandon_run_button")]
@@ -9,15 +10,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_54o42")
 script = ExtResource("1_x8lvv")
 new_run_buttons = NodePath("NewRun")
 continue_run_buttons = NodePath("ContinueRun")
 new_game_button = NodePath("NewRun/HBoxContainer2/NewGameButton")
-new_game_plus_button = NodePath("NewRun/HBoxContainer3/NewGamePlusButton")
-new_game_full_party_button = NodePath("NewRun/HBoxContainer3/NewGameFullParty")
-test_blacksmith_button = NodePath("NewRun/HBoxContainer/TestBlacksmith")
-test_camp_button = NodePath("NewRun/HBoxContainer/TestCamp")
-test_after_stage_button = NodePath("NewRun/HBoxContainer/TestAfterStage")
+new_game_plus_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer3/NewGamePlusButton")
+new_game_full_party_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer3/NewGameFullParty")
+test_blacksmith_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer/TestBlacksmith")
+test_camp_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer/TestCamp")
+test_after_stage_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer/TestAfterStage")
 continue_run_button = NodePath("ContinueRun/Continue")
 abandon_run_button = NodePath("ContinueRun/Abandon")
 
@@ -34,41 +36,59 @@ offset_right = 200.0
 offset_bottom = 117.5
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="NewRun"]
 layout_mode = 2
+theme_override_constants/separation = 60
+alignment = 1
 
 [node name="NewGameButton" type="Button" parent="NewRun/HBoxContainer2"]
-custom_minimum_size = Vector2(400, 200)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "New Game"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="NewRun"]
+[node name="Experimental" type="VBoxContainer" parent="NewRun/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NewRun/HBoxContainer2/Experimental"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Experimental / Debug"
+horizontal_alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="NewRun/HBoxContainer2/Experimental"]
 custom_minimum_size = Vector2(400, 200)
 layout_mode = 2
 alignment = 1
 
-[node name="NewGamePlusButton" type="Button" parent="NewRun/HBoxContainer3"]
+[node name="NewGamePlusButton" type="Button" parent="NewRun/HBoxContainer2/Experimental/HBoxContainer3"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "New Game +"
 
-[node name="NewGameFullParty" type="Button" parent="NewRun/HBoxContainer3"]
+[node name="NewGameFullParty" type="Button" parent="NewRun/HBoxContainer2/Experimental/HBoxContainer3"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "New Game (Full Party)"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="NewRun"]
+[node name="HBoxContainer" type="HBoxContainer" parent="NewRun/HBoxContainer2/Experimental"]
 layout_mode = 2
 alignment = 1
 
-[node name="TestBlacksmith" type="Button" parent="NewRun/HBoxContainer"]
+[node name="TestBlacksmith" type="Button" parent="NewRun/HBoxContainer2/Experimental/HBoxContainer"]
 layout_mode = 2
 text = "Test Blacksmith"
 
-[node name="TestCamp" type="Button" parent="NewRun/HBoxContainer"]
+[node name="TestCamp" type="Button" parent="NewRun/HBoxContainer2/Experimental/HBoxContainer"]
 layout_mode = 2
 text = "Test Camp"
 
-[node name="TestAfterStage" type="Button" parent="NewRun/HBoxContainer"]
+[node name="TestAfterStage" type="Button" parent="NewRun/HBoxContainer2/Experimental/HBoxContainer"]
 layout_mode = 2
 text = "Test after stage"
 

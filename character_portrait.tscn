@@ -1,25 +1,52 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlafd5e0038cv"]
+[gd_scene load_steps=10 format=3 uid="uid://dlafd5e0038cv"]
 
 [ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
+[ext_resource type="Shader" uid="uid://b4hkui3ircytg" path="res://resources/theme/rounded_corner_shader.tres" id="2_pkp7u"]
+[ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="2_s1eew"]
 [ext_resource type="Texture2D" uid="uid://dcl7kkxhyedtp" path="res://icon.svg" id="2_s8pq6"]
 
+[sub_resource type="Theme" id="Theme_2nrls"]
+default_font_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axeku"]
+bg_color = Color(0.819608, 0.858824, 0.262745, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7l06"]
+bg_color = Color(0.819608, 0.858824, 0.262745, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mrtej"]
+shader = ExtResource("2_pkp7u")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/radius = 0.1
+shader_parameter/size = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipb1a"]
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "active_marker", "action_points_label", "move_points_label", "hit_points_label", "block_label", "dodge_label", "power_label", "relics_container", "powers_container")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 110.0
+offset_bottom = 261.0
+theme = SubResource("Theme_2nrls")
+theme_override_styles/panel = SubResource("StyleBoxFlat_axeku")
 script = ExtResource("1_qmac0")
-portrait = NodePath("Margin/VBox/Portrait")
-active_marker = NodePath("Margin/VBox/Portrait/ActiveMarker")
-action_points_label = NodePath("Margin/VBox/ActionPoints")
-move_points_label = NodePath("Margin/VBox/MovePoints")
-hit_points_label = NodePath("Margin/VBox/HitPoints")
-block_label = NodePath("Margin/VBox/Block")
-dodge_label = NodePath("Margin/VBox/Dodge")
-power_label = NodePath("Margin/VBox/Power")
-relics_container = NodePath("Margin/VBox/Relics")
-powers_container = NodePath("Margin/VBox/Powers")
+portrait = NodePath("Margin/VBox/PanelContainer2/Portrait")
+active_marker = NodePath("Margin/VBox/PanelContainer2/Portrait/ActiveMarker")
+action_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/ActionPoints")
+move_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/MovePoints")
+hit_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/HitPoints")
+block_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Block")
+dodge_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Dodge")
+power_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Power")
+relics_container = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Relics")
+powers_container = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Powers")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -31,10 +58,17 @@ theme_override_constants/margin_bottom = 5
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
-[node name="Portrait" type="TextureButton" parent="Margin/VBox"]
+[node name="PanelContainer2" type="PanelContainer" parent="Margin/VBox"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e7l06")
 
-[node name="ActiveMarker" type="TextureRect" parent="Margin/VBox/Portrait"]
+[node name="Portrait" type="TextureRect" parent="Margin/VBox/PanelContainer2"]
+material = SubResource("ShaderMaterial_mrtej")
+layout_mode = 2
+texture = ExtResource("2_s1eew")
+
+[node name="ActiveMarker" type="TextureRect" parent="Margin/VBox/PanelContainer2/Portrait"]
 visible = false
 layout_mode = 2
 offset_right = 128.0
@@ -42,42 +76,60 @@ offset_bottom = 128.0
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_s8pq6")
 
-[node name="ActionPoints" type="RichTextLabel" parent="Margin/VBox"]
+[node name="PanelContainer" type="PanelContainer" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ipb1a")
+
+[node name="MarginContainer" type="MarginContainer" parent="Margin/VBox/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ActionPoints" type="RichTextLabel" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="MovePoints" type="RichTextLabel" parent="Margin/VBox"]
+[node name="MovePoints" type="RichTextLabel" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="HitPoints" type="RichTextLabel" parent="Margin/VBox"]
+[node name="HitPoints" type="RichTextLabel" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="Block" type="Label" parent="Margin/VBox"]
+[node name="Block" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "If character has block, block is reduced before HP when receiving damage.
 Block is removed at beginning of next turn."
 mouse_filter = 1
 
-[node name="Dodge" type="Label" parent="Margin/VBox"]
+[node name="Dodge" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "If character has dodge, ignore all damage from the next attack and remove 1 dodge.
 
 Up to 1 dodge carries to next turn."
 mouse_filter = 1
 
-[node name="Power" type="Label" parent="Margin/VBox"]
+[node name="Power" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "If character has any power, damage +50%.
 Remove 1 power per turn."
 mouse_filter = 1
 
-[node name="Relics" type="VBoxContainer" parent="Margin/VBox"]
+[node name="Relics" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Powers" type="VBoxContainer" parent="Margin/VBox"]
+[node name="Powers" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

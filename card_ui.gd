@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Control
 
 class_name CardUI
 
@@ -21,10 +21,15 @@ var keyword_tooltips = {
 @export var description: RichTextLabel
 @export var tooltip: Label
 @export var image: TextureRect
+var stylebox: StyleBoxFlat
+var highlight = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tooltip.hide()
+	stylebox = get_theme_stylebox("panel").duplicate()
+	# Replace stylebox with duplicate so we can make individual changes to cards.
+	add_theme_stylebox_override("panel", stylebox)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -46,7 +51,7 @@ func tooltip_text(keyword: String) -> String:
 		return "Unknown keyword, please file a bug"
 
 func get_cost_text() -> String:
-	return "%d💢" % card.cost
+	return "%d" % card.cost
 
 func refresh():
 	card_name.text = card.card_name
@@ -55,7 +60,12 @@ func refresh():
 	description.text = get_description_text()
 
 func set_highlight(highlight: bool):
-	playing.visible = highlight
+	self.highlight = highlight
+	if highlight:
+		stylebox.shadow_color = Color(1.0, 0, 1.0)
+		stylebox.shadow_size = 10
+	else:
+		stylebox.shadow_size = 0
 
 func _gui_input(event):
 		if event is InputEventMouseButton:
@@ -69,7 +79,6 @@ func _on_description_meta_hover_started(meta):
 	tooltip.text = tooltip_text(keyword)
 	tooltip.show()
 	image.hide()
-
 
 func _on_description_meta_hover_ended(meta):
 	tooltip.hide()

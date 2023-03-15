@@ -3,10 +3,8 @@ extends Control
 class_name BlacksmithStage
 
 @export var main: Control
-@export var removal_panel: PanelContainer
-@export var removal_panel_label: Label
-@export var upgrade_panel: PanelContainer
-@export var upgrade_panel_label: Label
+@export var removal_button: Button
+@export var upgrade_button: Button
 @export var relic_container: Container
 @export var done_button: Button
 # When choosing an option that requires UI change, we'll hide "main" and
@@ -116,15 +114,11 @@ func _clear_advanced_option_parent():
 		child.queue_free()
 	advanced_option_parent.hide()
 
-func _on_removal_gui_input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == 1 and event.pressed == true:
-			state.change_state(REMOVAL)
+func _on_removal_button_pressed():
+	state.change_state(REMOVAL)
 
-func _on_upgrade_gui_input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == 1 and event.pressed == true:
-			state.change_state(UPGRADE)
+func _on_upgrade_button_pressed():
+	state.change_state(UPGRADE)
 
 func refresh():
 	update_removals()
@@ -132,22 +126,18 @@ func refresh():
 	update_relics()
 
 func update_removals():
-	removal_panel_label.text = "Remove card (%d🪙) (%d left)" % [removal_cost, available_removals]
+	removal_button.text = "Remove card (%d🪙) (%d left)" % [removal_cost, available_removals]
 	if available_removals == 0 or shared_bag.gold < removal_cost:
-		removal_panel.modulate = Color(0.5, 0.5, 0.5, 0.5)
-		removal_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		removal_button.disabled = true
 	else:
-		removal_panel.modulate = Color(1, 1, 1, 1)
-		removal_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+		removal_button.disabled = false
 
 func update_upgrades():
-	upgrade_panel_label.text = "Upgrade card (%d🪙) (%d left)" % [upgrade_cost, available_upgrades]
+	upgrade_button.text = "Upgrade card (%d🪙) (%d left)" % [upgrade_cost, available_upgrades]
 	if available_upgrades  == 0 or shared_bag.gold < upgrade_cost:
-		upgrade_panel.modulate = Color(0.5, 0.5, 0.5, 0.5)
-		upgrade_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		upgrade_button.disabled = true
 	else:
-		upgrade_panel.modulate = Color(1, 1, 1, 1)
-		upgrade_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+		upgrade_button.disabled = false
 
 func update_relics():
 	# TODO: At some point we may move relic_cost to the relic

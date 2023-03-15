@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://i1q63y500x0d"]
+
+[ext_resource type="Texture2D" uid="uid://dhjb0vbined3e" path="res://resources/theme/texture.png" id="1_3pt0w"]
+
+[resource]
+texture = ExtResource("1_3pt0w")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
+modulate_color = Color(0.392157, 0.392157, 0.392157, 1)
