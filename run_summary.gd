@@ -9,9 +9,15 @@ var character_stats_scene = preload("res://run_character_stats.tscn")
 
 signal done
 
+var xp_stats = {
+	Stats.Field.COMBAT_STAGES_FINISHED: 10,
+	Stats.Field.ENEMIES_KILLED: 3,
+}
+
 var finished = false
 
 func initialize(characters: Array, victory: bool):
+	calculate_xp(characters)
 	if victory:
 		result.text = "Victory!"
 		result.set("theme_override_colors/font_color", Color(1, 1, 1))
@@ -21,6 +27,7 @@ func initialize(characters: Array, victory: bool):
 	for character in characters:
 		var character_stats = character_stats_scene.instantiate() as RunCharacterStats
 		character_stats.initialize(character)
+		character_stats.add_stat(Stats.Field.XP)
 		character_stats.add_stat(Stats.Field.COMBAT_STAGES_FINISHED)
 		character_stats.add_stat(Stats.Field.ENEMIES_KILLED)
 		character_stats.add_stat(Stats.Field.DAMAGE_DEALT)
@@ -31,6 +38,14 @@ func initialize(characters: Array, victory: bool):
 		character_stats.add_stat(Stats.Field.CARDS_UPGRADED)
 		character_stats.add_stat(Stats.Field.GOLD_EARNED)
 		characters_container.add_child(character_stats)
+
+func calculate_xp(characters: Array):
+	for character in characters:
+		var xp = 0
+		for field in xp_stats:
+			var value = StatsManager.run_stats.get_value(character.character_type, field)
+			xp += value * xp_stats[field]
+		StatsManager.add(character.character_type, Stats.Field.XP, xp)
 
 func _input(event):
 	if finished:
