@@ -15,7 +15,7 @@ enum Filter {
 var card_ui_scene = preload("res://card_ui.tscn")
 
 var cards: Array
-var cards_per_row = 5  # TODO: Do something smart with screen size later.
+var cards_per_row = 7  # TODO: Do something smart with screen size later.
 var chosen_card: Card = null
 
 signal card_chosen(card: Card)

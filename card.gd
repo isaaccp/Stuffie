@@ -10,6 +10,7 @@ enum AreaType {
 }
 
 @export var card_name: String
+@export var upgrade_name: String
 @export var basic = false
 @export var upgrade_level = 0
 @export var base_card: Card

@@ -49,6 +49,7 @@ metadata = SubResource("Resource_qj0ks")
 [resource]
 script = ExtResource("6_j8nqk")
 card_name = "Enhancing Multicast"
+upgrade_name = "Enhancing"
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_5omuu")

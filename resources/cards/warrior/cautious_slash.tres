@@ -34,6 +34,7 @@ effect = 0
 [resource]
 script = ExtResource("3_lcaxs")
 card_name = "Cautious Slash"
+upgrade_name = "Defensive"
 basic = true
 upgrade_level = 1
 base_card = ExtResource("1_bde3y")
@@ -51,3 +52,4 @@ area_type = 0
 area_length = 1
 area_width = 1
 cone_step = 1
+exhaust = false

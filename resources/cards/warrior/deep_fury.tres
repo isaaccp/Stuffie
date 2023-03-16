@@ -9,22 +9,26 @@
 script = ExtResource("1_m754a")
 extra_damage = 2
 name = "Fury"
-tooltip = "Adds 2 extra damage to each attack with explicit damage played"
 
 [resource]
 script = ExtResource("2_cw8jw")
 card_name = "Deep Fury"
+upgrade_name = ""
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_n5xdq")
 cost = 2
 texture = ExtResource("4_n26rx")
 target_mode = 0
+target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
 on_kill_effects = Array[Resource("res://card_effect.gd")]([])
 area_type = 0
 area_length = 1
 area_width = 1
+cone_step = 1
 power_relic = SubResource("Resource_5oavm")
+exhaust = false

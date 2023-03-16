@@ -42,6 +42,7 @@ metadata = SubResource("Resource_qj0ks")
 [resource]
 script = ExtResource("5_fp6ut")
 card_name = "Multicast"
+upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1

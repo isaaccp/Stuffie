@@ -17,6 +17,7 @@ read_only_field = 0
 [resource]
 script = ExtResource("1_hcm6k")
 card_name = "Deep Lunge"
+upgrade_name = "Deep"
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_6dgao")
@@ -34,3 +35,4 @@ area_type = 0
 area_length = 3
 area_width = 1
 cone_step = 1
+exhaust = false

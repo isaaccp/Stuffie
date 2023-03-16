@@ -15,6 +15,7 @@ var keyword_tooltips = {
 }
 
 @export var card_name: Label
+@export var upgrade_label: Label
 @export var cost: Label
 @export var description: RichTextLabel
 @export var tooltip: Label
@@ -57,6 +58,11 @@ func get_cost_text() -> String:
 
 func refresh():
 	card_name.text = card.card_name
+	if card.upgrade_level and card.upgrade_level > 0:
+		card_name.text = card.base_card.card_name
+		upgrade_label.show()
+		if card.upgrade_name:
+			upgrade_label.text = card.upgrade_name
 	cost.text = get_cost_text()
 	image.texture = card.texture
 	description.text = get_description_text()

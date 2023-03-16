@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c2wg8gqprp7pc"]
+[gd_scene load_steps=10 format=3 uid="uid://c2wg8gqprp7pc"]
 
 [ext_resource type="Script" path="res://card_ui.gd" id="1_h04yd"]
 [ext_resource type="Texture2D" uid="uid://dlvprbb5n8lal" path="res://resources/action-cost-orb.png" id="2_ccf3u"]
@@ -16,6 +16,19 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8subj"]
+bg_color = Color(0.517647, 0.517647, 0.517647, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_owovl"]
 bg_color = Color(0.835294, 0.839216, 0.717647, 1)
 corner_radius_top_left = 5
@@ -27,8 +40,9 @@ corner_radius_bottom_left = 5
 bg_color = Color(0.835294, 0.839216, 0.717647, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8d27"]
+corner_detail = 4
 
-[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("card_name", "cost", "description", "tooltip", "image")]
+[node name="CardUI" type="PanelContainer" node_paths=PackedStringArray("card_name", "upgrade_label", "cost", "description", "tooltip", "image")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,10 +51,12 @@ offset_right = -2089.0
 offset_bottom = -976.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_3vkew")
 script = ExtResource("1_h04yd")
 card_name = NodePath("NameControl/Name/NameLabel")
+upgrade_label = NodePath("NameControl/UpgradeLabel")
 cost = NodePath("CostControl/Cost/CostLabel")
 description = NodePath("PanelContainer/Margin/PanelContainer/VBox/Description")
 tooltip = NodePath("PanelContainer/Margin/PanelContainer/VBox/PanelContainer/Tooltip")
@@ -139,6 +155,23 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Foo bar baz"
 horizontal_alignment = 1
+
+[node name="UpgradeLabel" type="Label" parent="NameControl"]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -23.0
+offset_top = 169.0
+offset_right = 23.0
+offset_bottom = 201.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_8subj")
+text = "Hello"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
