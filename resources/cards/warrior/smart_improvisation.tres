@@ -25,6 +25,7 @@ effect = 6
 [resource]
 script = ExtResource("3_68r5l")
 card_name = "Smart Improvisation"
+upgrade_name = "Smart"
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_hqb5o")
@@ -41,3 +42,4 @@ area_type = 0
 area_length = 1
 area_width = 1
 cone_step = 1
+exhaust = false

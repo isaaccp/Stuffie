@@ -24,6 +24,7 @@ var stylebox: StyleBoxFlat
 
 var selected = false
 var focused = false
+var removed = false
 var tw: Tween
 
 signal pressed
@@ -41,6 +42,7 @@ func _process(delta):
 
 func initialize(card: Card, character: Character):
 	self.card = card
+	keyword_tooltips.merge(card.extra_tooltips())
 	self.character = character
 	refresh()
 
@@ -76,6 +78,9 @@ func set_focused(focused: bool):
 	var changed = focused != self.focused
 	self.focused = focused
 	_on_highlight_change(false, changed)
+
+func set_removed(removed: bool):
+	self.removed = removed
 
 func _on_highlight_change(selected_changed: bool, focused_changed: bool):
 	if selected_changed:

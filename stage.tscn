@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2jwb32qeaom4"]
+[gd_scene load_steps=5 format=3 uid="uid://b2jwb32qeaom4"]
 
 [ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
+[ext_resource type="PackedScene" uid="uid://qvfnlxs8t6m8" path="res://hand_ui.tscn" id="3_hp4xe"]
 
 [node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
@@ -10,13 +11,13 @@ world = NodePath("World")
 effects = NodePath("World/Effects")
 enemies_node = NodePath("World/Enemies")
 doors_node = NodePath("World/Doors")
-hand_ui = NodePath("UI/MarginContainer/CardAreaHBox/Hand")
-deck_ui = NodePath("UI/MarginContainer/CardAreaHBox/Deck")
-discard_ui = NodePath("UI/MarginContainer/CardAreaHBox/Discard")
+hand_ui = NodePath("UI/Control/HandUI")
+deck_ui = NodePath("UI/PanelContainer/MarginContainer/CardAreaHBox/Deck")
+discard_ui = NodePath("UI/PanelContainer/MarginContainer/CardAreaHBox/Discard")
 character_state_ui = NodePath("UI/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 camera_pivot = NodePath("Pivot")
-end_turn_button = NodePath("UI/EndTurnButton")
+end_turn_button = NodePath("UI/InfoPanel/VBox/EndTurnButton")
 undo_button = NodePath("UI/InfoPanel/VBox/UndoButton")
 treasures = NodePath("World/Treasures")
 stage_info = NodePath("UI/InfoPanel/VBox/Stage")
@@ -40,18 +41,6 @@ move_path = NodePath("World/Path")
 [node name="Doors" type="Node" parent="World"]
 
 [node name="UI" type="CanvasLayer" parent="."]
-
-[node name="EndTurnButton" type="Button" parent="UI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -78.0
-offset_top = -31.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "End Turn"
 
 [node name="CharacterState" type="HBoxContainer" parent="UI"]
 anchors_preset = 2
@@ -98,37 +87,66 @@ fit_content = true
 layout_mode = 2
 text = "Undo"
 
-[node name="MarginContainer" type="MarginContainer" parent="UI"]
+[node name="EndTurnButton" type="Button" parent="UI/InfoPanel/VBox"]
+layout_mode = 2
+text = "End Turn"
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -38.0
+offset_left = -20.0
 offset_top = -40.0
-offset_right = 38.0
+offset_right = -20.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/margin_bottom = 15
 
-[node name="CardAreaHBox" type="HBoxContainer" parent="UI/MarginContainer"]
+[node name="HandUI" parent="UI/Control" instance=ExtResource("3_hp4xe")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = -345.0
+offset_bottom = -345.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -516.0
+offset_top = -345.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="CardAreaHBox" type="HBoxContainer" parent="UI/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Hand" type="HBoxContainer" parent="UI/MarginContainer/CardAreaHBox"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="Deck" type="MarginContainer" parent="UI/MarginContainer/CardAreaHBox"]
+[node name="Deck" type="MarginContainer" parent="UI/PanelContainer/MarginContainer/CardAreaHBox"]
+custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="CardBack" type="TextureRect" parent="UI/MarginContainer/CardAreaHBox/Deck"]
+[node name="CardBack" type="TextureRect" parent="UI/PanelContainer/MarginContainer/CardAreaHBox/Deck"]
 layout_mode = 2
 texture = ExtResource("3_ciuq7")
 expand_mode = 3
 
-[node name="Discard" type="PanelContainer" parent="UI/MarginContainer/CardAreaHBox"]
+[node name="Discard" type="PanelContainer" parent="UI/PanelContainer/MarginContainer/CardAreaHBox"]
+custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
 
 [node name="Pivot" type="Node3D" parent="."]
@@ -138,5 +156,5 @@ transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.
 transform = Transform3D(1, 0, 0, 0, 0.910684, 0.413104, 0, -0.413104, 0.910684, 3, 8, 21)
 current = true
 
-[connection signal="pressed" from="UI/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UI/InfoPanel/VBox/UndoButton" to="." method="_on_undo_button_pressed"]
+[connection signal="pressed" from="UI/InfoPanel/VBox/EndTurnButton" to="." method="_on_end_turn_button_pressed"]

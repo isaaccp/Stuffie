@@ -112,8 +112,8 @@ func _on_within_stage_entered():
 		stage_player.game_over.connect(game_over)
 		stage_impl = stage_player
 	else:
+		StatsManager.add_level(Enum.StatsLevel.STAGE)
 		if stage_def.stage_type == StageDef.StageType.COMBAT:
-			StatsManager.add_level(Enum.StatsLevel.STAGE)
 			var stage_player = stage_player_scene.instantiate()
 			var stage = get_combat_stage(stage_def.combat_difficulty)
 			for enemy in stage.enemies:
@@ -204,8 +204,8 @@ func add_stat(field: Stats.Field, value: int):
 		StatsManager.add(character.character_type, field, value)
 
 func stage_finished(stage_type: StageDef.StageType):
+	StatsManager.remove_level(Enum.StatsLevel.STAGE)
 	if stage_type == StageDef.StageType.COMBAT:
-		StatsManager.remove_level(Enum.StatsLevel.STAGE)
 		add_stat(Stats.Field.COMBAT_STAGES_FINISHED, 1)
 	StatsManager.run_stats.print()
 	if stage_number + 1 == run.get_level(level_number).stages.size():
@@ -222,7 +222,8 @@ func next_stage():
 	state.change_state(WITHIN_STAGE)
 
 func game_over():
-	StatsManager.remove_level(Enum.StatsLevel.STAGE)
+	if not state.is_state(MAP):
+		StatsManager.remove_level(Enum.StatsLevel.STAGE)
 	add_stat(Stats.Field.RUNS_DEFEAT, 1)
 	state.change_state(RUN_SUMMARY)
 
@@ -230,8 +231,9 @@ func finish_run():
 	run_finished.emit()
 
 func _input(event):
-	# TODO: Implement can_save() in all stage things.
 	if Input.is_action_just_released("ui_cancel"):
+		if state.is_state(RUN_SUMMARY):
+			return
 		var stage = stage_parent.get_child(0)
 		if menu.visible:
 			menu.hide()

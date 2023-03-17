@@ -13,7 +13,7 @@ name = "Fury"
 [resource]
 script = ExtResource("2_cw8jw")
 card_name = "Deep Fury"
-upgrade_name = ""
+upgrade_name = "Deep"
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_n5xdq")

@@ -206,11 +206,9 @@ func pick_cards_condition(number: int, condition: Callable = func(c): return tru
 	await chooser.card_chosen
 	var card = chooser.chosen_card
 	if card == null:
-		deck.hand.push_back(card)
-		deck.deck.erase(card)
+		deck.add_to_hand_from_deck(card)
 		add_stat(Stats.Field.EXTRA_CARDS_DRAWN, number)
 	chooser.queue_free()
-
 
 func pick_cards(number: int):
 	pick_cards_condition(number)
@@ -246,7 +244,7 @@ func duplicate_cards(number: int, metadata: CardEffectMetadata):
 			var new_card = card_copy.duplicate()
 			if metadata.copied_card_change:
 				new_card.apply_card_change(metadata.copied_card_change)
-			deck.hand.push_back(new_card)
+			deck.add_to_hand(new_card)
 	chooser.queue_free()
 
 func add_power(power_amount: int):

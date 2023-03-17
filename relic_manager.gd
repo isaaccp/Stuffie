@@ -62,5 +62,5 @@ func _on_card_played(character: Character, card: Card):
 	_call_all_relics("_on_card_played", [character, card])
 
 func _on_stats_added(character_type: Enum.CharacterId, field: Stats.Field, value: int, character: Character):
-	assert(character_type == character.character_type)
-	_call_all_relics("_on_stats_added", [character, field, value])
+	if character_type == character.character_type:
+		_call_all_relics("_on_stats_added", [character, field, value])

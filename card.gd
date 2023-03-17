@@ -149,14 +149,16 @@ func is_attack():
 func get_target_text() -> String:
 	var target_text = ""
 	if target_mode == Enum.TargetMode.SELF:
-		target_text = "self"
+		target_text = "Self"
 	elif target_mode == Enum.TargetMode.SELF_ALLY:
-		target_text = "self or ally"
+		target_text = "Self or Ally"
 	elif target_mode == Enum.TargetMode.ALLY:
-		target_text = "ally"
+		target_text = "Ally"
+	elif target_mode == Enum.TargetMode.ENEMY:
+		target_text = "Enemy"
 	elif target_mode == Enum.TargetMode.AREA:
 		var area_size = effect_area(Vector2.RIGHT).size()
-		target_text = "area (%d tiles)" % area_size
+		target_text = "Area (%d tiles)" % area_size
 	return target_text
 
 func on_play_effect_text(character: Character) -> String:
@@ -175,14 +177,17 @@ func apply_card_change(change: CardChange):
 func get_description(character: Character) -> String:
 	var description = ""
 	if should_exhaust():
-		description = "[url=exhaust]Exhaust[/url]\n"
+		description = "[url=exhaust]Exhaust[/url]. "
 	var target_text = get_target_text()
+	var prefix_text = ""
+	if target_text != "Self":
+		prefix_text = "%s: " % target_text
 	if target_mode in [Enum.TargetMode.SELF, Enum.TargetMode.SELF_ALLY or Enum.TargetMode.SELF_ALLY]:
 		if power_relic:
-			description += "Power: %s (%s)\n" % [power_relic.name, power_relic.tooltip]
+			description += "Power: [url]%s[/url]\n" % power_relic.name
 		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
-			description += "On Play(%s): %s\n" % [target_text, on_play_text]
+			description += "%s%s\n" % [prefix_text, on_play_text]
 	elif target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
 		var on_play_self_text = CardEffect.join_effects_text(character, on_play_self_effects)
 		if on_play_self_text:
@@ -196,7 +201,7 @@ func get_description(character: Character) -> String:
 			description += "%s for %s dmg\n" % [attack_text, damage_text]
 		var on_play_text = on_play_effect_text(character)
 		if on_play_text:
-			description += "On Play(%s): %s\n" % [target_text, on_play_text]
+			description += "%s%s\n" % [prefix_text, on_play_text]
 		var on_kill_text = CardEffect.join_effects_text(character, on_kill_effects)
 		if on_kill_text:
 			description += "On Kill: %s\n" % on_kill_text
@@ -204,3 +209,9 @@ func get_description(character: Character) -> String:
 	if on_play_after_text:
 		description += "After Play: %s" % [on_play_after_text]
 	return description
+
+func extra_tooltips() -> Dictionary:
+	var tooltips = {}
+	if power_relic:
+		tooltips[power_relic.name] = power_relic.tooltip
+	return tooltips

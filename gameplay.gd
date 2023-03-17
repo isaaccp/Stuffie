@@ -48,7 +48,6 @@ var too_long_path: bool = false
 var valid_target: bool = false
 var tile_map_pos: Vector2i = Vector2i(0, 0)
 
-var current_card_index: int = -1
 var current_card: Card
 var target_cursor: CardTargetHighlight
 var single_cursor: SingleCursorHighlight
@@ -77,7 +76,7 @@ var stage_trigger_manager: StageTriggerManager
 # Enemies are under this node.
 @export var enemies_node: Node
 @export var doors_node: Node
-@export var hand_ui: Control
+@export var hand_ui: HandUI
 @export var deck_ui: Control
 @export var discard_ui: Control
 @export var character_state_ui: Control
@@ -119,6 +118,7 @@ signal game_over
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	undo_button.hide()
+	hand_ui.card_selected.connect(_on_card_selected)
 
 func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, combat_state: CombatSaveState = null):
 	self.shared_bag = shared_bag
@@ -173,9 +173,6 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	stage_trigger_manager = StageTriggerManager.new(stage.triggers)
 	stage_trigger_manager.connect_signals(self)
 	world.add_child(stage)
-	# As of now, some bits of the game require active_character to be set,
-	# so set it now before changing state.
-	set_active_character(0)
 	initialize_map_manager(stage)
 	if combat_state != null:
 		for treasure_state in combat_state.treasures:
@@ -202,6 +199,9 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 		stage.add_child(objective_highlight)
 	stage_info.text = "Stage"
 	objective_info.text = stage.get_objective_string()
+	# As of now, some bits of the game require active_character to be set,
+	# so set it now before changing state.
+	set_active_character(0)
 	change_state(GameState.HUMAN_TURN)
 
 func on_enemy_turn_calculated(damage_taken: Array):
@@ -240,16 +240,7 @@ func _on_character_portrait_pressed(index: int):
 		return
 	set_active_character(index)
 
-func draw_hand():
-	# Clear hand.
-	for child in hand_ui.get_children():
-		child.queue_free()
-	for j in active_character.deck.hand.size():
-		var card = active_character.deck.hand[j]
-		var new_card = card_ui_scene.instantiate() as CardUI
-		new_card.initialize(card, active_character)
-		new_card.pressed.connect(_on_card_pressed.bind(j))
-		hand_ui.add_child(new_card)
+func draw_deck():
 	# Clear discard.
 	for child in discard_ui.get_children():
 		child.queue_free()
@@ -272,36 +263,23 @@ func set_active_character(index: int):
 		if i == index:
 			active_character = party.get_child(i)
 			active_character.set_active(true)
-			draw_hand()
+			hand_ui.reset(active_character)
 		else:
 			character.set_active(false)
 			character.clear_pending_move_cost()
 		i += 1
 	active_character_index = index
+	change_human_turn_state(HumanTurnState.WAITING)
 
-func _on_card_pressed(index: int):
-	if state != GameState.HUMAN_TURN:
-		return
-	if human_turn_state not in [HumanTurnState.WAITING, HumanTurnState.ACTION_TARGET]:
-		return
-
-	if current_card_index != -1:
-		hand_ui.get_child(current_card_index).set_selected(false)
+func _on_card_selected(card: Card):
+	if current_card != null:
 		target_area.queue_free()
 		target_cursor.queue_free()
 		active_character.clear_pending_action_cost()
-
-	var card = active_character.deck.hand[index]
-	if card.cost <= active_character.action_points:
-		hand_ui.get_child(index).set_selected(true)
-		current_card_index = index
-		current_card = card
-		# Update prospective cost in character.
-		active_character.set_pending_action_cost(current_card.cost)
-		change_human_turn_state(HumanTurnState.ACTION_TARGET)
-	else:
-		# Not enough action points to play card, throw back to WAITING state.
-		change_human_turn_state(HumanTurnState.WAITING)
+	current_card = card
+	# Update prospective cost in character.
+	active_character.set_pending_action_cost(current_card.cost)
+	change_human_turn_state(HumanTurnState.ACTION_TARGET)
 
 func create_cursor(pos: Vector2i, direction: Vector2):
 	var cursor_pos = pos
@@ -477,7 +455,7 @@ func begin_turn():
 	for character in party.get_children():
 		character.begin_turn()
 	reset_undo()
-	draw_hand()
+	draw_deck()
 	for treasure in treasures.get_children():
 		treasure.turns_left -= 1
 		if treasure.turns_left == 0:
@@ -507,6 +485,7 @@ func change_state(new_state):
 		else:
 			begin_turn()
 	elif state == GameState.CPU_TURN:
+		hand_ui.disabled = true
 		StatsManager.turn_stats.print()
 		# Re-start turn stats so we can use enemy turn stats in cards next run.
 		StatsManager.remove_level(Enum.StatsLevel.TURN)
@@ -517,20 +496,31 @@ func change_state(new_state):
 
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:
+		hand_ui.disabled = false
 		end_turn_button.disabled = false
+		if human_turn_state in [HumanTurnState.ACTION_TARGET]:
+			hand_ui.unselect()
+			current_card = null
+			target_cursor.queue_free()
+			target_area.queue_free()
+			active_character.clear_pending_action_cost()
 		if human_turn_state in [HumanTurnState.STARTING, HumanTurnState.MOVING, HumanTurnState.PLAYING_CARD]:
 			enemy_turn_manager.update()
 		clear_path()
 	elif new_state == HumanTurnState.ACTION_TARGET:
+		hand_ui.disabled = false
 		end_turn_button.disabled = true
 		clear_path()
 		create_target_area(active_character.get_id_position(), current_card.target_distance)
 		create_cursor(tile_map_pos, direction)
 	elif new_state == HumanTurnState.MOVING:
+		hand_ui.disabled = true
 		end_turn_button.disabled = true
 	elif new_state == HumanTurnState.PLAYING_CARD:
+		hand_ui.disabled = true
 		end_turn_button.disabled = true
 	elif new_state == HumanTurnState.PLAY_TELEPORTING:
+		hand_ui.disabled = true
 		create_target_area(active_character.get_id_position(), teleport_distance)
 		create_single_cursor(tile_map_pos)
 	human_turn_state = new_state
@@ -581,20 +571,15 @@ func _input(event):
 	if Input.is_action_just_released("ui_cancel"):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
-				hand_ui.get_child(current_card_index).set_selected(false)
-				current_card_index = -1
-				current_card = null
-				target_cursor.queue_free()
-				target_area.queue_free()
-				active_character.clear_pending_action_cost()
-				change_human_turn_state(HumanTurnState.WAITING)
 				get_viewport().set_input_as_handled()
+				change_human_turn_state(HumanTurnState.WAITING)
 	if Input.is_action_pressed("ui_showenemymove"):
 		show_enemy_moves()
 	if Input.is_action_just_released("ui_showenemymove"):
 		clear_enemy_info()
 	if Input.is_action_just_released("ui_focus_next"):
-		set_active_character(active_character_index+1)
+		if state == GameState.HUMAN_TURN and human_turn_state in [HumanTurnState.WAITING, HumanTurnState.ACTION_TARGET]:
+			set_active_character(active_character_index+1)
 
 func show_enemy_moves():
 	var final_walkable_cells = Dictionary()
@@ -691,9 +676,9 @@ func play_card():
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
 	# Discard card first.
 	if current_card.should_exhaust():
-		active_character.deck.exhaust_card(current_card_index)
+		active_character.deck.exhaust_card(hand_ui.selected_index)
 	else:
-		active_character.deck.discard_card(current_card_index)
+		active_character.deck.discard_card(hand_ui.selected_index)
 	# Take snapshot of current state before playing card.
 	active_character.snap()
 	if current_card.target_mode == Enum.TargetMode.SELF:
@@ -731,17 +716,18 @@ func play_card():
 	StatsManager.add(active_character.character_type, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
 	active_character.card_played.emit(active_character, current_card)
-	draw_hand()
 	if map_manager.enemy_locs.is_empty():
 		all_enemies_died.emit()
 	# Consider wrapping all this into a method.
-	current_card_index = -1
-	current_card = null
 	target_area.queue_free()
 	target_cursor.queue_free()
 	active_character.clear_pending_action_cost()
 	reset_undo()
 	clear_enemy_info_cache()
+	draw_deck()
+	current_card = null
+	if not hand_ui.animation_finished.is_null():
+		await hand_ui.animation_finished
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func teleport(character: Character, distance: int):

@@ -41,6 +41,7 @@ effect = 0
 [resource]
 script = ExtResource("4_575i4")
 card_name = "Fast Improvisation"
+upgrade_name = "Fast"
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_brspj")
@@ -57,3 +58,4 @@ area_type = 0
 area_length = 1
 area_width = 1
 cone_step = 1
+exhaust = false

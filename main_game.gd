@@ -87,6 +87,7 @@ func _on_progress_exited():
 func select_character(run_type: RunDef.RunType):
 	self.run_type = run_type
 	if run_type == RunDef.RunType.REGULAR_PARTY:
+		characters.clear()
 		characters.push_back(CharacterLoader.create(Enum.CharacterId.WARRIOR))
 		characters.push_back(CharacterLoader.create(Enum.CharacterId.WIZARD))
 		state.change_state(WITHIN_RUN)
