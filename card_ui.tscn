@@ -87,6 +87,7 @@ size_flags_vertical = 8
 theme_override_constants/margin_bottom = 5
 
 [node name="UpgradeLabel" type="Label" parent="PanelContainer/Margin/VBox/PanelContainer/Margin"]
+visible = false
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_8subj")
 text = "Hello"
