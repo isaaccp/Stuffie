@@ -16,6 +16,13 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_owovl"]
+bg_color = Color(0.835294, 0.839216, 0.717647, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8subj"]
 bg_color = Color(0.517647, 0.517647, 0.517647, 1)
 border_width_left = 3
@@ -29,13 +36,6 @@ corner_radius_bottom_left = 5
 expand_margin_left = 5.0
 expand_margin_right = 5.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_owovl"]
-bg_color = Color(0.835294, 0.839216, 0.717647, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8d27"]
 corner_detail = 4
 
@@ -46,122 +46,12 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_3vkew")
 script = ExtResource("1_h04yd")
-card_name = NodePath("NameControl/Name/NameLabel")
-upgrade_label = NodePath("NameControl/UpgradeLabel")
-cost = NodePath("CostControl/Cost/CostLabel")
+card_name = NodePath("NamePivot/Name/NameLabel")
+upgrade_label = NodePath("PanelContainer/Margin/VBox/PanelContainer/Margin/UpgradeLabel")
+cost = NodePath("CostPivot/Cost/CostLabel")
 description = NodePath("PanelContainer/Margin/VBox/Description")
 tooltip = NodePath("PanelContainer/Margin/VBox/PanelContainer/Tooltip")
 image = NodePath("PanelContainer/Margin/VBox/PanelContainer/Image")
-
-[node name="CostControl" type="Control" parent="."]
-layout_mode = 2
-
-[node name="Cost" type="Control" parent="CostControl"]
-z_index = 3
-layout_mode = 3
-anchors_preset = 0
-offset_left = 12.0
-offset_top = -4.0
-offset_right = 12.0
-offset_bottom = -4.0
-
-[node name="TextureRect" type="TextureRect" parent="CostControl/Cost"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -18.0
-offset_right = 8.0
-offset_bottom = 22.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_ccf3u")
-expand_mode = 2
-
-[node name="CostLabel" type="Label" parent="CostControl/Cost"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -21.0
-offset_right = -3.0
-offset_bottom = 24.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 30
-text = "3"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="NameControl" type="Control" parent="."]
-layout_mode = 2
-
-[node name="Name" type="Control" parent="NameControl"]
-z_index = 3
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -110.0
-offset_right = 110.0
-grow_horizontal = 2
-
-[node name="TextureRect" type="TextureRect" parent="NameControl/Name"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -80.0
-offset_top = -25.0
-offset_right = 80.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_c2qnu")
-expand_mode = 2
-
-[node name="NameLabel" type="Label" parent="NameControl/Name"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -13.0
-offset_right = 45.0
-offset_bottom = 13.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Foo bar baz"
-horizontal_alignment = 1
-
-[node name="UpgradeLabel" type="Label" parent="NameControl"]
-visible = false
-z_index = 1
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -23.0
-offset_top = 169.0
-offset_right = 23.0
-offset_bottom = 201.0
-grow_horizontal = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_8subj")
-text = "Hello"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -190,8 +80,21 @@ layout_mode = 2
 texture = ExtResource("2_lr4w5")
 expand_mode = 4
 
+[node name="Margin" type="MarginContainer" parent="PanelContainer/Margin/VBox/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 5
+
+[node name="UpgradeLabel" type="Label" parent="PanelContainer/Margin/VBox/PanelContainer/Margin"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_8subj")
+text = "Hello"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Tooltip" type="Label" parent="PanelContainer/Margin/VBox/PanelContainer"]
-z_index = 2
+visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_i8d27")
@@ -206,6 +109,97 @@ theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "Sample description"
 scroll_active = false
+
+[node name="CostPivot" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Cost" type="Control" parent="CostPivot"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 1.0
+offset_right = 14.0
+offset_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="CostPivot/Cost"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -18.0
+offset_right = 8.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ccf3u")
+expand_mode = 2
+
+[node name="CostLabel" type="Label" parent="CostPivot/Cost"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -21.0
+offset_right = -3.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NamePivot" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Name" type="Control" parent="NamePivot"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_right = 110.0
+grow_horizontal = 2
+
+[node name="TextureRect" type="TextureRect" parent="NamePivot/Name"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -25.0
+offset_right = 80.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c2qnu")
+expand_mode = 2
+
+[node name="NameLabel" type="Label" parent="NamePivot/Name"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -13.0
+offset_right = 45.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Foo bar baz"
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
