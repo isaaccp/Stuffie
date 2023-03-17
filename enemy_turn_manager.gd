@@ -29,11 +29,7 @@ func update():
 	current_thread.start(_async_enemy_turn.bind(current_thread))
 
 func _async_enemy_turn(thread: Thread):
-	var start = Time.get_ticks_msec()
 	var result = enemy_turn.calculate()
-	var end = Time.get_ticks_msec()
-	if result:
-		print_debug("Enemy turn time ", end-start)
 	_wait_enemy_turn_completed.bind(thread).call_deferred()
 	return result
 
