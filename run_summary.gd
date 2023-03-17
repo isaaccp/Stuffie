@@ -45,7 +45,8 @@ func calculate_xp(characters: Array):
 		for field in xp_stats:
 			var value = StatsManager.run_stats.get_value(character.character_type, field)
 			xp += value * xp_stats[field]
-		StatsManager.add(character.character_type, Stats.Field.XP, xp)
+		if xp > 0:
+			StatsManager.add(character.character_type, Stats.Field.XP, xp)
 
 func _input(event):
 	if finished:
