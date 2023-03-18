@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://pjppgje5w3mh"]
+[gd_scene load_steps=4 format=3 uid="uid://pjppgje5w3mh"]
 
 [ext_resource type="Theme" uid="uid://dsleg1rkb5v12" path="res://resources/theme.tres" id="1_54o42"]
 [ext_resource type="Script" path="res://main_menu.gd" id="1_x8lvv"]
+[ext_resource type="Texture2D" uid="uid://m7c2750x7f33" path="res://resources/main_background.png" id="3_b5rr5"]
 
 [node name="Control" type="Control" node_paths=PackedStringArray("new_run_buttons", "continue_run_buttons", "new_game_button", "new_game_plus_button", "new_game_full_party_button", "test_blacksmith_button", "test_camp_button", "test_after_stage_button", "continue_run_button", "abandon_run_button")]
 layout_mode = 3
@@ -22,6 +23,17 @@ test_camp_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer/Te
 test_after_stage_button = NodePath("NewRun/HBoxContainer2/Experimental/HBoxContainer/TestAfterStage")
 continue_run_button = NodePath("ContinueRun/Continue")
 abandon_run_button = NodePath("ContinueRun/Abandon")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_b5rr5")
 
 [node name="NewRun" type="VBoxContainer" parent="."]
 layout_mode = 1
