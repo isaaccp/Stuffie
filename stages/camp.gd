@@ -11,6 +11,7 @@ class_name CampStage
 enum CampState {
 	NEW_CHARACTER,
 	CHOOSING,
+	DONE,
 }
 
 var state = CampState.NEW_CHARACTER
@@ -40,6 +41,7 @@ func _process(delta):
 	if state == CampState.NEW_CHARACTER:
 		if current_character == characters.size():
 			stage_done.emit()
+			state = CampState.DONE
 			return
 		var character = characters[current_character]
 		character_portrait.set_character(character)

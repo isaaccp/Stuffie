@@ -870,4 +870,4 @@ func can_save():
 
 # Invoked when abandoning run while this stage is on.
 func cleanup():
-	StatsManager.remove_level(Enum.StatsLevel.TURN)
+	StatsManager.rlevel(Enum.StatsLevel.TURN)
