@@ -9,6 +9,7 @@ var disabled = false
 var selected_card: Card
 var selected_index: int
 
+var reposition_tw: Tween
 var animation_finished: Signal
 var needs_description_refresh = false
 
@@ -60,7 +61,8 @@ func _on_card_exhausted(index: int):
 	remove_card(index)
 
 func _on_hand_discarded():
-	recreate()
+	for i in get_child_count():
+		remove_card(i)
 
 func recreate():
 	clear()
@@ -69,13 +71,12 @@ func recreate():
 		add_card(card)
 
 func reindex():
-	# This should be true as of now. If it changes, need to update the bottom
-	# loop to respect card.removed.
-	assert(get_child_count() == get_card_count())
 	for card in get_children():
 		card.pressed.disconnect(_on_card_pressed)
 	var i = 0
 	for card in get_children():
+		if card.removed:
+			continue
 		card.pressed.connect(_on_card_pressed.bind(i))
 		i += 1
 
@@ -84,7 +85,7 @@ func add_card(card: Card):
 	new_card.initialize(card, character)
 	new_card.pressed.connect(_on_card_pressed.bind(get_child_count()))
 	add_child(new_card)
-	update_positions()
+	await add_card_animation(get_child_count()-1)
 
 func remove_card(index: int):
 	var card = get_child(index)
@@ -98,9 +99,33 @@ func remove_card(index: int):
 	remove_child(card)
 	card.queue_free()
 	reindex()
-	update_positions()
+
+func add_card_animation(index: int):
+	if reposition_tw:
+		reposition_tw.kill()
+	reposition_tw = create_tween()
+	var card = get_child(index)
+	var new_pos = calculate_new_card_positions()
+	var tw = create_tween()
+	var length = 0.5
+	card.modulate = Color(0.0, 1.0, 1.0, 0.0)
+	card.position = new_pos[-1]
+	tw.parallel().tween_property(card, "modulate", Color(1.0, 1.0, 1.0, 1.0), length)
+	var i = 0
+	for pos in new_pos:
+		while i < get_child_count() and get_child(i).removed:
+			i += 1
+		if i == index:
+			i += 1
+			continue
+		reposition_tw.parallel().tween_property(get_child(i), "position", pos, length)
+		i += 1
+	return tw.finished
 
 func remove_card_animation(index: int):
+	if reposition_tw:
+		reposition_tw.kill()
+	reposition_tw = create_tween()
 	var card = get_child(index)
 	var new_pos = calculate_new_card_positions()
 	var tw = create_tween()
@@ -109,11 +134,10 @@ func remove_card_animation(index: int):
 	tw.parallel().tween_property(card, "modulate", Color(1.0, 0.0, 1.0, 0), length)
 	var i = 0
 	for pos in new_pos:
-		if i == index:
+		while i < get_child_count() and get_child(i).removed:
 			i += 1
-		tw.parallel().tween_property(get_child(i), "position", pos, length)
+		reposition_tw.parallel().tween_property(get_child(i), "position", pos, length)
 		i += 1
-
 	return tw.finished
 
 func get_card_count():
