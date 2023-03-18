@@ -27,7 +27,6 @@ func _get_preset_name(i):
 
 func _get_import_options(path, i):
 	return []
-	# return [{"name": "my_option", "default_value": false}]
 
 class StageLoader:
 	var lines: Array
@@ -59,6 +58,7 @@ class StageLoader:
 		BOOKCASE_WIDE_FILLED,
 		BOOKCASE_WIDE_FILLED_BROKEN,
 		TABLE_MEDIUM,
+		TORCH_WALL,
 	}
 
 	var item_mesh_map = {
@@ -77,6 +77,7 @@ class StageLoader:
 		Item.BOOKCASE_WIDE_FILLED: "bookcaseWideFilled",
 		Item.BOOKCASE_WIDE_FILLED_BROKEN: "bookcaseWideFilled_broken",
 		Item.TABLE_MEDIUM: "tableMedium",
+		Item.TORCH_WALL: "torchWall",
 	}
 
 	var obstacles = [
@@ -165,7 +166,7 @@ class StageLoader:
 			assert(parts.size() == 3)
 			var letter = parts[0]
 			assert(letter.length() == 1)
-			var enemy_id = stage.EnemyId.get(parts[1])
+			var enemy_id = Enum.EnemyId.get(parts[1])
 			assert(enemy_id != null)
 			assert(parts[2].is_valid_int())
 			var level = int(parts[2])
@@ -173,6 +174,21 @@ class StageLoader:
 			pline += 1
 		# Skip '-'.
 		pline += 1
+
+	func _can_place_torch(tile: String):
+		if tile in wall_items or tile == '%' or tile == 'x' or tile == ' ':
+			return false
+		return true
+
+	func _add_torches(x: int, y: int):
+		var pos = Vector2i(x, y)
+		for direction in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
+			var new_pos = pos + direction
+			var tile = _get_tile(new_pos.x, new_pos.y)
+			if not _can_place_torch(tile):
+				continue
+			var orientation = Vector3(-direction.x, 0, -direction.y)
+			_set_gridmap_tile(new_pos.x, new_pos.y, 1, Item.TORCH_WALL, _orientation(orientation))
 
 	func _parse_map():
 		print("Parsing map")
@@ -203,10 +219,16 @@ class StageLoader:
 				var tile = _get_tile(x, y)
 				if tile != ' ':
 					_set_gridmap_tile(x, y, 0, Item.GROUND)
-				if tile == '#' or tile == 'X':
+				if tile == '#' or tile == '%' or tile == 'X':
+					var torch = false
+					if tile == '%':
+						torch = true
+						tile = '#'
 					var item = _choose_wall_item(tile, x, y)
 					if item != null:
 						_set_gridmap_tile(x, y, 1, item.item, item.orientation)
+					if torch:
+						_add_torches(x, y)
 					stage.solid_tiles.push_back(Vector2i(x, y))
 					if tile == '#':
 						stage.view_blocking_tiles.push_back(Vector2i(x, y))

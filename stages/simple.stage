@@ -1,12 +1,12 @@
 SURVIVE_N_TURNS 3
 -
-#######
+##%####
 #...X.#
-#.1.X.#
-#...-.#
+%.1.X.#
+#...-.%
 #+#.X.#
 #...X.#
-#######
+##%####
 -
 BEGIN_TURN 2:OPEN_DOOR 1
 BEGIN_TURN 3:CLOSE_DOOR 0

@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2jwb32qeaom4"]
+[gd_scene load_steps=6 format=3 uid="uid://b2jwb32qeaom4"]
 
 [ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 [ext_resource type="PackedScene" uid="uid://qvfnlxs8t6m8" path="res://hand_ui.tscn" id="3_hp4xe"]
+
+[sub_resource type="Environment" id="Environment_su8w0"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.298039, 0.298039, 0.298039, 1)
 
 [node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
@@ -12,8 +17,8 @@ effects = NodePath("World/Effects")
 enemies_node = NodePath("World/Enemies")
 doors_node = NodePath("World/Doors")
 hand_ui = NodePath("UI/Control/HandUI")
-deck_ui = NodePath("UI/PanelContainer/MarginContainer/CardAreaHBox/Deck")
-discard_ui = NodePath("UI/PanelContainer/MarginContainer/CardAreaHBox/Discard")
+deck_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Deck")
+discard_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Discard")
 character_state_ui = NodePath("UI/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 camera_pivot = NodePath("Pivot")
@@ -121,39 +126,42 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -516.0
-offset_top = -345.0
+offset_left = -307.0
+offset_top = -684.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="CardAreaHBox" type="HBoxContainer" parent="UI/PanelContainer/MarginContainer"]
+[node name="DeckArea" type="VBoxContainer" parent="UI/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Deck" type="MarginContainer" parent="UI/PanelContainer/MarginContainer/CardAreaHBox"]
+[node name="Discard" type="PanelContainer" parent="UI/PanelContainer/MarginContainer/DeckArea"]
+custom_minimum_size = Vector2(220, 320)
+layout_mode = 2
+
+[node name="Deck" type="MarginContainer" parent="UI/PanelContainer/MarginContainer/DeckArea"]
 custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="CardBack" type="TextureRect" parent="UI/PanelContainer/MarginContainer/CardAreaHBox/Deck"]
+[node name="CardBack" type="TextureRect" parent="UI/PanelContainer/MarginContainer/DeckArea/Deck"]
 layout_mode = 2
 texture = ExtResource("3_ciuq7")
 expand_mode = 3
-
-[node name="Discard" type="PanelContainer" parent="UI/PanelContainer/MarginContainer/CardAreaHBox"]
-custom_minimum_size = Vector2(220, 320)
-layout_mode = 2
 
 [node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, 0.40558, -0.579228, 20, 10, -5)
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 0.910684, 0.413104, 0, -0.413104, 0.910684, 3, 8, 21)
+environment = SubResource("Environment_su8w0")
 current = true
 
 [connection signal="pressed" from="UI/InfoPanel/VBox/UndoButton" to="." method="_on_undo_button_pressed"]
