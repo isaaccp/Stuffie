@@ -29,7 +29,7 @@ name = "Permanent Block"
 
 [resource]
 script = ExtResource("2_flgar")
-card_name = "Fortify"
+card_name = "Strong Fortify"
 upgrade_name = "Extra Block"
 basic = false
 upgrade_level = 1
