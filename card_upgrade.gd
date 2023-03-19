@@ -39,5 +39,7 @@ func _on_upgrade_card_chosen(card: Card):
 	done.emit(active_character)
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		canceled.emit()
+	if event.is_action_released("ui_cancel"):
+		if Input.is_action_just_released("ui_cancel"):
+			canceled.emit()
+			accept_event()
