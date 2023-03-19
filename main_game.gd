@@ -67,6 +67,7 @@ func _on_within_run_entered():
 	game_run.run_finished.connect(finish_run)
 
 func _on_within_run_exited():
+	save_state_within_run = false
 	clear_children()
 
 func _on_progress_entered():
