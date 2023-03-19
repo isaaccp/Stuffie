@@ -174,7 +174,7 @@ class StageLoader:
 		pline += 1
 
 	func _can_place_torch(tile: String):
-		if tile in wall_items or tile == '%' or tile == 'x' or tile == ' ':
+		if tile in wall_items or tile == 'x' or tile == ' ':
 			return false
 		return true
 
@@ -182,7 +182,7 @@ class StageLoader:
 		var pos = Vector2i(x, y)
 		for direction in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
 			var new_pos = pos + direction
-			var tile = _get_tile(new_pos.x, new_pos.y)
+			var tile = _get_final_tile(new_pos.x, new_pos.y)
 			if not _can_place_torch(tile):
 				continue
 			stage.torches.push_back(TorchDef.create(new_pos, -direction))
@@ -332,42 +332,44 @@ class StageLoader:
 		var item = tile_wall_items[type]
 		return _item(item, orientation)
 
+	func _is_wall_item(tile: String) -> bool:
+		return tile in wall_items.keys()
+
 	func _choose_wall_item(tile: String, x: int, y: int):
-		var forward = _get_tile(x, y-1)
-		var back = _get_tile(x, y+1)
-		var left = _get_tile(x-1, y)
-		var right = _get_tile(x+1, y)
+		var forward = _is_wall_item(_get_final_tile(x, y-1))
+		var back = _is_wall_item(_get_final_tile(x, y+1))
+		var left = _is_wall_item(_get_final_tile(x-1, y))
+		var right = _is_wall_item(_get_final_tile(x+1, y))
 
 		var count = 0
-		for wall_type in [forward, back, left, right]:
-			if wall_type in wall_items.keys():
+		for is_wall in [forward, back, left, right]:
+			if is_wall:
 				count += 1
 		if count == 4:
 			return _wall_item(tile, WallItemType.CROSS)
 		elif count == 3:
-			# TODO: Fix those.
-			if back != tile:
+			if not back:
 				return _wall_item(tile, WallItemType.T, Vector3.BACK)
-			elif left != tile:
+			elif not left:
 				return _wall_item(tile, WallItemType.T, Vector3.LEFT)
-			elif forward != tile:
+			elif not forward:
 				return _wall_item(tile, WallItemType.T, Vector3.FORWARD)
-			elif right != tile:
+			elif not right:
 				return _wall_item(tile, WallItemType.T, Vector3.RIGHT)
 		elif count == 2:
 			if forward == back or left == right:
-				if right == tile:
+				if right:
 					return _wall_item(tile, WallItemType.WALL, Vector3.FORWARD)
 				else:
 					return _wall_item(tile, WallItemType.WALL, Vector3.LEFT)
 			else:
-				if back == tile:
-					if left == tile:
+				if back:
+					if left:
 						return _wall_item(tile, WallItemType.CORNER, Vector3.FORWARD)
 					else:
 						return _wall_item(tile, WallItemType.CORNER, Vector3.LEFT)
-				elif forward == tile:
-					if left == tile:
+				elif forward:
+					if left:
 						return _wall_item(tile, WallItemType.CORNER, Vector3.RIGHT)
 					else:
 						return _wall_item(tile, WallItemType.CORNER, Vector3.BACK)
@@ -378,10 +380,10 @@ class StageLoader:
 			return _item(Item.PILLAR)
 
 	func _choose_door_item(x: int, y: int):
-		var forward = _get_tile(x, y-1)
-		var back = _get_tile(x, y+1)
-		var left = _get_tile(x-1, y)
-		var right = _get_tile(x+1, y)
+		var forward = _get_final_tile(x, y-1)
+		var back = _get_final_tile(x, y+1)
+		var left = _get_final_tile(x-1, y)
+		var right = _get_final_tile(x+1, y)
 
 		var wall_item_count = 0
 		var wall_item = ''
@@ -426,6 +428,12 @@ class StageLoader:
 		if x >= line.length():
 			return ' '
 		return line[x]
+
+	func _get_final_tile(x: int, y: int):
+		var tile = _get_tile(x, y)
+		if tile == '%':
+			tile = '#'
+		return tile
 
 func _import_stage(content: String) -> PackedScene:
 	var loader = StageLoader.new(content)

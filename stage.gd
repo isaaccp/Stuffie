@@ -1,3 +1,5 @@
+@tool
+
 extends Node
 
 class_name Stage
@@ -27,12 +29,23 @@ var gridmap: GridMap
 var stage_complete = false
 var killed_enemies = 0
 
+var torch_scene = preload("res://wall_torch.tscn")
+
 signal stage_completed
 
 func _ready():
 	# TODO: I was unable to save the gridmap as a exported node path in the stage importer,
 	# so need to set it here.
 	gridmap = $GridMap
+
+	var torches_node = Node3D.new()
+	add_child(torches_node)
+	for torch_def in torches:
+		var torch = torch_scene.instantiate()
+		torches_node.add_child(torch)
+		torch.global_position = get_world_position(torch_def.pos)
+		var direction = Vector3(torch_def.orientation.x, 0, torch_def.orientation.y)
+		torch.look_at(torch.global_position + direction)
 
 func initialize(enemies_node: Node):
 	for enemy_position in enemies:
@@ -84,3 +97,9 @@ func new_turn_started_handler(turn: int):
 		return
 	if turn == (survive_n_turns_target + 1):
 		complete_stage()
+
+func get_world_position(pos: Vector2i) -> Vector3:
+	return Vector3(
+		pos[0] * gridmap.cell_size.x + gridmap.cell_size.x/2,
+		1.5,
+		pos[1] * gridmap.cell_size.z + gridmap.cell_size.z/2)
