@@ -238,7 +238,8 @@ func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.
 	if state != GameState.HUMAN_TURN or human_turn_state != HumanTurnState.WAITING:
 		return
-	set_active_character(index)
+	if party.get_child(index).alive:
+		set_active_character(index)
 
 func draw_deck():
 	# Clear discard.
@@ -254,14 +255,12 @@ func draw_deck():
 	deck_ui.tooltip_text = "%d cards on deck" % active_character.deck.stage_deck_size()
 
 func set_active_character(index: int):
-	if index >= party.get_child_count():
-		index -= party.get_child_count()
-
 	var i = 0
 
 	for character in party.get_children():
 		if i == index:
 			active_character = party.get_child(i)
+			assert(active_character.alive)
 			active_character.set_active(true)
 			hand_ui.reset(active_character)
 		else:
@@ -270,6 +269,15 @@ func set_active_character(index: int):
 		i += 1
 	active_character_index = index
 	change_human_turn_state(HumanTurnState.WAITING)
+
+func next_live_character_index() -> int:
+	for i in range(active_character_index + 1, party.get_child_count()):
+		if party.get_child(i).alive:
+			return i
+	for i in range(0, active_character_index):
+		return i
+	assert(false)
+	return -1
 
 func _on_card_selected(card: Card):
 	if current_card != null:
@@ -579,7 +587,8 @@ func _input(event):
 		clear_enemy_info()
 	if Input.is_action_just_released("ui_focus_next"):
 		if state == GameState.HUMAN_TURN and human_turn_state in [HumanTurnState.WAITING, HumanTurnState.ACTION_TARGET]:
-			set_active_character(active_character_index+1)
+			if live_characters().size() > 1:
+				set_active_character(next_live_character_index())
 
 func show_enemy_moves():
 	var final_walkable_cells = Dictionary()
@@ -654,19 +663,27 @@ func handle_enemy_death(enemy: Enemy):
 	enemy.queue_free()
 	enemy_died.emit()
 
+func live_characters():
+	var characters = []
+	for character in party.get_children():
+		if character.alive:
+			characters.push_back(character)
+	return characters
+
 func handle_character_death(character: Character):
 	var pos = character.get_id_position()
+	character.hide()
 	map_manager.remove_character(pos)
-	# Handle this in a fancier way, update portrait to show
-	# character is dead, but don't remove from screen, etc.
-	party.remove_child(character)
-	character.queue_free()
-	if not party.get_children().is_empty():
-		set_active_character(0)
+	var characters = live_characters()
+	if not characters.is_empty():
+		set_active_character(next_live_character_index())
 		reset_undo()
 	else:
-		StatsManager.remove_level(Enum.StatsLevel.TURN)
-		game_over.emit()
+		handle_game_over()
+
+func handle_game_over():
+	StatsManager.remove_level(Enum.StatsLevel.TURN)
+	game_over.emit()
 
 func clear_effects():
 	for effect in effects.get_children():

@@ -35,6 +35,11 @@ func _update_character():
 	_set_dodge(character.dodge)
 	_set_power(character.power)
 	_set_powers(character.relic_manager.temp_relics)
+	if character.alive:
+		modulate = Color(1, 1, 1)
+	else:
+		modulate = Color(1, 0, 0, 0.5)
+
 
 func _set_portrait_texture(texture: Texture):
 	portrait.texture = texture

@@ -15,6 +15,7 @@ var hit_points: int
 var block: int
 var power: int
 var dodge: int
+var alive = true
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var pending_damage_set = false
@@ -345,6 +346,8 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
 	if hit_points <= 0:
+		alive = false
+		refresh()
 		return true
 	refresh()
 
