@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://1cwrvs1k8a64" path="res://resources/decks/warrior/extra_cards.tres" id="3_t8tph"]
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
-[ext_resource type="Resource" uid="uid://cqmvranirdbgc" path="res://resources/decks/warrior/still_broken.tres" id="5_6bt2n"]
+[ext_resource type="Resource" uid="uid://cqmvranirdbgc" path="res://resources/decks/warrior/all_cards.tres" id="5_ashqf"]
 [ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="5_stldu"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_uruck"]
 [ext_resource type="Script" path="res://card_effect.gd" id="7_0sito"]
@@ -48,7 +48,7 @@ portrait_texture = NodePath("Portrait")
 health_bar = NodePath("HealthDisplay3D")
 original_deck = ExtResource("2_d5bu5")
 extra_cards = ExtResource("3_t8tph")
-all_cards = ExtResource("5_6bt2n")
+all_cards = ExtResource("5_ashqf")
 camp_choice = SubResource("Resource_gq1ff")
 
 [node name="Portrait" type="TextureRect" parent="."]
