@@ -1,9 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dvvqumwfaoq8a"]
+[gd_scene load_steps=13 format=3 uid="uid://dvvqumwfaoq8a"]
 
 [ext_resource type="Script" path="res://wall_torch.gd" id="1_a5xk0"]
 [ext_resource type="PackedScene" uid="uid://bd1hjxj3smb54" path="res://resources/kaykit-dungeon/models/gltf/torchWall.gltf.glb" id="1_md4l0"]
 [ext_resource type="Gradient" path="res://resources/animations/fire_gradient.tres" id="2_m0epm"]
 [ext_resource type="Texture2D" uid="uid://dxs64ypbrawne" path="res://resources/animations/smoke30frames.png" id="3_0caly"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gwt7e"]
+fractal_octaves = 10
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x0k0t"]
+noise = SubResource("FastNoiseLite_gwt7e")
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ss5xc"]
 gradient = ExtResource("2_m0epm")
@@ -49,8 +55,10 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id="QuadMesh_fnwow"]
 material = SubResource("StandardMaterial3D_6f68m")
 
-[node name="WallTorch" type="Node3D"]
+[node name="WallTorch" type="Node3D" node_paths=PackedStringArray("light")]
 script = ExtResource("1_a5xk0")
+light = NodePath("Pivot/Node3D/OmniLight3D")
+noise = SubResource("NoiseTexture2D_x0k0t")
 
 [node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.25)
