@@ -62,7 +62,8 @@ func _on_card_exhausted(index: int):
 
 func _on_hand_discarded():
 	for i in get_child_count():
-		remove_card(i)
+		if not get_child(i).removed:
+			remove_card(i)
 
 func recreate():
 	clear()

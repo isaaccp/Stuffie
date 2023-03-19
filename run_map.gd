@@ -14,6 +14,7 @@ var stage_number: int
 @export var boss: Texture
 @export var path: Texture
 @export var camp: Texture
+@export var character: Texture
 @export var card_reward: Texture
 @export var shared_bag_gold_ui: SharedBagGoldUI
 
@@ -64,6 +65,8 @@ func prepare_item(index: int) -> Sprite2D:
 				return get_sprite(camp, index)
 			StageDef.StageType.CARD_REWARD:
 				return get_sprite(card_reward, index)
+			StageDef.StageType.CHARACTER:
+				return get_sprite(character, index)
 	assert(false)
 	return null
 

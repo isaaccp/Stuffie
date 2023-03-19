@@ -44,6 +44,7 @@ static func get_run(run_type: RunType):
 					StageDef.camp(),
 					StageDef.combat(3),
 					StageDef.blacksmith(),
+					StageDef.character(),
 					StageDef.combat(4),
 				]),
 				RunLevelDef.create([
@@ -102,6 +103,8 @@ static func get_run(run_type: RunType):
 		RunType.TEST_AFTER_STAGE:
 			run_def.levels = [
 				RunLevelDef.create([
+					StageDef.combat(0),
+					StageDef.character(),
 					StageDef.combat(0),
 				]),
 				#RunLevelDef.create([

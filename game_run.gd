@@ -21,6 +21,7 @@ var run_victory = false
 
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 var camp_scene = preload("res://stages/camp.tscn")
+var add_character_scene = preload("res://stages/add_character.tscn")
 var summary_scene = preload("res://run_summary.tscn")
 var run: RunDef
 var level_number = 0
@@ -50,20 +51,23 @@ func _ready():
 	state.connect_signals(self)
 	relic_list.reset()
 
+func initialize_character(character: Character):
+	var initial_relic = character.initial_relic
+	relic_list.mark_used(initial_relic.name)
+	character.shared_bag = shared_bag
+	character.add_relic(initial_relic, false)
+	character.initialize()
+	characters.push_back(character)
+	party.add_child(character)
+	if run_type == RunDef.RunType.TEST_BLACKSMITH:
+		character.deck.cards = character.all_cards.cards
+	elif run_type == RunDef.RunType.TEST_CAMP:
+		character.hit_points -= 30
+
 func set_starting_characters(starting_characters: Array[Character]):
 	# Improve this character initialization.
 	for character in starting_characters:
-		var initial_relic = character.initial_relic
-		relic_list.mark_used(initial_relic.name)
-		character.shared_bag = shared_bag
-		character.add_relic(initial_relic, false)
-		character.initialize()
-		characters.push_back(character)
-		party.add_child(character)
-		if run_type == RunDef.RunType.TEST_BLACKSMITH:
-			character.deck.cards = character.all_cards.cards
-		elif run_type == RunDef.RunType.TEST_CAMP:
-			character.hit_points -= 30
+		initialize_character(character)
 
 func set_run_type(run_type: RunDef.RunType):
 	self.run_type = run_type
@@ -98,6 +102,10 @@ func get_camp_stage():
 
 func get_card_reward_stage():
 	var stage = between_stages_scene.instantiate()
+	return stage
+
+func get_character_stage():
+	var stage = add_character_scene.instantiate()
 	return stage
 
 func _on_within_stage_entered():
@@ -141,6 +149,12 @@ func _on_within_stage_entered():
 			card_reward.between_stages_done.connect(stage_finished.bind(StageDef.StageType.CARD_REWARD))
 			stage_parent.add_child(card_reward)
 			stage_impl = card_reward
+		elif stage_def.stage_type == StageDef.StageType.CHARACTER:
+			var character_stage = get_character_stage()
+			character_stage.initialize(characters)
+			character_stage.character_selected().connect(character_added)
+			stage_parent.add_child(character_stage)
+			stage_impl = character_stage
 
 func _on_within_stage_exited():
 	await TransitionScreen.create(self)
@@ -202,6 +216,10 @@ func _on_run_summary_exited():
 func add_stat(field: Stats.Field, value: int):
 	for character in characters:
 		StatsManager.add(character.character_type, field, value)
+
+func character_added(character: Character):
+	initialize_character(character)
+	stage_finished(StageDef.StageType.CHARACTER)
 
 func stage_finished(stage_type: StageDef.StageType):
 	StatsManager.remove_level(Enum.StatsLevel.STAGE)

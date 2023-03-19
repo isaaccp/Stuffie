@@ -44,6 +44,7 @@ blacksmith = ExtResource("3_ygmcr")
 boss = ExtResource("4_t1bfn")
 path = ExtResource("4_q8lcq")
 camp = ExtResource("26_lntsw")
+character = ExtResource("23_n5aai")
 card_reward = ExtResource("7_hyvbj")
 shared_bag_gold_ui = NodePath("PanelContainer/SharedBagGoldUI")
 

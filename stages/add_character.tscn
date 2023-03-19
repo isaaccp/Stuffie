@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1rf7fbatmnq"]
+
+[ext_resource type="Script" path="res://stages/add_character.gd" id="1_7b2qj"]
+[ext_resource type="Texture2D" uid="uid://6t8gjiklhwrr" path="res://resources/inn.png" id="1_v62cr"]
+[ext_resource type="PackedScene" uid="uid://d1mjm2leahgdg" path="res://character_selection.tscn" id="2_t7m1q"]
+
+[node name="AddCharacter" type="Control" node_paths=PackedStringArray("selector")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7b2qj")
+selector = NodePath("CharacterSelection")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_v62cr")
+
+[node name="CharacterSelection" parent="." instance=ExtResource("2_t7m1q")]
+layout_mode = 1
