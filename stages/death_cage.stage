@@ -1,15 +1,15 @@
 KILL_ALL_ENEMIES
 w SKELETON_WARRIOR 5
 -
-XXXXXXX
-X.XwX.X
-XXX+XXX
-X..2..X
-Xw.1.wX
-X.....X
-XXX+XXX
-X.XwX.X
-XXXXXXX
+#######
+#.XwX.#
+#XX+XX#
+#..2..#
+%w.1.w%
+#.....#
+#XX+XX#
+#.XwX.#
+#######
 -
 BEGIN_TURN 2:OPEN_DOOR 0
 BEGIN_TURN 2:OPEN_DOOR 1
