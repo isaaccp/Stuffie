@@ -4,14 +4,14 @@
 [ext_resource type="Gradient" path="res://resources/animations/fire_gradient.tres" id="1_wxcl6"]
 [ext_resource type="Texture2D" uid="uid://dxs64ypbrawne" path="res://resources/animations/smoke30frames.png" id="2_eymd8"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ss5xc"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ttwxj"]
 gradient = ExtResource("1_wxcl6")
 
 [sub_resource type="Curve" id="Curve_31ywk"]
 _data = [Vector2(0, 0), 0.0, 5.86539, 0, 1, Vector2(0.170492, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.103604), -1.08064, 0.0, 1, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_atwpm"]
+[sub_resource type="CurveTexture" id="CurveTexture_wtdy2"]
 curve = SubResource("Curve_31ywk")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w2i7v"]
@@ -27,13 +27,13 @@ linear_accel_min = 1.0
 linear_accel_max = 4.0
 angle_max = 360.0
 scale_min = 0.0
-scale_curve = SubResource("CurveTexture_atwpm")
-color_ramp = SubResource("GradientTexture1D_ss5xc")
+scale_curve = SubResource("CurveTexture_wtdy2")
+color_ramp = SubResource("GradientTexture1D_ttwxj")
 anim_speed_min = 1.0
 anim_speed_max = 1.0
 anim_offset_max = 1.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6f68m"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y4gcf"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
@@ -46,7 +46,7 @@ particles_anim_v_frames = 5
 particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_w271v"]
-material = SubResource("StandardMaterial3D_6f68m")
+material = SubResource("StandardMaterial3D_y4gcf")
 
 [node name="FireAnimation" type="Node3D" node_paths=PackedStringArray("particles")]
 script = ExtResource("1_6pu51")

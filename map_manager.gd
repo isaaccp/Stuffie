@@ -17,6 +17,7 @@ var is_overlay = false
 
 var door_scene = preload("res://door.tscn")
 var cage_door_scene = preload("res://cage_door.tscn")
+var torch_scene = preload("res://wall_torch.tscn")
 
 func initialize(stage: Stage, doors_node: Node):
 	cell_size = stage.gridmap.cell_size
@@ -42,6 +43,15 @@ func initialize(stage: Stage, doors_node: Node):
 		doors_node.add_child(door)
 		door.global_position = get_world_position(door_def.pos)
 		door.basis = stage.gridmap.get_cell_item_basis(gridmap_pos)
+
+	var torches_node = Node3D.new()
+	stage.add_child(torches_node)
+	for torch_def in stage.torches:
+		var torch = torch_scene.instantiate()
+		torches_node.add_child(torch)
+		torch.global_position = get_world_position(torch_def.pos)
+		var direction = Vector3(torch_def.orientation.x, 0, torch_def.orientation.y)
+		torch.look_at(torch.global_position + direction)
 	initialize_fov()
 
 func initialize_fov():

@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://qvfnlxs8t6m8" path="res://hand_ui.tscn" id="3_hp4xe"]
 
 [sub_resource type="Environment" id="Environment_su8w0"]
+background_mode = 1
+ambient_light_source = 1
+reflected_light_source = 1
 
 [node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
@@ -137,14 +140,20 @@ theme_override_constants/margin_bottom = 20
 
 [node name="DeckArea" type="VBoxContainer" parent="UI/PanelContainer/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="Discard" type="PanelContainer" parent="UI/PanelContainer/MarginContainer/DeckArea"]
 custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="Deck" type="MarginContainer" parent="UI/PanelContainer/MarginContainer/DeckArea"]
 custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 

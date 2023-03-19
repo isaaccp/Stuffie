@@ -58,7 +58,6 @@ class StageLoader:
 		BOOKCASE_WIDE_FILLED,
 		BOOKCASE_WIDE_FILLED_BROKEN,
 		TABLE_MEDIUM,
-		TORCH_WALL,
 	}
 
 	var item_mesh_map = {
@@ -77,7 +76,6 @@ class StageLoader:
 		Item.BOOKCASE_WIDE_FILLED: "bookcaseWideFilled",
 		Item.BOOKCASE_WIDE_FILLED_BROKEN: "bookcaseWideFilled_broken",
 		Item.TABLE_MEDIUM: "tableMedium",
-		Item.TORCH_WALL: "torchWall",
 	}
 
 	var obstacles = [
@@ -187,8 +185,7 @@ class StageLoader:
 			var tile = _get_tile(new_pos.x, new_pos.y)
 			if not _can_place_torch(tile):
 				continue
-			var orientation = Vector3(-direction.x, 0, -direction.y)
-			_set_gridmap_tile(new_pos.x, new_pos.y, 1, Item.TORCH_WALL, _orientation(orientation))
+			stage.torches.push_back(TorchDef.create(new_pos, -direction))
 
 	func _parse_map():
 		print("Parsing map")
