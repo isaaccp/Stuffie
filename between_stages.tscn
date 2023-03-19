@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://buhtt4n22qqga"]
+[gd_scene load_steps=5 format=3 uid="uid://buhtt4n22qqga"]
 
 [ext_resource type="Script" path="res://between_stages.gd" id="1_cjytp"]
 [ext_resource type="Theme" uid="uid://dsleg1rkb5v12" path="res://resources/theme.tres" id="1_dfrdv"]
 [ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="2_a5syq"]
+[ext_resource type="Texture2D" uid="uid://xjhajn23jk4d" path="res://resources/between_stages.png" id="3_30gwp"]
 
 [node name="Control" type="Control" node_paths=PackedStringArray("label", "card_container", "skip", "character_portrait")]
 layout_mode = 3
@@ -17,6 +18,15 @@ label = NodePath("HBoxContainer/VBoxContainer/Label")
 card_container = NodePath("HBoxContainer/VBoxContainer/HBoxContainer")
 skip = NodePath("HBoxContainer/VBoxContainer/Skip")
 character_portrait = NodePath("HBoxContainer/CharacterPortrait")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_30gwp")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

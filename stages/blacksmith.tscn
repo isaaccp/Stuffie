@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://d4dta4t8dn1ew"]
+[gd_scene load_steps=6 format=3 uid="uid://d4dta4t8dn1ew"]
 
 [ext_resource type="Theme" uid="uid://dsleg1rkb5v12" path="res://resources/theme.tres" id="1_2o7jq"]
 [ext_resource type="Script" path="res://blacksmith.gd" id="1_2sanr"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_nj5pa"]
 [ext_resource type="PackedScene" uid="uid://d1mjm2leahgdg" path="res://character_selection.tscn" id="3_g5kfe"]
+[ext_resource type="Texture2D" uid="uid://dhyav2kackeqj" path="res://resources/blacksmith.png" id="3_wk8d8"]
 
 [node name="Blacksmith" type="Control" node_paths=PackedStringArray("main", "removal_button", "upgrade_button", "relic_container", "done_button", "advanced_option_parent", "shared_bag_gold_ui", "character_selection")]
 layout_mode = 3
@@ -22,6 +23,15 @@ done_button = NodePath("MainScreen/VBoxContainer/HBoxContainer/Done")
 advanced_option_parent = NodePath("AdvancedOptionParent")
 shared_bag_gold_ui = NodePath("MainScreen/SharedBagGoldUI")
 character_selection = NodePath("MainScreen/VBoxContainer/PanelContainer/CharacterSelection")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_wk8d8")
 
 [node name="MainScreen" type="Control" parent="."]
 layout_mode = 1
