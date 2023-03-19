@@ -17,9 +17,6 @@ var chooser_scene = preload("res://card_collection_chooser.tscn")
 signal done(character: Character)
 signal canceled
 
-func _ready():
-	upgrade_box.hide()
-
 func initialize(characters: Array[Character]):
 	self.characters = characters
 	card_chooser.connect("card_chosen", _on_card_chosen)
@@ -31,7 +28,7 @@ func _on_card_chosen(card: Card):
 	upgrade_chooser.initialize_from_upgrades_to_card(active_character, card)
 	card_to_upgrade = card
 	card_to_upgrade_ui.initialize(card, active_character)
-	upgrade_box.show()
+	card_to_upgrade_ui.show()
 
 func _on_upgrade_card_chosen(card: Card):
 	active_character.deck.cards.erase(card_to_upgrade)

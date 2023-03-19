@@ -2,20 +2,32 @@
 
 [ext_resource type="Script" path="res://card_collection_chooser.gd" id="1_uel8a"]
 
-[node name="CardCollectionChooser" type="PanelContainer" node_paths=PackedStringArray("vbox", "skip_button")]
+[node name="CardCollectionChooser" type="PanelContainer" node_paths=PackedStringArray("vbox", "scroll", "skip_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_uel8a")
-vbox = NodePath("VBoxContainer2/VBoxContainer")
+vbox = NodePath("VBoxContainer2/ScrollContainer/MarginContainer/VBoxContainer")
+scroll = NodePath("VBoxContainer2/ScrollContainer")
 skip_button = NodePath("VBoxContainer2/Skip")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer2"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2/ScrollContainer/MarginContainer"]
 layout_mode = 2
 
 [node name="Skip" type="Button" parent="VBoxContainer2"]

@@ -3,7 +3,10 @@ extends PanelContainer
 class_name CardCollectionChooser
 
 @export var vbox: VBoxContainer
+@export var scroll: ScrollContainer
 @export var skip_button: Button
+@export var cards_per_row = 5
+@export var rows = 2.0
 
 enum Filter {
 	ALL,
@@ -15,15 +18,18 @@ enum Filter {
 var card_ui_scene = preload("res://card_ui.tscn")
 
 var cards: Array
-var cards_per_row = 7  # TODO: Do something smart with screen size later.
 var chosen_card: Card = null
 
 signal card_chosen(card: Card)
+
+func _ready():
+	scroll.custom_minimum_size = Vector2(220 * cards_per_row + 50, 320 * rows + 50)
 
 func reset():
 	cards.clear()
 	for child in vbox.get_children():
 		child.queue_free()
+
 
 func set_skippable():
 	skip_button.show()

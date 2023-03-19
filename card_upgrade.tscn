@@ -14,7 +14,7 @@ grow_vertical = 2
 script = ExtResource("1_5d5iy")
 card_chooser = NodePath("HBoxContainer/Upgradable/CardChooser")
 upgrade_chooser = NodePath("HBoxContainer/Upgrades/UpgradeChooser")
-card_to_upgrade_ui = NodePath("HBoxContainer/Upgrades/Card")
+card_to_upgrade_ui = NodePath("HBoxContainer/Upgrades/MarginContainer/PanelContainer/Card")
 upgrade_box = NodePath("HBoxContainer/Upgrades")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -41,9 +41,11 @@ horizontal_alignment = 1
 
 [node name="CardChooser" parent="HBoxContainer/Upgradable" instance=ExtResource("2_pkoxn")]
 layout_mode = 2
+rows = 2.2
 
 [node name="Upgrades" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="HBoxContainer/Upgrades"]
 layout_mode = 2
@@ -55,7 +57,21 @@ layout_mode = 2
 text = "Card to upgrade"
 horizontal_alignment = 1
 
-[node name="Card" parent="HBoxContainer/Upgrades" instance=ExtResource("3_o5xce")]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Upgrades"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/Upgrades/MarginContainer"]
+custom_minimum_size = Vector2(220, 320)
+layout_mode = 2
+
+[node name="Card" parent="HBoxContainer/Upgrades/MarginContainer/PanelContainer" instance=ExtResource("3_o5xce")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
@@ -66,3 +82,5 @@ horizontal_alignment = 1
 
 [node name="UpgradeChooser" parent="HBoxContainer/Upgrades" instance=ExtResource("2_pkoxn")]
 layout_mode = 2
+cards_per_row = 2
+rows = 1.0
