@@ -1,0 +1,84 @@
+[gd_scene load_steps=11 format=3 uid="uid://dvvqumwfaoq8a"]
+
+[ext_resource type="Script" path="res://wall_torch.gd" id="1_a5xk0"]
+[ext_resource type="PackedScene" uid="uid://bd1hjxj3smb54" path="res://resources/kaykit-dungeon/models/gltf/torchWall.gltf.glb" id="1_md4l0"]
+[ext_resource type="Gradient" path="res://resources/animations/fire_gradient.tres" id="2_m0epm"]
+[ext_resource type="Texture2D" uid="uid://dxs64ypbrawne" path="res://resources/animations/smoke30frames.png" id="3_0caly"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ss5xc"]
+gradient = ExtResource("2_m0epm")
+
+[sub_resource type="Curve" id="Curve_wahvf"]
+_data = [Vector2(0, 0), 0.0, 5.86539, 0, 1, Vector2(0.170492, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.103604), -1.08064, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_atwpm"]
+curve = SubResource("Curve_wahvf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6cc0u"]
+emission_shape = 1
+emission_sphere_radius = 0.4
+direction = Vector3(0, 1, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 5.0
+angular_velocity_max = 40.0
+linear_accel_min = 1.0
+linear_accel_max = 4.0
+angle_max = 360.0
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_atwpm")
+color_ramp = SubResource("GradientTexture1D_ss5xc")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+anim_offset_max = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6f68m"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("3_0caly")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_fnwow"]
+material = SubResource("StandardMaterial3D_6f68m")
+
+[node name="WallTorch" type="Node3D"]
+script = ExtResource("1_a5xk0")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.25)
+
+[node name="torchWallgltf" parent="Pivot" instance=ExtResource("1_md4l0")]
+
+[node name="torchWall" parent="Pivot/torchWallgltf" index="0"]
+layers = 512
+cast_shadow = 0
+
+[node name="Node3D" type="Node3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.6)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Pivot/Node3D"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.3, 0)
+layers = 512
+cast_shadow = 0
+amount = 80
+lifetime = 0.5
+randomness = 1.0
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_6cc0u")
+draw_pass_1 = SubResource("QuadMesh_fnwow")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Pivot/Node3D"]
+light_color = Color(1, 0.705882, 0.235294, 1)
+shadow_enabled = true
+omni_range = 10.0
+omni_attenuation = 0.5
+
+[editable path="Pivot/torchWallgltf"]
