@@ -61,8 +61,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 6920.0
-offset_bottom = 3804.0
+offset_right = 5760.0
+offset_bottom = 3240.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
@@ -77,10 +77,10 @@ offset_bottom = 40.0
 [node name="Town" type="Control" parent="Panel/Decorations"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 869.0
-offset_top = 405.0
-offset_right = 909.0
-offset_bottom = 445.0
+offset_left = 496.0
+offset_top = 295.0
+offset_right = 536.0
+offset_bottom = 335.0
 
 [node name="Items" type="Control" parent="Panel/Decorations/Town"]
 anchors_preset = 0
@@ -138,10 +138,10 @@ texture = ExtResource("15_p2cm0")
 
 [node name="Mountains" type="Control" parent="Panel/Decorations"]
 anchors_preset = 0
-offset_left = 85.0
-offset_top = 90.0
-offset_right = 125.0
-offset_bottom = 130.0
+offset_left = -246.0
+offset_top = 29.0
+offset_right = -206.0
+offset_bottom = 69.0
 scale = Vector2(1.5, 1.5)
 
 [node name="RocksMountain" type="Sprite2D" parent="Panel/Decorations/Mountains"]
@@ -242,10 +242,10 @@ texture = ExtResource("24_5mmoc")
 
 [node name="Forest" type="Control" parent="Panel/Decorations"]
 anchors_preset = 0
-offset_left = 168.0
-offset_top = 800.0
-offset_right = 208.0
-offset_bottom = 840.0
+offset_left = 442.0
+offset_top = 659.0
+offset_right = 482.0
+offset_bottom = 699.0
 scale = Vector2(1.5, 1.5)
 
 [node name="TreePines" type="Sprite2D" parent="Panel/Decorations/Forest"]
