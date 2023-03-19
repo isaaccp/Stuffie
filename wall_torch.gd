@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var light: OmniLight3D
-@export var noise: NoiseTexture2D
+@export var noise: FastNoiseLite
 
 # Interval to generate random flickering.
 @export var min_delay = 5.0
@@ -22,7 +22,7 @@ func _process(delta):
 	if not flicker:
 		light.light_energy = 1.0
 	else:
-		var sampled_noise = noise.noise.get_noise_1d(Time.get_ticks_msec())
+		var sampled_noise = noise.get_noise_1d(Time.get_ticks_msec())
 		# This gives a number between 0 and 1.
 		sampled_noise = sampled_noise / 2.0 + 0.5
 		var base_light = 1.0 - noise_fraction
