@@ -10,10 +10,7 @@ class_name Character
 @export var portrait_texture: TextureRect
 var action_points: int
 var move_points: int
-var block: int
 var power: int
-var dodge: int
-var alive = true
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var pending_damage_set = false
@@ -315,37 +312,6 @@ func add_gold(gold: int):
 func apply_relic_damage_change(damage: int):
 	return relic_manager.apply_damage_change(self, damage)
 
-func apply_damage(damage: int, blockable=true, dodgeable=true):
-	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
-	# Handle dodge.
-	if dodgeable:
-		if dodge > 0:
-			dodge -= 1
-			add_stat(Stats.Field.ATTACKS_DODGED, 1)
-			refresh()
-			return
-	if blockable:
-		var blocked_damage = 0
-		if block > 0:
-			if damage <= block:
-				block -= damage
-				blocked_damage = damage
-				damage = 0
-			else:
-				damage -= block
-				blocked_damage = block
-				block = 0
-		if blocked_damage:
-			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
-	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
-	hit_points -= damage
-	health_changed.emit()
-	if hit_points <= 0:
-		alive = false
-		refresh()
-		return true
-	refresh()
-
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):
 	var damage = enemy.effective_damage(self)
@@ -375,6 +341,7 @@ func get_save_state():
 	save_state.action_points = action_points
 	save_state.move_points = move_points
 	save_state.hit_points = hit_points
+	save_state.destroyed = destroyed
 	save_state.block = block
 	save_state.power = power
 	save_state.dodge = dodge
@@ -391,6 +358,7 @@ func load_save_state(save_state: CharacterSaveState):
 	action_points = save_state.action_points
 	move_points = save_state.move_points
 	hit_points = save_state.hit_points
+	destroyed = save_state.destroyed
 	block = save_state.block
 	power = save_state.power
 	dodge = save_state.dodge

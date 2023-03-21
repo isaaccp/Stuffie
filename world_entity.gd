@@ -10,6 +10,11 @@ var hit_points: int
 var health_bar: HealthDisplay3D
 var health_bar_scene = preload("res://health_display_3d.tscn")
 
+var block: int
+var dodge: int
+var destroyed = false
+# TODO: var vulnerability: int
+
 signal health_changed
 
 func _ready():
@@ -41,3 +46,44 @@ func move_path(map_manager: MapManager, path: PackedVector2Array):
 
 func _on_health_changed():
 	health_bar.update_health(hit_points, total_hit_points)
+
+# For now this is called in Character to update portrait, possibly replace with
+# some signal.
+func refresh():
+	pass
+
+func apply_damage(damage: int, blockable=true, dodgeable=true):
+	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
+	# Handle dodge.
+	if dodgeable:
+		if dodge > 0:
+			dodge -= 1
+			add_stat(Stats.Field.ATTACKS_DODGED, 1)
+			refresh()
+			return
+	if blockable:
+		var blocked_damage = 0
+		if block > 0:
+			if damage <= block:
+				block -= damage
+				blocked_damage = damage
+				damage = 0
+			else:
+				damage -= block
+				blocked_damage = block
+				block = 0
+		if blocked_damage:
+			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
+	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
+	hit_points -= damage
+	health_changed.emit()
+	if hit_points <= 0:
+		destroyed = true
+		refresh()
+		return true
+	refresh()
+
+# Empty add_stat() implementation that should only be overriden by Character.
+# This allows to easily share all the code without having to worry about Stats.
+func add_stat(field: Stats.Field, value: int):
+	pass

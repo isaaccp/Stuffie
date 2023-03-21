@@ -134,10 +134,7 @@ func apply_enemy(character: Character, enemy: Enemy):
 	assert(target_mode == Enum.TargetMode.ENEMY or target_mode == Enum.TargetMode.AREA)
 	var attack_damage = effective_damage(character)
 	StatsManager.add(character.character_type, Stats.Field.DAMAGE_DEALT, attack_damage)
-	# TODO: Move this to a method inside Unit, shared with character, that emits
-	# health_changed itself.
-	enemy.hit_points -= attack_damage
-	enemy.health_changed.emit()
+	enemy.apply_damage(attack_damage)
 	for effect in on_play_effects:
 		effect.apply_to_enemy(character, enemy)
 	enemy.refresh()

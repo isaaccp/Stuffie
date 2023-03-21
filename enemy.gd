@@ -24,8 +24,6 @@ var level: int
 var move_points: float
 var weakness: int
 var paralysis: int
-# TODO: Implement effect of this.
-var vulnerability: int
 var done: bool
 
 var is_mock = false
@@ -67,8 +65,6 @@ func end_turn():
 	move_points = total_move_points
 	if weakness > 0:
 		weakness -= 1
-	if vulnerability > 0:
-		vulnerability -= 1
 	if paralysis > 0:
 		paralysis -= 1
 
@@ -86,7 +82,6 @@ func info_text() -> String:
 		"hit_points": hit_points,
 		"total_hit_points": total_hit_points,
 		"weakness": weakness,
-		"vulnerability": vulnerability,
 		"paralysis": paralysis,
 	}
 	var text = (
@@ -101,8 +96,6 @@ func info_text() -> String:
 		text += "[url]Weakness[/url]: {weakness}\n"
 	if paralysis > 0:
 		text += "[url]Paralysis[/url]: {paralysis}\n"
-	if vulnerability > 0:
-		text += "[url]Vulnerability[/url]: {vulnerability}\n"
 	var formatted_text = text.format(format_vars)
 	return formatted_text
 
@@ -161,7 +154,6 @@ func get_save_state():
 	save_state.hit_points = hit_points
 	save_state.weakness = weakness
 	save_state.paralysis = paralysis
-	save_state.vulnerability = vulnerability
 	return save_state
 
 func load_save_state(save_state: EnemySaveState):
@@ -175,4 +167,3 @@ func load_save_state(save_state: EnemySaveState):
 	hit_points = save_state.hit_points
 	weakness = save_state.weakness
 	paralysis = save_state.paralysis
-	vulnerability = save_state.vulnerability

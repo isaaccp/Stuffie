@@ -238,7 +238,7 @@ func _on_character_portrait_pressed(index: int):
 	# Only allow to change active character during human turn on waiting state.
 	if state != GameState.HUMAN_TURN or human_turn_state != HumanTurnState.WAITING:
 		return
-	if party.get_child(index).alive:
+	if not party.get_child(index).destroyed:
 		set_active_character(index)
 
 func draw_deck():
@@ -260,7 +260,7 @@ func set_active_character(index: int):
 	for character in party.get_children():
 		if i == index:
 			active_character = party.get_child(i)
-			assert(active_character.alive)
+			assert(not active_character.destroyed)
 			active_character.set_active(true)
 			hand_ui.reset(active_character)
 		else:
@@ -272,7 +272,7 @@ func set_active_character(index: int):
 
 func next_live_character_index() -> int:
 	for i in range(active_character_index + 1, party.get_child_count()):
-		if party.get_child(i).alive:
+		if not party.get_child(i).destroyed:
 			return i
 	for i in range(0, active_character_index):
 		return i
@@ -666,7 +666,7 @@ func handle_enemy_death(enemy: Enemy):
 func live_characters():
 	var characters = []
 	for character in party.get_children():
-		if character.alive:
+		if not character.destroyed:
 			characters.push_back(character)
 	return characters
 
