@@ -1,5 +1,4 @@
-#@tool
-extends WorldEntity
+extends Unit
 
 class_name Enemy
 
@@ -12,20 +11,17 @@ enum AttackStyle {
 @export var base_damage: int
 @export var base_attack_range: int
 
-
 @export var level_move_points: float
 @export var level_hit_points: float
 @export var level_damage: float
 @export var level_attack_range: float
 
 var total_move_points: int
-var total_hit_points: int
 var total_damage: int
 var total_attack_range: int
 
 var level: int
 var move_points: float
-var hit_points: int
 var weakness: int
 var paralysis: int
 # TODO: Implement effect of this.

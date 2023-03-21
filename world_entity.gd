@@ -5,6 +5,9 @@ class_name WorldEntity
 var id_position: Vector2i
 var tile_size = 2
 
+var hit_points: int
+@export var total_hit_points: int
+
 func set_id_position(id_pos: Vector2i):
 	id_position = id_pos
 	position = Vector3(

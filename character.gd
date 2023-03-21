@@ -1,17 +1,15 @@
-extends WorldEntity
+extends Unit
 
 class_name Character
 
 @export var character_type: Enum.CharacterId
 @export var total_action_points: int
 @export var total_move_points: int
-@export var total_hit_points: int
 @export var cards_per_turn: int
 @export var initial_relic: Relic
 @export var portrait_texture: TextureRect
 var action_points: int
 var move_points: int
-var hit_points: int
 var block: int
 var power: int
 var dodge: int
