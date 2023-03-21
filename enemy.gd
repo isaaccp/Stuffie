@@ -32,12 +32,12 @@ var is_mock = false
 
 @export var enemy_type: Enum.EnemyId
 @export var enemy_name: String
-@export var health_bar: HealthDisplay3D
 @export var attack_style: AttackStyle
 @export var weapon: Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	super()
 	# For fireable weapons, hide them until attack.
 	if attack_style == AttackStyle.FIRE:
 		if weapon:
@@ -144,8 +144,9 @@ func draw_attack(target: Character):
 	weapon.position = Vector3(0, 0, 0)
 	weapon.hide()
 
+# Nothing to do as the health bar is managed separately.
 func refresh():
-	health_bar.update_health(hit_points, total_hit_points)
+	pass
 
 func get_save_state():
 	var save_state = EnemySaveState.new()

@@ -26,7 +26,6 @@ var is_mock = false
 # Figure out a cleaner way.
 var gameplay: Gameplay
 
-@export var health_bar: HealthDisplay3D
 @export var original_deck: Deck
 var deck: Deck
 @export var extra_cards: CardSelectionSet
@@ -67,9 +66,8 @@ class Snapshot:
 
 var snapshot: Snapshot
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	super()
 
 func initialize(full=true):
 	# Used when starting a run, but not when loading.
@@ -77,7 +75,6 @@ func initialize(full=true):
 		deck = original_deck.duplicate()
 		heal_full()
 	process_cards()
-	changed.connect(_on_changed)
 	relic_manager.connect_signals(self)
 	snap()
 
@@ -107,9 +104,6 @@ func process_cards():
 			if not card_upgrades.has(card.base_card.card_name):
 				card_upgrades[card.base_card.card_name] = []
 			card_upgrades[card.base_card.card_name].push_back(card)
-
-func _on_changed():
-	health_bar.update_health(hit_points, total_hit_points)
 
 func snap():
 	snapshot = Snapshot.new(self)
@@ -306,10 +300,12 @@ func heal(hp: int):
 	if hit_points > total_hit_points:
 		hit_points = total_hit_points
 	add_stat(Stats.Field.HP_HEALED, hit_points - original_hp)
+	health_changed.emit()
 	refresh()
 
 func heal_full():
 	hit_points = total_hit_points
+	health_changed.emit()
 	refresh()
 
 func add_gold(gold: int):
@@ -343,6 +339,7 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
 	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
+	health_changed.emit()
 	if hit_points <= 0:
 		alive = false
 		refresh()

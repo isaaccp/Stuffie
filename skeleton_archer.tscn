@@ -1,15 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cn4nrnrmacmvm"]
+[gd_scene load_steps=5 format=3 uid="uid://cn4nrnrmacmvm"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_2ehli"]
 [ext_resource type="PackedScene" uid="uid://ce7blcas7yboa" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_archer.gltf" id="3_ca0c1"]
-[ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="3_oxvrd"]
 [ext_resource type="PackedScene" uid="uid://cw2srnpuoqdnj" path="res://resources/kaykit-skeletons/assets/gltf/skeleton_bow.gltf.glb" id="4_ndcf2"]
 [ext_resource type="PackedScene" uid="uid://cpwwdyimw3pbq" path="res://resources/kaykit-skeletons/assets/gltf/arrow_green.gltf.glb" id="5_7oi7g"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_fej4t"]
-viewport_path = NodePath("Sprite3D/SubViewport")
-
-[node name="Enemy" type="Node3D" node_paths=PackedStringArray("health_bar", "weapon")]
+[node name="Enemy" type="Node3D" node_paths=PackedStringArray("weapon")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_2ehli")
 base_move_points = 8
@@ -21,11 +17,7 @@ level_damage = 1.0
 level_attack_range = 0.25
 enemy_type = 1
 enemy_name = "Skeleton Archer"
-health_bar = NodePath("HealthDisplay3D")
 weapon = NodePath("Weapon")
-
-[node name="HealthDisplay3D" parent="." instance=ExtResource("3_oxvrd")]
-texture = SubResource("ViewportTexture_fej4t")
 
 [node name="character_skeleton_archer" parent="." instance=ExtResource("3_ca0c1")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

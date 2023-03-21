@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://dvhxmiqckixoy"]
+[gd_scene load_steps=14 format=3 uid="uid://dvhxmiqckixoy"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_i4i62"]
 [ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://resources/decks/wizard/deck.tres" id="2_r0eug"]
 [ext_resource type="Resource" uid="uid://dy2d0a7t3a4sb" path="res://resources/relics/strong_start.tres" id="2_vqogy"]
 [ext_resource type="Resource" uid="uid://dlhyp8id25va7" path="res://resources/decks/wizard/extra_cards.tres" id="3_4pj7e"]
 [ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
-[ext_resource type="PackedScene" uid="uid://cd4hnivcahq4" path="res://health_display_3d.tscn" id="4_cbcsb"]
 [ext_resource type="PackedScene" uid="uid://ddsimr8wumis7" path="res://resources/kaykit-dungeon/models/characters/gltf/character_mage.gltf" id="4_e1b5r"]
 [ext_resource type="Resource" uid="uid://boikmqlmjpm0l" path="res://resources/decks/wizard/all_cards.tres" id="5_dr8sx"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_qtq1g"]
@@ -33,23 +32,19 @@ script = ExtResource("8_4cd50")
 title = "Entertain"
 effects = Array[ExtResource("7_vbhnd")]([SubResource("Resource_xu2cw")])
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_jmw8s"]
-viewport_path = NodePath("Sprite3D/SubViewport")
-
-[node name="Wizard" type="Node3D" node_paths=PackedStringArray("portrait_texture", "health_bar")]
+[node name="Wizard" type="Node3D" node_paths=PackedStringArray("portrait_texture")]
 script = ExtResource("1_i4i62")
 character_type = 2
 total_action_points = 3
 total_move_points = 12
-total_hit_points = 40
 cards_per_turn = 5
 initial_relic = ExtResource("2_vqogy")
 portrait_texture = NodePath("Portrait")
-health_bar = NodePath("HealthDisplay3D")
 original_deck = ExtResource("2_r0eug")
 extra_cards = ExtResource("3_4pj7e")
 all_cards = ExtResource("5_dr8sx")
 camp_choice = SubResource("Resource_bmlki")
+total_hit_points = 40
 
 [node name="Portrait" type="TextureRect" parent="."]
 visible = false
@@ -66,6 +61,3 @@ light_color = Color(1, 0.705882, 0.235294, 1)
 shadow_enabled = true
 omni_range = 20.0
 omni_attenuation = 0.5
-
-[node name="HealthDisplay3D" parent="." instance=ExtResource("4_cbcsb")]
-texture = SubResource("ViewportTexture_jmw8s")
