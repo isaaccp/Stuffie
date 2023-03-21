@@ -83,6 +83,21 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 		return true
 	refresh()
 
+# Heals 'hp' without going over total hp.
+func heal(hp: int):
+	var original_hp = hit_points
+	hit_points += hp
+	if hit_points > total_hit_points:
+		hit_points = total_hit_points
+	add_stat(Stats.Field.HP_HEALED, hit_points - original_hp)
+	health_changed.emit()
+	refresh()
+
+func heal_full():
+	hit_points = total_hit_points
+	health_changed.emit()
+	refresh()
+
 # Empty add_stat() implementation that should only be overriden by Character.
 # This allows to easily share all the code without having to worry about Stats.
 func add_stat(field: Stats.Field, value: int):
