@@ -65,11 +65,18 @@ func get_damage_description():
 	if card.damage_value == null:
 		return ""
 	var damage = regular_damage()
-	var damage_text = "%d" % damage
 	var effective_damage = effective_damage()
-	if damage != effective_damage:
-			damage_text = "%s ([color=red]%d[/color])" % [damage_text, effective_damage]
-	return damage_text
+	var description_text = ""
+	var damage_text = ""
+	if damage == effective_damage:
+		damage_text = "%d" % damage
+	else:
+		damage_text = "%d ([color=red]%d[/color])" % [damage, effective_damage]
+	if card.damage_value.value_type == CardEffectValue.ValueType.REFERENCE:
+		description_text = "%s (%s)" % [get_effect_value_string(unit, card.damage_value), damage_text]
+	else:
+		description_text = damage_text
+	return description_text
 
 func get_target_text() -> String:
 	var target_text = ""
@@ -86,6 +93,13 @@ func get_target_text() -> String:
 		target_text = "Area (%d tiles)" % area_size
 	return target_text
 
+func get_range_text() -> String:
+	if card.target_distance == 1:
+		return "melee"
+	elif card.target_distance > 2:
+		return "range %d" % card.target_distance
+	return ""
+
 func on_play_effect_text() -> String:
 	return UnitCard.join_effects_text(unit, card.on_play_effects)
 
@@ -97,6 +111,7 @@ func get_description() -> String:
 	if card.should_exhaust():
 		description = "[url=exhaust]Exhaust[/url]. "
 	var target_text = get_target_text()
+	var range_text = get_range_text()
 	var prefix_text = ""
 	if target_text != "Self":
 		prefix_text = "%s: " % target_text
@@ -107,18 +122,22 @@ func get_description() -> String:
 		if on_play_text:
 			description += "%s%s\n" % [prefix_text, on_play_text]
 	elif card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
+		var range_included = false
 		var on_play_self_text = UnitCard.join_effects_text(unit, card.on_play_self_effects)
 		if on_play_self_text:
 			description += "Before Play: %s\n" % on_play_self_text
-		var attack_text = "Attack"
+		var attack_text = "Attack (%s)" % range_text
 		var area_size = card.effect_area(Vector2.RIGHT).size()
 		if area_size > 1:
 			attack_text += (" enemies in area (%s tiles)" % area_size)
 		var damage_text = get_damage_description()
 		if damage_text:
 			description += "%s for %s dmg\n" % [attack_text, damage_text]
+			range_included = true
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
+			if not range_included:
+				prefix_text += " (%s) " % range_text
 			description += "%s%s\n" % [prefix_text, on_play_text]
 		var on_kill_text = UnitCard.join_effects_text(unit, card.on_kill_effects)
 		if on_kill_text:
