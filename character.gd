@@ -64,6 +64,7 @@ func _ready():
 	super()
 
 func initialize(full=true):
+	relic_manager.connect_signals(self)
 	process_cards()
 	# Used when starting a run, but not when loading.
 	if full:
