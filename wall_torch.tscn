@@ -88,7 +88,7 @@ draw_pass_1 = SubResource("QuadMesh_fnwow")
 [node name="OmniLight3D" type="OmniLight3D" parent="Pivot/Node3D"]
 light_color = Color(1, 0.705882, 0.235294, 1)
 shadow_enabled = true
-omni_range = 10.0
+omni_range = 15.0
 omni_attenuation = 0.5
 
 [editable path="Pivot/torchWallgltf"]
