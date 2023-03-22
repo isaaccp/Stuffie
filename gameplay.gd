@@ -76,6 +76,7 @@ var stage_trigger_manager: StageTriggerManager
 # Enemies are under this node.
 @export var enemies_node: Node
 @export var doors_node: Node
+@export var canvas: CanvasLayer
 @export var hand_ui: HandUI
 @export var deck_ui: Control
 @export var discard_ui: Control
@@ -133,6 +134,7 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, comb
 		character_portrait.set_character(character)
 		# Hook character selection.
 		character_portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
+		character.set_canvas(canvas)
 		i += 1
 	initialize_stage(stage, combat_state)
 
@@ -148,6 +150,9 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 		StatsManager.add_level(Enum.StatsLevel.TURN)
 		turn_number = 0
 	else:
+		# Usually initialized in begin_stage().
+		for character in party.get_children():
+			character.gameplay = self
 		for enemy_data in combat_state.enemies:
 			var enemy = EnemyLoader.restore(enemy_data)
 			enemies_node.add_child(enemy)

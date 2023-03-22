@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c2wg8gqprp7pc" path="res://card_ui.tscn" id="3_o5xce"]
 
 [node name="CardUpgrade" type="Control" node_paths=PackedStringArray("card_chooser", "upgrade_chooser", "card_to_upgrade_ui", "upgrade_box")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -4,13 +4,10 @@ class_name Character
 
 @export var character_type: Enum.CharacterId
 @export var total_action_points: int
-@export var total_move_points: int
 @export var cards_per_turn: int
 @export var initial_relic: Relic
 @export var portrait_texture: TextureRect
 var action_points: int
-var move_points: int
-var power: int
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var pending_damage_set = false
@@ -22,6 +19,7 @@ var is_mock = false
 # needs access to the gameplay to e.g. display a cursor for the move, etc.
 # Figure out a cleaner way.
 var gameplay: Gameplay
+var canvas: CanvasLayer
 
 @export var original_deck: Deck
 var deck: Deck
@@ -33,7 +31,6 @@ var card_upgrades: Dictionary
 var upgrade_scene = preload("res://card_upgrade.tscn")
 var chooser_scene = preload("res://card_collection_chooser.tscn")
 
-signal changed
 signal made_active(active: bool)
 signal stage_started(character: Character)
 signal stage_ended(character: Character)
@@ -73,6 +70,7 @@ func initialize(full=true):
 		heal_full()
 	process_cards()
 	relic_manager.connect_signals(self)
+	end_turn()
 	snap()
 
 # Creates a mock of this character to use in turn simulation.
@@ -89,6 +87,9 @@ func mock():
 	m.dodge = dodge
 	m.snap()
 	return m
+
+func set_canvas(canvas: CanvasLayer):
+	self.canvas = canvas
 
 func add_stat(field: Stats.Field, value: int):
 	if is_mock:
@@ -129,21 +130,13 @@ func end_stage():
 	dodge = 0
 	stage_ended.emit(self)
 	relic_manager.clear_temp_relics()
-	refresh()
+	changed.emit()
 
 func begin_turn():
 	snap()
-	action_points = total_action_points
-	move_points = total_move_points
-	block = 0
-	# At most can carry 1 dodge.
-	if dodge > 0:
-		dodge = 1
-	if power > 0:
-		power -= 1
 	draw_new_hand()
 	turn_started.emit(self)
-	refresh()
+	changed.emit()
 
 func end_stage_restore():
 	action_points = total_action_points
@@ -155,10 +148,12 @@ func end_stage_restore():
 	clear_pending_move_cost()
 	clear_pending_action_cost()
 	clear_pending_damage()
-	refresh()
+	changed.emit()
 
 func end_turn():
 	snap()
+	super()
+	action_points = total_action_points
 	turn_ended.emit(self)
 
 func discard_hand():
@@ -187,13 +182,13 @@ func pick_cards_condition(number: int, condition: Callable = func(c): return tru
 	assert(number == 1)
 	# Shuffle discard into deck before choosing.
 	deck.shuffle_discard()
-	var tree = get_tree().current_scene
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
 	chooser.initialize_from_character(self, CardCollectionChooser.Filter.DECK, condition)
 	chooser.set_skippable()
-	tree.add_child(chooser)
-	# Not sure if there is a way to get the card that is a parameter of the signal easily.
+	canvas.add_child(chooser)
+	get_tree().paused = true
 	await chooser.card_chosen
+	get_tree().paused = false
 	var card = chooser.chosen_card
 	if card == null:
 		deck.add_to_hand_from_deck(card)
@@ -209,22 +204,24 @@ func pick_attacks(number: int):
 func upgrade_cards(number: int):
 	# TODO: Support upgrading more than 1 in CardUpgrade.
 	assert(number == 1)
-	var tree = get_tree().current_scene
 	var upgrade = upgrade_scene.instantiate() as CardUpgrade
 	upgrade.initialize([self])
-	tree.add_child(upgrade)
+	canvas.add_child(upgrade)
+	get_tree().paused = true
 	await upgrade.done
+	get_tree().paused = false
 	upgrade.queue_free()
 	# TODO: Check if we actually upgraded.
 	add_stat(Stats.Field.CARDS_UPGRADED, number)
 
 func duplicate_cards(number: int, metadata: CardEffectMetadata):
-	var tree = get_tree().current_scene
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
 	chooser.initialize_from_character(self, CardCollectionChooser.Filter.HAND, metadata.card_filter_condition())
 	chooser.set_skippable()
-	tree.add_child(chooser)
+	canvas.add_child(chooser)
+	get_tree().paused = true
 	await chooser.card_chosen
+	get_tree().paused = false
 	var card = chooser.chosen_card
 	if card != null:
 		var card_copy = card.duplicate()
@@ -237,58 +234,40 @@ func duplicate_cards(number: int, metadata: CardEffectMetadata):
 			deck.add_to_hand(new_card)
 	chooser.queue_free()
 
-func add_power(power_amount: int):
-	self.power += power_amount
-	add_stat(Stats.Field.POWER_ACQUIRED, power_amount)
-	refresh()
-
-func add_block(block_amount: int):
-	block += block_amount
-	add_stat(Stats.Field.BLOCK_ACQUIRED, block_amount)
-	refresh()
-
-func add_dodge(dodge_amount: int):
-	dodge += dodge_amount
-	add_stat(Stats.Field.DODGE_ACQUIRED, dodge_amount)
-	refresh()
-
 func teleport(distance: int):
 	await gameplay.teleport(self, distance)
-
-func refresh():
-	changed.emit()
 
 func set_active(active: bool):
 	made_active.emit(active)
 
 func set_pending_action_cost(pending_cost: int):
 	pending_action_cost = pending_cost
-	refresh()
+	changed.emit()
 
 func clear_pending_action_cost():
 	pending_action_cost = -1
-	refresh()
+	changed.emit()
 
 func set_pending_damage(pending_damage: int):
 	pending_damage_set = true
 	self.pending_damage = pending_damage
-	refresh()
+	changed.emit()
 
 func clear_pending_damage():
 	pending_damage_set = false
-	refresh()
+	changed.emit()
 
 func reduce_move(move_cost: int):
 	move_points -= move_cost
-	refresh()
+	changed.emit()
 
 func set_pending_move_cost(pending_cost: int):
 	pending_move_cost = pending_cost
-	refresh()
+	changed.emit()
 
 func clear_pending_move_cost():
 	pending_move_cost = -1
-	refresh()
+	changed.emit()
 
 func add_gold(gold: int):
 	shared_bag.add_gold(gold)

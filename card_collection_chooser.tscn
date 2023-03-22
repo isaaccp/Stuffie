@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://card_collection_chooser.gd" id="1_uel8a"]
 
 [node name="CardCollectionChooser" type="PanelContainer" node_paths=PackedStringArray("vbox", "scroll", "skip_button")]
+process_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

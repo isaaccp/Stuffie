@@ -16,6 +16,7 @@ var destroyed = false
 # TODO: var vulnerability: int
 
 signal health_changed
+signal changed
 
 func _ready():
 	if total_hit_points > 0:
@@ -52,6 +53,16 @@ func _on_health_changed():
 func refresh():
 	pass
 
+func add_block(block_amount: int):
+	block += block_amount
+	add_stat(Stats.Field.BLOCK_ACQUIRED, block_amount)
+	changed.emit()
+
+func add_dodge(dodge_amount: int):
+	dodge += dodge_amount
+	add_stat(Stats.Field.DODGE_ACQUIRED, dodge_amount)
+	changed.emit()
+
 func apply_damage(damage: int, blockable=true, dodgeable=true):
 	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
 	# Handle dodge.
@@ -59,7 +70,7 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 		if dodge > 0:
 			dodge -= 1
 			add_stat(Stats.Field.ATTACKS_DODGED, 1)
-			refresh()
+			changed.emit()
 			return
 	if blockable:
 		var blocked_damage = 0
@@ -79,9 +90,9 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 	health_changed.emit()
 	if hit_points <= 0:
 		destroyed = true
-		refresh()
+		changed.emit()
 		return true
-	refresh()
+	changed.emit()
 
 # Heals 'hp' without going over total hp.
 func heal(hp: int):
@@ -91,14 +102,21 @@ func heal(hp: int):
 		hit_points = total_hit_points
 	add_stat(Stats.Field.HP_HEALED, hit_points - original_hp)
 	health_changed.emit()
-	refresh()
+	changed.emit()
 
 func heal_full():
 	hit_points = total_hit_points
 	health_changed.emit()
-	refresh()
+	changed.emit()
 
 # Empty add_stat() implementation that should only be overriden by Character.
 # This allows to easily share all the code without having to worry about Stats.
 func add_stat(field: Stats.Field, value: int):
 	pass
+
+func end_turn():
+	block = 0
+	# At most can carry 1 dodge.
+	if dodge > 0:
+		dodge = 1
+	changed.emit()

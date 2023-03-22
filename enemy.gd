@@ -16,14 +16,9 @@ enum AttackStyle {
 @export var level_damage: float
 @export var level_attack_range: float
 
-var total_move_points: int
 var total_damage: int
 var total_attack_range: int
-
 var level: int
-var move_points: float
-var weakness: int
-var paralysis: int
 var done: bool
 
 var is_mock = false
@@ -60,13 +55,6 @@ func initialize(pos: Vector2i, level: int):
 	hit_points = total_hit_points
 	set_id_position(pos)
 	end_turn()
-
-func end_turn():
-	move_points = total_move_points
-	if weakness > 0:
-		weakness -= 1
-	if paralysis > 0:
-		paralysis -= 1
 
 func info_text() -> String:
 	var damage_text = "%s" % total_damage

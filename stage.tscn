@@ -10,12 +10,13 @@ background_mode = 1
 ambient_light_source = 1
 reflected_light_source = 1
 
-[node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
+[node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "canvas", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_info", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
 world = NodePath("World")
 effects = NodePath("World/Effects")
 enemies_node = NodePath("World/Enemies")
 doors_node = NodePath("World/Doors")
+canvas = NodePath("UI")
 hand_ui = NodePath("UI/Control/HandUI")
 deck_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Deck")
 discard_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Discard")
