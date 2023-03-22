@@ -684,7 +684,7 @@ func clear_enemy_info():
 	enemy_attack_area.visible = false
 
 func handle_enemy_death(enemy: Enemy):
-	StatsManager.add(active_character.character_type, Stats.Field.ENEMIES_KILLED, 1)
+	active_character.add_stat(Stats.Field.ENEMIES_KILLED, 1)
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
 	enemy.queue_free()
@@ -756,8 +756,8 @@ func play_card():
 		await effect.finished()
 	clear_effects()
 	await unit_card.apply_after_effects()
-	StatsManager.add(active_character.character_type, Stats.Field.CARDS_PLAYED, 1)
-	StatsManager.add(active_character.character_type, Stats.Field.AP_USED, current_card.cost)
+	active_character.add_stat(Stats.Field.CARDS_PLAYED, 1)
+	active_character.add_stat(Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
 	active_character.card_played.emit(active_character, current_card)
 	if map_manager.enemy_locs.is_empty():
