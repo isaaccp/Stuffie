@@ -9,8 +9,8 @@ func _init(unit: Unit, card: Card):
 	self.unit = unit
 	self.card = card
 
-func apply_on_play_effects():
-	await CardEffect.apply_effects_to_character(unit, card.on_play_effects)
+func apply_on_play_effects(target: Unit):
+	await apply_effects_target(card.on_play_effects, target)
 
 func apply_self():
 	assert(card.target_mode == Enum.TargetMode.SELF or card.target_mode == Enum.TargetMode.SELF_ALLY)
@@ -18,20 +18,32 @@ func apply_self():
 		# Only character implements this.
 		if unit.has_method("add_temp_relic"):
 			unit.add_temp_relic(card.power_relic)
-	await apply_on_play_effects()
+	await apply_on_play_effects(unit)
 	unit.refresh()
 
 func apply_self_effects():
-	await CardEffect.apply_effects_to_character(unit, card.on_play_self_effects)
+	await apply_effects_target(card.on_play_self_effects, unit)
 
 func apply_after_effects():
-	await CardEffect.apply_effects_to_character(unit, card.on_play_after_effects)
+	await apply_effects_target(card.on_play_after_effects, unit)
 
 func apply_to_ally(ally: Unit):
 	assert(card.target_mode == Enum.TargetMode.SELF_ALLY or card.target_mode == Enum.TargetMode.ALLY)
-	await CardEffect.apply_effects_to_character(ally, card.on_play_effects)
+	await apply_effects_target(card.on_play_effects, ally)
 	await apply_self_effects()
 
+func apply_to_enemy(enemy: Unit):
+	assert(card.target_mode == Enum.TargetMode.ENEMY or card.target_mode == Enum.TargetMode.AREA)
+	var attack_damage = effective_damage()
+	unit.add_stat(Stats.Field.DAMAGE_DEALT, attack_damage)
+	enemy.apply_damage(attack_damage)
+	for effect in card.on_play_effects:
+		apply_effect_target(effect, enemy)
+	enemy.refresh()
+	if enemy.hit_points <= 0:
+		apply_effects_target(card.on_kill_effects, unit)
+		return true
+	return false
 func regular_damage():
 	if card.damage_value:
 		return get_effect_value(card.damage_value)
@@ -54,24 +66,11 @@ func get_damage_description():
 	var damage = regular_damage()
 	var damage_text = "%d" % damage
 	if card.damage_value:
-		damage_text = card.damage_value.get_value_string(unit)
+		damage_text = get_effect_value_string(card.damage_value)
 	var effective_damage = effective_damage()
 	if damage != effective_damage:
 			damage_text = "%s ([color=red]%d[/color])" % [damage_text, effective_damage]
 	return damage_text
-
-func apply_to_enemy(enemy: Unit):
-	assert(card.target_mode == Enum.TargetMode.ENEMY or card.target_mode == Enum.TargetMode.AREA)
-	var attack_damage = effective_damage()
-	unit.add_stat(Stats.Field.DAMAGE_DEALT, attack_damage)
-	enemy.apply_damage(attack_damage)
-	for effect in card.on_play_effects:
-		apply_effect_target(effect, enemy)
-	enemy.refresh()
-	if enemy.hit_points <= 0:
-		CardEffect.apply_effects_to_character(unit, card.on_kill_effects)
-		return true
-	return false
 
 func get_target_text() -> String:
 	var target_text = ""

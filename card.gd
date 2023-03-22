@@ -91,3 +91,12 @@ func effect_area(direction: Vector2):
 		new_effect_area.append(Vector2i(rotated_pos))
 
 	return new_effect_area
+
+static func filter_condition(card_filter: CardFilter):
+	var property_conditions = {
+		CardFilter.Property.ANY: func(c: Card): return true,
+		CardFilter.Property.ATTACK: func(c: Card): return c.is_attack(),
+	}
+	if card_filter:
+		return property_conditions[card_filter.property]
+	return (func(c: Card): return true)

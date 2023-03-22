@@ -216,7 +216,7 @@ func upgrade_cards(number: int):
 
 func duplicate_cards(number: int, metadata: CardEffectMetadata):
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
-	chooser.initialize_from_character(self, CardCollectionChooser.Filter.HAND, metadata.card_filter_condition())
+	chooser.initialize_from_character(self, CardCollectionChooser.Filter.HAND, Card.filter_condition(metadata.card_filter))
 	chooser.set_skippable()
 	canvas.add_child(chooser)
 	get_tree().paused = true
