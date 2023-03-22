@@ -125,6 +125,7 @@ func move_character(from: Vector2i, to: Vector2i):
 	a_star.set_point_solid(to)
 
 func move_enemy(from: Vector2i, to: Vector2i):
+	assert(from != to)
 	var enemy = enemy_locs[from]
 	enemy_locs.erase(from)
 	enemy_locs[to] = enemy

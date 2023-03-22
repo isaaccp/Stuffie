@@ -11,13 +11,6 @@ var close_door_cb: Callable
 func _init(triggers: Array[StageTrigger]):
 	self.triggers = triggers
 
-func connect_signals(gameplay: Gameplay):
-	gameplay.enemy_died.connect(on_enemy_died)
-	gameplay.new_turn_started.connect(on_begin_turn)
-	spawn_treasure_cb = gameplay.spawn_treasure
-	open_door_cb = gameplay.open_door
-	close_door_cb = gameplay.close_door
-
 func on_enemy_died():
 	enemy_deaths += 1
 	for trigger in triggers:

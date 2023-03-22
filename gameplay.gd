@@ -175,8 +175,7 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	connect("all_enemies_died", stage.all_enemies_died_handler)
 	connect("new_turn_started", stage.new_turn_started_handler)
 	stage.connect("stage_completed", next_stage)
-	stage_trigger_manager = StageTriggerManager.new(stage.triggers)
-	stage_trigger_manager.connect_signals(self)
+	initialize_stage_trigger_manager(stage.triggers)
 	world.add_child(stage)
 	initialize_map_manager(stage)
 	if combat_state != null:
@@ -208,6 +207,14 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	# so set it now before changing state.
 	set_active_character(0)
 	change_state(GameState.HUMAN_TURN)
+
+func initialize_stage_trigger_manager(triggers: Array[StageTrigger]):
+	stage_trigger_manager = StageTriggerManager.new(triggers)
+	enemy_died.connect(stage_trigger_manager.on_enemy_died)
+	new_turn_started.connect(stage_trigger_manager.on_begin_turn)
+	stage_trigger_manager.spawn_treasure_cb = spawn_treasure
+	stage_trigger_manager.open_door_cb = open_door
+	stage_trigger_manager.close_door_cb = close_door
 
 func on_enemy_turn_calculated(damage_taken: Array):
 	for info in damage_taken:
