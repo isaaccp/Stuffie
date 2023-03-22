@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://dc6lhg0fc52fo"
+path="res://.godot/imported/3w_1m.stage-c1f06e1af2dcf36321154211293d880b.tscn"
+
+[deps]
+
+source_file="res://stages/3w_1m.stage"
+dest_files=["res://.godot/imported/3w_1m.stage-c1f06e1af2dcf36321154211293d880b.tscn"]
+
+[params]
+

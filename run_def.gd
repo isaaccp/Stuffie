@@ -26,7 +26,7 @@ static func get_run(run_type: RunType):
 	var run_def = RunDef.new()
 	run_def.stages  = [
 		["4w", "1w_2a"],
-		["3w_2a", "cages"],
+		["3w_2a", "3w_1m", "cages"],
 		["death_wall", "tight_corridor"],
 		["death_cage", "corridor"],
 		["big_bad_skeleton"],
