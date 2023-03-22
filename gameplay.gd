@@ -549,14 +549,11 @@ func handle_move():
 	# Save positions as they change.
 	var original_pos = active_character.get_id_position()
 	var final_pos = tile_map_pos
-	var can_undo = await active_character.move(map_manager, final_pos)
+	await active_character.move(map_manager, final_pos)
 	var move_cost = path_cost(current_path)
 	active_character.reduce_move(move_cost)
 	StatsManager.add(active_character.character_type, Stats.Field.MP_USED, move_cost)
-	if can_undo:
-		undo_button.show()
-	else:
-		reset_undo()
+	await handle_after_move()
 	character_moved.emit(final_pos)
 	clear_enemy_info_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
@@ -571,14 +568,34 @@ func handle_teleport():
 		if distance > teleport_distance:
 			return
 		# TODO: Handle teleport "animation".
-		await map_manager.move_character(active_character.get_id_position(), tile_map_pos)
+		map_manager.move_character(active_character.get_id_position(), tile_map_pos)
 		active_character.set_id_position(tile_map_pos)
+		await handle_after_move()
 		character_moved.emit(tile_map_pos)
 		clear_enemy_info_cache()
 	target_area.queue_free()
 	single_cursor.queue_free()
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
 	teleport_finished.emit()
+
+func handle_after_move():
+	print("on handle_after_move")
+	var can_undo = true
+	if map_manager.treasure_locs.has(active_character.get_id_position()):
+		print("has treasure!")
+		can_undo = false
+		await pick_up_treasure(active_character.get_id_position())
+	if can_undo:
+		undo_button.show()
+	else:
+		reset_undo()
+
+func pick_up_treasure(pos: Vector2i):
+	var treasure: Treasure = map_manager.treasure_locs[pos]
+	var unit_card = UnitCard.new(active_character, treasure.def.card)
+	await unit_card.apply_self()
+	map_manager.remove_treasure(pos)
+	active_character.add_stat(Stats.Field.CHESTS_ACQUIRED, 1)
 
 func _input(event):
 	if Input.is_action_just_released("ui_cancel"):
@@ -830,7 +847,8 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			clear_enemy_info()
 		if map_manager.treasure_locs.has(new_tile_map_pos):
 			var treasure = map_manager.treasure_locs[new_tile_map_pos]
-			var description = UnitCard.join_effects_text(active_character, treasure.def.effects)
+			var unit_card = UnitCard.new(active_character, treasure.def.card)
+			var description = unit_card.get_description()
 			treasure_info.text = "Treasure: %s (%d turns left)" % [description, treasure.turns_left]
 		else:
 			treasure_info.text = ""

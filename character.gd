@@ -64,12 +64,12 @@ func _ready():
 	super()
 
 func initialize(full=true):
+	process_cards()
 	# Used when starting a run, but not when loading.
 	if full:
 		deck = original_deck.duplicate()
 		heal_full()
-	process_cards()
-	end_turn()
+		end_turn()
 	snap()
 
 # Creates a mock of this character to use in turn simulation.
@@ -283,13 +283,12 @@ func apply_attack(enemy: Enemy):
 func camp_choices():
 	return [camp_choice] + relic_manager.camp_choices()
 
-func move(map_manager: MapManager, to: Vector2i) -> bool:
+func move(map_manager: MapManager, to: Vector2i):
 	var from = get_id_position()
 	var curve = map_manager.curve_from_path(map_manager.get_path(from, to))
 	await move_path(curve)
 	set_id_position(to)
-	var can_undo = await map_manager.move_character(from, to)
-	return can_undo
+	map_manager.move_character(from, to)
 
 func on_move_map_update(map_manager: MapManager, from: Vector2i, to: Vector2i):
 	map_manager.move_character(from, to)

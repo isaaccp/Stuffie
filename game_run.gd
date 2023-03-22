@@ -309,6 +309,7 @@ func load_save_state(run_state: RunSaveState):
 	relic_list = run_state.relic_list
 	for character_data in run_state.characters:
 		var character = CharacterLoader.restore(character_data)
+		print(character.action_points)
 		character.shared_bag = shared_bag
 		characters.push_back(character)
 		party.add_child(character)

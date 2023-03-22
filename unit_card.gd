@@ -229,6 +229,9 @@ static func get_effect_value(unit: Unit, effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE:
 		return effect_value.absolute_value
 	if effect_value.value_type == CardEffectValue.ValueType.REFERENCE:
+		# This is only used in the CampChoice relic as it's hard to plumb unit through.
+		if unit == null:
+			return -1
 		var original_value = UnitCard._get_effect_reference_value(unit, effect_value)
 		return int(original_value * effect_value.reference_fraction)
 

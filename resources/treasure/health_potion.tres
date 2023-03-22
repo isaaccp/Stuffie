@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="TreasureDef" load_steps=6 format=3 uid="uid://bsk3f5v4ck7cn"]
+[gd_resource type="Resource" script_class="TreasureDef" load_steps=8 format=3 uid="uid://bsk3f5v4ck7cn"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_8l5vx"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_qsswg"]
 [ext_resource type="Script" path="res://treasure_def.gd" id="3_tnrp0"]
+[ext_resource type="Script" path="res://card.gd" id="3_v440k"]
 
-[sub_resource type="Resource" id="Resource_7t5pn"]
+[sub_resource type="Resource" id="Resource_cltlv"]
 script = ExtResource("1_8l5vx")
 value_type = 1
 absolute_value = 10
@@ -13,13 +14,33 @@ value_field_type = 0
 regular_field = 0
 read_only_field = 0
 
-[sub_resource type="Resource" id="Resource_njw3u"]
+[sub_resource type="Resource" id="Resource_s4yrd"]
 script = ExtResource("2_qsswg")
-effect_value = SubResource("Resource_7t5pn")
+effect_value = SubResource("Resource_cltlv")
 effect_type = 1
 target_field = 1
 effect = 0
 
+[sub_resource type="Resource" id="Resource_6ybym"]
+script = ExtResource("3_v440k")
+card_name = "Health Potion"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 0
+target_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("2_qsswg")]([])
+on_play_effects = Array[ExtResource("2_qsswg")]([SubResource("Resource_s4yrd")])
+on_play_after_effects = Array[ExtResource("2_qsswg")]([])
+on_kill_effects = Array[ExtResource("2_qsswg")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
 [resource]
 script = ExtResource("3_tnrp0")
-effects = Array[ExtResource("2_qsswg")]([SubResource("Resource_njw3u")])
+card = SubResource("Resource_6ybym")

@@ -6,4 +6,4 @@ class_name CampChoice
 @export var effects: Array[CardEffect]
 
 func get_description():
-	return "%s: %s" % [title, CardEffect.join_effects_text(null, effects)]
+	return "%s: %s" % [title, UnitCard.join_effects_text(null, effects)]

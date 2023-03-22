@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="TreasureDef" load_steps=6 format=3 uid="uid://vy3i344xkca8"]
+[gd_resource type="Resource" script_class="TreasureDef" load_steps=8 format=3 uid="uid://vy3i344xkca8"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_dk2h7"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_cn8lo"]
+[ext_resource type="Script" path="res://card.gd" id="3_7wloh"]
 [ext_resource type="Script" path="res://treasure_def.gd" id="3_m78lc"]
 
-[sub_resource type="Resource" id="Resource_v4y6e"]
+[sub_resource type="Resource" id="Resource_l15jr"]
 script = ExtResource("1_dk2h7")
 value_type = 1
 absolute_value = 1
@@ -13,13 +14,33 @@ value_field_type = 0
 regular_field = 0
 read_only_field = 0
 
-[sub_resource type="Resource" id="Resource_fq6og"]
+[sub_resource type="Resource" id="Resource_uuh0x"]
 script = ExtResource("2_cn8lo")
-effect_value = SubResource("Resource_v4y6e")
+effect_value = SubResource("Resource_l15jr")
 effect_type = 2
 target_field = 0
 effect = 4
 
+[sub_resource type="Resource" id="Resource_077mo"]
+script = ExtResource("3_7wloh")
+card_name = "Workbench"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 0
+target_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("2_cn8lo")]([])
+on_play_effects = Array[ExtResource("2_cn8lo")]([SubResource("Resource_uuh0x")])
+on_play_after_effects = Array[ExtResource("2_cn8lo")]([])
+on_kill_effects = Array[ExtResource("2_cn8lo")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
 [resource]
 script = ExtResource("3_m78lc")
-effects = Array[ExtResource("2_cn8lo")]([SubResource("Resource_fq6og")])
+card = SubResource("Resource_077mo")
