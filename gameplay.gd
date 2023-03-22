@@ -696,6 +696,7 @@ func clear_effects():
 
 func play_card():
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
+	var unit_card = UnitCard.new(active_character, current_card)
 	# Discard card first.
 	if current_card.should_exhaust():
 		active_character.deck.exhaust_card(hand_ui.selected_index)
@@ -704,9 +705,9 @@ func play_card():
 	# Take snapshot of current state before playing card.
 	active_character.snap()
 	if current_card.target_mode == Enum.TargetMode.SELF:
-		await current_card.apply_self(active_character)
+		await unit_card.apply_self()
 	elif current_card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
-		await current_card.apply_self_effects(active_character)
+		await unit_card.apply_self_effects()
 		var target_tile = tile_map_pos
 		var affected_tiles = current_card.effect_area(direction)
 		var effect_time = 0
@@ -725,7 +726,7 @@ func play_card():
 			if map_manager.enemy_locs.has(tile):
 				var enemy = map_manager.enemy_locs[tile]
 				# TODO: Move this inside character.
-				if current_card.apply_to_enemy(active_character, enemy):
+				if unit_card.apply_to_enemy(enemy):
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
 		if current_card.is_attack():
@@ -733,7 +734,7 @@ func play_card():
 	for effect in effects.get_children():
 		await effect.finished()
 	clear_effects()
-	await current_card.apply_after_effects(active_character)
+	await unit_card.apply_after_effects()
 	StatsManager.add(active_character.character_type, Stats.Field.CARDS_PLAYED, 1)
 	StatsManager.add(active_character.character_type, Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
