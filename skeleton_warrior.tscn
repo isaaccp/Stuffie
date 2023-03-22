@@ -77,15 +77,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_pyj6g")
 base_move_points = 10
 base_hit_points = 12
-level_move_points = null
 level_hit_points = 2.0
 level_damage = 0.5
 cards = Array[ExtResource("3_maq5n")]([SubResource("Resource_h2yhb"), SubResource("Resource_dijmc")])
-enemy_type = null
 enemy_name = "Skeleton Warrior"
-attack_style = null
-total_move_points = null
-total_hit_points = null
 
 [node name="character_skeleton_warrior" parent="." instance=ExtResource("2_nqrh5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

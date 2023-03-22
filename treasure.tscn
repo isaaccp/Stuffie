@@ -1,11 +1,11 @@
 [gd_scene load_steps=6 format=3 uid="uid://b74ha70j5irk3"]
 
 [ext_resource type="Script" path="res://treasure.gd" id="1_vion4"]
-[ext_resource type="Resource" uid="uid://ci8kwmg5m0vnm" path="res://resources/treasure/gold.tres" id="2_btq2b"]
-[ext_resource type="Resource" uid="uid://bsk3f5v4ck7cn" path="res://resources/treasure/health_potion.tres" id="3_a7l2v"]
-[ext_resource type="Resource" uid="uid://cmlc0kcakaeh2" path="res://resources/treasure/power_potion.tres" id="4_yriv0"]
-[ext_resource type="Resource" uid="uid://vy3i344xkca8" path="res://resources/treasure/workbench.tres" id="5_typs3"]
+[ext_resource type="Resource" uid="uid://ci8kwmg5m0vnm" path="res://resources/treasure/gold.tres" id="2_4ccfr"]
+[ext_resource type="Resource" uid="uid://bsk3f5v4ck7cn" path="res://resources/treasure/health_potion.tres" id="3_g51bt"]
+[ext_resource type="Resource" uid="uid://cmlc0kcakaeh2" path="res://resources/treasure/power_potion.tres" id="4_kbol5"]
+[ext_resource type="Resource" uid="uid://vy3i344xkca8" path="res://resources/treasure/workbench.tres" id="5_fpfs6"]
 
 [node name="Treasure" type="Node3D"]
 script = ExtResource("1_vion4")
-common = Array[Resource("res://treasure_def.gd")]([ExtResource("2_btq2b"), ExtResource("3_a7l2v"), ExtResource("4_yriv0"), ExtResource("5_typs3")])
+common = Array[Resource("res://treasure_def.gd")]([ExtResource("2_4ccfr"), ExtResource("3_g51bt"), ExtResource("4_kbol5"), ExtResource("5_fpfs6")])

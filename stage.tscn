@@ -57,6 +57,7 @@ offset_right = 204.0
 grow_vertical = 0
 
 [node name="InfoPanel" type="PanelContainer" parent="UI"]
+custom_minimum_size = Vector2(300, 0)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0

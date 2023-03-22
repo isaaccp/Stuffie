@@ -1,0 +1,96 @@
+[gd_scene load_steps=12 format=3 uid="uid://bfswsq5qdi453"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_gamah"]
+[ext_resource type="Script" path="res://card.gd" id="2_0p2b8"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_158l0"]
+[ext_resource type="PackedScene" uid="uid://cps4b3roctocg" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_mage.gltf" id="2_vi1fg"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_15bvl"]
+
+[sub_resource type="Resource" id="Resource_u07ig"]
+script = ExtResource("2_158l0")
+value_type = 1
+absolute_value = 3
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_qtbn0"]
+script = ExtResource("2_158l0")
+value_type = 1
+absolute_value = -1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_kdowo"]
+script = ExtResource("3_15bvl")
+effect_value = SubResource("Resource_qtbn0")
+effect_type = 1
+target_field = 5
+effect = 0
+
+[sub_resource type="Resource" id="Resource_h3yac"]
+script = ExtResource("2_0p2b8")
+card_name = "Drain Energy"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 3
+target_animation = 6
+target_distance = 3
+damage_value = SubResource("Resource_u07ig")
+on_play_self_effects = Array[ExtResource("3_15bvl")]([])
+on_play_effects = Array[ExtResource("3_15bvl")]([SubResource("Resource_kdowo")])
+on_play_after_effects = Array[ExtResource("3_15bvl")]([])
+on_kill_effects = Array[ExtResource("3_15bvl")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[sub_resource type="Resource" id="Resource_b4437"]
+script = ExtResource("2_158l0")
+value_type = 1
+absolute_value = 6
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_kd2nk"]
+script = ExtResource("2_0p2b8")
+card_name = "Fire Bolt"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 3
+target_animation = 5
+target_distance = 6
+damage_value = SubResource("Resource_b4437")
+on_play_self_effects = Array[ExtResource("3_15bvl")]([])
+on_play_effects = Array[ExtResource("3_15bvl")]([])
+on_play_after_effects = Array[ExtResource("3_15bvl")]([])
+on_kill_effects = Array[ExtResource("3_15bvl")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[node name="SkeletonMage" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
+script = ExtResource("1_gamah")
+base_move_points = 8
+base_hit_points = 6
+level_hit_points = 1.0
+level_damage = 0.5
+cards = Array[ExtResource("2_0p2b8")]([SubResource("Resource_h3yac"), SubResource("Resource_kd2nk")])
+enemy_type = 2
+enemy_name = "Skeleton Mage"
+
+[node name="character_skeleton_mage" parent="." instance=ExtResource("2_vi1fg")]

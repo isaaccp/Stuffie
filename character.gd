@@ -70,7 +70,6 @@ func initialize(full=true):
 	if full:
 		deck = original_deck.duplicate()
 		heal_full()
-		end_turn()
 	snap()
 
 # Creates a mock of this character to use in turn simulation.
@@ -122,6 +121,7 @@ func add_temp_relic(relic: Relic):
 func begin_stage(gameplay: Gameplay):
 	self.gameplay = gameplay
 	deck.reset()
+	end_turn()
 	stage_started.emit(self)
 
 func end_stage():
@@ -135,7 +135,6 @@ func end_stage():
 func begin_turn():
 	snap()
 	super()
-	draw_new_hand()
 	turn_started.emit(self)
 	changed.emit()
 
@@ -154,6 +153,7 @@ func end_stage_restore():
 func end_turn():
 	snap()
 	super()
+	draw_new_hand()
 	action_points = total_action_points
 	turn_ended.emit(self)
 

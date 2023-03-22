@@ -79,7 +79,7 @@ func execute_moves(map: MapManager):
 		if chosen_target != null:
 			var chosen_card = null
 			for unit_card in enemy.unit_cards:
-				if not unit_card.card.is_attack():
+				if not unit_card.card.target_mode == Enum.TargetMode.ENEMY:
 					continue
 				if chosen_target[1] <= unit_card.card.target_distance:
 					chosen_card = unit_card

@@ -5,6 +5,7 @@ class_name EnemyLoader
 const enemy_scenes = {
 	Enum.EnemyId.SKELETON_WARRIOR: preload("res://skeleton_warrior.tscn"),
 	Enum.EnemyId.SKELETON_ARCHER: preload("res://skeleton_archer.tscn"),
+	Enum.EnemyId.SKELETON_MAGE: preload("res://skeleton_mage.tscn"),
 }
 
 static func create(enemy_id: Enum.EnemyId) -> Enemy:

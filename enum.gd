@@ -11,6 +11,7 @@ enum CharacterId {
 enum EnemyId {
 	SKELETON_WARRIOR,
 	SKELETON_ARCHER,
+	SKELETON_MAGE,
 }
 
 enum StatsLevel {
