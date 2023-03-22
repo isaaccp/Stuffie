@@ -586,10 +586,8 @@ func handle_teleport():
 	teleport_finished.emit()
 
 func handle_after_move():
-	print("on handle_after_move")
 	var can_undo = true
 	if map_manager.treasure_locs.has(active_character.get_id_position()):
-		print("has treasure!")
 		can_undo = false
 		await pick_up_treasure(active_character.get_id_position())
 	if can_undo:
@@ -753,7 +751,6 @@ func play_card():
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
 		if current_card.is_attack():
-			print("Emitting attacked")
 			active_character.attacked.emit(active_character)
 	for effect in effects.get_children():
 		await effect.finished()
