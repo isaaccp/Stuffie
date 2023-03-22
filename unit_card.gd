@@ -38,7 +38,7 @@ func apply_to_enemy(enemy: Unit):
 	unit.add_stat(Stats.Field.DAMAGE_DEALT, attack_damage)
 	enemy.apply_damage(attack_damage)
 	for effect in card.on_play_effects:
-		apply_effect_target(effect, enemy)
+		await UnitCard.apply_effect_target(unit, effect, enemy)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
 		apply_effects_target(card.on_kill_effects, unit)
@@ -134,7 +134,7 @@ func get_description() -> String:
 
 # All stats are updated inside the character methods. That way objects like relics that don't use
 # CardEffect will still update stats easily.
-func apply_effect_target(effect: CardEffect, target: Unit):
+static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 	var value = 0
 	# Some effects don't need a value, so allow that.
 	if effect.effect_value:
@@ -221,7 +221,7 @@ static func join_effects_text(unit: Unit, effects: Array[CardEffect]) -> String:
 
 func apply_effects_target(effects: Array[CardEffect], target: Unit):
 	for effect in effects:
-		await apply_effect_target(effect, target)
+		await UnitCard.apply_effect_target(unit, effect, target)
 
 # CardEffectValue
 
