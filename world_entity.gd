@@ -113,9 +113,12 @@ func heal_full():
 func add_stat(field: Stats.Field, value: int):
 	pass
 
-func end_turn():
+func begin_turn():
 	block = 0
 	# At most can carry 1 dodge.
 	if dodge > 0:
 		dodge = 1
+	changed.emit()
+
+func end_turn():
 	changed.emit()

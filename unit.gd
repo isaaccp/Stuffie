@@ -13,6 +13,9 @@ func add_power(power_amount: int):
 	add_stat(Stats.Field.POWER_ACQUIRED, power_amount)
 	changed.emit()
 
+func begin_turn():
+	super()
+
 func end_turn():
 	super()
 	move_points = total_move_points

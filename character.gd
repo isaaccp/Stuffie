@@ -133,6 +133,7 @@ func end_stage():
 
 func begin_turn():
 	snap()
+	super()
 	draw_new_hand()
 	turn_started.emit(self)
 	changed.emit()

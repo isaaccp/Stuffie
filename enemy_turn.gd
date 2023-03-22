@@ -62,9 +62,10 @@ func execute_moves(map: MapManager):
 		var enemy_pos = enemy.get_id_position()
 		var loc = move[1]
 		var targets = move[2]
-		var curve = map.curve_from_path(map.get_enemy_path(enemy_pos, loc))
-		await enemy.move(curve, loc)
-		map.move_enemy(enemy_pos, loc)
+		if enemy_pos != loc:
+			var curve = map.curve_from_path(map.get_enemy_path(enemy_pos, loc))
+			await enemy.move(curve, loc)
+			map.move_enemy(enemy_pos, loc)
 		# Find first target which is not dead yet.
 		var chosen_target = null
 		var target_character = null
