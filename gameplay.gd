@@ -725,7 +725,7 @@ func play_card():
 			if map_manager.enemy_locs.has(tile):
 				var enemy = map_manager.enemy_locs[tile]
 				# TODO: Move this inside character.
-				if current_card.apply_enemy(active_character, enemy):
+				if current_card.apply_to_enemy(active_character, enemy):
 					handle_enemy_death(enemy)
 					active_character.killed_enemy.emit(active_character)
 		if current_card.is_attack():

@@ -13,7 +13,7 @@ class_name CardEffectMetadata
 func card_filter_condition():
 	if card_filter:
 		return card_filter.condition()
-	return func(c: Card): return true
+	return func(o: Object): return true
 
 func card_filter_description():
 	if card_filter:
