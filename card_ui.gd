@@ -60,7 +60,7 @@ func get_cost_text() -> String:
 
 func refresh():
 	card_name.text = unit_card.card.card_name
-	if unit_card.upgrade_level and unit_card.upgrade_level > 0:
+	if unit_card.card.upgrade_level and unit_card.card.upgrade_level > 0:
 		card_name.text = unit_card.card.base_card.card_name
 		upgrade_label.show()
 		if unit_card.card.upgrade_name:

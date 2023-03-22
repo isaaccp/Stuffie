@@ -44,9 +44,10 @@ func apply_to_enemy(enemy: Unit):
 		apply_effects_target(card.on_kill_effects, unit)
 		return true
 	return false
+
 func regular_damage():
 	if card.damage_value:
-		return get_effect_value(card.damage_value)
+		return UnitCard.get_effect_value(unit, card.damage_value)
 	return 0
 
 func effective_damage():
@@ -66,7 +67,7 @@ func get_damage_description():
 	var damage = regular_damage()
 	var damage_text = "%d" % damage
 	if card.damage_value:
-		damage_text = get_effect_value_string(card.damage_value)
+		damage_text = UnitCard.get_effect_value_string(unit, card.damage_value)
 	var effective_damage = effective_damage()
 	if damage != effective_damage:
 			damage_text = "%s ([color=red]%d[/color])" % [damage_text, effective_damage]
@@ -137,7 +138,7 @@ func apply_effect_target(effect: CardEffect, target: Unit):
 	var value = 0
 	# Some effects don't need a value, so allow that.
 	if effect.effect_value:
-		value = get_effect_value(effect.effect_value)
+		value = UnitCard.get_effect_value(unit, effect.effect_value)
 	if effect.effect_type == CardEffect.EffectType.EFFECT:
 		match effect.effect:
 			CardEffect.Effect.DISCARD_HAND:
@@ -185,11 +186,11 @@ func apply_effect_target(effect: CardEffect, target: Unit):
 				target.paralysis += value
 				unit.add_stat(Stats.Field.PARALYSIS_APPLIED, value)
 
-func get_effect_description(effect: CardEffect) -> String:
+static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 	var effect_text = ""
 	var value_text = ""
 	if effect.effect_value:
-		value_text = effect.effect_value.get_value_string(unit)
+		value_text = UnitCard.get_effect_value_string(unit, effect.effect_value)
 	if effect.effect_type == CardEffect.EffectType.EFFECT:
 		match effect.effect:
 			CardEffect.Effect.DISCARD_HAND: effect_text = "discard your hand"
@@ -202,7 +203,7 @@ func get_effect_description(effect: CardEffect) -> String:
 			CardEffect.Effect.DUPLICATE_CARD: effect_text = "copy %s (%s)\n%s" % [effect.metadata_card_filter(), value_text, effect.metadata_extra_description()]
 	elif effect.effect_type == CardEffect.EffectType.FIELD:
 		var prefix_text = "add"
-		if effect.effect_value.is_negative():
+		if UnitCard.is_negative(effect.effect_value):
 			prefix_text = "remove"
 			# Remove leading -.
 			value_text = value_text.substr(1)
@@ -212,7 +213,7 @@ func get_effect_description(effect: CardEffect) -> String:
 static func join_effects_text(unit: Unit, effects: Array[CardEffect]) -> String:
 	var effect_texts: PackedStringArray = []
 	for effect in effects:
-		var description = unit.get_effect_description(effect)
+		var description = get_effect_description(unit, effect)
 		if effect_texts.size() == 0:
 			description = description[0].to_upper() + description.substr(1,-1)
 		effect_texts.push_back(description)
@@ -224,37 +225,37 @@ func apply_effects_target(effects: Array[CardEffect], target: Unit):
 
 # CardEffectValue
 
-func get_effect_value(effect_value: CardEffectValue):
+static func get_effect_value(unit: Unit, effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE:
 		return effect_value.absolute_value
 	if effect_value.value_type == CardEffectValue.ValueType.REFERENCE:
-		var original_value = _get_effect_reference_value(effect_value)
+		var original_value = UnitCard._get_effect_reference_value(unit, effect_value)
 		return int(original_value * effect_value.reference_fraction)
 
-func _get_effect_reference_value(effect_value: CardEffectValue):
+static func _get_effect_reference_value(unit: Unit, effect_value: CardEffectValue):
 	if effect_value.value_field_type == CardEffectValue.ValueFieldType.REGULAR:
-		return get_field(effect_value.regular_field)
+		return UnitCard.get_field(unit, effect_value.regular_field)
 	elif effect_value.value_field_type == CardEffectValue.ValueFieldType.READ_ONLY:
-		return get_read_only_field(effect_value.read_only_field)
+		return UnitCard.get_read_only_field(unit, effect_value.read_only_field)
 
-func get_field(field: CardEffectValue.Field):
+static func get_field(unit: Unit, field: CardEffectValue.Field):
 	match field:
 		CardEffectValue.Field.TOTAL_HIT_POINTS: return unit.total_hit_points
 		CardEffectValue.Field.BLOCK: return unit.block
 	assert(false)
 
-func get_read_only_field(field: CardEffectValue.ReadOnlyField):
+static func get_read_only_field(unit: Unit, field: CardEffectValue.ReadOnlyField):
 	match field:
 		CardEffectValue.ReadOnlyField.SNAPSHOT_HAND_CARDS: return unit.snapshot.num_hand_cards
 	assert(false)
 
-func get_effect_value_string(effect_value: CardEffectValue):
+static func get_effect_value_string(unit: Unit, effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE:
 		return "%d" % effect_value.absolute_value
 	if effect_value.value_type == CardEffectValue.ValueType.REFERENCE:
-		return "%d%% of %s (%d)" % [effect_value.reference_fraction * 100, effect_value.get_field_name(), get_effect_value(effect_value)]
+		return "%d%% of %s (%d)" % [effect_value.reference_fraction * 100, effect_value.get_field_name(), UnitCard.get_effect_value(unit, effect_value)]
 
-func is_negative(effect_value: CardEffectValue):
+static func is_negative(effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE and effect_value.absolute_value < 0:
 		return true
 	if effect_value.value_type == CardEffectValue.ValueType.REFERENCE and effect_value.reference_fraction < 0:

@@ -92,6 +92,12 @@ func effect_area(direction: Vector2):
 
 	return new_effect_area
 
+func extra_tooltips() -> Dictionary:
+	var tooltips = {}
+	if power_relic:
+		tooltips[power_relic.name] = power_relic.tooltip
+	return tooltips
+
 static func filter_condition(card_filter: CardFilter):
 	var property_conditions = {
 		CardFilter.Property.ANY: func(c: Card): return true,
