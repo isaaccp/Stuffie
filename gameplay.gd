@@ -108,8 +108,6 @@ var enemy_walkable_cache: Dictionary
 var enemy_attackable_cache: Dictionary
 var restored_from_save = false
 
-var relic_actuators = []
-
 signal enemy_died
 signal character_moved(pos: Vector2i)
 signal all_enemies_died
@@ -137,7 +135,6 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, comb
 		# Hook character selection.
 		character_portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		character.set_canvas(canvas)
-		relic_actuators.push_back(RelicActuator.new(character))
 		i += 1
 	initialize_stage(stage, combat_state)
 
