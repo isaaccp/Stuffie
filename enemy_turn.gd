@@ -61,7 +61,9 @@ func execute_moves(map: MapManager):
 		var enemy = map.enemy_locs[move[0]]
 		var loc = move[1]
 		var targets = move[2]
-		await enemy.move(map, loc)
+		var curve = map.curve_from_path(map.get_enemy_path(enemy.id_position, loc))
+		await enemy.move(curve, loc)
+		map.move_enemy(enemy.id_position, loc)
 		# Find first target which is not dead yet.
 		var chosen_target = null
 		var target_character = null
@@ -76,7 +78,7 @@ func execute_moves(map: MapManager):
 			continue
 		if chosen_target[1] > enemy.attack_range():
 			continue
-		await enemy.draw_attack(target_character)
+		await enemy.draw_attack(target_character.global_position)
 		# We found a target within range, attack and destroy character if it died.
 		if target_character.apply_attack(enemy):
 			if simulation:

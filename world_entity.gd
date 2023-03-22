@@ -35,8 +35,7 @@ func set_id_position(id_pos: Vector2i):
 func get_id_position() -> Vector2i:
 	return id_position
 
-func move_path(map_manager: MapManager, path: PackedVector2Array):
-	var curve = map_manager.curve_from_path(path)
+func move_path(curve: Curve3D):
 	# Moving 1 "baked point" per 0.01 seconds, each point being
 	# at a distance of 0.2 from each other.
 	for point in curve.get_baked_points():

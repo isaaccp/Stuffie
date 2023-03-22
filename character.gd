@@ -69,7 +69,6 @@ func initialize(full=true):
 		deck = original_deck.duplicate()
 		heal_full()
 	process_cards()
-	relic_manager.connect_signals(self)
 	end_turn()
 	snap()
 
@@ -278,7 +277,7 @@ func apply_relic_damage_change(damage: int):
 
 # Apply attack from enemy to this character.
 func apply_attack(enemy: Enemy):
-	var damage = enemy.effective_damage(self)
+	var damage = enemy.effective_damage()
 	return apply_damage(damage)
 
 func camp_choices():
@@ -286,7 +285,8 @@ func camp_choices():
 
 func move(map_manager: MapManager, to: Vector2i) -> bool:
 	var from = get_id_position()
-	await move_path(map_manager, map_manager.get_path(from, to))
+	var curve = map_manager.curve_from_path(map_manager.get_path(from, to))
+	await move_path(curve)
 	set_id_position(to)
 	var can_undo = await map_manager.move_character(from, to)
 	return can_undo

@@ -58,8 +58,8 @@ func initialize(pos: Vector2i, level: int):
 
 func info_text() -> String:
 	var damage_text = "%s" % total_damage
-	if total_damage != effective_damage(null):
-		damage_text = "%s ([color=red]%s[/color])" % [total_damage, effective_damage(null)]
+	if total_damage != effective_damage():
+		damage_text = "%s ([color=red]%s[/color])" % [total_damage, effective_damage()]
 	var format_vars = {
 		"name": enemy_name,
 		"level": level,
@@ -87,7 +87,7 @@ func info_text() -> String:
 	var formatted_text = text.format(format_vars)
 	return formatted_text
 
-func effective_damage(character: Character):
+func effective_damage():
 	var new_damage = total_damage
 	if weakness > 0:
 		new_damage *= 0.5
@@ -96,25 +96,24 @@ func effective_damage(character: Character):
 func attack_range():
 	return total_attack_range
 
-func move(map_manager: MapManager, to: Vector2i):
+func move(curve: Curve3D, to: Vector2i):
 	var from = get_id_position()
 	if not is_mock:
-		await move_path(map_manager, map_manager.get_enemy_path(from, to))
+		await move_path(curve)
 	set_id_position(to)
-	map_manager.move_enemy(from, to)
 
-func draw_attack(target: Character):
+func draw_attack(target_position: Vector3):
 	if is_mock:
 		return
 	if not weapon:
 		return
 	weapon.show()
-	var direction = (weapon.global_position - target.global_position).normalized()
-	weapon.look_at(target.global_position, Vector3.UP)
+	var direction = (weapon.global_position - target_position).normalized()
+	weapon.look_at(target_position, Vector3.UP)
 	direction.y = 0
 	var prev_distance = -1
 	while true:
-		var diff = weapon.global_position - target.global_position
+		var diff = weapon.global_position - target_position
 		diff.y = 0
 		var new_distance = diff.length()
 		if prev_distance != -1 and prev_distance < new_distance:
