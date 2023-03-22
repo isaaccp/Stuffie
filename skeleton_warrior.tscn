@@ -1,18 +1,91 @@
-[gd_scene load_steps=3 format=3 uid="uid://3634f7rkkxoo"]
+[gd_scene load_steps=11 format=3 uid="uid://3634f7rkkxoo"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_pyj6g"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_guoqq"]
 [ext_resource type="PackedScene" uid="uid://dm3exbag2fdec" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_warrior.gltf" id="2_nqrh5"]
+[ext_resource type="Script" path="res://card.gd" id="3_maq5n"]
+[ext_resource type="Script" path="res://card_effect.gd" id="4_3qfxs"]
 
-[node name="Enemy2" type="Node3D"]
+[sub_resource type="Resource" id="Resource_v3que"]
+script = ExtResource("2_guoqq")
+value_type = 1
+absolute_value = 6
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_h2yhb"]
+script = ExtResource("3_maq5n")
+card_name = "Slash"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 3
+target_animation = 1
+target_distance = 1
+damage_value = SubResource("Resource_v3que")
+on_play_self_effects = Array[ExtResource("4_3qfxs")]([])
+on_play_effects = Array[ExtResource("4_3qfxs")]([])
+on_play_after_effects = Array[ExtResource("4_3qfxs")]([])
+on_kill_effects = Array[ExtResource("4_3qfxs")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[sub_resource type="Resource" id="Resource_d50y2"]
+script = ExtResource("2_guoqq")
+value_type = 1
+absolute_value = 6
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_fnfuc"]
+script = ExtResource("4_3qfxs")
+effect_value = SubResource("Resource_d50y2")
+effect_type = 1
+target_field = 7
+effect = 0
+
+[sub_resource type="Resource" id="Resource_dijmc"]
+script = ExtResource("3_maq5n")
+card_name = "Block"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 0
+target_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("4_3qfxs")]([])
+on_play_effects = Array[ExtResource("4_3qfxs")]([SubResource("Resource_fnfuc")])
+on_play_after_effects = Array[ExtResource("4_3qfxs")]([])
+on_kill_effects = Array[ExtResource("4_3qfxs")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[node name="SkeletonWarrior" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_pyj6g")
 base_move_points = 10
 base_hit_points = 12
-base_damage = 6
-base_attack_range = 1
+level_move_points = null
 level_hit_points = 2.0
-level_damage = 1.0
+level_damage = 0.5
+cards = Array[ExtResource("3_maq5n")]([SubResource("Resource_h2yhb"), SubResource("Resource_dijmc")])
+enemy_type = null
 enemy_name = "Skeleton Warrior"
+attack_style = null
+total_move_points = null
+total_hit_points = null
 
 [node name="character_skeleton_warrior" parent="." instance=ExtResource("2_nqrh5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

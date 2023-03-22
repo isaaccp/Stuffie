@@ -75,19 +75,35 @@ func execute_moves(map: MapManager):
 				chosen_target = target_distance
 				target_character = map.character_locs[target]
 				break
-		# If no targets, continue.
-		if chosen_target == null:
-			continue
-		if chosen_target[1] > enemy.attack_range():
-			continue
-		await enemy.draw_attack(target_character.global_position)
-		# We found a target within range, attack and destroy character if it died.
-		if target_character.apply_attack(enemy):
-			if simulation:
-				record_damage(target_character)
-				map.remove_character(target_character.get_id_position())
-			else:
-				character_died.emit(target_character)
+		# If there is a target, try to find an attack.
+		if chosen_target != null:
+			var chosen_card = null
+			for unit_card in enemy.unit_cards:
+				if not unit_card.card.is_attack():
+					continue
+				if chosen_target[1] <= unit_card.card.target_distance:
+					chosen_card = unit_card
+					break
+			if chosen_card:
+				# Update to be drawn from card.
+				await enemy.draw_attack(target_character.global_position)
+				# We found a target within range, attack and destroy character if it died.
+				if chosen_card.apply_to_enemy(target_character):
+					if simulation:
+						record_damage(target_character)
+						map.remove_character(target_character.get_id_position())
+					else:
+						character_died.emit(target_character)
+				continue
+		# If we didn't find a target or didn't find a card that could be used,
+		# try to play a self-card.
+		var chosen_card = null
+		for unit_card in enemy.unit_cards:
+			if unit_card.card.target_mode == Enum.TargetMode.SELF:
+				chosen_card = unit_card
+				break
+		if chosen_card:
+			await chosen_card.apply_self()
 	if simulation:
 		for loc in map.character_locs:
 			record_damage(map.character_locs[loc])
@@ -107,23 +123,30 @@ func top_move_option(enemy: Enemy, move_options: Array):
 	var best_move = null
 	var best_targets = null
 	var max_distance_sum = 0
-	for move in move_options:
-		var reachable_targets = 0
-		var distance_sum = 0
-		var targets = []
-		for loc in character_locs:
-			var distance = calculation_map.distance(move, loc)
-			if distance <= enemy.attack_range():
-				var visible_tiles = calculation_map.fov.get_fov(move)
-				if loc in visible_tiles:
-					reachable_targets += 1
-					targets.push_back(loc)
-			distance_sum += distance
-		if reachable_targets:
-			if distance_sum > max_distance_sum:
-				max_distance_sum = distance_sum
-				best_move = move
-				best_targets = targets
+	for unit_card in enemy.unit_cards:
+		if not unit_card.card.is_attack():
+			continue
+		for move in move_options:
+			var reachable_targets = 0
+			var distance_sum = 0
+			var targets = []
+			for loc in character_locs:
+				var distance = calculation_map.distance(move, loc)
+				# To support AoE attacks we would need to change this.
+				if distance <= unit_card.card.target_distance:
+					var visible_tiles = calculation_map.fov.get_fov(move)
+					if loc in visible_tiles:
+						reachable_targets += 1
+						targets.push_back(loc)
+				distance_sum += distance
+			if reachable_targets:
+				if distance_sum > max_distance_sum:
+					max_distance_sum = distance_sum
+					best_move = move
+					best_targets = targets
+		# Break as soon as we find a card with reachable targets.
+		if best_move:
+			break
 	if best_move:
 		# For selected move, return characters sorted by distance.
 		# We'll attack closest, but if they die, continue to next one.

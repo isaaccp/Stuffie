@@ -344,7 +344,7 @@ func offsets_within_distance(distance: int) -> Array[Vector2i]:
 
 func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
 	var attack_positions: Dictionary
-	var offsets = offsets_within_distance(enemy.attack_range())
+	var offsets = offsets_within_distance(enemy.max_attack_distance())
 	for pos in positions:
 		var visible_tiles = map_manager.fov.get_fov(pos)
 		for offset in offsets:

@@ -1,23 +1,93 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn4nrnrmacmvm"]
+[gd_scene load_steps=13 format=3 uid="uid://cn4nrnrmacmvm"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_2ehli"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_5rqn2"]
 [ext_resource type="PackedScene" uid="uid://ce7blcas7yboa" path="res://resources/kaykit-skeletons/characters/gltf/character_skeleton_archer.gltf" id="3_ca0c1"]
+[ext_resource type="Script" path="res://card.gd" id="3_l5ddu"]
+[ext_resource type="Script" path="res://card_effect.gd" id="4_k0tqi"]
 [ext_resource type="PackedScene" uid="uid://cw2srnpuoqdnj" path="res://resources/kaykit-skeletons/assets/gltf/skeleton_bow.gltf.glb" id="4_ndcf2"]
 [ext_resource type="PackedScene" uid="uid://cpwwdyimw3pbq" path="res://resources/kaykit-skeletons/assets/gltf/arrow_green.gltf.glb" id="5_7oi7g"]
 
-[node name="Enemy" type="Node3D" node_paths=PackedStringArray("weapon")]
+[sub_resource type="Resource" id="Resource_ylt8h"]
+script = ExtResource("2_5rqn2")
+value_type = 1
+absolute_value = 8
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_3feet"]
+script = ExtResource("3_l5ddu")
+card_name = "Shoot Arrow"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 3
+target_animation = 2
+target_distance = 5
+damage_value = SubResource("Resource_ylt8h")
+on_play_self_effects = Array[ExtResource("4_k0tqi")]([])
+on_play_effects = Array[ExtResource("4_k0tqi")]([])
+on_play_after_effects = Array[ExtResource("4_k0tqi")]([])
+on_kill_effects = Array[ExtResource("4_k0tqi")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[sub_resource type="Resource" id="Resource_v5gs6"]
+script = ExtResource("2_5rqn2")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_cs713"]
+script = ExtResource("4_k0tqi")
+effect_value = SubResource("Resource_v5gs6")
+effect_type = 1
+target_field = 8
+effect = 0
+
+[sub_resource type="Resource" id="Resource_3ls2l"]
+script = ExtResource("3_l5ddu")
+card_name = "Prepare Shot"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 0
+target_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("4_k0tqi")]([])
+on_play_effects = Array[ExtResource("4_k0tqi")]([SubResource("Resource_cs713")])
+on_play_after_effects = Array[ExtResource("4_k0tqi")]([])
+on_kill_effects = Array[ExtResource("4_k0tqi")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[node name="SkeletonArcher" type="Node3D" node_paths=PackedStringArray("weapon")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_2ehli")
 base_move_points = 8
 base_hit_points = 8
-base_damage = 8
-base_attack_range = 5
+level_move_points = null
 level_hit_points = 1.0
-level_damage = 1.0
-level_attack_range = 0.25
+level_damage = 0.5
+cards = Array[ExtResource("3_l5ddu")]([SubResource("Resource_3feet"), SubResource("Resource_3ls2l")])
 enemy_type = 1
 enemy_name = "Skeleton Archer"
 weapon = NodePath("Weapon")
+total_move_points = null
+total_hit_points = null
 
 [node name="character_skeleton_archer" parent="." instance=ExtResource("3_ca0c1")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

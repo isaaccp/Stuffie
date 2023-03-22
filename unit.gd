@@ -7,6 +7,8 @@ var move_points: int
 var power: int
 var weakness: int
 var paralysis: int
+# Mostly intended for enemies so levels can add extra damage.
+var extra_damage = 0
 
 func add_power(power_amount: int):
 	self.power += power_amount

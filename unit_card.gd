@@ -47,7 +47,7 @@ func apply_to_enemy(enemy: Unit):
 
 func regular_damage():
 	if card.damage_value:
-		return UnitCard.get_effect_value(unit, card.damage_value)
+		return UnitCard.get_effect_value(unit, card.damage_value) + unit.extra_damage
 	return 0
 
 func effective_damage():
@@ -66,8 +66,6 @@ func get_damage_description():
 		return ""
 	var damage = regular_damage()
 	var damage_text = "%d" % damage
-	if card.damage_value:
-		damage_text = UnitCard.get_effect_value_string(unit, card.damage_value)
 	var effective_damage = effective_damage()
 	if damage != effective_damage:
 			damage_text = "%s ([color=red]%d[/color])" % [damage_text, effective_damage]

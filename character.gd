@@ -277,11 +277,6 @@ func add_gold(gold: int):
 func apply_relic_damage_change(damage: int):
 	return relic_manager.apply_damage_change(self, damage)
 
-# Apply attack from enemy to this character.
-func apply_attack(enemy: Enemy):
-	var damage = enemy.effective_damage()
-	return apply_damage(damage)
-
 func camp_choices():
 	return [camp_choice] + relic_manager.camp_choices()
 
