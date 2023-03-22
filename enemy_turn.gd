@@ -7,6 +7,7 @@ var execution_map: MapManager
 var aborted: bool
 var enemy_moves: Array
 var damage_taken: Array
+var animation_manager = AnimationManager.new()
 
 signal character_died(character: Character)
 
@@ -48,12 +49,10 @@ func calculate_moves():
 		calculation_map.move_enemy(enemy.get_id_position(), top_move)
 
 func play_attacks():
-	execute_moves(execution_map)
+	execute_moves(execution_map, null)
 
-func execute_moves(map: MapManager):
+func execute_moves(map: MapManager, effects_node: Node):
 	var simulation = map.is_overlay
-	if not simulation:
-		pass
 	for move in enemy_moves:
 		if aborted:
 			return
@@ -85,8 +84,23 @@ func execute_moves(map: MapManager):
 					chosen_card = unit_card
 					break
 			if chosen_card:
-				# Update to be drawn from card.
-				await enemy.draw_attack(target_character.global_position)
+				if not simulation:
+					assert(effects_node)
+					var target_tile = chosen_target[0]
+					# TODO: This doesn't matter because as of now we don't support AoE,
+					# but if/when we do we need to fix it.
+					var affected_tiles = chosen_card.card.effect_area(Vector2.UP)
+					var effect_time = 0
+					for tile_offset in affected_tiles:
+						var tile = target_tile + tile_offset
+						var effect = animation_manager.get_effect(chosen_card.card.target_animation)
+						if effect != null:
+							effect.origin = enemy.global_position
+							effect.target = map.get_world_position(tile)
+							effects_node.add_child(effect)
+							effect_time = effect.apply_effect_time()
+					if effects_node.get_child_count() != 0:
+						await effects_node.get_tree().create_timer(effect_time, false).timeout
 				# We found a target within range, attack and destroy character if it died.
 				if chosen_card.apply_to_enemy(target_character):
 					if simulation:
@@ -94,6 +108,10 @@ func execute_moves(map: MapManager):
 						map.remove_character(target_character.get_id_position())
 					else:
 						character_died.emit(target_character)
+				for effect in effects_node.get_children():
+					await effect.finished()
+				for effect in effects_node.get_children():
+					effect.queue_free()
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
 		# try to play a self-card.

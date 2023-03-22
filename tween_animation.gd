@@ -12,6 +12,6 @@ func apply_effect_time():
 	return 0.5
 
 func finished():
-	if not tw.is_valid():
+	if not tw.is_valid() or not tw.is_running():
 		return
 	await tw.finished

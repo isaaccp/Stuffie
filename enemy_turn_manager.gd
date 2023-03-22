@@ -7,17 +7,19 @@ var current_thread = Thread.new()
 var enemy_turn: EnemyTurn
 
 var map_manager: MapManager
+var effects_node: Node
 
 signal calculated(damage_taken: Array)
 signal invalidated
 signal character_died(character: Character)
 
-func initialize(map_manager: MapManager):
+func initialize(map_manager: MapManager, effects_node: Node):
 	self.map_manager = map_manager
+	self.effects_node = effects_node
 
 func execute_moves(map: MapManager):
 	assert(fresh)
-	await enemy_turn.execute_moves(map)
+	await enemy_turn.execute_moves(map, effects_node)
 
 func update():
 	fresh = false

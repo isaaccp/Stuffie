@@ -97,28 +97,6 @@ func move(curve: Curve3D, to: Vector2i):
 		await move_path(curve)
 	set_id_position(to)
 
-func draw_attack(target_position: Vector3):
-	if is_mock:
-		return
-	if not weapon:
-		return
-	weapon.show()
-	var direction = (weapon.global_position - target_position).normalized()
-	weapon.look_at(target_position, Vector3.UP)
-	direction.y = 0
-	var prev_distance = -1
-	while true:
-		var diff = weapon.global_position - target_position
-		diff.y = 0
-		var new_distance = diff.length()
-		if prev_distance != -1 and prev_distance < new_distance:
-			break
-		prev_distance = new_distance
-		weapon.global_position -= (direction * 0.5)
-		await get_tree().create_timer(0.02, false).timeout
-	weapon.position = Vector3(0, 0, 0)
-	weapon.hide()
-
 func max_attack_distance() -> int:
 	var max = 0
 	for card in cards:

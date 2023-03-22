@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cn4nrnrmacmvm"]
+[gd_scene load_steps=12 format=3 uid="uid://cn4nrnrmacmvm"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_2ehli"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_5rqn2"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://card.gd" id="3_l5ddu"]
 [ext_resource type="Script" path="res://card_effect.gd" id="4_k0tqi"]
 [ext_resource type="PackedScene" uid="uid://cw2srnpuoqdnj" path="res://resources/kaykit-skeletons/assets/gltf/skeleton_bow.gltf.glb" id="4_ndcf2"]
-[ext_resource type="PackedScene" uid="uid://cpwwdyimw3pbq" path="res://resources/kaykit-skeletons/assets/gltf/arrow_green.gltf.glb" id="5_7oi7g"]
 
 [sub_resource type="Resource" id="Resource_ylt8h"]
 script = ExtResource("2_5rqn2")
@@ -84,20 +83,10 @@ level_damage = 0.5
 cards = Array[ExtResource("3_l5ddu")]([SubResource("Resource_3feet"), SubResource("Resource_3ls2l")])
 enemy_type = 1
 enemy_name = "Skeleton Archer"
-weapon = NodePath("Weapon")
+weapon = NodePath("")
 
 [node name="character_skeleton_archer" parent="." instance=ExtResource("3_ca0c1")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="skeleton_bowgltf" parent="character_skeleton_archer" instance=ExtResource("4_ndcf2")]
 transform = Transform3D(-2.62268e-08, 0, 0.6, 0, 0.6, 0, -0.6, 0, -2.62268e-08, -0.4, 0.5, 0.2)
-
-[node name="Weapon" type="Node3D" parent="."]
-
-[node name="arrow_greengltf" parent="Weapon" instance=ExtResource("5_7oi7g")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.4, 0.5, 0)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Weapon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.5, -0.25)
-light_color = Color(1, 0, 0, 1)
-omni_range = 2.0

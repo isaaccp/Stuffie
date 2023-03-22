@@ -183,7 +183,7 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 			var treasure = TreasureLoader.restore(treasure_state)
 			map_manager.add_treasure(treasure)
 			treasures.add_child(treasure)
-	enemy_turn_manager.initialize(map_manager)
+	enemy_turn_manager.initialize(map_manager, effects)
 	enemy_turn_manager.character_died.connect(handle_character_death)
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
 	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)
