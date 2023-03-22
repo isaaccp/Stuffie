@@ -64,6 +64,8 @@ func info_text() -> String:
 		"hit_points": hit_points,
 		"total_hit_points": total_hit_points,
 		"block": block,
+		"dodge": dodge,
+		"power": power,
 		"weakness": weakness,
 		"paralysis": paralysis,
 	}
