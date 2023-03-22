@@ -124,9 +124,10 @@ func move_character(from: Vector2i, to: Vector2i) -> bool:
 	character_locs[to] = character
 	a_star.set_point_solid(from, false)
 	a_star.set_point_solid(to)
-	if treasure_locs.has(to):
-		await pick_up_treasure(to, character)
-		return false
+	# DO_NOT_SUBMIT: Fix treasure handling.
+	# if treasure_locs.has(to):
+	#	await pick_up_treasure(to, character)
+	#	return false
 	return true
 
 func move_enemy(from: Vector2i, to: Vector2i):
@@ -299,13 +300,13 @@ func add_treasure(treasure: Treasure):
 	# Do not update A* as we want the character to be able to walk into it.
 	treasure_locs[treasure.get_id_position()] = treasure
 
-func pick_up_treasure(pos: Vector2i, character: Character):
-	var treasure: Treasure = treasure_locs[pos]
-	treasure_locs.erase(pos)
-	for effect in treasure.def.effects:
-		await effect.apply_to_character(character)
-	treasure.queue_free()
-	StatsManager.add(character.character_type, Stats.Field.CHESTS_ACQUIRED, 1)
+#func pick_up_treasure(pos: Vector2i, character: Character):
+#	var treasure: Treasure = treasure_locs[pos]
+#	treasure_locs.erase(pos)
+#	for effect in treasure.def.effects:
+#		await effect.apply_to_character(character)
+#	treasure.queue_free()
+#	StatsManager.add(character.character_type, Stats.Field.CHESTS_ACQUIRED, 1)
 
 func remove_treasure(pos: Vector2i):
 	var treasure = treasure_locs[pos]
