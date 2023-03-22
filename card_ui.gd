@@ -2,7 +2,7 @@ extends Control
 
 class_name CardUI
 
-var card: Card
+var unit_card: UnitCard
 var character: Character
 var keyword_tooltips = {
 	"power": "If character has any power, damage +50%.\nRemove 1 power per turn.",
@@ -40,14 +40,14 @@ func _ready():
 func _process(delta):
 	pass
 
-func initialize(card: Card, character: Character):
-	self.card = card
+func initialize(card: Card, unit: Unit):
+	unit_card = UnitCard.new(unit, card)
 	keyword_tooltips.merge(card.extra_tooltips())
 	self.character = character
 	refresh()
 
 func get_description_text() -> String:
-	return card.get_description(character)
+	return unit_card.get_description()
 
 func tooltip_text(keyword: String) -> String:
 	if keyword_tooltips.has(keyword):
@@ -56,17 +56,17 @@ func tooltip_text(keyword: String) -> String:
 		return "Unknown keyword, please file a bug"
 
 func get_cost_text() -> String:
-	return "%d" % card.cost
+	return "%d" % unit_card.card.cost
 
 func refresh():
-	card_name.text = card.card_name
-	if card.upgrade_level and card.upgrade_level > 0:
-		card_name.text = card.base_card.card_name
+	card_name.text = unit_card.card.card_name
+	if unit_card.upgrade_level and unit_card.upgrade_level > 0:
+		card_name.text = unit_card.card.base_card.card_name
 		upgrade_label.show()
-		if card.upgrade_name:
-			upgrade_label.text = card.upgrade_name
+		if unit_card.card.upgrade_name:
+			upgrade_label.text = unit_card.card.upgrade_name
 	cost.text = get_cost_text()
-	image.texture = card.texture
+	image.texture = unit_card.card.texture
 	description.text = get_description_text()
 
 func set_selected(selected: bool):

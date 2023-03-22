@@ -10,9 +10,6 @@ var turns_left = 2
 func initialize():
 	def = common[randi() % common.size()]
 
-func get_description(character: Character):
-	return CardEffect.join_effects_text(character, def.effects)
-
 func get_save_state():
 	var state = TreasureSaveState.new()
 	state.def = def

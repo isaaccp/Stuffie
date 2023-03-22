@@ -829,7 +829,8 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			clear_enemy_info()
 		if map_manager.treasure_locs.has(new_tile_map_pos):
 			var treasure = map_manager.treasure_locs[new_tile_map_pos]
-			treasure_info.text = "Treasure: %s (%d turns left)" % [treasure.get_description(active_character), treasure.turns_left]
+			var description = UnitCard.join_effects_text(active_character, treasure.effects)
+			treasure_info.text = "Treasure: %s (%d turns left)" % [description, treasure.turns_left]
 		else:
 			treasure_info.text = ""
 		if state == GameState.HUMAN_TURN:

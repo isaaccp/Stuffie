@@ -89,10 +89,10 @@ func get_target_text() -> String:
 	return target_text
 
 func on_play_effect_text() -> String:
-	return CardEffect.join_effects_text(unit, card.on_play_effects)
+	return UnitCard.join_effects_text(unit, card.on_play_effects)
 
 func on_play_after_effect_text() -> String:
-	return CardEffect.join_effects_text(unit, card.on_play_after_effects)
+	return UnitCard.join_effects_text(unit, card.on_play_after_effects)
 
 func get_description() -> String:
 	var description = ""
@@ -109,7 +109,7 @@ func get_description() -> String:
 		if on_play_text:
 			description += "%s%s\n" % [prefix_text, on_play_text]
 	elif card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
-		var on_play_self_text = CardEffect.join_effects_text(unit, card.on_play_self_effects)
+		var on_play_self_text = UnitCard.join_effects_text(unit, card.on_play_self_effects)
 		if on_play_self_text:
 			description += "Before Play: %s\n" % on_play_self_text
 		var attack_text = "Attack"
@@ -122,7 +122,7 @@ func get_description() -> String:
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
 			description += "%s%s\n" % [prefix_text, on_play_text]
-		var on_kill_text = CardEffect.join_effects_text(unit, card.on_kill_effects)
+		var on_kill_text = UnitCard.join_effects_text(unit, card.on_kill_effects)
 		if on_kill_text:
 			description += "On Kill: %s\n" % on_kill_text
 	var on_play_after_text = on_play_after_effect_text()
@@ -210,10 +210,10 @@ func get_effect_description(effect: CardEffect) -> String:
 		effect_text = "%s %s %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(effect.target_field)]
 	return effect_text
 
-func join_effects_text(effects: Array[CardEffect]) -> String:
+static func join_effects_text(unit: Unit, effects: Array[CardEffect]) -> String:
 	var effect_texts: PackedStringArray = []
 	for effect in effects:
-		var description = get_effect_description(effect)
+		var description = unit.get_effect_description(effect)
 		if effect_texts.size() == 0:
 			description = description[0].to_upper() + description.substr(1,-1)
 		effect_texts.push_back(description)
