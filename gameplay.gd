@@ -597,8 +597,8 @@ func handle_after_move():
 
 func pick_up_treasure(pos: Vector2i):
 	var treasure: Treasure = map_manager.treasure_locs[pos]
-	var unit_card = UnitCard.new(active_character, treasure.def.card)
-	await unit_card.apply_self()
+	for effect in treasure.def.effects:
+		await UnitCard.apply_effect_target(active_character, effect, active_character)
 	map_manager.remove_treasure(pos)
 	active_character.add_stat(Stats.Field.CHESTS_ACQUIRED, 1)
 
@@ -851,8 +851,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			clear_enemy_info()
 		if map_manager.treasure_locs.has(new_tile_map_pos):
 			var treasure = map_manager.treasure_locs[new_tile_map_pos]
-			var unit_card = UnitCard.new(active_character, treasure.def.card)
-			var description = unit_card.get_description()
+			var description = UnitCard.join_effects_text(active_character, treasure.def.effects)
 			treasure_info.text = "Treasure: %s (%d turns left)" % [description, treasure.turns_left]
 		else:
 			treasure_info.text = ""
