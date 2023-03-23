@@ -111,11 +111,11 @@ func execute_moves(map: MapManager, effects_node: Node):
 						map.remove_character(target_character.get_id_position())
 					else:
 						character_died.emit(target_character)
-				for effect in effects_node.get_children():
-					await effect.finished()
-				for effect in effects_node.get_children():
-					effect.queue_free()
-				print("enemy played attack card")
+				if not simulation:
+					for effect in effects_node.get_children():
+						await effect.finished()
+					for effect in effects_node.get_children():
+						effect.queue_free()
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
 		# try to play a self-card.
@@ -125,7 +125,6 @@ func execute_moves(map: MapManager, effects_node: Node):
 				chosen_card = unit_card
 				break
 		if chosen_card:
-			print("enemy played self card")
 			await chosen_card.apply_self()
 	if simulation:
 		for loc in map.character_locs:
