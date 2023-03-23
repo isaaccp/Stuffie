@@ -39,8 +39,9 @@ func mock():
 	var m = Enemy.new()
 	m.is_mock = true
 	m.id_position = id_position
-	m.total_move_points = total_move_points
+	m.move_points = move_points
 	m.extra_damage = extra_damage
+	m.paralysis = paralysis
 	for card in cards:
 		m.unit_cards.push_back(UnitCard.new(m, card))
 	return m

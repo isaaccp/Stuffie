@@ -12,8 +12,8 @@ var animation_manager = AnimationManager.new()
 signal character_died(character: Character)
 
 func _init(map: MapManager):
-	# No need to mock entities, but need to clone fov.
-	calculation_map = map.clone(false, true)
+	# Need to clone entities to apply begin_turn() and also fov.
+	calculation_map = map.clone(true, true)
 	# Mock entities, but no need to clone fov.
 	execution_map = map.clone(true)
 	aborted = false
@@ -38,6 +38,8 @@ func calculate_moves():
 	for enemy in calculation_map.enemy_locs.values():
 		if aborted:
 			return
+		# Need to call begin_turn in case it affects movement, etc.
+		enemy.begin_turn()
 		if enemy.paralysis > 0:
 			continue
 		var move_options = get_enemy_walkable_cells(enemy)
@@ -58,6 +60,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 			return
 		# Move enemy.
 		var enemy = map.enemy_locs[move[0]]
+		enemy.begin_turn()
 		var enemy_pos = enemy.get_id_position()
 		var loc = move[1]
 		var targets = move[2]
@@ -112,6 +115,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 					await effect.finished()
 				for effect in effects_node.get_children():
 					effect.queue_free()
+				print("enemy played attack card")
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
 		# try to play a self-card.
@@ -121,6 +125,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 				chosen_card = unit_card
 				break
 		if chosen_card:
+			print("enemy played self card")
 			await chosen_card.apply_self()
 	if simulation:
 		for loc in map.character_locs:
