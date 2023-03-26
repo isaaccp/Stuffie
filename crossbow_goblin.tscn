@@ -39,7 +39,7 @@ card_name = "Pin"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 3
 target_animation = 2
 target_distance = 5
@@ -64,6 +64,7 @@ level_damage = 0.5
 cards = Array[ExtResource("4_ppyrv")]([SubResource("Resource_l8osk")])
 enemy_type = 3
 enemy_name = "Goblin Sharpshooter"
+total_action_points = 1
 
 [node name="character_goblin" parent="." instance=ExtResource("2_xuq41")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

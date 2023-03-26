@@ -10,6 +10,7 @@ class_name EnemySaveState
 @export var total_attack_range: int
 @export var level: int
 @export var move_points: int
+@export var action_points: int
 @export var hit_points: int
 @export var weakness: int
 @export var paralysis: int

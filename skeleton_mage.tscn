@@ -37,7 +37,7 @@ card_name = "Drain Energy"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 3
 target_animation = 6
 target_distance = 3
@@ -67,7 +67,7 @@ card_name = "Fire Bolt"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 3
 target_animation = 5
 target_distance = 6
@@ -92,5 +92,6 @@ level_damage = 0.5
 cards = Array[ExtResource("2_0p2b8")]([SubResource("Resource_h3yac"), SubResource("Resource_kd2nk")])
 enemy_type = 2
 enemy_name = "Skeleton Mage"
+total_action_points = 1
 
 [node name="character_skeleton_mage" parent="." instance=ExtResource("2_vi1fg")]

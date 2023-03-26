@@ -35,7 +35,6 @@ effects = Array[ExtResource("7_vbhnd")]([SubResource("Resource_xu2cw")])
 [node name="Wizard" type="Node3D" node_paths=PackedStringArray("portrait_texture")]
 script = ExtResource("1_i4i62")
 character_type = 2
-total_action_points = 3
 cards_per_turn = 5
 initial_relic = ExtResource("2_vqogy")
 portrait_texture = NodePath("Portrait")
@@ -44,6 +43,7 @@ extra_cards = ExtResource("3_4pj7e")
 all_cards = ExtResource("5_dr8sx")
 camp_choice = SubResource("Resource_bmlki")
 total_move_points = 12
+total_action_points = 3
 total_hit_points = 40
 
 [node name="Portrait" type="TextureRect" parent="."]

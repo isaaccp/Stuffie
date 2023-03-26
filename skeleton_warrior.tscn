@@ -21,7 +21,7 @@ card_name = "Slash"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 3
 target_animation = 1
 target_distance = 1
@@ -58,7 +58,7 @@ card_name = "Block"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 0
 target_animation = 0
 target_distance = 0
@@ -81,6 +81,7 @@ level_hit_points = 2.0
 level_damage = 0.5
 cards = Array[ExtResource("3_maq5n")]([SubResource("Resource_h2yhb"), SubResource("Resource_dijmc")])
 enemy_name = "Skeleton Warrior"
+total_action_points = 1
 
 [node name="character_skeleton_warrior" parent="." instance=ExtResource("2_nqrh5")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

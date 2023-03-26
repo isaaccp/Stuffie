@@ -35,7 +35,6 @@ effects = Array[ExtResource("7_0sito")]([SubResource("Resource_roygk")])
 [node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture")]
 script = ExtResource("1_rghne")
 character_type = 1
-total_action_points = 3
 cards_per_turn = 5
 initial_relic = ExtResource("2_i4ij4")
 portrait_texture = NodePath("Portrait")
@@ -44,6 +43,7 @@ extra_cards = ExtResource("3_t8tph")
 all_cards = ExtResource("5_ashqf")
 camp_choice = SubResource("Resource_gq1ff")
 total_move_points = 14
+total_action_points = 3
 total_hit_points = 60
 
 [node name="Portrait" type="TextureRect" parent="."]

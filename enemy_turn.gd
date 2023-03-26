@@ -82,6 +82,8 @@ func execute_moves(map: MapManager, effects_node: Node):
 			enemy.look_at(target_character.global_position)
 			var chosen_card = null
 			for unit_card in enemy.unit_cards:
+				if unit_card.card.cost > enemy.action_points:
+					continue
 				if not unit_card.card.target_mode == Enum.TargetMode.ENEMY:
 					continue
 				if chosen_target[1] <= unit_card.card.target_distance:
@@ -106,6 +108,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 					if effects_node.get_child_count() != 0:
 						await effects_node.get_tree().create_timer(effect_time, false).timeout
 				# We found a target within range, attack and destroy character if it died.
+				enemy.action_points -= chosen_card.card.cost
 				if chosen_card.apply_to_enemy(target_character):
 					if simulation:
 						record_damage(target_character)
@@ -122,10 +125,13 @@ func execute_moves(map: MapManager, effects_node: Node):
 		# try to play a self-card.
 		var chosen_card = null
 		for unit_card in enemy.unit_cards:
+			if unit_card.card.cost > enemy.action_points:
+					continue
 			if unit_card.card.target_mode == Enum.TargetMode.SELF:
 				chosen_card = unit_card
 				break
 		if chosen_card:
+			enemy.action_points -= chosen_card.card.cost
 			await chosen_card.apply_self()
 	if simulation:
 		for loc in map.character_locs:

@@ -22,7 +22,7 @@ card_name = "Shoot Arrow"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 3
 target_animation = 2
 target_distance = 5
@@ -59,7 +59,7 @@ card_name = "Prepare Shot"
 upgrade_name = ""
 basic = false
 upgrade_level = 0
-cost = 0
+cost = 1
 target_mode = 0
 target_animation = 0
 target_distance = 0
@@ -73,7 +73,7 @@ area_width = 1
 cone_step = 1
 exhaust = false
 
-[node name="SkeletonArcher" type="Node3D" node_paths=PackedStringArray("weapon")]
+[node name="SkeletonArcher" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
 script = ExtResource("1_2ehli")
 base_move_points = 8
@@ -83,7 +83,7 @@ level_damage = 0.5
 cards = Array[ExtResource("3_l5ddu")]([SubResource("Resource_3feet"), SubResource("Resource_3ls2l")])
 enemy_type = 1
 enemy_name = "Skeleton Archer"
-weapon = NodePath("")
+total_action_points = 1
 
 [node name="character_skeleton_archer" parent="." instance=ExtResource("3_ca0c1")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

@@ -2,10 +2,6 @@ extends Unit
 
 class_name Enemy
 
-enum AttackStyle {
-	FIRE,
-}
-
 @export var base_move_points: int
 @export var base_hit_points: int
 
@@ -22,24 +18,19 @@ var is_mock = false
 
 @export var enemy_type: Enum.EnemyId
 @export var enemy_name: String
-@export var attack_style: AttackStyle
-@export var weapon: Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	super()
 	for card in cards:
 		unit_cards.push_back(UnitCard.new(self, card))
-	# For fireable weapons, hide them until attack.
-	if attack_style == AttackStyle.FIRE:
-		if weapon:
-			weapon.hide()
 
 func mock():
 	var m = Enemy.new()
 	m.is_mock = true
 	m.id_position = id_position
 	m.move_points = move_points
+	m.action_points = action_points
 	m.extra_damage = extra_damage
 	m.paralysis = paralysis
 	for card in cards:
@@ -55,11 +46,17 @@ func initialize(pos: Vector2i, level: int):
 	hit_points = total_hit_points
 	set_id_position(pos)
 	end_turn()
+	action_points = 0
+
+func end_turn():
+	super()
+	action_points += total_action_points
 
 func info_text() -> String:
 	var format_vars = {
 		"name": enemy_name,
 		"level": level,
+		"action_points": action_points,
 		"move_points": move_points,
 		"total_move_points": total_move_points,
 		"hit_points": hit_points,
@@ -73,6 +70,7 @@ func info_text() -> String:
 	var text = (
 		"[b]{name}[/b]\n" +
 		"Level: {level}\n" +
+		"AP: {action_points}💢\n" +
 		"HP: {hit_points}/{total_hit_points}\n" +
 		"MP: {move_points}/{total_move_points}\n"
 	)
@@ -88,7 +86,7 @@ func info_text() -> String:
 		text += "[url]Paralysis[/url]: {paralysis}\n"
 	text += "Actions\n"
 	for unit_card in unit_cards:
-		text += "%s: %s\n" % [unit_card.card.card_name, unit_card.get_description()]
+		text += "%d💢 %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]
 	var formatted_text = text.format(format_vars)
 	return formatted_text
 
@@ -119,6 +117,7 @@ func get_save_state():
 	save_state.level = level
 	save_state.move_points = move_points
 	save_state.hit_points = hit_points
+	save_state.action_points = action_points
 	save_state.weakness = weakness
 	save_state.paralysis = paralysis
 	return save_state
@@ -130,5 +129,6 @@ func load_save_state(save_state: EnemySaveState):
 	level = save_state.level
 	move_points = save_state.move_points
 	hit_points = save_state.hit_points
+	action_points = save_state.action_points
 	weakness = save_state.weakness
 	paralysis = save_state.paralysis
