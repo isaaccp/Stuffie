@@ -58,12 +58,12 @@ static func get_run(run_type: RunType):
 			run_def.shared_bag_gold = 20
 			run_def.levels = [
 				RunLevelDef.create([
-					StageDef.combat(2),
-					StageDef.combat(3),
+					StageDef.combat(0),
+					StageDef.combat(1),
 					StageDef.blacksmith(2, 2),
-					StageDef.combat(5),
+					StageDef.combat(2),
 					StageDef.camp(),
-					StageDef.combat(6),
+					StageDef.combat(3),
 				]),
 			]
 		RunType.REGULAR_PLUS:

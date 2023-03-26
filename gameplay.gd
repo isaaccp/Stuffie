@@ -717,6 +717,7 @@ func clear_effects():
 		effect.queue_free()
 
 func play_card():
+	# If we are in this function, the target was valid.
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
 	var unit_card = UnitCard.new(active_character, current_card)
 	# Discard card first.
@@ -726,10 +727,11 @@ func play_card():
 		active_character.deck.discard_card(hand_ui.selected_index)
 	# Take snapshot of current state before playing card.
 	active_character.snap()
+	await unit_card.apply_self_effects()
 	if current_card.target_mode == Enum.TargetMode.SELF:
+		# Implement animation for SELF cards.
 		await unit_card.apply_self()
 	elif current_card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
-		await unit_card.apply_self_effects()
 		var target_tile = tile_map_pos
 		var affected_tiles = current_card.effect_area(direction)
 		var effect_time = 0
@@ -752,6 +754,19 @@ func play_card():
 					active_character.killed_enemy.emit(active_character)
 		if current_card.is_attack():
 			active_character.attacked.emit(active_character)
+	elif current_card.target_mode in [Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
+		var target_tile = tile_map_pos
+		var effect_time = 0
+		var effect = animation_manager.get_effect(current_card.target_animation)
+		if effect != null:
+			effect.origin = active_character.global_position
+			effect.target = map_manager.get_world_position(target_tile)
+			effects.add_child(effect)
+			effect_time = effect.apply_effect_time()
+		if effects.get_child_count() != 0:
+			await get_tree().create_timer(effect_time, false).timeout
+		var target_character = map_manager.character_locs[target_tile]
+		await unit_card.apply_to_ally(target_character)
 	for effect in effects.get_children():
 		await effect.finished()
 	clear_effects()
@@ -784,7 +799,7 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	# For target mode SELF, allow clicking anywhere.
 	if current_card.target_mode == Enum.TargetMode.SELF:
 		valid_target = true
-	elif current_card.target_mode == Enum.TargetMode.ENEMY:
+	elif current_card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
 		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)
 		var visible_tiles = map_manager.fov.get_fov(active_character.get_id_position())
@@ -792,11 +807,25 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			valid_target = false
 			target_cursor.set_color(Color(0, 0, 0, 1))
 		else:
-			if map_manager.enemy_locs.has(new_tile_map_pos):
-				target_cursor.set_color(Color(1, 0, 0, 1))
-				valid_target = true
-			else:
-				target_cursor.set_color(Color(1, 1, 1, 1))
+			match current_card.target_mode:
+				Enum.TargetMode.ENEMY:
+					if map_manager.enemy_locs.has(new_tile_map_pos):
+						target_cursor.set_color(Color(1, 0, 0, 1))
+						valid_target = true
+					else:
+						target_cursor.set_color(Color(1, 1, 1, 1))
+				Enum.TargetMode.ALLY:
+					if new_tile_map_pos != active_character.get_id_position() and map_manager.character_locs.has(new_tile_map_pos):
+						target_cursor.set_color(Color(0, 1, 0, 1))
+						valid_target = true
+					else:
+						target_cursor.set_color(Color(1, 1, 1, 1))
+				Enum.TargetMode.SELF_ALLY:
+					if map_manager.character_locs.has(new_tile_map_pos):
+						target_cursor.set_color(Color(0, 1, 0, 1))
+						valid_target = true
+					else:
+						target_cursor.set_color(Color(1, 1, 1, 1))
 	elif current_card.target_mode == Enum.TargetMode.AREA:
 		target_cursor.update(new_tile_map_pos, new_direction)
 		var distance = map_manager.distance(active_character.get_id_position(), new_tile_map_pos)

@@ -30,7 +30,6 @@ func apply_after_effects():
 func apply_to_ally(ally: Unit):
 	assert(card.target_mode == Enum.TargetMode.SELF_ALLY or card.target_mode == Enum.TargetMode.ALLY)
 	await apply_effects_target(card.on_play_effects, ally)
-	await apply_self_effects()
 
 func apply_to_enemy(enemy: Unit):
 	assert(card.target_mode == Enum.TargetMode.ENEMY or card.target_mode == Enum.TargetMode.AREA)

@@ -10,3 +10,6 @@
 resource_name = "wizard"
 script = ExtResource("1_o7flb")
 cards = Array[Resource("res://card.gd")]([ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("1_6vdks"), ExtResource("2_3gn0k"), ExtResource("2_3gn0k"), ExtResource("2_3gn0k"), ExtResource("3_j700s"), ExtResource("2_gk1qw")])
+deck = Array[Resource("res://card.gd")]([])
+hand = Array[Resource("res://card.gd")]([])
+discard = Array[Resource("res://card.gd")]([])
