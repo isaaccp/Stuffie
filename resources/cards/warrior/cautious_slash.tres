@@ -46,6 +46,7 @@ target_distance = 1
 damage_value = SubResource("Resource_4n5jg")
 on_play_self_effects = Array[ExtResource("3_t28pl")]([SubResource("Resource_ggxew")])
 on_play_effects = Array[ExtResource("3_t28pl")]([])
+on_damage_effects = Array[ExtResource("3_t28pl")]([])
 on_play_after_effects = Array[ExtResource("3_t28pl")]([])
 on_kill_effects = Array[ExtResource("3_t28pl")]([])
 area_type = 0

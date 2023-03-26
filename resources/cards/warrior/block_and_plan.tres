@@ -52,6 +52,7 @@ target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("4_too3r")]([])
 on_play_effects = Array[ExtResource("4_too3r")]([SubResource("Resource_grl1p"), SubResource("Resource_8nref")])
+on_damage_effects = Array[ExtResource("4_too3r")]([])
 on_play_after_effects = Array[ExtResource("4_too3r")]([])
 on_kill_effects = Array[ExtResource("4_too3r")]([])
 area_type = 0

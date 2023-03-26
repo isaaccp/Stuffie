@@ -1,5 +1,6 @@
 SURVIVE_N_TURNS 3
-g GOBLIN_CROSSBOW 1
+s GOBLIN_SHARPSHOOTER 1
+r GOBLIN_REAPER 1
 -
 ##%####
 #2..X.#
@@ -7,13 +8,13 @@ g GOBLIN_CROSSBOW 1
 #...-.%
 #+#.X.#
 #...X.#
+%...X.%
 #...X.#
 #...X.#
+#.r.X.#
+%.r.X.%
 #...X.#
-#...X.#
-#...X.#
-#...X.#
-#.g.X.#
+#.s.X.#
 ##%####
 -
 BEGIN_TURN 2:OPEN_DOOR 1

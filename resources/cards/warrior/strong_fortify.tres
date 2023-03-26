@@ -41,6 +41,7 @@ target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("3_j16aa")]([])
 on_play_effects = Array[ExtResource("3_j16aa")]([SubResource("Resource_lnpvg")])
+on_damage_effects = Array[ExtResource("3_j16aa")]([])
 on_play_after_effects = Array[ExtResource("3_j16aa")]([])
 on_kill_effects = Array[ExtResource("3_j16aa")]([])
 area_type = 0

@@ -23,6 +23,7 @@ target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_damage_effects = Array[Resource("res://card_effect.gd")]([])
 on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
 on_kill_effects = Array[Resource("res://card_effect.gd")]([])
 area_type = 0

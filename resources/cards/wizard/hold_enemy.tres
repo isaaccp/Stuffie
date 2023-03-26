@@ -34,6 +34,7 @@ target_animation = 4
 target_distance = 5
 on_play_self_effects = Array[ExtResource("2_voyje")]([])
 on_play_effects = Array[ExtResource("2_voyje")]([SubResource("Resource_h5ocp")])
+on_damage_effects = Array[ExtResource("2_voyje")]([])
 on_play_after_effects = Array[ExtResource("2_voyje")]([])
 on_kill_effects = Array[ExtResource("2_voyje")]([])
 area_type = 0

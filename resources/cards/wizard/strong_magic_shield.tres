@@ -36,6 +36,7 @@ target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("3_vyyao")]([])
 on_play_effects = Array[ExtResource("3_vyyao")]([SubResource("Resource_tgdul")])
+on_damage_effects = Array[ExtResource("3_vyyao")]([])
 on_play_after_effects = Array[ExtResource("3_vyyao")]([])
 on_kill_effects = Array[ExtResource("3_vyyao")]([])
 area_type = 0

@@ -40,6 +40,7 @@ target_animation = 0
 target_distance = 0
 on_play_self_effects = Array[ExtResource("1_vym21")]([])
 on_play_effects = Array[ExtResource("1_vym21")]([SubResource("Resource_q0sws"), SubResource("Resource_eu354")])
+on_damage_effects = Array[ExtResource("1_vym21")]([])
 on_play_after_effects = Array[ExtResource("1_vym21")]([])
 on_kill_effects = Array[ExtResource("1_vym21")]([])
 area_type = 0
