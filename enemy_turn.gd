@@ -79,6 +79,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 				break
 		# If there is a target, try to find an attack.
 		if chosen_target != null:
+			enemy.look_at(target_character.global_position)
 			var chosen_card = null
 			for unit_card in enemy.unit_cards:
 				if not unit_card.card.target_mode == Enum.TargetMode.ENEMY:

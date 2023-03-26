@@ -12,6 +12,7 @@ enum EnemyId {
 	SKELETON_WARRIOR,
 	SKELETON_ARCHER,
 	SKELETON_MAGE,
+	GOBLIN_CROSSBOW,
 }
 
 enum StatsLevel {

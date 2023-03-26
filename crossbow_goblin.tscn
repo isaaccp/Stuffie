@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://djewahsk603ql"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_gv616"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_apyco"]
+[ext_resource type="PackedScene" uid="uid://dlwdg0jkrakdc" path="res://resources/kaykit-extra/characters/character_goblin.gltf" id="2_xuq41"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_02vxt"]
+[ext_resource type="PackedScene" uid="uid://dkucspw3uiyl4" path="res://resources/kaykit-extra/characters/goblin_crossbow.gltf.glb" id="3_fmvam"]
+[ext_resource type="PackedScene" uid="uid://wq31njxqrhxs" path="res://resources/kaykit-extra/characters/goblin_quiver.gltf.glb" id="4_11v3g"]
+[ext_resource type="Script" path="res://card.gd" id="4_ppyrv"]
+
+[sub_resource type="Resource" id="Resource_fbsyn"]
+script = ExtResource("2_apyco")
+value_type = 1
+absolute_value = 6
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_wkfk6"]
+script = ExtResource("2_apyco")
+value_type = 1
+absolute_value = -2
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_mrf7a"]
+script = ExtResource("3_02vxt")
+effect_value = SubResource("Resource_wkfk6")
+effect_type = 1
+target_field = 3
+effect = 0
+
+[sub_resource type="Resource" id="Resource_l8osk"]
+script = ExtResource("4_ppyrv")
+card_name = "Pin"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 0
+target_mode = 3
+target_animation = 2
+target_distance = 5
+damage_value = SubResource("Resource_fbsyn")
+on_play_self_effects = Array[ExtResource("3_02vxt")]([])
+on_play_effects = Array[ExtResource("3_02vxt")]([SubResource("Resource_mrf7a")])
+on_play_after_effects = Array[ExtResource("3_02vxt")]([])
+on_kill_effects = Array[ExtResource("3_02vxt")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
+
+[node name="CrossbowGoblin" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 1)
+script = ExtResource("1_gv616")
+base_move_points = 10
+base_hit_points = 8
+level_hit_points = 1.0
+level_damage = 0.5
+cards = Array[ExtResource("4_ppyrv")]([SubResource("Resource_l8osk")])
+enemy_type = 3
+enemy_name = "Goblin Sharpshooter"
+
+[node name="character_goblin" parent="." instance=ExtResource("2_xuq41")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="goblin_crossbowgltf" parent="character_goblin" instance=ExtResource("3_fmvam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.25, 0)
+
+[node name="goblin_quivergltf" parent="character_goblin" instance=ExtResource("4_11v3g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, -0.35)
+
+[editable path="character_goblin"]

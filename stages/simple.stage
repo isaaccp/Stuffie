@@ -1,12 +1,13 @@
 SURVIVE_N_TURNS 3
 m SKELETON_MAGE 1
+g GOBLIN_CROSSBOW 1
 -
 ##%####
 #2..X.#
 %.1.X.#
 #...-m%
 #+#.X.#
-#...X.#
+#.g.X.#
 ##%####
 -
 BEGIN_TURN 2:OPEN_DOOR 1
