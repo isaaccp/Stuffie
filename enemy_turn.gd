@@ -55,6 +55,7 @@ func play_attacks():
 
 func execute_moves(map: MapManager, effects_node: Node):
 	var simulation = map.is_overlay
+	var card_player = CardPlayer.new(map, effects_node)
 	for move in enemy_moves:
 		if aborted:
 			return
@@ -92,34 +93,15 @@ func execute_moves(map: MapManager, effects_node: Node):
 			if chosen_card:
 				if not simulation:
 					assert(effects_node)
-					var target_tile = chosen_target[0]
-					# TODO: This doesn't matter because as of now we don't support AoE,
-					# but if/when we do we need to fix it.
-					var affected_tiles = chosen_card.card.effect_area(Vector2.UP)
-					var effect_time = 0
-					for tile_offset in affected_tiles:
-						var tile = target_tile + tile_offset
-						var effect = animation_manager.get_effect(chosen_card.card.target_animation)
-						if effect != null:
-							effect.origin = enemy.global_position
-							effect.target = map.get_world_position(tile)
-							effects_node.add_child(effect)
-							effect_time = effect.apply_effect_time()
-					if effects_node.get_child_count() != 0:
-						await effects_node.get_tree().create_timer(effect_time, false).timeout
-				# We found a target within range, attack and destroy character if it died.
+				# TODO: Figure out direction for effects.
+				await card_player.play_card(chosen_card, chosen_target[0], Vector2.UP)
 				enemy.action_points -= chosen_card.card.cost
-				if chosen_card.apply_to_enemy(target_character):
+				if target_character.destroyed:
 					if simulation:
 						record_damage(target_character)
 						map.remove_character(target_character.get_id_position())
 					else:
 						character_died.emit(target_character)
-				if not simulation:
-					for effect in effects_node.get_children():
-						await effect.finished()
-					for effect in effects_node.get_children():
-						effect.queue_free()
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
 		# try to play a self-card.
@@ -131,8 +113,8 @@ func execute_moves(map: MapManager, effects_node: Node):
 				chosen_card = unit_card
 				break
 		if chosen_card:
+			await card_player.play_card(chosen_card, enemy.get_id_position(), Vector2.UP)
 			enemy.action_points -= chosen_card.card.cost
-			await chosen_card.apply_self()
 	if simulation:
 		for loc in map.character_locs:
 			record_damage(map.character_locs[loc])

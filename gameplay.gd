@@ -732,7 +732,7 @@ func play_card():
 	active_character.snap()
 
 	# All card playing logic is in here.
-	card_player.play_card(unit_card, tile_map_pos, direction)
+	await card_player.play_card(unit_card, tile_map_pos, direction)
 
 	active_character.add_stat(Stats.Field.CARDS_PLAYED, 1)
 	active_character.add_stat(Stats.Field.AP_USED, current_card.cost)

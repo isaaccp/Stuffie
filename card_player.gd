@@ -3,8 +3,9 @@ extends RefCounted
 class_name CardPlayer
 
 var map: MapManager
+# Can be null for no effects (for simulation).
 var effects_node: Node
-var animation_manager = AnimationManager.new()
+var animation_manager: AnimationManager
 
 # Fired if the played card is an attack card.
 signal attacked
@@ -14,6 +15,14 @@ signal enemy_killed(unit: Unit)
 func _init(map_manager: MapManager, effects_node: Node):
 	self.map = map_manager
 	self.effects_node = effects_node
+	if effects_node:
+		animation_manager = AnimationManager.new()
+
+func get_enemy_map(unit: Unit):
+	if unit is Character:
+		return map.enemy_locs
+	else:
+		return map.character_locs
 
 func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 	await unit_card.apply_self_effects()
@@ -22,38 +31,42 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 		await unit_card.apply_self()
 	elif unit_card.card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
 		var affected_tiles = unit_card.card.effect_area(direction)
-		var effect_time = 0
+		if effects_node != null:
+			var effect_time = 0
+			for tile_offset in affected_tiles:
+				var tile = target_tile + tile_offset
+				var effect = animation_manager.get_effect(unit_card.card.target_animation)
+				if effect != null:
+					effect.origin = unit_card.unit.global_position
+					effect.target = map.get_world_position(tile)
+					effects_node.add_child(effect)
+					effect_time = effect.apply_effect_time()
+			if effects_node.get_child_count() != 0:
+				await effects_node.get_tree().create_timer(effect_time, false).timeout
 		for tile_offset in affected_tiles:
 			var tile = target_tile + tile_offset
-			var effect = animation_manager.get_effect(unit_card.card.target_animation)
-			if effect != null:
-				effect.origin = unit_card.unit.global_position
-				effect.target = map.get_world_position(tile)
-				effects_node.add_child(effect)
-				effect_time = effect.apply_effect_time()
-		if effects_node.get_child_count() != 0:
-			await effects_node.get_tree().create_timer(effect_time, false).timeout
-		for tile_offset in affected_tiles:
-			var tile = target_tile + tile_offset
-			if map.enemy_locs.has(tile):
-				var enemy = map.enemy_locs[tile]
+			var enemy_map = get_enemy_map(unit_card.unit)
+			if enemy_map.has(tile):
+				var enemy = enemy_map[tile]
 				await unit_card.apply_to_enemy(enemy)
 				if enemy.destroyed:
 					enemy_killed.emit(enemy)
 	elif unit_card.card.target_mode in [Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
-		var effect_time = 0
-		var effect = animation_manager.get_effect(unit_card.card.target_animation)
-		if effect != null:
-			effect.origin = unit_card.unit.global_position
-			effect.target = map.get_world_position(target_tile)
-			effects_node.add_child(effect)
-			effect_time = effect.apply_effect_time()
-		if effects_node.get_child_count() != 0:
-			await effects_node.get_tree().create_timer(effect_time, false).timeout
+		if effects_node != null:
+			var effect_time = 0
+			var effect = animation_manager.get_effect(unit_card.card.target_animation)
+			if effect != null:
+				effect.origin = unit_card.unit.global_position
+				effect.target = map.get_world_position(target_tile)
+				effects_node.add_child(effect)
+				effect_time = effect.apply_effect_time()
+			if effects_node.get_child_count() != 0:
+				await effects_node.get_tree().create_timer(effect_time, false).timeout
 		var target_character = map.character_locs[target_tile]
 		await unit_card.apply_to_ally(target_character)
-	for effect in effects_node.get_children():
-		await effect.finished()
-	for effect in effects_node.get_children():
-		effect.queue_free()
+	if effects_node != null:
+		for effect in effects_node.get_children():
+			await effect.finished()
+		for effect in effects_node.get_children():
+			effect.queue_free()
 	await unit_card.apply_after_effects()
