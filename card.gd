@@ -24,6 +24,9 @@ enum AreaType {
 # extra side effect on self besides target.
 @export var on_play_self_effects: Array[CardEffect]
 @export var on_play_effects: Array[CardEffect]
+# Effects applied to target on attacks if attack causes damage (i.e.,
+# it wasn't fully blocked or dodged).
+@export var on_damage_effects: Array[CardEffect]
 # Effects to be applied to self after rest of effects.
 @export var on_play_after_effects: Array[CardEffect]
 @export var on_kill_effects: Array[CardEffect]

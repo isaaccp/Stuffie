@@ -62,15 +62,16 @@ func add_dodge(dodge_amount: int):
 	add_stat(Stats.Field.DODGE_ACQUIRED, dodge_amount)
 	changed.emit()
 
-func apply_damage(damage: int, blockable=true, dodgeable=true):
+# Returns true if any damage was caused.
+func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
 	# Handle dodge.
 	if dodgeable:
 		if dodge > 0:
 			dodge -= 1
+			damage = 0
 			add_stat(Stats.Field.ATTACKS_DODGED, 1)
 			changed.emit()
-			return
 	if blockable:
 		var blocked_damage = 0
 		if block > 0:
@@ -84,14 +85,15 @@ func apply_damage(damage: int, blockable=true, dodgeable=true):
 				block = 0
 		if blocked_damage:
 			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
+	if damage == 0:
+		return false
 	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
 	health_changed.emit()
 	if hit_points <= 0:
 		destroyed = true
-		changed.emit()
-		return true
 	changed.emit()
+	return true
 
 # Heals 'hp' without going over total hp.
 func heal(hp: int):
