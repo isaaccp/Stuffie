@@ -44,8 +44,6 @@ func apply_to_enemy(enemy: Unit):
 	enemy.refresh()
 	if enemy.hit_points <= 0:
 		apply_effects_target(card.on_kill_effects, unit)
-		return true
-	return false
 
 func regular_damage():
 	if card.damage_value:

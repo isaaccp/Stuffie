@@ -68,6 +68,7 @@ var enemy_moving = false
 var enemy_turn_manager = EnemyTurnManager.new()
 var animation_manager = AnimationManager.new()
 var stage_trigger_manager: StageTriggerManager
+var card_player: CardPlayer
 
 # New stages are added to this world.
 @export var world: Node
@@ -178,6 +179,8 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	initialize_stage_trigger_manager(stage.triggers)
 	world.add_child(stage)
 	initialize_map_manager(stage)
+	card_player = CardPlayer.new(map_manager, effects)
+	card_player.enemy_killed.connect(_on_enemy_death)
 	if combat_state != null:
 		for treasure_state in combat_state.treasures:
 			var treasure = TreasureLoader.restore(treasure_state)
@@ -683,7 +686,7 @@ func clear_enemy_info():
 	enemy_move_area.visible = false
 	enemy_attack_area.visible = false
 
-func handle_enemy_death(enemy: Enemy):
+func _on_enemy_death(enemy: Enemy):
 	active_character.add_stat(Stats.Field.ENEMIES_KILLED, 1)
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
@@ -727,54 +730,16 @@ func play_card():
 		active_character.deck.discard_card(hand_ui.selected_index)
 	# Take snapshot of current state before playing card.
 	active_character.snap()
-	await unit_card.apply_self_effects()
-	if current_card.target_mode == Enum.TargetMode.SELF:
-		# Implement animation for SELF cards.
-		await unit_card.apply_self()
-	elif current_card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
-		var target_tile = tile_map_pos
-		var affected_tiles = current_card.effect_area(direction)
-		var effect_time = 0
-		for tile_offset in affected_tiles:
-			var tile = target_tile + tile_offset
-			var effect = animation_manager.get_effect(current_card.target_animation)
-			if effect != null:
-				effect.origin = active_character.global_position
-				effect.target = map_manager.get_world_position(tile)
-				effects.add_child(effect)
-				effect_time = effect.apply_effect_time()
-		if effects.get_child_count() != 0:
-			await get_tree().create_timer(effect_time, false).timeout
-		for tile_offset in affected_tiles:
-			var tile = target_tile + tile_offset
-			if map_manager.enemy_locs.has(tile):
-				var enemy = map_manager.enemy_locs[tile]
-				if await unit_card.apply_to_enemy(enemy):
-					handle_enemy_death(enemy)
-					active_character.killed_enemy.emit(active_character)
-		if current_card.is_attack():
-			active_character.attacked.emit(active_character)
-	elif current_card.target_mode in [Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
-		var target_tile = tile_map_pos
-		var effect_time = 0
-		var effect = animation_manager.get_effect(current_card.target_animation)
-		if effect != null:
-			effect.origin = active_character.global_position
-			effect.target = map_manager.get_world_position(target_tile)
-			effects.add_child(effect)
-			effect_time = effect.apply_effect_time()
-		if effects.get_child_count() != 0:
-			await get_tree().create_timer(effect_time, false).timeout
-		var target_character = map_manager.character_locs[target_tile]
-		await unit_card.apply_to_ally(target_character)
-	for effect in effects.get_children():
-		await effect.finished()
-	clear_effects()
-	await unit_card.apply_after_effects()
+
+	# All card playing logic is in here.
+	card_player.play_card(unit_card, tile_map_pos, direction)
+
 	active_character.add_stat(Stats.Field.CARDS_PLAYED, 1)
 	active_character.add_stat(Stats.Field.AP_USED, current_card.cost)
 	active_character.action_points -= current_card.cost
 	active_character.card_played.emit(active_character, current_card)
+	if unit_card.card.is_attack():
+		active_character.attacked.emit()
 	if map_manager.enemy_locs.is_empty():
 		all_enemies_died.emit()
 	# Consider wrapping all this into a method.
