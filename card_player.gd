@@ -18,6 +18,12 @@ func _init(map_manager: MapManager, effects_node: Node):
 	if effects_node:
 		animation_manager = AnimationManager.new()
 
+func get_ally_map(unit: Unit):
+	if unit is Character:
+		return map.character_locs
+	else:
+		return map.enemy_locs
+
 func get_enemy_map(unit: Unit):
 	if unit is Character:
 		return map.enemy_locs
@@ -62,8 +68,9 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 				effect_time = effect.apply_effect_time()
 			if effects_node.get_child_count() != 0:
 				await effects_node.get_tree().create_timer(effect_time, false).timeout
-		var target_character = map.character_locs[target_tile]
-		await unit_card.apply_to_ally(target_character)
+		var ally_map = get_ally_map(unit_card.unit)
+		var target_unit = ally_map[target_tile]
+		await unit_card.apply_to_ally(target_unit)
 	if effects_node != null:
 		for effect in effects_node.get_children():
 			await effect.finished()
