@@ -48,27 +48,36 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 		if effects_node.get_child_count() != 0:
 			await effects_node.get_tree().create_timer(effect_time, false).timeout
 	if unit_card.card.target_mode == Enum.TargetMode.SELF:
-		# Implement animation for SELF cards.
 		await unit_card.apply_self()
 	# As of now, area effects only work with enemies, should support
 	# friendly area effects too.
 	elif unit_card.card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
+		var enemies = []
 		for tile_offset in affected_tiles:
 			var tile = target_tile + tile_offset
 			var enemy_map = get_enemy_map(unit_card.unit)
 			if enemy_map.has(tile):
 				var enemy = enemy_map[tile]
-				await unit_card.apply_to_enemy(enemy)
-				if enemy.destroyed:
-					enemy_killed.emit(enemy)
+				enemies.push_back(enemy)
+		for enemy in enemies:
+			var effect = animation_manager.get_effect(unit_card.card.on_damage_animation)
+			if effect != null:
+				effect.origin = enemy.global_position
+				effect.target = enemy.global_position
+				effects_node.add_child(effect)
+		for enemy in enemies:
+			await unit_card.apply_to_enemy(enemy)
+			if enemy.destroyed:
+				enemy_killed.emit(enemy)
 	elif unit_card.card.target_mode in [Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
 		var ally_map = get_ally_map(unit_card.unit)
 		var target_unit = ally_map[target_tile]
 		await unit_card.apply_to_ally(target_unit)
+	await unit_card.apply_after_effects()
 	# Clean up effects.
 	if effects_node != null:
 		for effect in effects_node.get_children():
 			await effect.finished()
 		for effect in effects_node.get_children():
 			effect.queue_free()
-	await unit_card.apply_after_effects()
+

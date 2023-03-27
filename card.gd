@@ -17,7 +17,9 @@ enum AreaType {
 @export var cost: int
 @export var texture: Texture2D
 @export var target_mode: Enum.TargetMode
+# Should be "on_play_animation".
 @export var target_animation: Enum.TargetAnimationType
+@export var on_damage_animation: Enum.TargetAnimationType
 @export var target_distance: int
 @export var damage_value: CardEffectValue
 # Use on_play_self_effects when creating a card that has
