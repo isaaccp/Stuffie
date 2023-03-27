@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dxs64ypbrawne" path="res://resources/animations/smoke30frames.png" id="2_eymd8"]
 [ext_resource type="Gradient" uid="uid://dywvq8h4jckap" path="res://resources/animations/arcane_gradient.tres" id="2_s1ygy"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_nba6r"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hfbv0"]
 gradient = ExtResource("2_s1ygy")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w2i7v"]
@@ -16,12 +16,12 @@ gravity = Vector3(0, 0, 0)
 linear_accel_min = 1.0
 linear_accel_max = 4.0
 angle_max = 360.0
-color_ramp = SubResource("GradientTexture1D_nba6r")
+color_ramp = SubResource("GradientTexture1D_hfbv0")
 anim_speed_min = 1.0
 anim_speed_max = 1.0
 anim_offset_max = 1.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6f68m"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dudaf"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
@@ -34,7 +34,7 @@ particles_anim_v_frames = 5
 particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_w271v"]
-material = SubResource("StandardMaterial3D_6f68m")
+material = SubResource("StandardMaterial3D_dudaf")
 
 [node name="ArcaneAnimation" type="Node3D" node_paths=PackedStringArray("particles")]
 script = ExtResource("1_2uy2l")
