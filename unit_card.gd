@@ -107,6 +107,8 @@ func on_play_after_effect_text() -> String:
 	return UnitCard.join_effects_text(unit, card.on_play_after_effects)
 
 func get_description() -> String:
+	if card.card_name == "Haste":
+		pass
 	var description = ""
 	if card.should_exhaust():
 		description = "[url=exhaust]Exhaust[/url]. "
@@ -115,11 +117,19 @@ func get_description() -> String:
 	var prefix_text = ""
 	if target_text != "Self":
 		prefix_text = "%s: " % target_text
-	if card.target_mode in [Enum.TargetMode.SELF, Enum.TargetMode.SELF_ALLY or Enum.TargetMode.SELF_ALLY]:
+	if card.target_mode in [Enum.TargetMode.SELF, Enum.TargetMode.SELF_ALLY, Enum.TargetMode.SELF_ALLY]:
 		if card.power_relic:
 			description += "Power: [url]%s[/url]\n" % card.power_relic.name
+		var on_play_self_text = UnitCard.join_effects_text(unit, card.on_play_self_effects)
+		if on_play_self_text:
+			description += "Before Play: %s\n" % on_play_self_text
+		var area_size = card.effect_area(Vector2.RIGHT).size()
+		if area_size > 1:
+			description += ("Allies in area (%s tiles)" % area_size)
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
+			if range_text:
+				prefix_text += " (%s) " % range_text
 			description += "%s%s\n" % [prefix_text, on_play_text]
 	elif card.target_mode in [Enum.TargetMode.ENEMY, Enum.TargetMode.AREA]:
 		var range_included = false

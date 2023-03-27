@@ -59,12 +59,13 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 			if enemy_map.has(tile):
 				var enemy = enemy_map[tile]
 				enemies.push_back(enemy)
-		for enemy in enemies:
-			var effect = animation_manager.get_effect(unit_card.card.on_damage_animation)
-			if effect != null:
-				effect.origin = enemy.global_position
-				effect.target = enemy.global_position
-				effects_node.add_child(effect)
+		if effects_node:
+			for enemy in enemies:
+				var effect = animation_manager.get_effect(unit_card.card.on_damage_animation)
+				if effect != null:
+					effect.origin = enemy.global_position
+					effect.target = enemy.global_position
+					effects_node.add_child(effect)
 		for enemy in enemies:
 			await unit_card.apply_to_enemy(enemy)
 			if enemy.destroyed:

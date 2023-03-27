@@ -508,6 +508,7 @@ func change_state(new_state):
 		else:
 			begin_turn()
 	elif state == GameState.CPU_TURN:
+		end_turn_button.disabled = true
 		hand_ui.disabled = true
 		StatsManager.turn_stats.print()
 		# Re-start turn stats so we can use enemy turn stats in cards next run.

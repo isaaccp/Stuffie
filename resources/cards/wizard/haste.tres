@@ -45,6 +45,7 @@ upgrade_level = 0
 cost = 1
 target_mode = 2
 target_animation = 3
+on_damage_animation = 0
 target_distance = 5
 on_play_self_effects = Array[ExtResource("2_dnl1j")]([])
 on_play_effects = Array[ExtResource("2_dnl1j")]([SubResource("Resource_hq2x3"), SubResource("Resource_055vd")])
