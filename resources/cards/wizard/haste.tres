@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://dmykybgjnwx4j"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://dmykybgjnwx4j"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_eb5xj"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_dnl1j"]
 [ext_resource type="Script" path="res://card.gd" id="3_8pumf"]
+[ext_resource type="Texture2D" uid="uid://7lfsi6g7b4br" path="res://resources/haste.png" id="4_4lrgu"]
 
 [sub_resource type="Resource" id="Resource_nu0mv"]
 script = ExtResource("1_eb5xj")
@@ -43,6 +44,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1
+texture = ExtResource("4_4lrgu")
 target_mode = 2
 target_animation = 3
 on_damage_animation = 0
