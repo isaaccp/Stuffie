@@ -35,6 +35,7 @@ func mock():
 	m.paralysis = paralysis
 	for card in cards:
 		m.unit_cards.push_back(UnitCard.new(m, card))
+	m.next_turn_cards = next_turn_cards
 	return m
 
 func initialize(pos: Vector2i, level: int):

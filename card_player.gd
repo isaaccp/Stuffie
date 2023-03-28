@@ -82,3 +82,8 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 		for effect in effects_node.get_children():
 			effect.queue_free()
 
+	if unit_card.card.on_next_turn_effects != null:
+		unit_card.unit.add_next_turn_card(unit_card.card)
+
+func play_card_next_turn_effects(unit_card: UnitCard):
+	await unit_card.apply_next_turn_effects()

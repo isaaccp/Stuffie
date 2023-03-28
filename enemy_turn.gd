@@ -62,6 +62,10 @@ func execute_moves(map: MapManager, effects_node: Node):
 		# Move enemy.
 		var enemy = map.enemy_locs[move[0]]
 		enemy.begin_turn()
+		for card in enemy.next_turn_cards:
+			var unit_card = UnitCard.new(enemy, card)
+			card_player.play_card_next_turn_effects(unit_card)
+		enemy.clear_next_turn_cards()
 		var enemy_pos = enemy.get_id_position()
 		var loc = move[1]
 		var targets = move[2]

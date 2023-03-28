@@ -477,6 +477,10 @@ func begin_turn():
 	turn_number += 1
 	for character in party.get_children():
 		character.begin_turn()
+		for card in character.next_turn_cards:
+			var unit_card = UnitCard.new(character, card)
+			card_player.play_card_next_turn_effects(unit_card)
+		character.clear_next_turn_cards()
 	reset_undo()
 	draw_deck()
 	for treasure in treasures.get_children():
@@ -510,7 +514,6 @@ func change_state(new_state):
 	elif state == GameState.CPU_TURN:
 		end_turn_button.disabled = true
 		hand_ui.disabled = true
-		StatsManager.turn_stats.print()
 		# Re-start turn stats so we can use enemy turn stats in cards next run.
 		StatsManager.remove_level(Enum.StatsLevel.TURN)
 		StatsManager.add_level(Enum.StatsLevel.TURN)
@@ -740,7 +743,7 @@ func play_card():
 	active_character.action_points -= current_card.cost
 	active_character.card_played.emit(active_character, current_card)
 	if unit_card.card.is_attack():
-		active_character.attacked.emit()
+		active_character.attacked.emit(active_character)
 	if map_manager.enemy_locs.is_empty():
 		all_enemies_died.emit()
 	# Consider wrapping all this into a method.

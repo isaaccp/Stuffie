@@ -27,6 +27,9 @@ func apply_self_effects():
 func apply_after_effects():
 	await apply_effects_target(card.on_play_after_effects, unit)
 
+func apply_next_turn_effects():
+	await apply_effects_target(card.on_next_turn_effects, unit)
+
 func apply_to_ally(ally: Unit):
 	assert(card.target_mode == Enum.TargetMode.SELF_ALLY or card.target_mode == Enum.TargetMode.ALLY)
 	await apply_effects_target(card.on_play_effects, ally)
@@ -106,9 +109,10 @@ func on_play_effect_text() -> String:
 func on_play_after_effect_text() -> String:
 	return UnitCard.join_effects_text(unit, card.on_play_after_effects)
 
+func on_next_turn_effect_text() -> String:
+	return UnitCard.join_effects_text(unit, card.on_next_turn_effects)
+
 func get_description() -> String:
-	if card.card_name == "Haste":
-		pass
 	var description = ""
 	if card.should_exhaust():
 		description = "[url=exhaust]Exhaust[/url]. "
@@ -154,7 +158,10 @@ func get_description() -> String:
 			description += "On Kill: %s\n" % on_kill_text
 	var on_play_after_text = on_play_after_effect_text()
 	if on_play_after_text:
-		description += "After Play: %s" % [on_play_after_text]
+		description += "After Play: %s\n" % [on_play_after_text]
+	var on_next_turn_text = on_next_turn_effect_text()
+	if on_next_turn_text:
+		description += "Next Turn: %s\n" % [on_next_turn_text]
 	return description
 
 # CardEffect

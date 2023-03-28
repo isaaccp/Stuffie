@@ -16,6 +16,8 @@ var weakness: int
 var paralysis: int
 # Mostly intended for enemies so levels can add extra damage.
 var extra_damage = 0
+# Cards to be played at beginning of next turn.
+var next_turn_cards: Array[Card]
 
 func add_power(power_amount: int):
 	self.power += power_amount
@@ -24,6 +26,9 @@ func add_power(power_amount: int):
 
 func begin_turn():
 	super()
+
+func clear_next_turn_cards():
+	next_turn_cards.clear()
 
 func end_turn():
 	super()
@@ -34,3 +39,6 @@ func end_turn():
 		weakness -= 1
 	if paralysis > 0:
 		paralysis -= 1
+
+func add_next_turn_card(card: Card):
+	next_turn_cards.push_back(card)

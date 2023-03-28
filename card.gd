@@ -23,7 +23,8 @@ enum AreaType {
 @export var target_distance: int
 @export var damage_value: CardEffectValue
 # Use on_play_self_effects when creating a card that has
-# extra side effect on self besides target.
+# extra side effect on self besides target. They are played before
+# on_play_effects are played.
 @export var on_play_self_effects: Array[CardEffect]
 @export var on_play_effects: Array[CardEffect]
 # Effects applied to target on attacks if attack causes damage (i.e.,
@@ -31,7 +32,10 @@ enum AreaType {
 @export var on_damage_effects: Array[CardEffect]
 # Effects to be applied to self after rest of effects.
 @export var on_play_after_effects: Array[CardEffect]
+# Effects to be applied if this attack kills an enemy.
 @export var on_kill_effects: Array[CardEffect]
+# Those effects take place next turn if unit is still alive.
+@export var on_next_turn_effects: Array[CardEffect]
 @export var area_type: AreaType = AreaType.RECTANGLE
 @export var area_length: int = 1
 # Area width should in general be odd.
