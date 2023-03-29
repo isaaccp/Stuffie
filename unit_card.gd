@@ -126,7 +126,7 @@ func get_description() -> String:
 			description += "Power: [url]%s[/url]\n" % card.power_relic.name
 		var on_play_self_text = UnitCard.join_effects_text(unit, card.on_play_self_effects)
 		if on_play_self_text:
-			description += "Before Play: %s\n" % on_play_self_text
+			description += "%s\n" % on_play_self_text
 		var area_size = card.effect_area(Vector2.RIGHT).size()
 		if area_size > 1:
 			description += ("Allies in area (%s tiles)" % area_size)
@@ -139,7 +139,7 @@ func get_description() -> String:
 		var range_included = false
 		var on_play_self_text = UnitCard.join_effects_text(unit, card.on_play_self_effects)
 		if on_play_self_text:
-			description += "Before Play: %s\n" % on_play_self_text
+			description += "%s\n" % on_play_self_text
 		var attack_text = "Attack (%s)" % range_text
 		var area_size = card.effect_area(Vector2.RIGHT).size()
 		if area_size > 1:
