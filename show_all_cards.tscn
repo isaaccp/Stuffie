@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ulyneyqbef1w"]
+
+[ext_resource type="Script" path="res://show_all_cards.gd" id="1_akn6i"]
+[ext_resource type="PackedScene" uid="uid://c7iir3mgvux8m" path="res://card_collection_chooser.tscn" id="2_vynsa"]
+
+[node name="Control" type="Control" node_paths=PackedStringArray("chooser")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_akn6i")
+chooser = NodePath("CardCollectionChooser")
+
+[node name="CardCollectionChooser" parent="." instance=ExtResource("2_vynsa")]
+layout_mode = 0
+anchors_preset = 0
