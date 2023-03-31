@@ -178,13 +178,13 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 			CardEffect.Effect.DISCARD_HAND:
 				target.discard_hand()
 			CardEffect.Effect.DRAW_CARDS:
-				target.draw_cards(value)
+				target.draw_cards(value, effect.metadata)
 			CardEffect.Effect.DRAW_ATTACKS:
-				target.draw_attacks(value)
+				target.draw_attacks(value, effect.metadata)
 			CardEffect.Effect.PICK_CARDS:
-				await target.pick_cards(value)
+				await target.pick_cards(value, effect.metadata)
 			CardEffect.Effect.PICK_ATTACKS:
-				await target.pick_attacks(value)
+				await target.pick_attacks(value, effect.metadata)
 			CardEffect.Effect.COLLECTION_UPGRADE:
 				# TODO: This ignores value and just upgrades one as of now.
 				await target.upgrade_cards(value)
@@ -230,7 +230,7 @@ static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 			CardEffect.Effect.DISCARD_HAND: effect_text = "discard your hand"
 			CardEffect.Effect.DRAW_CARDS: effect_text = "draw %s cards" % value_text
 			CardEffect.Effect.DRAW_ATTACKS: effect_text = "draw %s attack cards" % value_text
-			CardEffect.Effect.PICK_CARDS: effect_text = "shuffle discard into deck and pick %s cards" % value_text
+			CardEffect.Effect.PICK_CARDS: effect_text = "shuffle discard into deck and pick %s cards%s" % [value_text, effect.metadata_extra_description()]
 			CardEffect.Effect.PICK_ATTACKS: effect_text = "shuffle discard into deck and pick %s attack cards" % value_text
 			CardEffect.Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
 			CardEffect.Effect.TELEPORT: effect_text = "teleport up to %s tiles" % value_text

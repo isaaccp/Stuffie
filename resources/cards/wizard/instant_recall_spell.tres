@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://cy5ujgrkbo1r4"]
+
+[ext_resource type="Resource" uid="uid://b710rx3bgmelh" path="res://resources/cards/wizard/recall_spell.tres" id="1_2bmt7"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_l38i6"]
+[ext_resource type="Script" path="res://card_change.gd" id="2_h18ed"]
+[ext_resource type="Script" path="res://card_effect_metadata.gd" id="3_id0qq"]
+[ext_resource type="Script" path="res://card_effect.gd" id="4_yvx0i"]
+[ext_resource type="Script" path="res://card.gd" id="5_3j32l"]
+
+[sub_resource type="Resource" id="Resource_hfswj"]
+script = ExtResource("1_l38i6")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_as5ho"]
+script = ExtResource("2_h18ed")
+cost_change = 0
+exhaust = true
+
+[sub_resource type="Resource" id="Resource_gr7f0"]
+script = ExtResource("3_id0qq")
+original_card_change = SubResource("Resource_as5ho")
+
+[sub_resource type="Resource" id="Resource_fmx3e"]
+script = ExtResource("4_yvx0i")
+effect_value = SubResource("Resource_hfswj")
+effect_type = 2
+target_field = 0
+effect = 5
+metadata = SubResource("Resource_gr7f0")
+
+[resource]
+script = ExtResource("5_3j32l")
+card_name = "Instant Recall Spell"
+upgrade_name = "Instant"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_2bmt7")
+cost = 0
+target_mode = 0
+target_animation = 0
+on_damage_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("4_yvx0i")]([])
+on_play_effects = Array[ExtResource("4_yvx0i")]([SubResource("Resource_fmx3e")])
+on_damage_effects = Array[ExtResource("4_yvx0i")]([])
+on_play_after_effects = Array[ExtResource("4_yvx0i")]([])
+on_kill_effects = Array[ExtResource("4_yvx0i")]([])
+on_next_turn_effects = Array[ExtResource("4_yvx0i")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

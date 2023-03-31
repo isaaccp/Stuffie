@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://bk0gwqpdnp1uw"]
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://bk0gwqpdnp1uw"]
 
 [ext_resource type="Resource" uid="uid://hqfbc732v1yw" path="res://resources/cards/wizard/mana_burst.tres" id="1_ub4f8"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_kq8yn"]
 [ext_resource type="Script" path="res://card.gd" id="3_t3kv6"]
+[ext_resource type="Texture2D" uid="uid://bngl01vq5o0ox" path="res://resources/mana_burst.png" id="4_8gblx"]
 
 [sub_resource type="Resource" id="Resource_pvkf0"]
 script = ExtResource("2_kq8yn")
 value_type = 2
 absolute_value = 0
-reference_fraction = 4.0
+reference_fraction = 6.0
 value_field_type = 2
 regular_field = 0
 read_only_field = 2
@@ -21,6 +22,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_ub4f8")
 cost = 2
+texture = ExtResource("4_8gblx")
 target_mode = 4
 target_animation = 6
 on_damage_animation = 0

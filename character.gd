@@ -172,15 +172,17 @@ func draw_new_hand():
 	deck.discard_hand()
 	deck.draw_cards(cards_per_turn)
 
-func draw_cards(number: int):
+func draw_cards(number: int, metadata: CardEffectMetadata):
+	# TODO: Allow using metadata to apply card changes.
 	var drawn = deck.draw_cards(number)
 	add_stat(Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 
-func draw_attacks(number: int):
+func draw_attacks(number: int, metadata: CardEffectMetadata):
+	# TODO: Allow using metadata to apply card changes.
 	var drawn = deck.draw_attacks(number)
 	add_stat(Stats.Field.EXTRA_CARDS_DRAWN, drawn)
 
-func pick_cards_condition(number: int, condition: Callable = func(c): return true):
+func pick_cards_condition(number: int, metadata: CardEffectMetadata, condition: Callable = func(c): return true):
 	# TODO: Support picking more than 1.
 	assert(number == 1)
 	# Shuffle discard into deck before choosing.
@@ -193,16 +195,18 @@ func pick_cards_condition(number: int, condition: Callable = func(c): return tru
 	await chooser.card_chosen
 	get_tree().paused = false
 	var card = chooser.chosen_card
-	if card == null:
+	if card != null:
+		if metadata.original_card_change:
+			card.apply_card_change(metadata.original_card_change)
 		deck.add_to_hand_from_deck(card)
 		add_stat(Stats.Field.EXTRA_CARDS_DRAWN, number)
 	chooser.queue_free()
 
-func pick_cards(number: int):
-	pick_cards_condition(number)
+func pick_cards(number: int, metadata: CardEffectMetadata):
+	pick_cards_condition(number, metadata)
 
-func pick_attacks(number: int):
-	await pick_cards_condition(number, func(c): return c.is_attack())
+func pick_attacks(number: int, metadata: CardEffectMetadata):
+	await pick_cards_condition(number, metadata, func(c): return c.is_attack())
 
 func upgrade_cards(number: int):
 	# TODO: Support upgrading more than 1 in CardUpgrade.
