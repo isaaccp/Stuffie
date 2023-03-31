@@ -1,13 +1,14 @@
-[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://hqfbc732v1yw"]
+[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://hqfbc732v1yw"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_gmm6c"]
 [ext_resource type="Script" path="res://card.gd" id="2_j8uhy"]
+[ext_resource type="Texture2D" uid="uid://bngl01vq5o0ox" path="res://resources/mana_burst.png" id="3_0j6cr"]
 
 [sub_resource type="Resource" id="Resource_vm32w"]
 script = ExtResource("1_gmm6c")
 value_type = 2
 absolute_value = 0
-reference_fraction = 3.0
+reference_fraction = 4.0
 value_field_type = 2
 regular_field = 0
 read_only_field = 2
@@ -19,6 +20,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 2
+texture = ExtResource("3_0j6cr")
 target_mode = 4
 target_animation = 6
 on_damage_animation = 0
