@@ -284,13 +284,17 @@ static func get_field(unit: Unit, field: CardEffectValue.Field):
 static func get_read_only_field(unit: Unit, field: CardEffectValue.ReadOnlyField):
 	match field:
 		CardEffectValue.ReadOnlyField.SNAPSHOT_HAND_CARDS: return unit.snapshot.num_hand_cards
+		CardEffectValue.ReadOnlyField.CARDS_PLAYED_TURN: return unit.get_stat(Enum.StatsLevel.TURN, Stats.Field.CARDS_PLAYED)
 	assert(false)
 
 static func get_effect_value_string(unit: Unit, effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE:
 		return "%d" % effect_value.absolute_value
 	if effect_value.value_type == CardEffectValue.ValueType.REFERENCE:
-		return "%d%% of %s (%d)" % [effect_value.reference_fraction * 100, effect_value.get_field_name(), UnitCard.get_effect_value(unit, effect_value)]
+		var prefix_text = "%dx " % effect_value.reference_fraction
+		if effect_value.reference_fraction == 1:
+			prefix_text = ""
+		return "%s%s (%d)" % [prefix_text, effect_value.get_field_name(), UnitCard.get_effect_value(unit, effect_value)]
 
 static func is_negative(effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE and effect_value.absolute_value < 0:

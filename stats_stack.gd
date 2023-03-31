@@ -46,7 +46,8 @@ func remove(character: Enum.CharacterId, field: Stats.Field, value: int):
 		stack[level].remove(character, field, value)
 
 func get_value(level: Enum.StatsLevel, character: Enum.CharacterId, field: Stats.Field) -> int:
-	assert(level <= stack.size())
+	if level >= stack.size():
+		return 0
 	return stack[level].get_value(character, field)
 
 func print(level: Enum.StatsLevel):

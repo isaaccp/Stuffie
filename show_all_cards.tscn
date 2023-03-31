@@ -16,3 +16,7 @@ chooser = NodePath("CardCollectionChooser")
 [node name="CardCollectionChooser" parent="." instance=ExtResource("2_vynsa")]
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1

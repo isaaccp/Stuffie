@@ -115,6 +115,9 @@ func heal_full():
 func add_stat(field: Stats.Field, value: int):
 	pass
 
+func get_stat(level: Enum.StatsLevel, field: Stats.Field):
+	return 0
+
 func begin_turn():
 	block = 0
 	# At most can carry 1 dodge.

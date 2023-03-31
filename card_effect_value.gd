@@ -48,10 +48,12 @@ const field_name = {
 enum ReadOnlyField {
 	NO_FIELD,
 	SNAPSHOT_HAND_CARDS,
+	CARDS_PLAYED_TURN,
 }
 
 const read_only_field_name = {
-	ReadOnlyField.SNAPSHOT_HAND_CARDS: "original number of cards in your hand",
+	ReadOnlyField.SNAPSHOT_HAND_CARDS: "the original number of cards in your hand",
+	ReadOnlyField.CARDS_PLAYED_TURN: "the cards played this turn",
 }
 
 @export var value_type: ValueType

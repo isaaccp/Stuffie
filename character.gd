@@ -76,6 +76,7 @@ func initialize(full=true):
 # somehow, then we'd need to have the relics here.
 func mock():
 	var m = Character.new()
+	m.character_type = character_type
 	m.is_mock = true
 	m.id_position = id_position
 	m.hit_points = hit_points
@@ -92,6 +93,9 @@ func add_stat(field: Stats.Field, value: int):
 	if is_mock:
 		return
 	StatsManager.add(character_type, field, value)
+
+func get_stat(level: Enum.StatsLevel, field: Stats.Field):
+	return StatsManager.get_value(level, character_type, field)
 
 func process_cards():
 	for card in all_cards.cards:
