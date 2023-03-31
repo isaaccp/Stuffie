@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://b1styr766lmuc"]
+
+[ext_resource type="Resource" uid="uid://b710rx3bgmelh" path="res://resources/cards/wizard/recall_spell.tres" id="1_vc7hb"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_6cgj7"]
+[ext_resource type="Script" path="res://card_effect.gd" id="5_fxnsa"]
+[ext_resource type="Script" path="res://card.gd" id="6_y4tnj"]
+
+[sub_resource type="Resource" id="Resource_hfswj"]
+script = ExtResource("2_6cgj7")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_fmx3e"]
+script = ExtResource("5_fxnsa")
+effect_value = SubResource("Resource_hfswj")
+effect_type = 2
+target_field = 0
+effect = 5
+
+[resource]
+script = ExtResource("6_y4tnj")
+card_name = "Focused Recall Spell"
+upgrade_name = "Focused"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_vc7hb")
+cost = 1
+target_mode = 0
+target_animation = 0
+on_damage_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("5_fxnsa")]([])
+on_play_effects = Array[ExtResource("5_fxnsa")]([SubResource("Resource_fmx3e")])
+on_damage_effects = Array[ExtResource("5_fxnsa")]([])
+on_play_after_effects = Array[ExtResource("5_fxnsa")]([])
+on_kill_effects = Array[ExtResource("5_fxnsa")]([])
+on_next_turn_effects = Array[ExtResource("5_fxnsa")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

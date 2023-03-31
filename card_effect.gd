@@ -44,6 +44,8 @@ func metadata_card_filter():
 	assert(false)
 
 func metadata_extra_description():
+	if not metadata:
+		return ""
 	var description = ""
 	match effect:
 		Effect.DUPLICATE_CARD:
@@ -51,4 +53,7 @@ func metadata_extra_description():
 				description += "Original: %s\n" % metadata.original_card_change.get_description()
 			if metadata.copied_card_change:
 				description += "New: %s\n" % metadata.copied_card_change.get_description()
+		Effect.PICK_CARDS:
+			if metadata.original_card_change:
+				description += " (%s)" % metadata.original_card_change.get_description()
 	return description

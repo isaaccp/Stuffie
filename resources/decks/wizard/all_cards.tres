@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=28 format=3 uid="uid://boikmqlmjpm0l"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=31 format=3 uid="uid://boikmqlmjpm0l"]
 
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_mpdpp"]
 [ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_xwfyn"]
@@ -16,18 +16,21 @@
 [ext_resource type="Resource" uid="uid://dwn6073xrsesh" path="res://resources/cards/wizard/magic_shield.tres" id="5_033it"]
 [ext_resource type="Resource" uid="uid://s85f87dqk4kk" path="res://resources/cards/wizard/mirror_image_blink.tres" id="6_hbcgo"]
 [ext_resource type="Resource" uid="uid://dmykybgjnwx4j" path="res://resources/cards/wizard/haste.tres" id="6_ym1wl"]
+[ext_resource type="Resource" uid="uid://b1styr766lmuc" path="res://resources/cards/wizard/focused_recall_spell.tres" id="8_b3mqq"]
 [ext_resource type="Resource" uid="uid://ciukn6t74lny0" path="res://resources/cards/wizard/long_hold_enemy.tres" id="8_fx2sj"]
 [ext_resource type="Resource" uid="uid://benn8w7bnhbns" path="res://resources/cards/wizard/massive_fireball.tres" id="8_vx7ln"]
 [ext_resource type="Resource" uid="uid://bkyynu075ihog" path="res://resources/cards/wizard/strong_magic_shield.tres" id="9_50eph"]
 [ext_resource type="Resource" uid="uid://b6mvcafkkl6k7" path="res://resources/cards/wizard/long_magic_missile.tres" id="9_rvudy"]
 [ext_resource type="Resource" uid="uid://1x0p6be14xuj" path="res://resources/cards/wizard/long_haste.tres" id="10_2xdjl"]
 [ext_resource type="Resource" uid="uid://st1xni4txotx" path="res://resources/cards/wizard/nova_fireball.tres" id="11_1gw42"]
+[ext_resource type="Resource" uid="uid://cy5ujgrkbo1r4" path="res://resources/cards/wizard/instant_recall_spell.tres" id="12_q0ogv"]
 [ext_resource type="Resource" uid="uid://hqfbc732v1yw" path="res://resources/cards/wizard/mana_burst.tres" id="15_t6quo"]
 [ext_resource type="Resource" uid="uid://dicil2nu2n7ee" path="res://resources/cards/wizard/multicast.tres" id="15_uukfo"]
 [ext_resource type="Resource" uid="uid://dkti3wvg3r08v" path="res://resources/cards/wizard/powerful_magic_missile.tres" id="16_s4sck"]
 [ext_resource type="Resource" uid="uid://di14luh8exo83" path="res://resources/cards/wizard/powerful_multicast.tres" id="18_45f2r"]
 [ext_resource type="Resource" uid="uid://bk0gwqpdnp1uw" path="res://resources/cards/wizard/powerful_mana_burst.tres" id="22_uy1iy"]
+[ext_resource type="Resource" uid="uid://b710rx3bgmelh" path="res://resources/cards/wizard/recall_spell.tres" id="25_qe2p5"]
 
 [resource]
 script = ExtResource("2_a8yqu")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_6qd6q"), ExtResource("2_o0bek"), ExtResource("3_t31xo"), ExtResource("5_8qfil"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("6_ym1wl"), ExtResource("5_4qp42"), ExtResource("4_gm3u8"), ExtResource("10_2xdjl"), ExtResource("8_fx2sj"), ExtResource("9_rvudy"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("15_t6quo"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("15_uukfo"), ExtResource("11_1gw42"), ExtResource("16_s4sck"), ExtResource("22_uy1iy"), ExtResource("18_45f2r"), ExtResource("9_50eph"), ExtResource("4_2gx48")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_xwfyn"), ExtResource("2_6qd6q"), ExtResource("2_o0bek"), ExtResource("3_t31xo"), ExtResource("5_8qfil"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("8_b3mqq"), ExtResource("6_ym1wl"), ExtResource("5_4qp42"), ExtResource("4_gm3u8"), ExtResource("12_q0ogv"), ExtResource("10_2xdjl"), ExtResource("8_fx2sj"), ExtResource("9_rvudy"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("15_t6quo"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("15_uukfo"), ExtResource("11_1gw42"), ExtResource("16_s4sck"), ExtResource("22_uy1iy"), ExtResource("18_45f2r"), ExtResource("25_qe2p5"), ExtResource("9_50eph"), ExtResource("4_2gx48")])
