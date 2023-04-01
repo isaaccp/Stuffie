@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://b710rx3bgmelh"]
+[gd_resource type="Resource" script_class="Card" load_steps=11 format=3 uid="uid://b710rx3bgmelh"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_seir5"]
 [ext_resource type="Script" path="res://card_change.gd" id="2_5dyty"]
 [ext_resource type="Script" path="res://card_effect_metadata.gd" id="3_67gdd"]
 [ext_resource type="Script" path="res://card_effect.gd" id="4_k76rx"]
 [ext_resource type="Script" path="res://card.gd" id="5_0d3ld"]
+[ext_resource type="Texture2D" uid="uid://b2v5rijfl3kcu" path="res://resources/recall_spell.png" id="6_sgspy"]
 
 [sub_resource type="Resource" id="Resource_hfswj"]
 script = ExtResource("1_seir5")
@@ -39,6 +40,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1
+texture = ExtResource("6_sgspy")
 target_mode = 0
 target_animation = 0
 on_damage_animation = 0

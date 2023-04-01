@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://b1styr766lmuc"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://b1styr766lmuc"]
 
 [ext_resource type="Resource" uid="uid://b710rx3bgmelh" path="res://resources/cards/wizard/recall_spell.tres" id="1_vc7hb"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_6cgj7"]
+[ext_resource type="Texture2D" uid="uid://b2v5rijfl3kcu" path="res://resources/recall_spell.png" id="5_bmaej"]
 [ext_resource type="Script" path="res://card_effect.gd" id="5_fxnsa"]
 [ext_resource type="Script" path="res://card.gd" id="6_y4tnj"]
 
@@ -29,6 +30,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_vc7hb")
 cost = 1
+texture = ExtResource("5_bmaej")
 target_mode = 0
 target_animation = 0
 on_damage_animation = 0
