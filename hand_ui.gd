@@ -29,7 +29,7 @@ func _process(delta: float):
 
 func reset(character: Character):
 	if self.character:
-		disconnect_deck(character)
+		disconnect_deck(self.character)
 	connect_deck(character)
 	self.character = character
 	recreate()
@@ -51,7 +51,8 @@ func _on_stats_added(character: Enum.CharacterId, field: Stats.Field, value: int
 	needs_description_refresh = true
 
 func _on_cards_drawn(number: int):
-	for i in range(get_card_count(), get_card_count() + number):
+	var card_count = get_card_count()
+	for i in range(card_count, card_count + number):
 		add_card(character.deck.hand[i])
 
 func _on_card_discarded(index: int):
