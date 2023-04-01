@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=10 format=3 uid="uid://dlhyp8id25va7"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=11 format=3 uid="uid://dlhyp8id25va7"]
 
 [ext_resource type="Script" path="res://card_selection_set.gd" id="1_hklcm"]
 [ext_resource type="Resource" uid="uid://ccqds38qsagdg" path="res://resources/cards/wizard/burning_hands.tres" id="1_pf766"]
+[ext_resource type="Resource" uid="uid://cllbtujik6lka" path="res://resources/cards/wizard/brainstorm.tres" id="1_q2ei8"]
 [ext_resource type="Resource" uid="uid://cus7a1e5w7ao1" path="res://resources/cards/wizard/fireball.tres" id="2_8wvsn"]
 [ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/hold_enemy.tres" id="3_4m52d"]
 [ext_resource type="Resource" uid="uid://dmykybgjnwx4j" path="res://resources/cards/wizard/haste.tres" id="3_342bt"]
@@ -12,4 +13,4 @@
 
 [resource]
 script = ExtResource("1_hklcm")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_pf766"), ExtResource("2_8wvsn"), ExtResource("3_342bt"), ExtResource("3_4m52d"), ExtResource("5_qqxwa"), ExtResource("3_dmqnt"), ExtResource("5_s6jls"), ExtResource("8_tymcx")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_q2ei8"), ExtResource("1_pf766"), ExtResource("2_8wvsn"), ExtResource("3_342bt"), ExtResource("3_4m52d"), ExtResource("5_qqxwa"), ExtResource("3_dmqnt"), ExtResource("5_s6jls"), ExtResource("8_tymcx")])

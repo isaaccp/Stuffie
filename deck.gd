@@ -58,6 +58,7 @@ func draw_cards(num_cards: int, condition: Callable = func(c): return true):
 		if not drawn:
 			cards_added.emit(i)
 			return i
+	print('emiting cards_added from ', self)
 	cards_added.emit(num_cards)
 	return num_cards
 
