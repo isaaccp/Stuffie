@@ -285,6 +285,7 @@ static func get_read_only_field(unit: Unit, field: CardEffectValue.ReadOnlyField
 	match field:
 		CardEffectValue.ReadOnlyField.SNAPSHOT_HAND_CARDS: return unit.snapshot.num_hand_cards
 		CardEffectValue.ReadOnlyField.CARDS_PLAYED_TURN: return unit.get_stat(Enum.StatsLevel.TURN, Stats.Field.CARDS_PLAYED)
+		CardEffectValue.ReadOnlyField.MP_USED_TURN: return unit.get_stat(Enum.StatsLevel.TURN, Stats.Field.MP_USED)
 	assert(false)
 
 static func get_effect_value_string(unit: Unit, effect_value: CardEffectValue):
