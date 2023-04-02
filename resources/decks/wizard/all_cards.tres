@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=34 format=3 uid="uid://boikmqlmjpm0l"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=35 format=3 uid="uid://boikmqlmjpm0l"]
 
 [ext_resource type="Resource" uid="uid://cllbtujik6lka" path="res://resources/cards/wizard/brainstorm.tres" id="1_1dh0s"]
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/magic_missile.tres" id="1_mpdpp"]
@@ -32,8 +32,9 @@
 [ext_resource type="Resource" uid="uid://di14luh8exo83" path="res://resources/cards/wizard/powerful_multicast.tres" id="18_45f2r"]
 [ext_resource type="Resource" uid="uid://bk0gwqpdnp1uw" path="res://resources/cards/wizard/powerful_mana_burst.tres" id="22_uy1iy"]
 [ext_resource type="Resource" uid="uid://b710rx3bgmelh" path="res://resources/cards/wizard/recall_spell.tres" id="25_qe2p5"]
+[ext_resource type="Resource" uid="uid://chpfitso2ypin" path="res://resources/cards/wizard/protect_ally_mirror_image.tres" id="29_swq2a"]
 [ext_resource type="Resource" uid="uid://b22twbfo0iqkj" path="res://resources/cards/wizard/thorough_brainstorm.tres" id="31_lf1lw"]
 
 [resource]
 script = ExtResource("2_a8yqu")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_1dh0s"), ExtResource("1_xwfyn"), ExtResource("2_6qd6q"), ExtResource("2_o0bek"), ExtResource("3_t31xo"), ExtResource("6_whkgt"), ExtResource("5_8qfil"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("8_b3mqq"), ExtResource("6_ym1wl"), ExtResource("5_4qp42"), ExtResource("4_gm3u8"), ExtResource("12_q0ogv"), ExtResource("10_2xdjl"), ExtResource("8_fx2sj"), ExtResource("9_rvudy"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("15_t6quo"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("15_uukfo"), ExtResource("11_1gw42"), ExtResource("16_s4sck"), ExtResource("22_uy1iy"), ExtResource("18_45f2r"), ExtResource("25_qe2p5"), ExtResource("9_50eph"), ExtResource("31_lf1lw"), ExtResource("4_2gx48")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_1dh0s"), ExtResource("1_xwfyn"), ExtResource("2_6qd6q"), ExtResource("2_o0bek"), ExtResource("3_t31xo"), ExtResource("6_whkgt"), ExtResource("5_8qfil"), ExtResource("3_7ir3o"), ExtResource("4_oju8y"), ExtResource("8_b3mqq"), ExtResource("6_ym1wl"), ExtResource("5_4qp42"), ExtResource("4_gm3u8"), ExtResource("12_q0ogv"), ExtResource("10_2xdjl"), ExtResource("8_fx2sj"), ExtResource("9_rvudy"), ExtResource("1_mpdpp"), ExtResource("5_033it"), ExtResource("15_t6quo"), ExtResource("8_vx7ln"), ExtResource("3_mji2p"), ExtResource("6_hbcgo"), ExtResource("15_uukfo"), ExtResource("11_1gw42"), ExtResource("16_s4sck"), ExtResource("22_uy1iy"), ExtResource("18_45f2r"), ExtResource("29_swq2a"), ExtResource("25_qe2p5"), ExtResource("9_50eph"), ExtResource("31_lf1lw"), ExtResource("4_2gx48")])
