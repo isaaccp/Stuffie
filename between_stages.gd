@@ -62,7 +62,6 @@ func _next_character():
 		state = BetweenStagesState.DONE
 		between_stages_done.emit()
 
-
 func _on_card_pressed(card_number: int):
 	characters[current_character].deck.add_card(current_cards[card_number])
 	StatsManager.add(characters[current_character].character_type, Stats.Field.CARDS_ACQUIRED, 1)
