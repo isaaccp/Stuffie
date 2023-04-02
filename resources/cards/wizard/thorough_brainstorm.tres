@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://b22twbfo0iqkj"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_adimt"]
+[ext_resource type="Resource" uid="uid://cllbtujik6lka" path="res://resources/cards/wizard/brainstorm.tres" id="1_fsu81"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_ou7vs"]
+[ext_resource type="Script" path="res://card.gd" id="3_wbtlo"]
+[ext_resource type="Texture2D" uid="uid://cp46mxqemuh4w" path="res://resources/brainstorm.png" id="5_8ctec"]
+
+[sub_resource type="Resource" id="Resource_5y4cf"]
+script = ExtResource("1_adimt")
+value_type = 1
+absolute_value = 2
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_c1xfw"]
+script = ExtResource("2_ou7vs")
+effect_value = SubResource("Resource_5y4cf")
+effect_type = 2
+target_field = 0
+effect = 2
+
+[resource]
+script = ExtResource("3_wbtlo")
+card_name = "Thorough Brainstorm"
+upgrade_name = "Thorough"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_fsu81")
+cost = 1
+texture = ExtResource("5_8ctec")
+target_mode = 2
+target_animation = 3
+on_damage_animation = 0
+target_distance = 5
+on_play_self_effects = Array[ExtResource("2_ou7vs")]([])
+on_play_effects = Array[ExtResource("2_ou7vs")]([SubResource("Resource_c1xfw")])
+on_damage_effects = Array[ExtResource("2_ou7vs")]([])
+on_play_after_effects = Array[ExtResource("2_ou7vs")]([])
+on_kill_effects = Array[ExtResource("2_ou7vs")]([])
+on_next_turn_effects = Array[ExtResource("2_ou7vs")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
