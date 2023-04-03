@@ -35,6 +35,7 @@ var characters: Array[Character]
 @export var stage_parent: Node
 @export var canvas: CanvasLayer
 @export var menu: Control
+@export var menu_screen_fader: ColorRect
 @export var save_and_quit_button: Button
 @export var abandon_button: Button
 
@@ -250,18 +251,28 @@ func game_over():
 func finish_run():
 	run_finished.emit()
 
+func show_menu():
+	menu.show()
+	var stage = stage_parent.get_child(0)
+	save_and_quit_button.disabled = (stage and not stage.can_save())
+	get_tree().paused = true
+	var tw = create_tween()
+	tw.tween_property(menu_screen_fader, "color", Color(0, 0, 0, 0.75), 0.25)
+
+func hide_menu():
+	menu.hide()
+	get_tree().paused = false
+	var tw = create_tween()
+	tw.tween_property(menu_screen_fader, "color", Color(0, 0, 0, 0), 0.25)
+
 func _input(event):
 	if Input.is_action_just_released("ui_cancel"):
 		if state.is_state(RUN_SUMMARY):
 			return
-		var stage = stage_parent.get_child(0)
 		if menu.visible:
-			menu.hide()
-			get_tree().paused = false
+			hide_menu()
 		else:
-			menu.show()
-			save_and_quit_button.disabled = (stage and not stage.can_save())
-			get_tree().paused = true
+			show_menu()
 
 func _on_abandon_run_pressed():
 	var stage = stage_parent.get_child(0)
