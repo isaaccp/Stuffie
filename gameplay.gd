@@ -405,42 +405,41 @@ func calculate_path(tile_map_pos):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if state == GameState.HUMAN_TURN:
-		var camera_move = delta * camera_panning_speed
-		var camera_rotate = delta * camera_rotation_speed
-		var camera_forward = -camera_pivot.transform.basis.z
-		camera_forward.y = 0
-		var forward = camera_forward.normalized() * camera_move
-		var camera_modified = false
-		if Input.is_action_pressed("ui_right"):
-			camera_pivot.position += forward.cross(Vector3.UP)
-			camera_modified = true
-		if Input.is_action_pressed("ui_left"):
-			camera_pivot.position -= forward.cross(Vector3.UP)
-			camera_modified = true
-		if Input.is_action_pressed("ui_up"):
-			camera_pivot.position += forward
-			camera_modified = true
-		if Input.is_action_pressed("ui_down"):
-			camera_pivot.position -= forward
-			camera_modified = true
-		if Input.is_action_pressed("ui_rotate_left"):
-			camera_pivot.rotate_y(-camera_rotate*delta)
-			camera_modified = true
-		if Input.is_action_pressed("ui_rotate_right"):
-			camera_pivot.rotate_y(camera_rotate*delta)
-			camera_modified = true
-		if Input.is_action_just_released("ui_zoom_in"):
-			# Prevent from zooming through stage.
-			var adjusted_position = camera_pivot.position - forward.cross(Vector3.RIGHT) * 5
-			# Yay magic number.
-			if adjusted_position.y > -10:
-				camera_pivot.position = adjusted_position
-		if Input.is_action_just_released("ui_zoom_out"):
-			camera_pivot.position += forward.cross(Vector3.RIGHT) * 5
-		if camera_modified:
-			update_position_direction(get_viewport().get_mouse_position())
-	elif state == GameState.CPU_TURN:
+	var camera_move = delta * camera_panning_speed
+	var camera_rotate = delta * camera_rotation_speed
+	var camera_forward = -camera_pivot.transform.basis.z
+	camera_forward.y = 0
+	var forward = camera_forward.normalized() * camera_move
+	var camera_modified = false
+	if Input.is_action_pressed("ui_right"):
+		camera_pivot.position += forward.cross(Vector3.UP)
+		camera_modified = true
+	if Input.is_action_pressed("ui_left"):
+		camera_pivot.position -= forward.cross(Vector3.UP)
+		camera_modified = true
+	if Input.is_action_pressed("ui_up"):
+		camera_pivot.position += forward
+		camera_modified = true
+	if Input.is_action_pressed("ui_down"):
+		camera_pivot.position -= forward
+		camera_modified = true
+	if Input.is_action_pressed("ui_rotate_left"):
+		camera_pivot.rotate_y(-camera_rotate*delta)
+		camera_modified = true
+	if Input.is_action_pressed("ui_rotate_right"):
+		camera_pivot.rotate_y(camera_rotate*delta)
+		camera_modified = true
+	if Input.is_action_just_released("ui_zoom_in"):
+		# Prevent from zooming through stage.
+		var adjusted_position = camera_pivot.position - forward.cross(Vector3.RIGHT) * 5
+		# Yay magic number.
+		if adjusted_position.y > -10:
+			camera_pivot.position = adjusted_position
+	if Input.is_action_just_released("ui_zoom_out"):
+		camera_pivot.position += forward.cross(Vector3.RIGHT) * 5
+	if camera_modified:
+		update_position_direction(get_viewport().get_mouse_position())
+	if state == GameState.CPU_TURN:
 		if enemy_turn_manager.fresh and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
 			enemy_moving = true
