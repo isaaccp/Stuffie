@@ -33,6 +33,7 @@ var characters: Array[Character]
 
 @export var party: Node
 @export var stage_parent: Node
+@export var canvas: CanvasLayer
 @export var menu: Control
 @export var save_and_quit_button: Button
 @export var abandon_button: Button
@@ -57,6 +58,7 @@ func initialize_character(character: Character):
 	character.shared_bag = shared_bag
 	character.add_relic(initial_relic, false)
 	character.initialize()
+	character.set_canvas(canvas)
 	characters.push_back(character)
 	party.add_child(character)
 	if run_type == RunDef.RunType.TEST_BLACKSMITH:

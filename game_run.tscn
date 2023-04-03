@@ -3,15 +3,16 @@
 [ext_resource type="Script" path="res://game_run.gd" id="1_0svbp"]
 [ext_resource type="Script" path="res://shared_bag.gd" id="3_1wd2t"]
 
-[node name="GameRun" type="Node" node_paths=PackedStringArray("shared_bag", "party", "stage_parent", "menu", "save_and_quit_button", "abandon_button")]
+[node name="GameRun" type="Node" node_paths=PackedStringArray("shared_bag", "party", "stage_parent", "canvas", "menu", "save_and_quit_button", "abandon_button")]
 process_mode = 3
 script = ExtResource("1_0svbp")
 shared_bag = NodePath("SharedBag")
 party = NodePath("Party")
 stage_parent = NodePath("StageParent")
-menu = NodePath("Menu")
-save_and_quit_button = NodePath("Menu/Save & Quit")
-abandon_button = NodePath("Menu/Abandon Run")
+canvas = NodePath("CanvasLayer")
+menu = NodePath("CanvasLayer/Menu")
+save_and_quit_button = NodePath("CanvasLayer/Menu/Save & Quit")
+abandon_button = NodePath("CanvasLayer/Menu/Abandon Run")
 
 [node name="Party" type="Node" parent="."]
 process_mode = 1
@@ -22,7 +23,9 @@ process_mode = 1
 [node name="SharedBag" type="Node" parent="."]
 script = ExtResource("3_1wd2t")
 
-[node name="Menu" type="VBoxContainer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Menu" type="VBoxContainer" parent="CanvasLayer"]
 process_mode = 2
 visible = false
 anchors_preset = 8
@@ -30,20 +33,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -56.5
+offset_top = -33.0
+offset_right = 56.5
+offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Save & Quit" type="Button" parent="Menu"]
+[node name="Save & Quit" type="Button" parent="CanvasLayer/Menu"]
 layout_mode = 2
 text = "Save & Quit"
 
-[node name="Abandon Run" type="Button" parent="Menu"]
+[node name="Abandon Run" type="Button" parent="CanvasLayer/Menu"]
 layout_mode = 2
 text = "Abandon Run"
 
-[connection signal="pressed" from="Menu/Save & Quit" to="." method="_on_save_quit_pressed"]
-[connection signal="pressed" from="Menu/Abandon Run" to="." method="_on_abandon_run_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/Save & Quit" to="." method="_on_save_quit_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/Abandon Run" to="." method="_on_abandon_run_pressed"]
