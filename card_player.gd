@@ -31,6 +31,9 @@ func get_enemy_map(unit: Unit):
 		return map.character_locs
 
 func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
+	if unit_card.card.target_mode == Enum.TargetMode.SELF:
+		target_tile = unit_card.unit.get_id_position()
+
 	await unit_card.apply_self_effects()
 
 	var affected_tiles = unit_card.card.effect_area(direction)
