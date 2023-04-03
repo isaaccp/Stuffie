@@ -71,10 +71,6 @@ static func get_run(run_type: RunType):
 			run_def.shared_bag_gold = 100
 			run_def.levels = [
 				RunLevelDef.create([
-					StageDef.card_reward(5),
-					StageDef.card_reward(5),
-					StageDef.card_reward(5),
-					StageDef.blacksmith(4, 4, 3),
 					StageDef.combat(0),
 					StageDef.combat(1),
 					StageDef.blacksmith(),
@@ -82,6 +78,7 @@ static func get_run(run_type: RunType):
 					StageDef.camp(),
 					StageDef.combat(3),
 					StageDef.blacksmith(),
+					StageDef.character(),
 					StageDef.combat(4),
 				]),
 				RunLevelDef.create([
