@@ -84,12 +84,18 @@ static func get_run(run_type: RunType):
 					StageDef.blacksmith(),
 					StageDef.combat(4),
 				]),
+				RunLevelDef.create([
+					StageDef.combat(5),
+					StageDef.blacksmith(),
+					StageDef.combat(6),
+				]),
 			]
 		RunType.TEST_BLACKSMITH:
 			run_def.shared_bag_gold = 30
 			run_def.levels = [
 				RunLevelDef.create([
 					StageDef.blacksmith(),
+					StageDef.camp(),
 					StageDef.combat(0),
 				]),
 			]
