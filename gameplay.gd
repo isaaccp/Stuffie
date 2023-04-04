@@ -186,6 +186,7 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 			treasures.add_child(treasure)
 	enemy_turn_manager.initialize(map_manager, effects)
 	enemy_turn_manager.character_died.connect(handle_character_death)
+	enemy_turn_manager.enemy_died.connect(_on_enemy_death)
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
 	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)
 	player_move_area = TilesHighlight.new(map_manager)
@@ -445,6 +446,8 @@ func _process(delta):
 			enemy_moving = true
 			await enemy_turn_manager.execute_moves(map_manager)
 			enemy_moving = false
+			if map_manager.enemy_locs.is_empty():
+				all_enemies_died.emit()
 			change_state(GameState.HUMAN_TURN)
 
 func reset_undo():
@@ -741,8 +744,6 @@ func play_card():
 	active_character.card_played.emit(active_character, current_card)
 	if unit_card.card.is_attack():
 		active_character.attacked.emit(active_character)
-	if map_manager.enemy_locs.is_empty():
-		all_enemies_died.emit()
 	# Consider wrapping all this into a method.
 	target_area.queue_free()
 	target_cursor.queue_free()
@@ -753,6 +754,8 @@ func play_card():
 	current_card = null
 	if not hand_ui.animation_finished.is_null():
 		await hand_ui.animation_finished
+	if map_manager.enemy_locs.is_empty():
+		all_enemies_died.emit()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func teleport(character: Character, distance: int):

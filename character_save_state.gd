@@ -15,5 +15,6 @@ class_name CharacterSaveState
 @export var block: int
 @export var power: int
 @export var dodge: int
+@export var bleed: int
 @export var relic_manager: RelicManager
 @export var deck: Deck

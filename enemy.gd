@@ -33,6 +33,7 @@ func mock():
 	m.action_points = action_points
 	m.extra_damage = extra_damage
 	m.paralysis = paralysis
+	m.bleed = bleed
 	for card in cards:
 		m.unit_cards.push_back(UnitCard.new(m, card))
 	m.next_turn_cards = next_turn_cards
@@ -67,6 +68,7 @@ func info_text() -> String:
 		"power": power,
 		"weakness": weakness,
 		"paralysis": paralysis,
+		"bleed": bleed,
 	}
 	var text = (
 		"[b]{name}[/b]\n" +
@@ -85,6 +87,8 @@ func info_text() -> String:
 		text += "[url]Weakness[/url]: {weakness}\n"
 	if paralysis > 0:
 		text += "[url]Paralysis[/url]: {paralysis}\n"
+	if bleed > 0:
+		text += "[url]Bleed[/url]: {bleed}\n"
 	text += "Actions\n"
 	for unit_card in unit_cards:
 		text += "%d💢 %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]
@@ -121,6 +125,7 @@ func get_save_state():
 	save_state.action_points = action_points
 	save_state.weakness = weakness
 	save_state.paralysis = paralysis
+	save_state.bleed = bleed
 	return save_state
 
 func load_save_state(save_state: EnemySaveState):
@@ -133,3 +138,4 @@ func load_save_state(save_state: EnemySaveState):
 	action_points = save_state.action_points
 	weakness = save_state.weakness
 	paralysis = save_state.paralysis
+	bleed = save_state.bleed

@@ -36,7 +36,6 @@ signal turn_started(character: Character)
 signal turn_ended(character: Character)
 signal card_played(character: Character, card: Card)
 signal attacked(character: Character)
-signal killed_enemy(character: Character)
 
 class Snapshot:
 	var action_points: int
@@ -83,6 +82,7 @@ func mock():
 	m.total_hit_points = total_hit_points
 	m.block = block
 	m.dodge = dodge
+	m.bleed = bleed
 	m.snap()
 	return m
 
@@ -311,6 +311,7 @@ func get_save_state():
 	save_state.block = block
 	save_state.power = power
 	save_state.dodge = dodge
+	save_state.bleed = bleed
 	save_state.relic_manager = relic_manager
 	save_state.deck = deck
 	return save_state
@@ -328,6 +329,7 @@ func load_save_state(save_state: CharacterSaveState):
 	block = save_state.block
 	power = save_state.power
 	dodge = save_state.dodge
+	bleed = save_state.bleed
 	relic_manager = save_state.relic_manager
 	deck = save_state.deck
 	initialize(false)

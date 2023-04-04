@@ -15,3 +15,4 @@ class_name EnemySaveState
 @export var weakness: int
 @export var paralysis: int
 @export var vulnerability: int
+@export var bleed: int

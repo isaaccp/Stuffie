@@ -148,6 +148,9 @@ func get_description() -> String:
 		if damage_text:
 			description += "%s for %s dmg\n" % [attack_text, damage_text]
 			range_included = true
+		var on_damage_text = UnitCard.join_effects_text(unit, card.on_damage_effects)
+		if on_damage_text:
+			description += "On Damage: %s\n" % on_damage_text
 		var on_play_text = on_play_effect_text()
 		if on_play_text:
 			if not range_included:
@@ -219,6 +222,9 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 			CardEffectValue.Field.PARALYSIS:
 				target.paralysis += value
 				unit.add_stat(Stats.Field.PARALYSIS_APPLIED, value)
+			CardEffectValue.Field.BLEED:
+				target.bleed += value
+				unit.add_stat(Stats.Field.BLEED_APPLIED, value)
 
 static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 	var effect_text = ""

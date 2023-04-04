@@ -14,6 +14,7 @@ var action_points: int
 var power: int
 var weakness: int
 var paralysis: int
+var bleed: int
 # Mostly intended for enemies so levels can add extra damage.
 var extra_damage = 0
 # Cards to be played at beginning of next turn.
@@ -26,6 +27,10 @@ func add_power(power_amount: int):
 
 func begin_turn():
 	super()
+	if bleed > 0:
+		# Not blockable or dodgeble.
+		apply_damage(bleed, false, false)
+		bleed -= 1
 
 func clear_next_turn_cards():
 	next_turn_cards.clear()
