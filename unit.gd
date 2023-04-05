@@ -26,11 +26,13 @@ func add_power(power_amount: int):
 	changed.emit()
 
 func begin_turn():
-	super()
 	if bleed > 0:
 		# Not blockable or dodgeble.
 		apply_damage(bleed, false, false)
 		bleed -= 1
+	# Remove block/dodge after damage effects, so if some of the damage is
+	# preventable, block from previous turn can be used.
+	super()
 
 func clear_next_turn_cards():
 	next_turn_cards.clear()
