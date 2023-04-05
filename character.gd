@@ -135,7 +135,6 @@ func end_stage():
 	changed.emit()
 
 func begin_turn():
-	snap()
 	super()
 	turn_started.emit(self)
 	changed.emit()

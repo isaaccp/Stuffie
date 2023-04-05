@@ -480,6 +480,7 @@ func begin_turn():
 	turn_number += 1
 	for character in party.get_children():
 		character.begin_turn()
+		character.snap()
 		for card in character.next_turn_cards:
 			var unit_card = UnitCard.new(character, card)
 			card_player.play_card_next_turn_effects(unit_card)

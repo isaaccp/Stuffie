@@ -26,9 +26,20 @@ func calculate() -> bool:
 	calculate_moves()
 	if aborted:
 		return false
+	var characters = []
+	# Save characters in case they die.
+	for character in execution_map.character_locs.values():
+		characters.push_back(character)
 	play_attacks()
 	if aborted:
 		return false
+	# Play mock characters begin_turn to account for e.g. bleed effects.
+	for character in characters:
+		character.begin_turn()
+	if aborted:
+		return false
+	for character in characters:
+		record_damage(character)
 	return true
 
 func calculate_moves():
@@ -104,7 +115,6 @@ func execute_moves(map: MapManager, effects_node: Node):
 				enemy.action_points -= chosen_card.card.cost
 				if target_character.is_destroyed:
 					if simulation:
-						record_damage(target_character)
 						map.remove_character(target_character.get_id_position())
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
@@ -119,9 +129,6 @@ func execute_moves(map: MapManager, effects_node: Node):
 		if chosen_card:
 			await card_player.play_card(chosen_card, enemy.get_id_position(), Vector2.UP)
 			enemy.action_points -= chosen_card.card.cost
-	if simulation:
-		for loc in map.character_locs:
-			record_damage(map.character_locs[loc])
 
 func record_damage(character: Character):
 	damage_taken.push_back([character.get_id_position(), character.snapshot.hit_points - character.hit_points])
