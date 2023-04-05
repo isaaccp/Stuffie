@@ -31,7 +31,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "active_marker", "action_points_label", "move_points_label", "hit_points_label", "block_label", "dodge_label", "power_label", "relics_container", "powers_container")]
+[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "active_marker", "action_points_label", "move_points_label", "hit_points_label", "block_label", "dodge_label", "power_label", "bleed_label", "relics_container", "powers_container")]
 offset_right = 110.0
 offset_bottom = 261.0
 theme = SubResource("Theme_2nrls")
@@ -45,6 +45,7 @@ hit_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxCont
 block_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Block")
 dodge_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Dodge")
 power_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Power")
+bleed_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Bleed")
 relics_container = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Relics")
 powers_container = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Powers")
 
@@ -125,6 +126,9 @@ layout_mode = 2
 tooltip_text = "If character has any power, damage +50%.
 Remove 1 power per turn."
 mouse_filter = 1
+
+[node name="Bleed" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="Relics" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

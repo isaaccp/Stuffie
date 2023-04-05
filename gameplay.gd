@@ -171,6 +171,8 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 		assert(updated_doors == combat_state.doors.size())
 	for character in party.get_children():
 		character.destroyed.connect(handle_character_death.bind(character))
+		# Test.
+		character.bleed = 20
 	for enemy in enemies_node.get_children():
 		enemy.destroyed.connect(_on_enemy_death.bind(enemy))
 	enemy_died.connect(stage.enemy_died_handler)

@@ -10,6 +10,7 @@ class_name CharacterPortrait
 @export var block_label: Label
 @export var dodge_label: Label
 @export var power_label: Label
+@export var bleed_label: Label
 @export var relics_container: Container
 @export var powers_container: Container
 
@@ -34,6 +35,7 @@ func _update_character():
 	_set_block(character.block)
 	_set_dodge(character.dodge)
 	_set_power(character.power)
+	_set_bleed(character.bleed)
 	_set_powers(character.relic_manager.temp_relics)
 	if character.is_destroyed:
 		modulate = Color(1, 0, 0, 0.5)
@@ -143,6 +145,14 @@ func _set_power(power: int):
 	else:
 		power_label.text = "Power: %d⌚" % power
 		power_label.show()
+
+func _set_bleed(bleed:int):
+	if bleed == 0:
+		bleed_label.text = ""
+		bleed_label.hide()
+	else:
+		bleed_label.text = "Bleed: %d" % bleed
+		bleed_label.show()
 
 func _set_active(active: bool):
 	active_marker.visible = active
