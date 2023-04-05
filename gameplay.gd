@@ -169,6 +169,8 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 					updated_doors += 1
 					break
 		assert(updated_doors == combat_state.doors.size())
+	for character in party.get_children():
+		character.destroyed.connect(handle_character_death.bind(character))
 	connect("enemy_died", stage.enemy_died_handler)
 	connect("character_moved", stage.character_moved_handler)
 	connect("all_enemies_died", stage.all_enemies_died_handler)
@@ -185,7 +187,6 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 			map_manager.add_treasure(treasure)
 			treasures.add_child(treasure)
 	enemy_turn_manager.initialize(map_manager, effects)
-	enemy_turn_manager.character_died.connect(handle_character_death)
 	enemy_turn_manager.enemy_died.connect(_on_enemy_death)
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
 	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)

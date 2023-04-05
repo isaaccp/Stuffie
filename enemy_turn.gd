@@ -9,7 +9,6 @@ var enemy_moves: Array
 var damage_taken: Array
 var animation_manager = AnimationManager.new()
 
-signal character_died(character: Character)
 signal enemy_died(enemy: Enemy)
 
 func _init(map: MapManager):
@@ -111,8 +110,6 @@ func execute_moves(map: MapManager, effects_node: Node):
 					if simulation:
 						record_damage(target_character)
 						map.remove_character(target_character.get_id_position())
-					else:
-						character_died.emit(target_character)
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
 		# try to play a self-card.

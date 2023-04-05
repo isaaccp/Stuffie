@@ -11,7 +11,6 @@ var effects_node: Node
 
 signal calculated(damage_taken: Array)
 signal invalidated
-signal character_died(character: Character)
 signal enemy_died(enemy: Enemy)
 
 func initialize(map_manager: MapManager, effects_node: Node):
@@ -43,11 +42,7 @@ func _wait_enemy_turn_completed(thread: Thread):
 	if thread_id == current_thread_id:
 		fresh = result
 		calculated.emit(enemy_turn.damage_taken)
-		enemy_turn.character_died.connect(_on_character_died)
 		enemy_turn.enemy_died.connect(_on_enemy_died)
-
-func _on_character_died(character: Character):
-	character_died.emit(character)
 
 func _on_enemy_died(enemy: Enemy):
 	enemy_died.emit(enemy)
