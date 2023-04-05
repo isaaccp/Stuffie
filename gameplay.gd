@@ -171,6 +171,8 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 		assert(updated_doors == combat_state.doors.size())
 	for character in party.get_children():
 		character.destroyed.connect(handle_character_death.bind(character))
+	for enemy in enemies_node.get_children():
+		enemy.destroyed.connect(_on_enemy_death.bind(enemy))
 	enemy_died.connect(stage.enemy_died_handler)
 	character_moved.connect(stage.character_moved_handler)
 	all_enemies_died.connect(stage.all_enemies_died_handler)
@@ -180,14 +182,12 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	world.add_child(stage)
 	initialize_map_manager(stage)
 	card_player = CardPlayer.new(map_manager, effects)
-	card_player.enemy_killed.connect(_on_enemy_death)
 	if combat_state != null:
 		for treasure_state in combat_state.treasures:
 			var treasure = TreasureLoader.restore(treasure_state)
 			map_manager.add_treasure(treasure)
 			treasures.add_child(treasure)
 	enemy_turn_manager.initialize(map_manager, effects)
-	enemy_turn_manager.enemy_died.connect(_on_enemy_death)
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
 	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)
 	player_move_area = TilesHighlight.new(map_manager)

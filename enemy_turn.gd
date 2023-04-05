@@ -9,8 +9,6 @@ var enemy_moves: Array
 var damage_taken: Array
 var animation_manager = AnimationManager.new()
 
-signal enemy_died(enemy: Enemy)
-
 func _init(map: MapManager):
 	# Need to clone entities to apply begin_turn() and also fov.
 	calculation_map = map.clone(true, true)
@@ -65,8 +63,6 @@ func execute_moves(map: MapManager, effects_node: Node):
 		# so check for that.
 		enemy.begin_turn()
 		if enemy.is_destroyed:
-			if not simulation:
-				enemy_died.emit(enemy)
 			continue
 		for card in enemy.next_turn_cards:
 			var unit_card = UnitCard.new(enemy, card)

@@ -9,8 +9,6 @@ var animation_manager: AnimationManager
 
 # Fired if the played card is an attack card.
 signal attacked
-# Fired once for each enemy killed by this card.
-signal enemy_killed(unit: Unit)
 
 func _init(map_manager: MapManager, effects_node: Node):
 	self.map = map_manager
@@ -71,8 +69,6 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 					effects_node.add_child(effect)
 		for enemy in enemies:
 			await unit_card.apply_to_enemy(enemy)
-			if enemy.is_destroyed:
-				enemy_killed.emit(enemy)
 	elif unit_card.card.target_mode in [Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
 		var ally_map = get_ally_map(unit_card.unit)
 		var target_unit = ally_map[target_tile]
