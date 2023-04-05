@@ -12,11 +12,12 @@ var health_bar_scene = preload("res://health_display_3d.tscn")
 
 var block: int
 var dodge: int
-var destroyed = false
+var is_destroyed = false
 # TODO: var vulnerability: int
 
 signal health_changed
 signal changed
+signal destroyed
 
 func _ready():
 	if total_hit_points > 0:
@@ -91,12 +92,20 @@ func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 	hit_points -= damage
 	health_changed.emit()
 	if hit_points <= 0:
-		destroyed = true
+		set_destroyed()
 	changed.emit()
 	return true
 
+func set_destroyed():
+	if not is_destroyed:
+		is_destroyed = true
+		destroyed.emit()
+
 # Heals 'hp' without going over total hp.
 func heal(hp: int):
+	# No healing if entity was destroyed.
+	if is_destroyed:
+		return
 	var original_hp = hit_points
 	hit_points += hp
 	if hit_points > total_hit_points:
@@ -106,6 +115,9 @@ func heal(hp: int):
 	changed.emit()
 
 func heal_full():
+	# No healing if entity was destroyed.
+	if is_destroyed:
+		return
 	hit_points = total_hit_points
 	health_changed.emit()
 	changed.emit()

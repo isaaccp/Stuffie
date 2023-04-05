@@ -307,7 +307,7 @@ func get_save_state():
 	save_state.action_points = action_points
 	save_state.move_points = move_points
 	save_state.hit_points = hit_points
-	save_state.destroyed = destroyed
+	save_state.is_destroyed = is_destroyed
 	save_state.block = block
 	save_state.power = power
 	save_state.dodge = dodge
@@ -325,7 +325,7 @@ func load_save_state(save_state: CharacterSaveState):
 	action_points = save_state.action_points
 	move_points = save_state.move_points
 	hit_points = save_state.hit_points
-	destroyed = save_state.destroyed
+	is_destroyed = save_state.is_destroyed
 	block = save_state.block
 	power = save_state.power
 	dodge = save_state.dodge

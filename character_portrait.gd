@@ -35,7 +35,7 @@ func _update_character():
 	_set_dodge(character.dodge)
 	_set_power(character.power)
 	_set_powers(character.relic_manager.temp_relics)
-	if character.destroyed:
+	if character.is_destroyed:
 		modulate = Color(1, 0, 0, 0.5)
 	else:
 		modulate = Color(1, 1, 1)

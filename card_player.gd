@@ -71,7 +71,7 @@ func play_card(unit_card: UnitCard, target_tile: Vector2i, direction: Vector2):
 					effects_node.add_child(effect)
 		for enemy in enemies:
 			await unit_card.apply_to_enemy(enemy)
-			if enemy.destroyed:
+			if enemy.is_destroyed:
 				enemy_killed.emit(enemy)
 	elif unit_card.card.target_mode in [Enum.TargetMode.ALLY, Enum.TargetMode.SELF_ALLY]:
 		var ally_map = get_ally_map(unit_card.unit)

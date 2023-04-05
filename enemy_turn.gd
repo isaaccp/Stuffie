@@ -65,7 +65,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 		# This may cause the death of an enemy due to bleed or other effects,
 		# so check for that.
 		enemy.begin_turn()
-		if enemy.destroyed:
+		if enemy.is_destroyed:
 			if not simulation:
 				enemy_died.emit(enemy)
 			continue
@@ -107,7 +107,7 @@ func execute_moves(map: MapManager, effects_node: Node):
 				# TODO: Figure out direction for effects.
 				await card_player.play_card(chosen_card, chosen_target[0], Vector2.UP)
 				enemy.action_points -= chosen_card.card.cost
-				if target_character.destroyed:
+				if target_character.is_destroyed:
 					if simulation:
 						record_damage(target_character)
 						map.remove_character(target_character.get_id_position())
