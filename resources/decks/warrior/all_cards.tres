@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=43 format=3 uid="uid://cqmvranirdbgc"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=49 format=3 uid="uid://cqmvranirdbgc"]
 
+[ext_resource type="Resource" uid="uid://c3vm0174dnvcx" path="res://resources/cards/warrior/accurate_arterial_strike.tres" id="1_7m42l"]
 [ext_resource type="Resource" uid="uid://48tkoexc41yi" path="res://resources/cards/warrior/block_and_plan.tres" id="1_unx88"]
+[ext_resource type="Resource" uid="uid://dju5ycnsfdhdd" path="res://resources/cards/warrior/arterial_strike.tres" id="2_ibb13"]
 [ext_resource type="Resource" uid="uid://qy8mps4hkyur" path="res://resources/cards/warrior/cautious_slash.tres" id="2_mrufy"]
 [ext_resource type="Resource" uid="uid://brsdh2a7rnmdu" path="res://resources/cards/warrior/cleave.tres" id="3_p2acf"]
 [ext_resource type="Resource" uid="uid://cubqk4djiwyk2" path="res://resources/cards/warrior/charge.tres" id="3_vt0w8"]
@@ -15,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://ca5npfi16uihh" path="res://resources/cards/warrior/improvise.tres" id="12_3qeu4"]
 [ext_resource type="Resource" uid="uid://4wcd2fljpd7f" path="res://resources/cards/warrior/lasting_rage.tres" id="13_0jscs"]
 [ext_resource type="Resource" uid="uid://0n0j1moqf5bb" path="res://resources/cards/warrior/lunge.tres" id="14_7sbh2"]
+[ext_resource type="Resource" uid="uid://cw0x4lanthbpg" path="res://resources/cards/warrior/hobbling_arterial_strike.tres" id="14_cgsce"]
 [ext_resource type="Resource" uid="uid://bpsnyvo00otit" path="res://resources/cards/warrior/new_plan.tres" id="15_yj3lj"]
 [ext_resource type="Resource" uid="uid://d3etj70kx2c4t" path="res://resources/cards/warrior/plan_and_rush.tres" id="16_jd3wq"]
 [ext_resource type="Resource" uid="uid://dsj8uc8l5ps70" path="res://resources/cards/warrior/power_cleave.tres" id="17_6pg3m"]
@@ -26,10 +29,12 @@
 [ext_resource type="Resource" uid="uid://cmtkn1sph0lj6" path="res://resources/cards/warrior/relentless_sword_assault.tres" id="22_vvn73"]
 [ext_resource type="Resource" uid="uid://brlnc2g8pt2io" path="res://resources/cards/warrior/savage_sword_assault.tres" id="23_n4fqu"]
 [ext_resource type="Resource" uid="uid://bdi2htf3fr7we" path="res://resources/cards/warrior/shield_bash.tres" id="23_ss0fo"]
+[ext_resource type="Resource" uid="uid://csuscpy874jgu" path="res://resources/cards/warrior/savage_sharp_cut.tres" id="24_6tpyf"]
 [ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/shout.tres" id="24_cq8lq"]
 [ext_resource type="Resource" uid="uid://xb54vphlw5tv" path="res://resources/cards/warrior/sharp_cut.tres" id="25_lg8lb"]
 [ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/slash.tres" id="25_w4k4p"]
 [ext_resource type="Resource" uid="uid://djnbtvfb2efs5" path="res://resources/cards/warrior/slowing_shout.tres" id="26_s6iqk"]
+[ext_resource type="Resource" uid="uid://ck3s5l1c3hyx0" path="res://resources/cards/warrior/sharp_deep_cut.tres" id="27_byji2"]
 [ext_resource type="Resource" uid="uid://ctal7t6fx4gpe" path="res://resources/cards/warrior/smart_improvisation.tres" id="27_ftaji"]
 [ext_resource type="Resource" uid="uid://ivvrpes2yani" path="res://resources/cards/warrior/strong_fortify.tres" id="28_1me0x"]
 [ext_resource type="Resource" uid="uid://cmxrjrycyegii" path="res://resources/cards/warrior/strong_lunge.tres" id="29_rb8vx"]
@@ -42,7 +47,8 @@
 [ext_resource type="Resource" uid="uid://c4igkofn7lu6o" path="res://resources/cards/warrior/wild_rage.tres" id="36_b88q5"]
 [ext_resource type="Resource" uid="uid://bsfgc2h7cavny" path="res://resources/cards/warrior/sword_assault.tres" id="37_km1wl"]
 [ext_resource type="Script" path="res://card_selection_set.gd" id="37_livim"]
+[ext_resource type="Resource" uid="uid://d3ssexx6xvb7j" path="res://resources/cards/warrior/vorpal_sharp_cut.tres" id="42_gsars"]
 
 [resource]
 script = ExtResource("37_livim")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_unx88"), ExtResource("2_mrufy"), ExtResource("3_vt0w8"), ExtResource("3_p2acf"), ExtResource("4_hrm45"), ExtResource("5_vlj7q"), ExtResource("6_k8aeo"), ExtResource("7_ogidm"), ExtResource("8_mg3le"), ExtResource("9_l7okj"), ExtResource("10_32bif"), ExtResource("11_mqpwq"), ExtResource("12_3qeu4"), ExtResource("13_0jscs"), ExtResource("14_7sbh2"), ExtResource("15_yj3lj"), ExtResource("16_jd3wq"), ExtResource("17_6pg3m"), ExtResource("18_loc12"), ExtResource("19_pwmpa"), ExtResource("20_v6ag8"), ExtResource("21_ttvgp"), ExtResource("22_vvn73"), ExtResource("23_n4fqu"), ExtResource("25_lg8lb"), ExtResource("22_s5c4t"), ExtResource("23_ss0fo"), ExtResource("24_cq8lq"), ExtResource("25_w4k4p"), ExtResource("26_s6iqk"), ExtResource("27_ftaji"), ExtResource("28_1me0x"), ExtResource("29_rb8vx"), ExtResource("30_my5yt"), ExtResource("31_wd4sc"), ExtResource("32_co1rq"), ExtResource("33_buvom"), ExtResource("37_km1wl"), ExtResource("34_fgg37"), ExtResource("35_v21pg"), ExtResource("36_b88q5")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_7m42l"), ExtResource("2_ibb13"), ExtResource("1_unx88"), ExtResource("2_mrufy"), ExtResource("3_vt0w8"), ExtResource("3_p2acf"), ExtResource("4_hrm45"), ExtResource("5_vlj7q"), ExtResource("6_k8aeo"), ExtResource("7_ogidm"), ExtResource("8_mg3le"), ExtResource("9_l7okj"), ExtResource("10_32bif"), ExtResource("14_cgsce"), ExtResource("11_mqpwq"), ExtResource("12_3qeu4"), ExtResource("13_0jscs"), ExtResource("14_7sbh2"), ExtResource("15_yj3lj"), ExtResource("16_jd3wq"), ExtResource("17_6pg3m"), ExtResource("18_loc12"), ExtResource("19_pwmpa"), ExtResource("20_v6ag8"), ExtResource("21_ttvgp"), ExtResource("22_vvn73"), ExtResource("24_6tpyf"), ExtResource("23_n4fqu"), ExtResource("25_lg8lb"), ExtResource("27_byji2"), ExtResource("22_s5c4t"), ExtResource("23_ss0fo"), ExtResource("24_cq8lq"), ExtResource("25_w4k4p"), ExtResource("26_s6iqk"), ExtResource("27_ftaji"), ExtResource("28_1me0x"), ExtResource("29_rb8vx"), ExtResource("30_my5yt"), ExtResource("31_wd4sc"), ExtResource("32_co1rq"), ExtResource("33_buvom"), ExtResource("37_km1wl"), ExtResource("34_fgg37"), ExtResource("42_gsars"), ExtResource("35_v21pg"), ExtResource("36_b88q5")])

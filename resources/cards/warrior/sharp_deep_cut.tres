@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://ck3s5l1c3hyx0"]
+
+[ext_resource type="Resource" uid="uid://xb54vphlw5tv" path="res://resources/cards/warrior/sharp_cut.tres" id="1_b5o01"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_d7pc8"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_fxrn0"]
+[ext_resource type="Script" path="res://card.gd" id="3_fvhi5"]
+
+[sub_resource type="Resource" id="Resource_umena"]
+script = ExtResource("1_d7pc8")
+value_type = 1
+absolute_value = 6
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_r0h5r"]
+script = ExtResource("1_d7pc8")
+value_type = 1
+absolute_value = 4
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+
+[sub_resource type="Resource" id="Resource_lqi5k"]
+script = ExtResource("2_fxrn0")
+effect_value = SubResource("Resource_r0h5r")
+effect_type = 1
+target_field = 13
+effect = 0
+
+[resource]
+script = ExtResource("3_fvhi5")
+card_name = "Sharp Deep Cut"
+upgrade_name = "Deep"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_b5o01")
+cost = 1
+target_mode = 3
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+damage_value = SubResource("Resource_umena")
+on_play_self_effects = Array[ExtResource("2_fxrn0")]([])
+on_play_effects = Array[ExtResource("2_fxrn0")]([])
+on_damage_effects = Array[ExtResource("2_fxrn0")]([SubResource("Resource_lqi5k")])
+on_play_after_effects = Array[ExtResource("2_fxrn0")]([])
+on_kill_effects = Array[ExtResource("2_fxrn0")]([])
+on_next_turn_effects = Array[ExtResource("2_fxrn0")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
