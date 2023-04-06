@@ -70,7 +70,7 @@ var animation_manager = AnimationManager.new()
 var stage_trigger_manager: StageTriggerManager
 var card_player: CardPlayer
 
-# New stages are added to this world.
+# New stages are added to this node.
 @export var world: Node
 # Effects go under this node.
 @export var effects: Node
