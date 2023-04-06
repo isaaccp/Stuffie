@@ -437,6 +437,7 @@ func _process(delta):
 			camera.fov = 10
 	if Input.is_action_just_released("ui_zoom_out"):
 		camera.fov += 1
+		# Update if needed to zoom out farther.
 		if camera.fov > 100:
 			camera.fov = 100
 	if camera_modified:
