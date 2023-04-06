@@ -44,7 +44,7 @@ const field_name = {
 	Field.GOLD: "🪙",
 	Field.DODGE: "[url]dodge[/url]",
 	Field.PARALYSIS: "[url]paralysis[/url]",
-	Field.BLEED: "[url]bleed[/url]",
+	Field.BLEED: "🩸[url]bleed[/url]",
 }
 
 enum ReadOnlyField {

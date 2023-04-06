@@ -88,7 +88,7 @@ func info_text() -> String:
 	if paralysis > 0:
 		text += "[url]Paralysis[/url]: {paralysis}\n"
 	if bleed > 0:
-		text += "[url]Bleed[/url]: {bleed}\n"
+		text += "[url]Bleed[/url]: {bleed}🩸\n"
 	text += "Actions\n"
 	for unit_card in unit_cards:
 		text += "%d💢 %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=17 format=3 uid="uid://1cwrvs1k8a64"]
+[gd_resource type="Resource" script_class="CardSelectionSet" load_steps=16 format=3 uid="uid://1cwrvs1k8a64"]
 
 [ext_resource type="Resource" uid="uid://brsdh2a7rnmdu" path="res://resources/cards/warrior/cleave.tres" id="1_h5s0p"]
 [ext_resource type="Resource" uid="uid://cubqk4djiwyk2" path="res://resources/cards/warrior/charge.tres" id="1_iqelh"]
@@ -15,8 +15,7 @@
 [ext_resource type="Script" path="res://card_selection_set.gd" id="6_ltors"]
 [ext_resource type="Resource" uid="uid://xb54vphlw5tv" path="res://resources/cards/warrior/sharp_cut.tres" id="9_rp105"]
 [ext_resource type="Resource" uid="uid://bsfgc2h7cavny" path="res://resources/cards/warrior/sword_assault.tres" id="11_d4g5q"]
-[ext_resource type="Resource" uid="uid://d3ssexx6xvb7j" path="res://resources/cards/warrior/vorpal_sharp_cut.tres" id="14_gc7fo"]
 
 [resource]
 script = ExtResource("6_ltors")
-cards = Array[Resource("res://card.gd")]([ExtResource("1_tdeyi"), ExtResource("1_iqelh"), ExtResource("1_h5s0p"), ExtResource("2_h1p0a"), ExtResource("3_y83xr"), ExtResource("3_mvxdb"), ExtResource("2_nnosj"), ExtResource("3_m6rg7"), ExtResource("3_rjti7"), ExtResource("9_rp105"), ExtResource("2_i7307"), ExtResource("4_t5c2h"), ExtResource("5_a7myk"), ExtResource("11_d4g5q"), ExtResource("14_gc7fo")])
+cards = Array[Resource("res://card.gd")]([ExtResource("1_tdeyi"), ExtResource("1_iqelh"), ExtResource("1_h5s0p"), ExtResource("2_h1p0a"), ExtResource("3_y83xr"), ExtResource("3_mvxdb"), ExtResource("2_nnosj"), ExtResource("3_m6rg7"), ExtResource("3_rjti7"), ExtResource("9_rp105"), ExtResource("2_i7307"), ExtResource("4_t5c2h"), ExtResource("5_a7myk"), ExtResource("11_d4g5q")])

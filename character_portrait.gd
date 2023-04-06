@@ -151,7 +151,7 @@ func _set_bleed(bleed:int):
 		bleed_label.text = ""
 		bleed_label.hide()
 	else:
-		bleed_label.text = "Bleed: %d" % bleed
+		bleed_label.text = "Bleed: %d🩸" % bleed
 		bleed_label.show()
 
 func _set_active(active: bool):
