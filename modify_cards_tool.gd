@@ -26,8 +26,13 @@ func field_to_status(effects: Array):
 			effect.target_status = field_to_status_map[effect.target_field]
 			effect.target_field = CardEffectValue.Field.NO_FIELD
 
-func update(effects: Array):
-	field_to_status(effects)
+func modify(card: Card):
+	field_to_status(card.on_play_self_effects)
+	field_to_status(card.on_play_effects)
+	field_to_status(card.on_play_after_effects)
+	field_to_status(card.on_damage_effects)
+	field_to_status(card.on_kill_effects)
+	field_to_status(card.on_next_turn_effects)
 
 func modify_cards():
 	for character_name in character_names:
@@ -40,11 +45,6 @@ func modify_cards():
 				print("Loading %s" % filename)
 				var full_path = dir_path + "/" + filename
 				var card = load(full_path) as Card
-				update(card.on_play_self_effects)
-				update(card.on_play_effects)
-				update(card.on_play_after_effects)
-				update(card.on_damage_effects)
-				update(card.on_kill_effects)
-				update(card.on_next_turn_effects)
+				modify(card)
 				ResourceSaver.save(card, full_path)
 				filename = dir.get_next()
