@@ -53,47 +53,12 @@ func end_turn():
 	super()
 	action_points += total_action_points
 
-func info_text() -> String:
-	var format_vars = {
-		"name": enemy_name,
-		"level": level,
-		"action_points": action_points,
-		"move_points": move_points,
-		"total_move_points": total_move_points,
-		"hit_points": hit_points,
-		"total_hit_points": total_hit_points,
-		"block": status_manager.get_status(StatusDef.Status.BLOCK),
-		"dodge": status_manager.get_status(StatusDef.Status.DODGE),
-		"power": status_manager.get_status(StatusDef.Status.POWER),
-		"weakness": status_manager.get_status(StatusDef.Status.WEAKNESS),
-		"paralysis": status_manager.get_status(StatusDef.Status.PARALYSIS),
-		"bleed": status_manager.get_status(StatusDef.Status.BLEED),
-	}
-	var text = (
-		"[b]{name}[/b]\n" +
-		"Level: {level}\n" +
-		"AP: {action_points}💢\n" +
-		"HP: {hit_points}/{total_hit_points}\n" +
-		"MP: {move_points}/{total_move_points}\n"
-	)
-	# TODO: Refactor all those to take advantage of new statuses.
-	if status_manager.get_status(StatusDef.Status.BLOCK) > 0:
-		text += "[url]Block[/url]: {block}\n"
-	if status_manager.get_status(StatusDef.Status.DODGE) > 0:
-		text += "[url]Dodge[/url]: {dodge}\n"
-	if status_manager.get_status(StatusDef.Status.POWER) > 0:
-		text += "[url]Power[/url]: {power}\n"
-	if status_manager.get_status(StatusDef.Status.WEAKNESS) > 0:
-		text += "[url]Weakness[/url]: {weakness}\n"
-	if status_manager.get_status(StatusDef.Status.PARALYSIS) > 0:
-		text += "[url]Paralysis[/url]: {paralysis}\n"
-	if status_manager.get_status(StatusDef.Status.BLEED) > 0:
-		text += "[url]Bleed[/url]: {bleed}🩸\n"
+func actions_text():
+	var text = "%s\n" % enemy_name
 	text += "Actions\n"
 	for unit_card in unit_cards:
 		text += "%d💢 %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]
-	var formatted_text = text.format(format_vars)
-	return formatted_text
+	return text
 
 func move(curve: Curve3D, to: Vector2i):
 	var from = get_id_position()
