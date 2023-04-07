@@ -7,13 +7,15 @@ class_name CharacterPortrait
 @export var move_points_label: RichTextLabel
 @export var hit_points_bar: CurrentNextHealthBar
 @export var status_effects: StatusEffectsDisplay
+@export var enemy_actions: Control
+@export var enemy_actions_label: RichTextLabel
 
 enum PortraitMode {
 	DEFAULT = 0,
 	COMBAT,
 }
 
-var character: Character
+var unit: Unit
 var stylebox: StyleBoxFlat
 
 # TODO: Have per-relic icons in some fancy way.
@@ -33,18 +35,28 @@ func set_mode(mode: PortraitMode):
 	elif mode == PortraitMode.COMBAT:
 		status_effects.show()
 
-func set_character(character: Character):
-	self.character = character
-	character.changed.connect(_update_character)
-	_update_character()
+func set_character(unit: Unit):
+	self.unit = unit
+	unit.changed.connect(_update_unit)
+	_update_unit()
 
-func _update_character():
-	_set_portrait_texture(character.portrait_texture.texture)
-	_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
-	_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
-	_set_hit_points(character.pending_damage_set, character.pending_damage, character.hit_points, character.total_hit_points)
+func _update_unit():
+	_set_portrait_texture(unit.portrait_texture)
+	if unit is Character:
+		var character = unit as Character
+		_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
+		_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
+		_set_hit_points(character.pending_damage_set, character.pending_damage, character.hit_points, character.total_hit_points)
+		enemy_actions.hide()
+	elif unit is Enemy:
+		var enemy = unit as Enemy
+		_set_action_points(0, unit.action_points, unit.total_action_points)
+		_set_move_points(0, unit.move_points, unit.total_move_points)
+		_set_hit_points(false, 0, unit.hit_points, unit.total_hit_points)
+		enemy_actions.show()
+		enemy_actions_label.parse_bbcode(enemy.actions_text())
 	_set_status_effects()
-	if character.is_destroyed:
+	if unit.is_destroyed:
 		modulate = Color(1, 0, 0, 0.5)
 	else:
 		modulate = Color(1, 1, 1)
@@ -96,12 +108,14 @@ func _set_hit_points(pending_damage_set: bool, pending_damage: int, hit_points: 
 
 func _set_status_effects():
 	status_effects.clear()
-	for relic in character.relic_manager.relics:
-		status_effects.add_relic(relic_icon, "%s: %s" % [relic.name, relic.tooltip])
-	for power in character.relic_manager.temp_relics:
-		status_effects.add_relic(relic_power_icon, "%s: %s (until end of combat)" % [power.name, power.tooltip])
-	for status in character.status_manager.statuses:
-		var value = character.status_manager.get_status(status)
+	if unit is Character:
+		var character = unit as Character
+		for relic in character.relic_manager.relics:
+			status_effects.add_relic(relic_icon, "%s: %s" % [relic.name, relic.tooltip])
+		for power in character.relic_manager.temp_relics:
+			status_effects.add_relic(relic_power_icon, "%s: %s (until end of combat)" % [power.name, power.tooltip])
+	for status in unit.status_manager.statuses:
+		var value = unit.status_manager.get_status(status)
 		status_effects.add_status_effect(value, status)
 
 func set_active(active: bool):

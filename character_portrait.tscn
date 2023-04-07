@@ -34,7 +34,7 @@ shader_parameter/size = Vector2(1, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pu4ch"]
 bg_color = Color(1, 1, 1, 1)
 
-[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "action_points_label", "move_points_label", "hit_points_bar", "status_effects")]
+[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "action_points_label", "move_points_label", "hit_points_bar", "status_effects", "enemy_actions", "enemy_actions_label")]
 offset_right = 114.0
 offset_bottom = 174.0
 theme = SubResource("Theme_2nrls")
@@ -45,6 +45,8 @@ action_points_label = NodePath("ActionPointsPivot/ActionPoints/ActionPointsLabel
 move_points_label = NodePath("MovePointsPivot/MovePoints/MovePointsLabel")
 hit_points_bar = NodePath("Margin/VBox/PanelContainer3/MarginContainer/HPBar")
 status_effects = NodePath("StatusEffectsPivot/StatusEffectsDisplay")
+enemy_actions = NodePath("EnemyActionsPivot")
+enemy_actions_label = NodePath("EnemyActionsPivot/PanelContainer/EnemyActionsLabel")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -64,9 +66,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_e7l06")
 
 [node name="Portrait" type="TextureRect" parent="Margin/VBox/PanelContainer2"]
 material = SubResource("ShaderMaterial_mrtej")
-custom_minimum_size = Vector2(120, 180)
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 texture = ExtResource("2_s1eew")
+expand_mode = 4
 
 [node name="PanelContainer3" type="PanelContainer" parent="Margin/VBox"]
 layout_mode = 2
@@ -90,10 +93,10 @@ mouse_filter = 2
 [node name="ActionPoints" type="Control" parent="ActionPointsPivot"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 112.0
-offset_top = 157.0
-offset_right = 112.0
-offset_bottom = 157.0
+offset_left = 140.0
+offset_top = 126.0
+offset_right = 140.0
+offset_bottom = 126.0
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="ActionPointsPivot/ActionPoints"]
@@ -142,10 +145,10 @@ mouse_filter = 2
 [node name="MovePoints" type="Control" parent="MovePointsPivot"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 37.0
-offset_top = 169.0
-offset_right = 37.0
-offset_bottom = 169.0
+offset_left = 35.0
+offset_top = 137.0
+offset_right = 35.0
+offset_bottom = 137.0
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="MovePointsPivot/MovePoints"]
@@ -199,8 +202,22 @@ layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
 anchor_right = 0.0
-offset_left = 140.0
-offset_right = 140.0
+offset_left = 169.0
+offset_right = 169.0
 grow_horizontal = 1
+
+[node name="EnemyActionsPivot" type="Control" parent="."]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="EnemyActionsPivot"]
+layout_mode = 0
+offset_left = -195.0
+offset_top = 1.0
+offset_right = -9.0
+offset_bottom = 174.0
+
+[node name="EnemyActionsLabel" type="RichTextLabel" parent="EnemyActionsPivot/PanelContainer"]
+layout_mode = 2
+bbcode_enabled = true
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -89,7 +89,7 @@ var card_player: CardPlayer
 @export var stage_info: Label
 @export var objective_info: Label
 @export var turn_state_info: Label
-@export var enemy_info: RichTextLabel
+@export var enemy_portrait: CharacterPortrait
 @export var treasure_info: RichTextLabel
 @export var shared_bag_gold_ui: SharedBagGoldUI
 @export var move_path: Line2D
@@ -683,13 +683,14 @@ func clear_enemy_info_cache():
 func update_enemy_info(enemy: Enemy):
 	if Input.is_action_pressed("ui_showenemymove"):
 		return
-	enemy_info.text = enemy.info_text()
+	enemy_portrait.set_character(enemy)
+	enemy_portrait.set_mode(CharacterPortrait.PortraitMode.COMBAT)
+	enemy_portrait.show()
 	var walkable_cells = get_enemy_walkable_cells(enemy)
 	var attackable_cells = get_enemy_attackable_not_walkable_cells(enemy)
 	update_move_area(walkable_cells, attackable_cells)
 
 func clear_enemy_info():
-	enemy_info.text = ""
 	if Input.is_action_pressed("ui_showenemymove"):
 		return
 	enemy_move_area.visible = false

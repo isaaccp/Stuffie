@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cn4nrnrmacmvm"]
+[gd_scene load_steps=13 format=3 uid="uid://cn4nrnrmacmvm"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_2ehli"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_5rqn2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://card.gd" id="3_l5ddu"]
 [ext_resource type="Script" path="res://card_effect.gd" id="4_k0tqi"]
 [ext_resource type="PackedScene" uid="uid://cw2srnpuoqdnj" path="res://resources/kaykit-skeletons/assets/gltf/skeleton_bow.gltf.glb" id="4_ndcf2"]
+[ext_resource type="Texture2D" uid="uid://cs5y0afne44pu" path="res://resources/portraits/skeleton_warrior.png" id="5_iss7v"]
 
 [sub_resource type="Resource" id="Resource_ylt8h"]
 script = ExtResource("2_5rqn2")
@@ -49,14 +50,14 @@ reference_fraction = 1.0
 value_field_type = 0
 regular_field = 0
 read_only_field = 0
-status = 0
+status = 3
 
 [sub_resource type="Resource" id="Resource_cs713"]
 script = ExtResource("4_k0tqi")
 effect_value = SubResource("Resource_v5gs6")
-effect_type = 1
-target_field = 8
-target_status = 0
+effect_type = 3
+target_field = 0
+target_status = 3
 effect = 0
 
 [sub_resource type="Resource" id="Resource_3ls2l"]
@@ -93,6 +94,7 @@ cards = Array[ExtResource("3_l5ddu")]([SubResource("Resource_3feet"), SubResourc
 enemy_type = 1
 enemy_name = "Skeleton Archer"
 total_action_points = 1
+portrait_texture = ExtResource("5_iss7v")
 
 [node name="character_skeleton_archer" parent="." instance=ExtResource("3_ca0c1")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

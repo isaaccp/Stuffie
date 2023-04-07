@@ -34,23 +34,19 @@ script = ExtResource("7_j2akc")
 title = "Train"
 effects = Array[ExtResource("7_0sito")]([SubResource("Resource_roygk")])
 
-[node name="Warrior" type="Node3D" node_paths=PackedStringArray("portrait_texture")]
+[node name="Warrior" type="Node3D"]
 script = ExtResource("1_rghne")
 character_type = 1
 cards_per_turn = 5
 initial_relic = ExtResource("2_i4ij4")
-portrait_texture = NodePath("Portrait")
 original_deck = ExtResource("2_d5bu5")
 extra_cards = ExtResource("4_5qc6m")
 all_cards = ExtResource("5_a61vc")
 camp_choice = SubResource("Resource_gq1ff")
 total_move_points = 14
 total_action_points = 3
+portrait_texture = ExtResource("3_yxpwm")
 total_hit_points = 60
-
-[node name="Portrait" type="TextureRect" parent="."]
-visible = false
-texture = ExtResource("3_yxpwm")
 
 [node name="character_barbarian" parent="." instance=ExtResource("4_3xu4p")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
