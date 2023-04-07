@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://ck3s5l1c3hyx0"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://ck3s5l1c3hyx0"]
 
 [ext_resource type="Resource" uid="uid://xb54vphlw5tv" path="res://resources/cards/warrior/sharp_cut.tres" id="1_b5o01"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_d7pc8"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_fxrn0"]
 [ext_resource type="Script" path="res://card.gd" id="3_fvhi5"]
+[ext_resource type="Texture2D" uid="uid://dm15wwnlts6f1" path="res://resources/sharp_cut.png" id="5_2f88t"]
 
 [sub_resource type="Resource" id="Resource_umena"]
 script = ExtResource("1_d7pc8")
@@ -41,6 +42,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_b5o01")
 cost = 1
+texture = ExtResource("5_2f88t")
 target_mode = 3
 target_animation = 1
 on_damage_animation = 0
