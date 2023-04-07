@@ -1,0 +1,11 @@
+[gd_scene load_steps=6 format=3 uid="uid://cr0pqes4p4xdu"]
+
+[ext_resource type="Script" path="res://status_metadata.gd" id="1_ntodl"]
+[ext_resource type="Resource" uid="uid://dco6c234ay803" path="res://resources/statuses/block.tres" id="2_otu3p"]
+[ext_resource type="Resource" uid="uid://b35qu82o78u3" path="res://resources/statuses/dodge.tres" id="3_1o4jy"]
+[ext_resource type="Resource" uid="uid://dft5ffdrxk850" path="res://resources/statuses/power.tres" id="4_p3gkk"]
+[ext_resource type="Resource" uid="uid://ydyitukc6num" path="res://resources/statuses/bleed.tres" id="5_sawcf"]
+
+[node name="StatusMetadata" type="Node"]
+script = ExtResource("1_ntodl")
+status_defs = Array[Resource("res://status_def.gd")]([ExtResource("2_otu3p"), ExtResource("3_1o4jy"), ExtResource("4_p3gkk"), ExtResource("5_sawcf")])

@@ -20,14 +20,6 @@ var stylebox: StyleBoxFlat
 var relic_icon = preload("res://resources/icons/buffs/enemy_spawn_down.png")
 var relic_power_icon = preload("res://resources/icons/buffs/negative_status_resistance.png")
 
-# TODO: Make statuses some type of entity that includes things like the tooltip, the icon, etc.
-# Potentially change all the statuses in units from random variables to a "status_effects" array
-# or similar.
-var block_icon = preload("res://resources/icons/buffs/defense_boost.png")
-var dodge_icon = preload("res://resources/icons/buffs/lucky_boost.png")
-var power_icon = preload("res://resources/icons/buffs/attack_boost.png")
-var bleed_icon = preload("res://resources/icons/debuffs/bleeding.png")
-
 signal pressed
 
 func _ready():
@@ -112,13 +104,13 @@ func _set_status_effects():
 	# TODO: As mentioned in comment above, status effects should be an entity that aggregates icon, tooltip, etc, and
 	# they should be stored as an array of status effects on the character rather than regular variables.
 	if character.block != 0:
-		status_effects.add_status_effect(character.block, block_icon, "If unit has block, block is reduced before HP when receiving damage.\nAll block is removed at beginning of next turn.")
+		status_effects.add_status_effect(character.block, StatusDef.Status.BLOCK)
 	if character.dodge != 0:
-		status_effects.add_status_effect(character.dodge, dodge_icon, "If unit has dodge, ignore all damage from the next attack and remove 1 dodge. Up to 1 dodge carries to next turn.")
+		status_effects.add_status_effect(character.dodge, StatusDef.Status.DODGE)
 	if character.power != 0:
-		status_effects.add_status_effect(character.power, power_icon, "If unit has any power, damage +50%.\nRemove 1 power per turn.")
+		status_effects.add_status_effect(character.power, StatusDef.Status.POWER)
 	if character.bleed != 0:
-		status_effects.add_status_effect(character.bleed, bleed_icon, "If unit has bleed, lose that much HP at beginning of turn. This damage can't be blocked or dodged.\nRemove 1 bleed afterwards.")
+		status_effects.add_status_effect(character.bleed, StatusDef.Status.BLEED)
 
 func _set_active(active: bool):
 	if stylebox:

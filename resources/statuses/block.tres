@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=3 format=3 uid="uid://dco6c234ay803"]
+
+[ext_resource type="Texture2D" uid="uid://mql5ifuf7ujh" path="res://resources/icons/buffs/defense_boost.png" id="1_vb0jn"]
+[ext_resource type="Script" path="res://status_def.gd" id="2_8v4ym"]
+
+[resource]
+script = ExtResource("2_8v4ym")
+status = 1
+name = "Block"
+tooltip = "If unit has block, block is reduced before HP when receiving damage.\\nAll block is removed at beginning of next turn."
+icon = ExtResource("1_vb0jn")

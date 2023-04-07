@@ -30,5 +30,6 @@ func add_effect(text: String, icon: Texture, tooltip: String):
 func add_relic(icon: Texture, tooltip: String):
 	add_effect("", icon, tooltip)
 
-func add_status_effect(value: int, icon: Texture, tooltip: String):
-	add_effect("%d" % value, icon, tooltip)
+func add_status_effect(value: int, status: StatusDef.Status):
+	var metadata = StatusMetadata.metadata(status)
+	add_effect("%d" % value, metadata.icon, metadata.tooltip)

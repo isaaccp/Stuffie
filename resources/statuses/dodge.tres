@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=3 format=3 uid="uid://b35qu82o78u3"]
+
+[ext_resource type="Texture2D" uid="uid://b7jx71iybc6oa" path="res://resources/icons/buffs/lucky_boost.png" id="1_q8360"]
+[ext_resource type="Script" path="res://status_def.gd" id="2_11wkn"]
+
+[resource]
+script = ExtResource("2_11wkn")
+status = 2
+name = "Dodge"
+tooltip = "If unit has dodge, ignore all damage from the next attack and remove 1 dodge. Up to 1 dodge carries to next turn."
+icon = ExtResource("1_q8360")
