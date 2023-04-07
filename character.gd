@@ -41,18 +41,14 @@ class Snapshot:
 	var action_points: int
 	var move_points: int
 	var hit_points: int
-	var block: int
-	var power: int
-	var dodge: int
+	var status_manager: StatusManager
 	var num_hand_cards: int
 
 	func _init(character: Character):
 		action_points = character.action_points
 		move_points = character.move_points
 		hit_points = character.hit_points
-		block = character.block
-		power = character.power
-		dodge = character.dodge
+		status_manager = character.status_manager.clone()
 		num_hand_cards = character.num_hand_cards()
 
 var snapshot: Snapshot
@@ -67,7 +63,7 @@ func initialize(full=true):
 	if full:
 		deck = original_deck.duplicate()
 		heal_full()
-		end_stage_restore()
+		end_stage()
 	snap()
 
 # Creates a mock of this character to use in turn simulation.
@@ -81,9 +77,7 @@ func mock():
 	m.id_position = id_position
 	m.hit_points = hit_points
 	m.total_hit_points = total_hit_points
-	m.block = block
-	m.dodge = dodge
-	m.bleed = bleed
+	m.status_manager = status_manager.clone()
 	m.snap()
 	return m
 
@@ -129,8 +123,13 @@ func begin_stage(gameplay: Gameplay):
 
 func end_stage():
 	gameplay = null
-	power = 0
-	dodge = 0
+	action_points = total_action_points
+	move_points = total_move_points
+	status_manager.clear()
+	deck.reset()
+	clear_pending_move_cost()
+	clear_pending_action_cost()
+	clear_pending_damage()
 	stage_ended.emit(self)
 	relic_manager.clear_temp_relics()
 	changed.emit()
@@ -138,18 +137,6 @@ func end_stage():
 func begin_turn():
 	super()
 	turn_started.emit(self)
-	changed.emit()
-
-func end_stage_restore():
-	action_points = total_action_points
-	move_points = total_move_points
-	block = 0
-	power = 0
-	dodge = 0
-	deck.reset()
-	clear_pending_move_cost()
-	clear_pending_action_cost()
-	clear_pending_damage()
 	changed.emit()
 
 func end_turn():
@@ -308,11 +295,8 @@ func get_save_state():
 	save_state.move_points = move_points
 	save_state.hit_points = hit_points
 	save_state.is_destroyed = is_destroyed
-	save_state.block = block
-	save_state.power = power
-	save_state.dodge = dodge
-	save_state.bleed = bleed
 	save_state.relic_manager = relic_manager
+	save_state.status_manager = status_manager
 	save_state.deck = deck
 	return save_state
 
@@ -326,10 +310,7 @@ func load_save_state(save_state: CharacterSaveState):
 	move_points = save_state.move_points
 	hit_points = save_state.hit_points
 	is_destroyed = save_state.is_destroyed
-	block = save_state.block
-	power = save_state.power
-	dodge = save_state.dodge
-	bleed = save_state.bleed
 	relic_manager = save_state.relic_manager
+	status_manager = save_state.status_manager
 	deck = save_state.deck
 	initialize(false)

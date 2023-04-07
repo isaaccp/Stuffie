@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=3 format=3 uid="uid://eug6kn7toufa"]
+
+[ext_resource type="Texture2D" uid="uid://byrhbs1gdur1n" path="res://resources/icons/debuffs/attack_down.png" id="1_wrtv3"]
+[ext_resource type="Script" path="res://status_def.gd" id="2_o8ifo"]
+
+[resource]
+script = ExtResource("2_o8ifo")
+status = 4
+name = "Weakness"
+tooltip = "If unit has weakness, attack damage is reduced to 50%.\\nRemove 1 weakness per turn."
+icon = ExtResource("1_wrtv3")
+received_stats_field = 0
+applied_stats_field = 27

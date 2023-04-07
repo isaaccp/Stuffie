@@ -60,8 +60,10 @@ func effective_damage():
 	var new_damage = regular_damage()
 	if unit.has_method("apply_relic_damage_change"):
 		new_damage = unit.apply_relic_damage_change(new_damage)
-	if unit.power > 0:
+	if unit.status_manager.get_status(StatusDef.Status.POWER) > 0:
 		new_damage *= 1.5
+	if unit.status_manager.get_status(StatusDef.Status.WEAKNESS) > 0:
+		new_damage *= 0.5
 	return int(new_damage)
 
 func get_damage_description():
@@ -205,11 +207,11 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 					target.total_hit_points += value
 					target.heal(value)
 			CardEffectValue.Field.BLOCK:
-				target.add_block(value)
+				target.add_status(StatusDef.Status.BLOCK, value)
 			CardEffectValue.Field.DODGE:
-				target.add_dodge(value)
+				target.add_status(StatusDef.Status.DODGE, value)
 			CardEffectValue.Field.POWER:
-				target.add_power(value)
+				target.add_status(StatusDef.Status.POWER, value)
 			CardEffectValue.Field.GOLD:
 				target.add_gold(value)
 			CardEffectValue.Field.MOVE_POINTS:
@@ -217,13 +219,15 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 				if value < 0:
 					unit.add_stat(Stats.Field.ENEMY_MP_REMOVED, value)
 			CardEffectValue.Field.WEAKNESS:
-				target.weakness += value
+				target.add_status(StatusDef.Status.WEAKNESS, value)
 				unit.add_stat(Stats.Field.WEAKNESS_APPLIED, value)
 			CardEffectValue.Field.PARALYSIS:
-				target.paralysis += value
+				target.add_status(StatusDef.Status.PARALYSIS, value)
 				unit.add_stat(Stats.Field.PARALYSIS_APPLIED, value)
 			CardEffectValue.Field.BLEED:
-				target.bleed += value
+				target.add_status(StatusDef.Status.BLEED, value)
+				# TODO: Update statuses in card to use EffectType.STATUS instead of FIELD
+				# and then use the statusdef field to check whether stats should be updated.
 				unit.add_stat(Stats.Field.BLEED_APPLIED, value)
 
 static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
@@ -284,7 +288,8 @@ static func _get_effect_reference_value(unit: Unit, effect_value: CardEffectValu
 static func get_field(unit: Unit, field: CardEffectValue.Field):
 	match field:
 		CardEffectValue.Field.TOTAL_HIT_POINTS: return unit.total_hit_points
-		CardEffectValue.Field.BLOCK: return unit.block
+		# TODO: Change this to use Status instead of Fied.
+		CardEffectValue.Field.BLOCK: return unit.get_status(StatusDef.Status.BLOCK)
 	assert(false)
 
 static func get_read_only_field(unit: Unit, field: CardEffectValue.ReadOnlyField):

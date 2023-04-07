@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=3 format=3 uid="uid://c8eaalk6xpiu"]
+
+[ext_resource type="Texture2D" uid="uid://ysn8dtb32uxl" path="res://resources/icons/debuffs/paralyzed.png" id="1_tuown"]
+[ext_resource type="Script" path="res://status_def.gd" id="2_1evwx"]
+
+[resource]
+script = ExtResource("2_1evwx")
+status = 5
+name = "Paralysis"
+tooltip = "If unit has paralysis, do not act this turn.\\nRemove 1 paralysis per turn."
+icon = ExtResource("1_tuown")
+received_stats_field = 0
+applied_stats_field = 28

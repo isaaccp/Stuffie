@@ -49,7 +49,7 @@ func calculate_moves():
 			return
 		# Need to call begin_turn in case it affects movement, etc.
 		enemy.begin_turn()
-		if enemy.paralysis > 0:
+		if enemy.status_manager.get_status(StatusDef.Status.PARALYSIS) > 0:
 			continue
 		var move_options = get_enemy_walkable_cells(enemy)
 		var result = top_move_option(enemy, move_options)

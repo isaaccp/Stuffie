@@ -168,10 +168,7 @@ func _on_within_stage_exited():
 		node.queue_free()
 	if current_stage_def().stage_type == StageDef.StageType.COMBAT:
 		for character in characters:
-			# TODO: Consider not destroying the character, just marking it as dead.
-			# This would also help with resurrect, etc.
-			if is_instance_valid(character):
-				character.end_stage()
+			character.end_stage()
 	stage_number += 1
 	if stage_number == run.get_level(level_number).stages.size():
 		stage_number = 0

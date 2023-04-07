@@ -3,6 +3,7 @@ extends Resource
 class_name Stats
 
 enum Field {
+	NO_FIELD,
 	XP,
 	COMBAT_STAGES_FINISHED,
 	ENEMIES_KILLED,

@@ -9,3 +9,5 @@ status = 1
 name = "Block"
 tooltip = "If unit has block, block is reduced before HP when receiving damage.\\nAll block is removed at beginning of next turn."
 icon = ExtResource("1_vb0jn")
+received_stats_field = 25
+applied_stats_field = 0

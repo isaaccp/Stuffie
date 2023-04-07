@@ -12,9 +12,6 @@ class_name CharacterSaveState
 @export var move_points: int
 @export var hit_points: int
 @export var is_destroyed: bool
-@export var block: int
-@export var power: int
-@export var dodge: int
-@export var bleed: int
 @export var relic_manager: RelicManager
+@export var status_manager: StatusManager
 @export var deck: Deck

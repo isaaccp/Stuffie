@@ -32,8 +32,7 @@ func mock():
 	m.move_points = move_points
 	m.action_points = action_points
 	m.extra_damage = extra_damage
-	m.paralysis = paralysis
-	m.bleed = bleed
+	m.status_manager = status_manager.clone()
 	for card in cards:
 		m.unit_cards.push_back(UnitCard.new(m, card))
 	m.next_turn_cards = next_turn_cards
@@ -63,12 +62,12 @@ func info_text() -> String:
 		"total_move_points": total_move_points,
 		"hit_points": hit_points,
 		"total_hit_points": total_hit_points,
-		"block": block,
-		"dodge": dodge,
-		"power": power,
-		"weakness": weakness,
-		"paralysis": paralysis,
-		"bleed": bleed,
+		"block": status_manager.get_status(StatusDef.Status.BLOCK),
+		"dodge": status_manager.get_status(StatusDef.Status.DODGE),
+		"power": status_manager.get_status(StatusDef.Status.POWER),
+		"weakness": status_manager.get_status(StatusDef.Status.WEAKNESS),
+		"paralysis": status_manager.get_status(StatusDef.Status.PARALYSIS),
+		"bleed": status_manager.get_status(StatusDef.Status.BLEED),
 	}
 	var text = (
 		"[b]{name}[/b]\n" +
@@ -77,17 +76,18 @@ func info_text() -> String:
 		"HP: {hit_points}/{total_hit_points}\n" +
 		"MP: {move_points}/{total_move_points}\n"
 	)
-	if block > 0:
+	# TODO: Refactor all those to take advantage of new statuses.
+	if status_manager.get_status(StatusDef.Status.BLOCK) > 0:
 		text += "[url]Block[/url]: {block}\n"
-	if dodge > 0:
+	if status_manager.get_status(StatusDef.Status.DODGE) > 0:
 		text += "[url]Dodge[/url]: {dodge}\n"
-	if power > 0:
+	if status_manager.get_status(StatusDef.Status.POWER) > 0:
 		text += "[url]Power[/url]: {power}\n"
-	if weakness > 0:
+	if status_manager.get_status(StatusDef.Status.WEAKNESS) > 0:
 		text += "[url]Weakness[/url]: {weakness}\n"
-	if paralysis > 0:
+	if status_manager.get_status(StatusDef.Status.PARALYSIS) > 0:
 		text += "[url]Paralysis[/url]: {paralysis}\n"
-	if bleed > 0:
+	if status_manager.get_status(StatusDef.Status.BLEED) > 0:
 		text += "[url]Bleed[/url]: {bleed}🩸\n"
 	text += "Actions\n"
 	for unit_card in unit_cards:
@@ -123,9 +123,7 @@ func get_save_state():
 	save_state.move_points = move_points
 	save_state.hit_points = hit_points
 	save_state.action_points = action_points
-	save_state.weakness = weakness
-	save_state.paralysis = paralysis
-	save_state.bleed = bleed
+	save_state.status_manager = status_manager
 	return save_state
 
 func load_save_state(save_state: EnemySaveState):
@@ -136,6 +134,4 @@ func load_save_state(save_state: EnemySaveState):
 	move_points = save_state.move_points
 	hit_points = save_state.hit_points
 	action_points = save_state.action_points
-	weakness = save_state.weakness
-	paralysis = save_state.paralysis
-	bleed = save_state.bleed
+	status_manager = save_state.status_manager

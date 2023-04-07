@@ -101,16 +101,9 @@ func _set_status_effects():
 		status_effects.add_relic(relic_icon, "%s: %s" % [relic.name, relic.tooltip])
 	for power in character.relic_manager.temp_relics:
 		status_effects.add_relic(relic_power_icon, "%s: %s (until end of combat)" % [power.name, power.tooltip])
-	# TODO: As mentioned in comment above, status effects should be an entity that aggregates icon, tooltip, etc, and
-	# they should be stored as an array of status effects on the character rather than regular variables.
-	if character.block != 0:
-		status_effects.add_status_effect(character.block, StatusDef.Status.BLOCK)
-	if character.dodge != 0:
-		status_effects.add_status_effect(character.dodge, StatusDef.Status.DODGE)
-	if character.power != 0:
-		status_effects.add_status_effect(character.power, StatusDef.Status.POWER)
-	if character.bleed != 0:
-		status_effects.add_status_effect(character.bleed, StatusDef.Status.BLEED)
+	for status in character.status_manager.statuses:
+		var value = character.status_manager.get_status(status)
+		status_effects.add_status_effect(value, status)
 
 func _set_active(active: bool):
 	if stylebox:

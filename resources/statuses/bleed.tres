@@ -9,3 +9,5 @@ status = 6
 name = "Bleed"
 tooltip = "If unit has bleed, lose that much HP at beginning of turn. This damage can't be blocked or dodged.\\nRemove 1 bleed afterwards."
 icon = ExtResource("1_lipqt")
+received_stats_field = 0
+applied_stats_field = 29

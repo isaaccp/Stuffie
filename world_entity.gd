@@ -10,10 +10,8 @@ var hit_points: int
 var health_bar: HealthDisplay3D
 var health_bar_scene = preload("res://health_display_3d.tscn")
 
-var block: int
-var dodge: int
+var status_manager = StatusManager.new()
 var is_destroyed = false
-# TODO: var vulnerability: int
 
 signal health_changed
 signal changed
@@ -53,14 +51,11 @@ func _on_health_changed():
 func refresh():
 	pass
 
-func add_block(block_amount: int):
-	block += block_amount
-	add_stat(Stats.Field.BLOCK_ACQUIRED, block_amount)
-	changed.emit()
-
-func add_dodge(dodge_amount: int):
-	dodge += dodge_amount
-	add_stat(Stats.Field.DODGE_ACQUIRED, dodge_amount)
+func add_status(status: StatusDef.Status, amount: int):
+	status_manager.add_status(status, amount)
+	var metadata = StatusMetadata.metadata(status) as StatusDef
+	if metadata.received_stats_field != Stats.Field.NO_FIELD:
+		add_stat(metadata.received_stats_field, amount)
 	changed.emit()
 
 # Returns true if any damage was caused.
@@ -68,22 +63,23 @@ func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
 	# Handle dodge.
 	if dodgeable:
-		if dodge > 0:
-			dodge -= 1
+		if status_manager.get_status(StatusDef.Status.DODGE) > 0:
+			status_manager.decrement_status(StatusDef.Status.DODGE, 1)
 			damage = 0
 			add_stat(Stats.Field.ATTACKS_DODGED, 1)
 			changed.emit()
 	if blockable:
 		var blocked_damage = 0
+		var block = status_manager.get_status(StatusDef.Status.BLOCK)
 		if block > 0:
 			if damage <= block:
-				block -= damage
+				status_manager.decrement_status(StatusDef.Status.BLOCK, damage)
 				blocked_damage = damage
 				damage = 0
 			else:
 				damage -= block
 				blocked_damage = block
-				block = 0
+				status_manager.clear_status(StatusDef.Status.BLOCK)
 		if blocked_damage:
 			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
 	if damage == 0:
@@ -131,10 +127,10 @@ func get_stat(level: Enum.StatsLevel, field: Stats.Field):
 	return 0
 
 func begin_turn():
-	block = 0
+	status_manager.clear_status(StatusDef.Status.BLOCK)
 	# At most can carry 1 dodge.
-	if dodge > 0:
-		dodge = 1
+	if status_manager.get_status(StatusDef.Status.DODGE) > 1:
+		status_manager.set_status(StatusDef.Status.DODGE, 1)
 	changed.emit()
 
 func end_turn():

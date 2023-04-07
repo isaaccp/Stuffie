@@ -12,7 +12,4 @@ class_name EnemySaveState
 @export var move_points: int
 @export var action_points: int
 @export var hit_points: int
-@export var weakness: int
-@export var paralysis: int
-@export var vulnerability: int
-@export var bleed: int
+@export var status_manager: StatusManager
