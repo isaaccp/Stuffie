@@ -41,6 +41,8 @@ func set_character(unit: Unit):
 	_update_unit()
 
 func _update_unit():
+	if not is_instance_valid(unit):
+		return
 	_set_portrait_texture(unit.portrait_texture)
 	if unit is Character:
 		var character = unit as Character
@@ -92,15 +94,18 @@ func _set_action_points(pending_action_cost: int, action_points: int, total_acti
 	action_points_label.parse_bbcode(bb_code)
 
 func _set_hit_points(pending_damage_set: bool, pending_damage: int, hit_points: int, total_hit_points: int):
-	var pending_damage_text = ""
-	if pending_damage_set:
-		var lethal_text = ""
-		if pending_damage >= hit_points:
-			lethal_text = "💀"
-		pending_damage_text = "HP after enemy turn: %s%d" % [lethal_text, hit_points - pending_damage]
+	if unit is Character:
+		var pending_damage_text = ""
+		if pending_damage_set:
+			var lethal_text = ""
+			if pending_damage >= hit_points:
+				lethal_text = "💀"
+			pending_damage_text = "HP after enemy turn: %s%d" % [lethal_text, hit_points - pending_damage]
+		else:
+			pending_damage_text = "HP after enemy turn: ?"
+		hit_points_bar.tooltip_text = "HP: %d/%d\n%s" % [hit_points, total_hit_points, pending_damage_text]
 	else:
-		pending_damage_text = "HP after enemy turn: ?"
-	hit_points_bar.tooltip_text = "HP: %d/%d\n%s" % [hit_points, total_hit_points, pending_damage_text]
+		hit_points_bar.tooltip_text = "HP: %d/%d" % [hit_points, total_hit_points]
 	if pending_damage_set:
 		hit_points_bar.set_health(hit_points, total_hit_points, hit_points - pending_damage)
 	else:

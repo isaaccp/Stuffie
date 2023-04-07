@@ -208,6 +208,8 @@ grow_horizontal = 1
 
 [node name="EnemyActionsPivot" type="Control" parent="."]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="EnemyActionsPivot"]
 layout_mode = 0

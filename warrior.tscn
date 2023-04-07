@@ -3,13 +3,13 @@
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://resources/decks/warrior/deck.tres" id="2_d5bu5"]
 [ext_resource type="Resource" uid="uid://dtnkp2rwqellb" path="res://resources/relics/troll_heart.tres" id="2_i4ij4"]
-[ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="3_yxpwm"]
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
 [ext_resource type="Resource" uid="uid://1cwrvs1k8a64" path="res://resources/decks/warrior/extra_cards.tres" id="4_5qc6m"]
 [ext_resource type="Resource" uid="uid://cqmvranirdbgc" path="res://resources/decks/warrior/all_cards.tres" id="5_a61vc"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_uruck"]
 [ext_resource type="Script" path="res://card_effect.gd" id="7_0sito"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="7_j2akc"]
+[ext_resource type="Texture2D" uid="uid://c2v18oa1kqsv" path="res://resources/portraits/warrior2.png" id="9_qfu24"]
 
 [sub_resource type="Resource" id="Resource_4umbw"]
 script = ExtResource("6_uruck")
@@ -45,7 +45,7 @@ all_cards = ExtResource("5_a61vc")
 camp_choice = SubResource("Resource_gq1ff")
 total_move_points = 14
 total_action_points = 3
-portrait_texture = ExtResource("3_yxpwm")
+portrait_texture = ExtResource("9_qfu24")
 total_hit_points = 60
 
 [node name="character_barbarian" parent="." instance=ExtResource("4_3xu4p")]

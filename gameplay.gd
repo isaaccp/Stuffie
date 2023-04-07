@@ -233,10 +233,6 @@ func on_enemy_turn_invalidated():
 
 func next_stage():
 	StatsManager.remove_level(Enum.StatsLevel.TURN)
-	# Restore AP, MP, remove block/power, etc so it doesn't appear in non-combat
-	# stages.
-	for character in party.get_children():
-		character.end_stage_restore()
 	stage_done.emit()
 
 func initialize_map_manager(stage: Stage):
