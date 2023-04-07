@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://bil1lqsfraw6c"]
+
+[ext_resource type="Texture2D" uid="uid://mql5ifuf7ujh" path="res://resources/icons/buffs/defense_boost.png" id="1_phqtj"]
+[ext_resource type="Script" path="res://status_effect_icon.gd" id="1_xmiv4"]
+
+[node name="StatusEffect" type="Control" node_paths=PackedStringArray("texture_rect", "label")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 48.0
+offset_bottom = 48.0
+mouse_filter = 2
+script = ExtResource("1_xmiv4")
+texture_rect = NodePath("TextureRect")
+label = NodePath("Label")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+offset_right = 48.0
+offset_bottom = 48.0
+texture = ExtResource("1_phqtj")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 23.0
+offset_right = 41.0
+offset_bottom = 46.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "15"
+horizontal_alignment = 2
+vertical_alignment = 1

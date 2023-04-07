@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://by52yvso6g4j4"]
+
+[ext_resource type="Script" path="res://current_next_health_bar.gd" id="1_uu07y"]
+
+[node name="HPBar" type="HBoxContainer" node_paths=PackedStringArray("next_hp", "current_hp", "missing_hp")]
+custom_minimum_size = Vector2(0, 5)
+theme_override_constants/separation = 0
+script = ExtResource("1_uu07y")
+next_hp = NodePath("NextHP")
+current_hp = NodePath("CurrentHP")
+missing_hp = NodePath("MissingHP")
+
+[node name="NextHP" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="CurrentHP" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+color = Color(1, 0.643137, 0.45098, 1)
+
+[node name="MissingHP" type="ColorRect" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+color = Color(0.156863, 0.156863, 0.156863, 1)

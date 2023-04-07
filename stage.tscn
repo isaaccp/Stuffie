@@ -19,7 +19,7 @@ doors_node = NodePath("World/Doors")
 hand_ui = NodePath("UI/Control/HandUI")
 deck_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Deck")
 discard_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Discard")
-character_state_ui = NodePath("UI/CharacterState")
+character_state_ui = NodePath("UI/MarginContainer/CharacterState")
 camera = NodePath("Pivot/Camera3D")
 camera_pivot = NodePath("Pivot")
 end_turn_button = NodePath("UI/InfoPanel/VBox/EndTurnButton")
@@ -47,13 +47,14 @@ move_path = NodePath("World/Path")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="CharacterState" type="HBoxContainer" parent="UI"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -150.0
-offset_right = 204.0
-grow_vertical = 0
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+
+[node name="CharacterState" type="VBoxContainer" parent="UI/MarginContainer"]
+layout_mode = 2
 
 [node name="InfoPanel" type="PanelContainer" parent="UI"]
 custom_minimum_size = Vector2(300, 0)

@@ -58,7 +58,6 @@ func initialize_character(character: Character):
 	relic_list.mark_used(initial_relic.name)
 	character.shared_bag = shared_bag
 	character.add_relic(initial_relic, false)
-	character.initialize()
 	character.set_canvas(canvas)
 	characters.push_back(character)
 	party.add_child(character)

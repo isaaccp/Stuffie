@@ -128,6 +128,7 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, comb
 	var i = 0
 	for character in party.get_children():
 		var character_portrait = portrait_scene.instantiate() as CharacterPortrait
+		character_portrait.set_mode(CharacterPortrait.PortraitMode.COMBAT)
 		# Add portraits in UI.
 		character_state_ui.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change

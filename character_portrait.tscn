@@ -1,22 +1,29 @@
-[gd_scene load_steps=10 format=3 uid="uid://dlafd5e0038cv"]
+[gd_scene load_steps=12 format=3 uid="uid://dlafd5e0038cv"]
 
 [ext_resource type="Script" path="res://character_portrait.gd" id="1_qmac0"]
 [ext_resource type="Shader" uid="uid://b4hkui3ircytg" path="res://resources/theme/rounded_corner_shader.tres" id="2_pkp7u"]
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="2_s1eew"]
-[ext_resource type="Texture2D" uid="uid://dcl7kkxhyedtp" path="res://icon.svg" id="2_s8pq6"]
+[ext_resource type="Texture2D" uid="uid://dlvprbb5n8lal" path="res://resources/action-cost-orb.png" id="5_cia5a"]
+[ext_resource type="PackedScene" uid="uid://by52yvso6g4j4" path="res://current_next_hp_bar.tscn" id="5_re837"]
+[ext_resource type="PackedScene" uid="uid://dc7h6nxgnanb8" path="res://status_effects.tscn" id="6_kysa5"]
 
 [sub_resource type="Theme" id="Theme_2nrls"]
 default_font_size = 14
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axeku"]
-bg_color = Color(0.819608, 0.858824, 0.262745, 1)
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.501961, 0.501961, 0.501961, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7l06"]
-bg_color = Color(0.819608, 0.858824, 0.262745, 1)
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mrtej"]
 shader = ExtResource("2_pkp7u")
@@ -24,30 +31,20 @@ shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/radius = 0.1
 shader_parameter/size = Vector2(1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipb1a"]
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pu4ch"]
+bg_color = Color(1, 1, 1, 1)
 
-[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "active_marker", "action_points_label", "move_points_label", "hit_points_label", "block_label", "dodge_label", "power_label", "bleed_label", "relics_container", "powers_container")]
-offset_right = 110.0
-offset_bottom = 261.0
+[node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "action_points_label", "move_points_label", "hit_points_bar", "status_effects")]
+offset_right = 114.0
+offset_bottom = 174.0
 theme = SubResource("Theme_2nrls")
 theme_override_styles/panel = SubResource("StyleBoxFlat_axeku")
 script = ExtResource("1_qmac0")
 portrait = NodePath("Margin/VBox/PanelContainer2/Portrait")
-active_marker = NodePath("Margin/VBox/PanelContainer2/Portrait/ActiveMarker")
-action_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/ActionPoints")
-move_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/MovePoints")
-hit_points_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/HitPoints")
-block_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Block")
-dodge_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Dodge")
-power_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Power")
-bleed_label = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Bleed")
-relics_container = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Relics")
-powers_container = NodePath("Margin/VBox/PanelContainer/MarginContainer/VBoxContainer/Powers")
+action_points_label = NodePath("ActionPointsPivot/ActionPoints/ActionPointsLabel")
+move_points_label = NodePath("MovePointsPivot/MovePoints/MovePointsLabel")
+hit_points_bar = NodePath("Margin/VBox/PanelContainer3/MarginContainer/HPBar")
+status_effects = NodePath("StatusEffectsPivot/StatusEffects")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -58,6 +55,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
+size_flags_vertical = 0
 
 [node name="PanelContainer2" type="PanelContainer" parent="Margin/VBox"]
 layout_mode = 2
@@ -66,74 +64,144 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_e7l06")
 
 [node name="Portrait" type="TextureRect" parent="Margin/VBox/PanelContainer2"]
 material = SubResource("ShaderMaterial_mrtej")
+custom_minimum_size = Vector2(120, 180)
 layout_mode = 2
 texture = ExtResource("2_s1eew")
 
-[node name="ActiveMarker" type="TextureRect" parent="Margin/VBox/PanelContainer2/Portrait"]
-visible = false
+[node name="PanelContainer3" type="PanelContainer" parent="Margin/VBox"]
 layout_mode = 2
-offset_right = 128.0
-offset_bottom = 128.0
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_s8pq6")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pu4ch")
 
-[node name="PanelContainer" type="PanelContainer" parent="Margin/VBox"]
+[node name="MarginContainer" type="MarginContainer" parent="Margin/VBox/PanelContainer3"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="HPBar" parent="Margin/VBox/PanelContainer3/MarginContainer" instance=ExtResource("5_re837")]
+custom_minimum_size = Vector2(0, 7)
+layout_mode = 2
+
+[node name="ActionPointsPivot" type="Control" parent="."]
+layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ipb1a")
 
-[node name="MarginContainer" type="MarginContainer" parent="Margin/VBox/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+[node name="ActionPoints" type="Control" parent="ActionPointsPivot"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 112.0
+offset_top = 157.0
+offset_right = 112.0
+offset_bottom = 157.0
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer"]
-layout_mode = 2
+[node name="TextureRect" type="TextureRect" parent="ActionPointsPivot/ActionPoints"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -18.0
+offset_right = 8.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_cia5a")
+expand_mode = 3
 
-[node name="ActionPoints" type="RichTextLabel" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
+[node name="ActionPointsLabel" type="RichTextLabel" parent="ActionPointsPivot/ActionPoints"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -14.0
+offset_right = 7.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
+text = "3/3"
 fit_content = true
+scroll_active = false
 
-[node name="MovePoints" type="RichTextLabel" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="MovePointsPivot" type="Control" parent="."]
 layout_mode = 2
+mouse_filter = 2
+
+[node name="MovePoints" type="Control" parent="MovePointsPivot"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 37.0
+offset_top = 169.0
+offset_right = 37.0
+offset_bottom = 169.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MovePointsPivot/MovePoints"]
+modulate = Color(0, 1, 0.956863, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -10.0
+offset_right = 17.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+mouse_filter = 2
+texture = ExtResource("5_cia5a")
+expand_mode = 3
+
+[node name="MovePointsLabel" type="RichTextLabel" parent="MovePointsPivot/MovePoints"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -11.0
+offset_right = -1.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
+text = "[center]23[/center]"
 fit_content = true
+scroll_active = false
 
-[node name="HitPoints" type="RichTextLabel" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="StatusEffectsPivot" type="Control" parent="."]
 layout_mode = 2
-bbcode_enabled = true
-fit_content = true
+mouse_filter = 2
 
-[node name="Block" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-tooltip_text = "If character has block, block is reduced before HP when receiving damage.
-Block is removed at beginning of next turn."
-mouse_filter = 1
-
-[node name="Dodge" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-tooltip_text = "If character has dodge, ignore all damage from the next attack and remove 1 dodge.
-
-Up to 1 dodge carries to next turn."
-mouse_filter = 1
-
-[node name="Power" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-tooltip_text = "If character has any power, damage +50%.
-Remove 1 power per turn."
-mouse_filter = 1
-
-[node name="Bleed" type="Label" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Relics" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Powers" type="VBoxContainer" parent="Margin/VBox/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
+[node name="StatusEffects" parent="StatusEffectsPivot" instance=ExtResource("6_kysa5")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 140.0
+offset_right = 140.0
+mouse_filter = 2
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

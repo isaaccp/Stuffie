@@ -8,7 +8,9 @@ const character_scenes = {
 }
 
 static func create(character_id: Enum.CharacterId) -> Character:
-	return character_scenes[character_id].instantiate() as Character
+	var character = character_scenes[character_id].instantiate() as Character
+	character.initialize()
+	return character
 
 static func restore(save_state: CharacterSaveState) -> Character:
 	var character = CharacterLoader.create(save_state.character_type)

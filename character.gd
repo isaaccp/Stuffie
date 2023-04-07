@@ -67,6 +67,7 @@ func initialize(full=true):
 	if full:
 		deck = original_deck.duplicate()
 		heal_full()
+		end_stage_restore()
 	snap()
 
 # Creates a mock of this character to use in turn simulation.
