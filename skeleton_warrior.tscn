@@ -54,9 +54,9 @@ status = 0
 [sub_resource type="Resource" id="Resource_fnfuc"]
 script = ExtResource("4_3qfxs")
 effect_value = SubResource("Resource_d50y2")
-effect_type = 1
-target_field = 7
-target_status = 0
+effect_type = 3
+target_field = 0
+target_status = 1
 effect = 0
 
 [sub_resource type="Resource" id="Resource_dijmc"]
