@@ -5,7 +5,6 @@ class_name Character
 @export var character_type: Enum.CharacterId
 @export var cards_per_turn: int
 @export var initial_relic: Relic
-@export var portrait_texture: TextureRect
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var pending_damage_set = false

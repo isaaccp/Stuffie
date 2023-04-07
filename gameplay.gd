@@ -133,6 +133,7 @@ func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, comb
 		character_state_ui.add_child(character_portrait)
 		# Set portrait on character so it can update when e.g. move points change
 		character_portrait.set_character(character)
+		character.made_active.connect(character_portrait.set_active)
 		# Hook character selection.
 		character_portrait.pressed.connect(_on_character_portrait_pressed.bind(i))
 		i += 1

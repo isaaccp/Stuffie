@@ -35,7 +35,6 @@ func set_mode(mode: PortraitMode):
 
 func set_character(character: Character):
 	self.character = character
-	character.made_active.connect(_set_active)
 	character.changed.connect(_update_character)
 	_update_character()
 
@@ -105,7 +104,7 @@ func _set_status_effects():
 		var value = character.status_manager.get_status(status)
 		status_effects.add_status_effect(value, status)
 
-func _set_active(active: bool):
+func set_active(active: bool):
 	if stylebox:
 		if active:
 			stylebox.border_color = Color(1, 1, 1)
