@@ -206,29 +206,12 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 			CardEffectValue.Field.TOTAL_HIT_POINTS:
 					target.total_hit_points += value
 					target.heal(value)
-			CardEffectValue.Field.BLOCK:
-				target.add_status(StatusDef.Status.BLOCK, value)
-			CardEffectValue.Field.DODGE:
-				target.add_status(StatusDef.Status.DODGE, value)
-			CardEffectValue.Field.POWER:
-				target.add_status(StatusDef.Status.POWER, value)
 			CardEffectValue.Field.GOLD:
 				target.add_gold(value)
 			CardEffectValue.Field.MOVE_POINTS:
 				target.move_points += value
 				if value < 0:
 					unit.add_stat(Stats.Field.ENEMY_MP_REMOVED, value)
-			CardEffectValue.Field.WEAKNESS:
-				target.add_status(StatusDef.Status.WEAKNESS, value)
-				unit.add_stat(Stats.Field.WEAKNESS_APPLIED, value)
-			CardEffectValue.Field.PARALYSIS:
-				target.add_status(StatusDef.Status.PARALYSIS, value)
-				unit.add_stat(Stats.Field.PARALYSIS_APPLIED, value)
-			CardEffectValue.Field.BLEED:
-				target.add_status(StatusDef.Status.BLEED, value)
-				# TODO: Update statuses in card to use EffectType.STATUS instead of FIELD
-				# and then use the statusdef field to check whether stats should be updated.
-				unit.add_stat(Stats.Field.BLEED_APPLIED, value)
 	elif effect.effect_type == CardEffect.EffectType.STATUS:
 		target.add_status(effect.target_status, value)
 		var metadata = StatusMetadata.metadata(effect.target_status) as StatusDef
