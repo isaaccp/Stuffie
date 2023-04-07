@@ -14,6 +14,7 @@ reference_fraction = 1.0
 value_field_type = 0
 regular_field = 0
 read_only_field = 0
+status = 0
 
 [sub_resource type="Resource" id="Resource_qtbn0"]
 script = ExtResource("2_158l0")
@@ -23,6 +24,7 @@ reference_fraction = 1.0
 value_field_type = 0
 regular_field = 0
 read_only_field = 0
+status = 0
 
 [sub_resource type="Resource" id="Resource_kdowo"]
 script = ExtResource("3_15bvl")
@@ -64,6 +66,7 @@ reference_fraction = 1.0
 value_field_type = 0
 regular_field = 0
 read_only_field = 0
+status = 0
 
 [sub_resource type="Resource" id="Resource_kd2nk"]
 script = ExtResource("2_0p2b8")

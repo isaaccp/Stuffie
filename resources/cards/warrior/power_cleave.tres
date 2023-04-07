@@ -9,19 +9,21 @@
 script = ExtResource("1_38aky")
 value_type = 1
 absolute_value = 10
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_glngb"]
 script = ExtResource("1_38aky")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_vait3"]
 script = ExtResource("2_e4dol")
@@ -60,19 +62,21 @@ exhaust = false
 script = ExtResource("1_38aky")
 value_type = 1
 absolute_value = 10
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_ko7sq"]
 script = ExtResource("1_38aky")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_8xcq0"]
 script = ExtResource("2_e4dol")
@@ -86,10 +90,11 @@ effect = 0
 script = ExtResource("1_38aky")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_1wian"]
 script = ExtResource("2_e4dol")

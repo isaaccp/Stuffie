@@ -9,19 +9,21 @@
 script = ExtResource("1_d7pc8")
 value_type = 1
 absolute_value = 6
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_r0h5r"]
 script = ExtResource("1_d7pc8")
 value_type = 1
 absolute_value = 4
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_lqi5k"]
 script = ExtResource("2_fxrn0")

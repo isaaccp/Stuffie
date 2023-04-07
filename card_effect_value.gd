@@ -12,6 +12,7 @@ enum ValueFieldType {
 	NO_FIELD_TYPE,
 	REGULAR,
 	READ_ONLY,
+	STATUS,
 }
 
 enum Field {
@@ -22,13 +23,7 @@ enum Field {
 	TOTAL_MOVE_POINTS,
 	ACTION_POINTS,
 	TOTAL_ACTION_POINTS,
-	BLOCK,
-	POWER,
-	WEAKNESS,
 	GOLD,
-	DODGE,
-	PARALYSIS,
-	BLEED,
 }
 
 const field_name = {
@@ -38,13 +33,7 @@ const field_name = {
 	Field.TOTAL_MOVE_POINTS: "total MP",
 	Field.ACTION_POINTS: "AP",
 	Field.TOTAL_ACTION_POINTS: "total AP",
-	Field.BLOCK: "[url]block[/url]",
-	Field.POWER: "[url]power[/url]",
-	Field.WEAKNESS: "weakness",
 	Field.GOLD: "🪙",
-	Field.DODGE: "[url]dodge[/url]",
-	Field.PARALYSIS: "[url]paralysis[/url]",
-	Field.BLEED: "🩸[url]bleed[/url]",
 }
 
 enum ReadOnlyField {
@@ -66,6 +55,7 @@ const read_only_field_name = {
 @export var value_field_type: ValueFieldType
 @export var regular_field: Field
 @export var read_only_field: ReadOnlyField
+@export var status: StatusDef.Status
 
 static func get_regular_field_name(field: Field):
 	return field_name[field]
@@ -78,3 +68,5 @@ func get_field_name():
 		return CardEffectValue.get_regular_field_name(regular_field)
 	elif value_field_type == ValueFieldType.READ_ONLY:
 		return CardEffectValue.get_read_only_field_name(read_only_field)
+	elif value_field_type == ValueFieldType.STATUS:
+		return StatusMetadata.status_name(status)

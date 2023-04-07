@@ -8,10 +8,11 @@
 script = ExtResource("1_hh4om")
 value_type = 1
 absolute_value = 8
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [resource]
 script = ExtResource("1_75xii")

@@ -10,10 +10,11 @@
 script = ExtResource("2_e26d0")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_lysdq"]
 script = ExtResource("3_2n8hj")
@@ -27,10 +28,11 @@ effect = 0
 script = ExtResource("2_e26d0")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
 
 [sub_resource type="Resource" id="Resource_3e87q"]
 script = ExtResource("3_2n8hj")

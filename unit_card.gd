@@ -279,12 +279,12 @@ static func _get_effect_reference_value(unit: Unit, effect_value: CardEffectValu
 		return UnitCard.get_field(unit, effect_value.regular_field)
 	elif effect_value.value_field_type == CardEffectValue.ValueFieldType.READ_ONLY:
 		return UnitCard.get_read_only_field(unit, effect_value.read_only_field)
+	elif effect_value.value_field_type == CardEffectValue.ValueFieldType.STATUS:
+		return unit.status_manager.get_status(effect_value.status)
 
 static func get_field(unit: Unit, field: CardEffectValue.Field):
 	match field:
 		CardEffectValue.Field.TOTAL_HIT_POINTS: return unit.total_hit_points
-		# TODO: Change this to use Status instead of Fied.
-		CardEffectValue.Field.BLOCK: return unit.status_manager.get_status(StatusDef.Status.BLOCK)
 	assert(false)
 
 static func get_read_only_field(unit: Unit, field: CardEffectValue.ReadOnlyField):
