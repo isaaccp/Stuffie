@@ -20,6 +20,7 @@ script = ExtResource("2_0twgu")
 effect_value = SubResource("Resource_qg5pt")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 6
 
 [resource]

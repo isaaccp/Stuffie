@@ -19,6 +19,7 @@ script = ExtResource("2_voyje")
 effect_value = SubResource("Resource_3xpor")
 effect_type = 1
 target_field = 12
+target_status = 0
 effect = 0
 
 [resource]

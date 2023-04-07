@@ -53,6 +53,7 @@ script = ExtResource("4_3qfxs")
 effect_value = SubResource("Resource_d50y2")
 effect_type = 1
 target_field = 7
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_dijmc"]

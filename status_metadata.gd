@@ -3,10 +3,12 @@ extends Node
 @export var status_defs: Array[StatusDef]
 
 var status_metadata: Dictionary
+var tooltips: Dictionary
 
 func _ready():
 	for def in status_defs:
 		status_metadata[def.status] = def
+		tooltips[def.name] = def.tooltip
 
 func metadata(status: StatusDef.Status) -> StatusDef:
 	return status_metadata[status]

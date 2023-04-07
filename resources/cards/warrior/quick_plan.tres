@@ -10,6 +10,7 @@
 script = ExtResource("1_yc4d0")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 1
 
 [sub_resource type="Resource" id="Resource_6swlr"]
@@ -26,6 +27,7 @@ script = ExtResource("1_yc4d0")
 effect_value = SubResource("Resource_6swlr")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 2
 
 [resource]

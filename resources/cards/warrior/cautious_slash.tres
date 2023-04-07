@@ -29,6 +29,7 @@ script = ExtResource("3_t28pl")
 effect_value = SubResource("Resource_gldr8")
 effect_type = 1
 target_field = 7
+target_status = 0
 effect = 0
 
 [resource]

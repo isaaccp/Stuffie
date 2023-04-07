@@ -31,6 +31,7 @@ script = ExtResource("3_02vxt")
 effect_value = SubResource("Resource_f0vh6")
 effect_type = 1
 target_field = 5
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_shck8"]
@@ -80,6 +81,7 @@ script = ExtResource("3_02vxt")
 effect_value = SubResource("Resource_qal07")
 effect_type = 1
 target_field = 3
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_l8osk"]

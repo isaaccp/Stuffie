@@ -19,6 +19,7 @@ script = ExtResource("2_hnwdr")
 effect_value = SubResource("Resource_wb42i")
 effect_type = 1
 target_field = 7
+target_status = 0
 effect = 0
 
 [resource]

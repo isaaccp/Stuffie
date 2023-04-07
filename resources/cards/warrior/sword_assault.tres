@@ -27,6 +27,7 @@ script = ExtResource("2_2lj64")
 effect_value = SubResource("Resource_fc7v4")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 2
 
 [resource]

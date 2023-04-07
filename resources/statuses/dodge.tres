@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_11wkn")
 status = 2
-name = "Dodge"
+name = "dodge"
 tooltip = "If unit has dodge, ignore all damage from the next attack and remove 1 dodge. Up to 1 dodge carries to next turn."
 icon = ExtResource("1_q8360")
 received_stats_field = 26

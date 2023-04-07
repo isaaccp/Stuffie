@@ -20,6 +20,7 @@ script = ExtResource("3_2n8hj")
 effect_value = SubResource("Resource_mvgn5")
 effect_type = 1
 target_field = 8
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_rsufi"]
@@ -36,6 +37,7 @@ script = ExtResource("3_2n8hj")
 effect_value = SubResource("Resource_rsufi")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 3
 
 [resource]

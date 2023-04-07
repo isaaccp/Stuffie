@@ -25,6 +25,7 @@ script = ExtResource("7_vbhnd")
 effect_value = SubResource("Resource_lhqhd")
 effect_type = 1
 target_field = 10
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_bmlki"]

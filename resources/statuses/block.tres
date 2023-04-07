@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_8v4ym")
 status = 1
-name = "Block"
+name = "block"
 tooltip = "If unit has block, block is reduced before HP when receiving damage.\\nAll block is removed at beginning of next turn."
 icon = ExtResource("1_vb0jn")
 received_stats_field = 25

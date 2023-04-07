@@ -19,6 +19,7 @@ script = ExtResource("2_toqa3")
 effect_value = SubResource("Resource_hp0vb")
 effect_type = 1
 target_field = 13
+target_status = 0
 effect = 0
 
 [resource]

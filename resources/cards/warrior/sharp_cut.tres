@@ -27,6 +27,7 @@ script = ExtResource("2_be7jt")
 effect_value = SubResource("Resource_r0h5r")
 effect_type = 1
 target_field = 13
+target_status = 0
 effect = 0
 
 [resource]

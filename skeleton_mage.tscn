@@ -29,6 +29,7 @@ script = ExtResource("3_15bvl")
 effect_value = SubResource("Resource_qtbn0")
 effect_type = 1
 target_field = 5
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_h3yac"]

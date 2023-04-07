@@ -6,6 +6,7 @@ enum EffectType {
 	NO_EFFECT,
 	FIELD,
 	EFFECT,
+	STATUS,
 }
 
 enum Effect {
@@ -23,6 +24,7 @@ enum Effect {
 @export var effect_value: CardEffectValue
 @export var effect_type: EffectType
 @export var target_field: CardEffectValue.Field
+@export var target_status: StatusDef.Status
 @export var effect: Effect
 # This allows us to add extra metadata for some effects without
 # adding too many fields to the basic CardEffect.

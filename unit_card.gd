@@ -229,6 +229,11 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 				# TODO: Update statuses in card to use EffectType.STATUS instead of FIELD
 				# and then use the statusdef field to check whether stats should be updated.
 				unit.add_stat(Stats.Field.BLEED_APPLIED, value)
+	elif effect.effect_type == CardEffect.EffectType.STATUS:
+		target.add_status(effect.target_status, value)
+		var metadata = StatusMetadata.metadata(effect.target_status) as StatusDef
+		if metadata.applied_stats_field != Stats.Field.NO_FIELD:
+			unit.add_stat(metadata.applied_stats_field, value)
 
 static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 	var effect_text = ""
@@ -252,6 +257,13 @@ static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 			# Remove leading -.
 			value_text = value_text.substr(1)
 		effect_text = "%s %s %s" % [prefix_text, value_text, CardEffectValue.get_regular_field_name(effect.target_field)]
+	elif effect.effect_type == CardEffect.EffectType.STATUS:
+		var prefix_text = "add"
+		if UnitCard.is_negative(effect.effect_value):
+			prefix_text = "remove"
+			# Remove leading -.
+			value_text = value_text.substr(1)
+		effect_text = "%s %s [url]%s[/url]" % [prefix_text, value_text, StatusMetadata.status_name(effect.target_status)]
 	return effect_text
 
 static func join_effects_text(unit: Unit, effects: Array[CardEffect]) -> String:

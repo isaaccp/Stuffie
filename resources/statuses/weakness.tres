@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_o8ifo")
 status = 4
-name = "Weakness"
+name = "weakness"
 tooltip = "If unit has weakness, attack damage is reduced to 50%.\\nRemove 1 weakness per turn."
 icon = ExtResource("1_wrtv3")
 received_stats_field = 0

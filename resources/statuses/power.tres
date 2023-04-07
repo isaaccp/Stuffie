@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_jf381")
 status = 3
-name = "Power"
+name = "power"
 tooltip = "If unit has any power, damage +50%.\\nRemove 1 power per turn."
 icon = ExtResource("1_ckenr")
 received_stats_field = 24

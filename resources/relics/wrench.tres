@@ -19,6 +19,7 @@ script = ExtResource("2_phf3t")
 effect_value = SubResource("Resource_cyqkd")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 4
 
 [sub_resource type="Resource" id="Resource_x56or"]

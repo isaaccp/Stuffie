@@ -5,14 +5,8 @@ class_name CardUI
 var unit_card: UnitCard
 var character: Character
 var keyword_tooltips = {
-	"power": "If unit has any power, damage +50%.\nRemove 1 power per turn.",
-	"block": "If unit has block, block is reduced before HP when receiving damage.\nAll block is removed at beginning of next turn.",
-	"dodge": "If unit has dodge, ignore all damage from the next attack and remove 1 dodge. Up to 1 dodge carries to next turn.",
-	"weakness": "If unit has weakness, attack damage is reduced to 50%.\nRemove 1 weakness per turn.",
-	"paralysis": "If unit has paralysis, do not act this turn.\nRemove 1 paralysis per turn.",
 	"MP": "Move points. Used to move the unit. Can be raised over Total MP.",
 	"exhaust": "When played, remove the card from play until next stage.",
-	"bleed": "If unit has bleed, lose that much HP at beginning of turn. This damage can't be blocked or dodged.\nRemove 1 bleed afterwards.",
 }
 
 @export var card_name: Label
@@ -44,6 +38,7 @@ func _process(delta):
 func initialize(card: Card, unit: Unit):
 	unit_card = UnitCard.new(unit, card)
 	keyword_tooltips.merge(card.extra_tooltips())
+	keyword_tooltips.merge(StatusMetadata.tooltips)
 	self.character = character
 	refresh()
 
@@ -51,10 +46,11 @@ func get_description_text() -> String:
 	return unit_card.get_description()
 
 func tooltip_text(keyword: String) -> String:
+	keyword = keyword.to_lower()
 	if keyword_tooltips.has(keyword):
 		return keyword_tooltips[keyword]
 	else:
-		return "Unknown keyword, please file a bug"
+		return "Unknown keyword '%s', please file a bug" % keyword
 
 func get_cost_text() -> String:
 	return "%d" % unit_card.card.cost

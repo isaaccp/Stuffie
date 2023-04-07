@@ -28,6 +28,7 @@ script = ExtResource("2_e4dol")
 effect_value = SubResource("Resource_glngb")
 effect_type = 1
 target_field = 5
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_fcu7e"]
@@ -78,6 +79,7 @@ script = ExtResource("2_e4dol")
 effect_value = SubResource("Resource_ko7sq")
 effect_type = 1
 target_field = 5
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_61fl2"]
@@ -94,6 +96,7 @@ script = ExtResource("2_e4dol")
 effect_value = SubResource("Resource_61fl2")
 effect_type = 1
 target_field = 8
+target_status = 0
 effect = 0
 
 [resource]

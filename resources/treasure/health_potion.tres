@@ -18,6 +18,7 @@ script = ExtResource("2_qsswg")
 effect_value = SubResource("Resource_uun5j")
 effect_type = 1
 target_field = 1
+target_status = 0
 effect = 0
 
 [resource]

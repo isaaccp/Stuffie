@@ -20,6 +20,7 @@ script = ExtResource("3_61v7p")
 effect_value = SubResource("Resource_jedua")
 effect_type = 1
 target_field = 8
+target_status = 0
 effect = 0
 
 [resource]

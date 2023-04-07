@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_1evwx")
 status = 5
-name = "Paralysis"
+name = "paralysis"
 tooltip = "If unit has paralysis, do not act this turn.\\nRemove 1 paralysis per turn."
 icon = ExtResource("1_tuown")
 received_stats_field = 0

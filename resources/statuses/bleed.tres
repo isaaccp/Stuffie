@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_qywd2")
 status = 6
-name = "Bleed"
+name = "bleed"
 tooltip = "If unit has bleed, lose that much HP at beginning of turn. This damage can't be blocked or dodged.\\nRemove 1 bleed afterwards."
 icon = ExtResource("1_lipqt")
 received_stats_field = 0

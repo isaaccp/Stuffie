@@ -20,6 +20,7 @@ script = ExtResource("2_arocr")
 effect_value = SubResource("Resource_6hwdy")
 effect_type = 1
 target_field = 11
+target_status = 0
 effect = 0
 
 [resource]

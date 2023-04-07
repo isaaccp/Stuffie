@@ -28,6 +28,7 @@ script = ExtResource("3_phm3d")
 effect_value = SubResource("Resource_r0h5r")
 effect_type = 1
 target_field = 13
+target_status = 0
 effect = 0
 
 [resource]

@@ -54,6 +54,7 @@ script = ExtResource("4_k0tqi")
 effect_value = SubResource("Resource_v5gs6")
 effect_type = 1
 target_field = 8
+target_status = 0
 effect = 0
 
 [sub_resource type="Resource" id="Resource_3ls2l"]

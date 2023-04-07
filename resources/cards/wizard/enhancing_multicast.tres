@@ -43,6 +43,7 @@ script = ExtResource("5_o8jxv")
 effect_value = SubResource("Resource_nrhuh")
 effect_type = 2
 target_field = 0
+target_status = 0
 effect = 8
 metadata = SubResource("Resource_qj0ks")
 

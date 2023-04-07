@@ -19,6 +19,7 @@ script = ExtResource("2_yi182")
 effect_value = SubResource("Resource_klifp")
 effect_type = 1
 target_field = 8
+target_status = 0
 effect = 0
 
 [resource]
