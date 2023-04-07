@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmwl8g7i87y1o"]
+
+[ext_resource type="Script" path="res://status_effects_display.gd" id="1_lm8cb"]
+
+[node name="StatusEffectsDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 5.0
+grow_horizontal = 0
+script = ExtResource("1_lm8cb")

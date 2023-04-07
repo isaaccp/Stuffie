@@ -6,7 +6,7 @@ class_name CharacterPortrait
 @export var action_points_label: RichTextLabel
 @export var move_points_label: RichTextLabel
 @export var hit_points_bar: CurrentNextHealthBar
-@export var status_effects: StatusEffects
+@export var status_effects: StatusEffectsDisplay
 
 enum PortraitMode {
 	DEFAULT = 0,

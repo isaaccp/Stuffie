@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c5hu3reprk1ch" path="res://resources/portraits/warrior.jpg" id="2_s1eew"]
 [ext_resource type="Texture2D" uid="uid://dlvprbb5n8lal" path="res://resources/action-cost-orb.png" id="5_cia5a"]
 [ext_resource type="PackedScene" uid="uid://by52yvso6g4j4" path="res://current_next_hp_bar.tscn" id="5_re837"]
-[ext_resource type="PackedScene" uid="uid://dc7h6nxgnanb8" path="res://status_effects.tscn" id="6_kysa5"]
+[ext_resource type="PackedScene" uid="uid://bmwl8g7i87y1o" path="res://status_effects_display.tscn" id="6_6gq0p"]
 
 [sub_resource type="Theme" id="Theme_2nrls"]
 default_font_size = 14
@@ -44,7 +44,7 @@ portrait = NodePath("Margin/VBox/PanelContainer2/Portrait")
 action_points_label = NodePath("ActionPointsPivot/ActionPoints/ActionPointsLabel")
 move_points_label = NodePath("MovePointsPivot/MovePoints/MovePointsLabel")
 hit_points_bar = NodePath("Margin/VBox/PanelContainer3/MarginContainer/HPBar")
-status_effects = NodePath("StatusEffectsPivot/StatusEffects")
+status_effects = NodePath("StatusEffectsPivot/StatusEffectsDisplay")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -194,14 +194,13 @@ scroll_active = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="StatusEffects" parent="StatusEffectsPivot" instance=ExtResource("6_kysa5")]
-visible = false
+[node name="StatusEffectsDisplay" parent="StatusEffectsPivot" instance=ExtResource("6_6gq0p")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
 anchor_right = 0.0
 offset_left = 140.0
 offset_right = 140.0
-mouse_filter = 2
+grow_horizontal = 1
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
