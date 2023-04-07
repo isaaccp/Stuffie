@@ -39,7 +39,7 @@ func set_character(character: Character):
 	_update_character()
 
 func _update_character():
-	_set_portrait_texture(character.portrait_texture.texture)
+	_set_portrait_texture(character.portrait_texture)
 	_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
 	_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
 	_set_hit_points(character.pending_damage_set, character.pending_damage, character.hit_points, character.total_hit_points)

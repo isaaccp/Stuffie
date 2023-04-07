@@ -9,7 +9,7 @@ class_name Unit
 # one action regardless of action points, and
 # don't lose action points at beginning of turn.
 @export var total_action_points: int
-@export var portrait_texture: TextureRect
+@export var portrait_texture: Texture
 var move_points: int
 var action_points: int
 # Mostly intended for enemies so levels can add extra damage.
