@@ -301,7 +301,7 @@ static func get_field(unit: Unit, field: CardEffectValue.Field):
 	match field:
 		CardEffectValue.Field.TOTAL_HIT_POINTS: return unit.total_hit_points
 		# TODO: Change this to use Status instead of Fied.
-		CardEffectValue.Field.BLOCK: return unit.get_status(StatusDef.Status.BLOCK)
+		CardEffectValue.Field.BLOCK: return unit.status_manager.get_status(StatusDef.Status.BLOCK)
 	assert(false)
 
 static func get_read_only_field(unit: Unit, field: CardEffectValue.ReadOnlyField):

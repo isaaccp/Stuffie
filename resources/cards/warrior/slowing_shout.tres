@@ -18,9 +18,9 @@ read_only_field = 0
 [sub_resource type="Resource" id="Resource_1w776"]
 script = ExtResource("4_7wh4q")
 effect_value = SubResource("Resource_x80rh")
-effect_type = 1
-target_field = 9
-target_status = 0
+effect_type = 3
+target_field = 0
+target_status = 4
 effect = 0
 
 [sub_resource type="Resource" id="Resource_dwjcw"]

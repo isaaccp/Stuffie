@@ -5,7 +5,7 @@ class_name CardUI
 var unit_card: UnitCard
 var character: Character
 var keyword_tooltips = {
-	"MP": "Move points. Used to move the unit. Can be raised over Total MP.",
+	"mp": "Move points. Used to move the unit. Can be raised over Total MP.",
 	"exhaust": "When played, remove the card from play until next stage.",
 }
 

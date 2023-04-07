@@ -104,7 +104,7 @@ func effect_area(direction: Vector2):
 func extra_tooltips() -> Dictionary:
 	var tooltips = {}
 	if power_relic:
-		tooltips[power_relic.name] = power_relic.tooltip
+		tooltips[power_relic.name.to_lower()] = power_relic.tooltip
 	return tooltips
 
 static func filter_condition(card_filter: CardFilter):
