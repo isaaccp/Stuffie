@@ -19,6 +19,29 @@ var extra_damage = 0
 # Cards to be played at beginning of next turn.
 var next_turn_cards: Array[Card]
 
+class Snapshot:
+	var action_points: int
+	var move_points: int
+	var hit_points: int
+	var status_manager: StatusManager
+	var num_hand_cards: int
+
+	func _init(unit: Unit):
+		action_points = unit.action_points
+		move_points = unit.move_points
+		hit_points = unit.hit_points
+		status_manager = unit.status_manager.clone()
+		num_hand_cards = unit.num_hand_cards()
+
+var snapshot: Snapshot
+
+func snap():
+	snapshot = Snapshot.new(self)
+
+# Overriden by Character, but adding here so Snapshot can work with no changes.
+func num_hand_cards():
+	return 0
+
 func begin_turn():
 	var bleed = status_manager.get_status(StatusDef.Status.BLEED)
 	if bleed > 0:

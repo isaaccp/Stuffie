@@ -198,6 +198,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="StatusEffectsDisplay" parent="StatusEffectsPivot" instance=ExtResource("6_6gq0p")]
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0

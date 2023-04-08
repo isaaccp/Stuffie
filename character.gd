@@ -34,22 +34,6 @@ signal turn_ended(character: Character)
 signal card_played(character: Character, card: Card)
 signal attacked(character: Character)
 
-class Snapshot:
-	var action_points: int
-	var move_points: int
-	var hit_points: int
-	var status_manager: StatusManager
-	var num_hand_cards: int
-
-	func _init(character: Character):
-		action_points = character.action_points
-		move_points = character.move_points
-		hit_points = character.hit_points
-		status_manager = character.status_manager.clone()
-		num_hand_cards = character.num_hand_cards()
-
-var snapshot: Snapshot
-
 func _ready():
 	super()
 
@@ -95,9 +79,6 @@ func process_cards():
 			if not card_upgrades.has(card.base_card.card_name):
 				card_upgrades[card.base_card.card_name] = []
 			card_upgrades[card.base_card.card_name].push_back(card)
-
-func snap():
-	snapshot = Snapshot.new(self)
 
 func get_card_upgrades(card: Card):
 	if not card_upgrades.has(card.card_name):
