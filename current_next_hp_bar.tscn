@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://by52yvso6g4j4"]
+[gd_scene load_steps=3 format=3 uid="uid://by52yvso6g4j4"]
 
 [ext_resource type="Script" path="res://current_next_health_bar.gd" id="1_uu07y"]
-[ext_resource type="Texture2D" uid="uid://bwa62stu30mso" path="res://resources/ui/bar_horizontal_green.png" id="2_o4cqt"]
 [ext_resource type="Texture2D" uid="uid://daakui6e41iwv" path="res://resources/ui/bar_horizontal_red.png" id="4_4xqbf"]
 
 [node name="HPBar" type="HBoxContainer" node_paths=PackedStringArray("next_hp", "current_hp", "missing_hp")]
@@ -16,7 +15,7 @@ missing_hp = NodePath("MissingHP")
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-texture = ExtResource("2_o4cqt")
+texture = ExtResource("4_4xqbf")
 expand_mode = 1
 
 [node name="CurrentHP" type="TextureRect" parent="."]

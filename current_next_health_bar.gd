@@ -37,12 +37,17 @@ func update_health():
 	next_hp.size_flags_stretch_ratio = next_health
 	current_hp.size_flags_stretch_ratio = (current_health - next_health)
 	missing_hp.size_flags_stretch_ratio = (max_health - current_health)
-	#if next_health > 0:
-	#	if tween:
-	#		tween.kill()
-	#else:
-	if not tween or not tween.is_running():
+	if next_health > 0:
+		if tween:
+			tween.kill()
 		tween = create_tween()
 		tween.set_loops()
-		tween.tween_property(current_hp, "modulate:a", 0.25, 1.0)
+		tween.tween_property(current_hp, "modulate:a", 0.75, 1.0)
 		tween.tween_property(current_hp, "modulate:a", 1, 1.0)
+	else:
+		if tween:
+			tween.kill()
+		tween = create_tween()
+		tween.set_loops()
+		tween.tween_property(current_hp, "modulate:a", 0.5, 0.25)
+		tween.tween_property(current_hp, "modulate:a", 1, 0.25)
