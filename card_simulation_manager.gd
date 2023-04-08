@@ -15,7 +15,6 @@ func initialize(map_manager: MapManager):
 	self.map_manager = map_manager
 
 func update(character_pos: Vector2i, card: Card, target_tile: Vector2i, direction: Vector2):
-	print("Updating card simulation manager")
 	fresh = false
 	invalidated.emit()
 	if current_thread.is_alive():
@@ -25,7 +24,6 @@ func update(character_pos: Vector2i, card: Card, target_tile: Vector2i, directio
 	current_thread.start(_async_card_simulation.bind(current_thread))
 
 func stop():
-	print("Stopping card simulation manager")
 	invalidated.emit()
 	if current_thread.is_alive():
 		card_simulation.abort()

@@ -4,12 +4,12 @@
 [ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://resources/decks/wizard/deck.tres" id="2_r0eug"]
 [ext_resource type="Resource" uid="uid://dy2d0a7t3a4sb" path="res://resources/relics/strong_start.tres" id="2_vqogy"]
 [ext_resource type="Resource" uid="uid://dlhyp8id25va7" path="res://resources/decks/wizard/extra_cards.tres" id="3_4pj7e"]
-[ext_resource type="Texture2D" uid="uid://ceq6wbtaov1sh" path="res://resources/portraits/wizard.jpg" id="3_qxto0"]
 [ext_resource type="PackedScene" uid="uid://ddsimr8wumis7" path="res://resources/kaykit-dungeon/models/characters/gltf/character_mage.gltf" id="4_e1b5r"]
 [ext_resource type="Resource" uid="uid://boikmqlmjpm0l" path="res://resources/decks/wizard/all_cards.tres" id="5_dr8sx"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_qtq1g"]
 [ext_resource type="Script" path="res://card_effect.gd" id="7_vbhnd"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="8_4cd50"]
+[ext_resource type="Texture2D" uid="uid://cwlb4qj4vgyq6" path="res://resources/portraits/wizard.png" id="9_wh3e8"]
 
 [sub_resource type="Resource" id="Resource_lhqhd"]
 script = ExtResource("6_qtq1g")
@@ -45,7 +45,7 @@ all_cards = ExtResource("5_dr8sx")
 camp_choice = SubResource("Resource_bmlki")
 total_move_points = 12
 total_action_points = 3
-portrait_texture = ExtResource("3_qxto0")
+portrait_texture = ExtResource("9_wh3e8")
 total_hit_points = 40
 
 [node name="character_mage" parent="." instance=ExtResource("4_e1b5r")]

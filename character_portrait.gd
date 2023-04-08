@@ -48,15 +48,14 @@ func _update_unit():
 		var character = unit as Character
 		_set_action_points(character.pending_action_cost, character.action_points, character.total_action_points)
 		_set_move_points(character.pending_move_cost, character.move_points, character.total_move_points)
-		_set_hit_points(character.pending_damage_set, character.pending_damage, character.hit_points, character.total_hit_points)
 		enemy_actions.hide()
 	elif unit is Enemy:
 		var enemy = unit as Enemy
 		_set_action_points(0, unit.action_points, unit.total_action_points)
 		_set_move_points(0, unit.move_points, unit.total_move_points)
-		_set_hit_points(false, 0, unit.hit_points, unit.total_hit_points)
 		enemy_actions.show()
 		enemy_actions_label.parse_bbcode(enemy.actions_text())
+	_set_hit_points(unit.pending_damage_set, unit.pending_damage, unit.hit_points, unit.total_hit_points)
 	_set_status_effects()
 	if unit.is_destroyed:
 		modulate = Color(1, 0, 0, 0.5)

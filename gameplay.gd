@@ -226,11 +226,16 @@ func initialize_stage_trigger_manager(triggers: Array[StageTrigger]):
 	stage_trigger_manager.close_door_cb = close_door
 
 func on_card_simulation_calculated(damage_taken: Array):
-	print("card simulation calculated")
-	print(damage_taken)
+	# This can include characters, for now focus on enemies, we may want to do something later.
+	for info in damage_taken:
+		var loc = info[0]
+		var damage = info[1]
+		if loc in map_manager.enemy_locs:
+			map_manager.enemy_locs[loc].set_pending_damage(damage)
 
 func on_card_simulation_invalidated():
-	print("card simulation invalidated")
+	for enemy in enemies_node.get_children():
+		enemy.clear_pending_damage()
 
 func on_enemy_turn_calculated(damage_taken: Array):
 	for info in damage_taken:
