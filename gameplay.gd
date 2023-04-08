@@ -65,6 +65,7 @@ var tile_size: int = 2
 var half_tile2 = Vector2(tile_size/2, tile_size/2)
 var half_tile3 = Vector3(tile_size/2, 0, tile_size/2)
 var enemy_moving = false
+var card_simulation_manager = CardSimulationManager.new()
 var enemy_turn_manager = EnemyTurnManager.new()
 var animation_manager = AnimationManager.new()
 var stage_trigger_manager: StageTriggerManager
@@ -189,6 +190,9 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 			var treasure = TreasureLoader.restore(treasure_state)
 			map_manager.add_treasure(treasure)
 			treasures.add_child(treasure)
+	card_simulation_manager.initialize(map_manager)
+	card_simulation_manager.invalidated.connect(on_card_simulation_invalidated)
+	card_simulation_manager.calculated.connect(on_card_simulation_calculated)
 	enemy_turn_manager.initialize(map_manager, effects)
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
 	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)
@@ -220,6 +224,13 @@ func initialize_stage_trigger_manager(triggers: Array[StageTrigger]):
 	stage_trigger_manager.spawn_treasure_cb = spawn_treasure
 	stage_trigger_manager.open_door_cb = open_door
 	stage_trigger_manager.close_door_cb = close_door
+
+func on_card_simulation_calculated(damage_taken: Array):
+	print("card simulation calculated")
+	print(damage_taken)
+
+func on_card_simulation_invalidated():
+	print("card simulation invalidated")
 
 func on_enemy_turn_calculated(damage_taken: Array):
 	for info in damage_taken:
@@ -527,6 +538,7 @@ func change_human_turn_state(new_state):
 		hand_ui.disabled = false
 		end_turn_button.disabled = false
 		if human_turn_state in [HumanTurnState.ACTION_TARGET]:
+			card_simulation_manager.stop()
 			hand_ui.unselect()
 			current_card = null
 			target_cursor.queue_free()
@@ -864,7 +876,10 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
-				# TODO: Simulate effect of playing card and display.
+				if valid_target:
+					card_simulation_manager.update(active_character.get_id_position(), current_card, new_tile_map_pos, new_direction)
+				else:
+					card_simulation_manager.stop()
 
 func update_position_direction(mouse_position: Vector2):
 	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
