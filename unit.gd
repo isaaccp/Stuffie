@@ -10,6 +10,8 @@ class_name Unit
 # don't lose action points at beginning of turn.
 @export var total_action_points: int
 @export var portrait_texture: Texture
+var pending_damage_set = false
+var pending_damage: int = 0
 var move_points: int
 var action_points: int
 # Mostly intended for enemies so levels can add extra damage.
@@ -29,6 +31,15 @@ func begin_turn():
 
 func clear_next_turn_cards():
 	next_turn_cards.clear()
+
+func set_pending_damage(pending_damage: int):
+	pending_damage_set = true
+	self.pending_damage = pending_damage
+	changed.emit()
+
+func clear_pending_damage():
+	pending_damage_set = false
+	changed.emit()
 
 func end_turn():
 	super()

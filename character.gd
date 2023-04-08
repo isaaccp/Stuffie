@@ -7,8 +7,6 @@ class_name Character
 @export var initial_relic: Relic
 var pending_action_cost: int = -1
 var pending_move_cost: int = -1
-var pending_damage_set = false
-var pending_damage: int = 0
 var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
 var is_mock = false
@@ -239,15 +237,6 @@ func set_pending_action_cost(pending_cost: int):
 
 func clear_pending_action_cost():
 	pending_action_cost = -1
-	changed.emit()
-
-func set_pending_damage(pending_damage: int):
-	pending_damage_set = true
-	self.pending_damage = pending_damage
-	changed.emit()
-
-func clear_pending_damage():
-	pending_damage_set = false
 	changed.emit()
 
 func reduce_move(move_cost: int):

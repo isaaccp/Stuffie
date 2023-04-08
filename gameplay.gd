@@ -864,6 +864,7 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 		if state == GameState.HUMAN_TURN:
 			if human_turn_state == HumanTurnState.ACTION_TARGET:
 				update_target(new_tile_map_pos, new_direction)
+				# TODO: Simulate effect of playing card and display.
 
 func update_position_direction(mouse_position: Vector2):
 	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
