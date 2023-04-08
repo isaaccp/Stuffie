@@ -23,9 +23,12 @@ texture = SubResource("ViewportTexture_8dci0")
 [node name="SubViewport" type="SubViewport" parent="Sprite3D"]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(200, 26)
+size = Vector2i(200, 20)
 
 [node name="HPBar" parent="Sprite3D/SubViewport" instance=ExtResource("2_nub7l")]
-offset_right = 200.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(200, 20)
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 198.0
+offset_bottom = 18.0
 hide_full = true

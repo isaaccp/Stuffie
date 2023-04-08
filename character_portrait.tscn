@@ -32,7 +32,12 @@ shader_parameter/radius = 0.1
 shader_parameter/size = Vector2(1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pu4ch"]
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
 
 [node name="CharacterPortrait" type="PanelContainer" node_paths=PackedStringArray("portrait", "action_points_label", "move_points_label", "hit_points_bar", "status_effects", "enemy_actions", "enemy_actions_label")]
 offset_right = 114.0
@@ -43,7 +48,7 @@ script = ExtResource("1_qmac0")
 portrait = NodePath("Margin/VBox/PanelContainer2/Portrait")
 action_points_label = NodePath("ActionPointsPivot/ActionPoints/ActionPointsLabel")
 move_points_label = NodePath("MovePointsPivot/MovePoints/MovePointsLabel")
-hit_points_bar = NodePath("Margin/VBox/PanelContainer3/MarginContainer/HPBar")
+hit_points_bar = NodePath("Margin/VBox/PanelContainer3/HPBar")
 status_effects = NodePath("StatusEffectsPivot/StatusEffectsDisplay")
 enemy_actions = NodePath("EnemyActionsPivot")
 enemy_actions_label = NodePath("EnemyActionsPivot/PanelContainer/EnemyActionsLabel")
@@ -75,14 +80,7 @@ expand_mode = 4
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pu4ch")
 
-[node name="MarginContainer" type="MarginContainer" parent="Margin/VBox/PanelContainer3"]
-layout_mode = 2
-theme_override_constants/margin_left = 1
-theme_override_constants/margin_top = 1
-theme_override_constants/margin_right = 1
-theme_override_constants/margin_bottom = 1
-
-[node name="HPBar" parent="Margin/VBox/PanelContainer3/MarginContainer" instance=ExtResource("5_re837")]
+[node name="HPBar" parent="Margin/VBox/PanelContainer3" instance=ExtResource("5_re837")]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 2
 
