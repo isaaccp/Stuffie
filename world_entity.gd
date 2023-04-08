@@ -7,6 +7,9 @@ var tile_size = 2
 
 var hit_points: int
 @export var total_hit_points: int
+var pending_damage_set = false
+var pending_damage: int = 0
+
 var health_bar: HealthDisplay3D
 var health_bar_scene = preload("res://health_display_3d.tscn")
 
@@ -43,8 +46,22 @@ func move_path(curve: Curve3D):
 		# Set timer to not pass time during pause.
 		await get_tree().create_timer(0.01, false).timeout
 
+func set_pending_damage(pending_damage: int):
+	pending_damage_set = true
+	self.pending_damage = pending_damage
+	health_changed.emit()
+	changed.emit()
+
+func clear_pending_damage():
+	pending_damage_set = false
+	health_changed.emit()
+	changed.emit()
+
 func _on_health_changed():
-	health_bar.update_health(hit_points, total_hit_points)
+	if pending_damage_set:
+		health_bar.set_health(hit_points, total_hit_points, hit_points - pending_damage)
+	else:
+		health_bar.set_health(hit_points, total_hit_points, hit_points)
 
 # For now this is called in Character to update portrait, possibly replace with
 # some signal.
@@ -86,10 +103,10 @@ func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 		return false
 	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
-	health_changed.emit()
 	if hit_points <= 0:
 		set_destroyed()
-	changed.emit()
+	# This clears pending damage, as it's no longer valid, and also causes a refresh.
+	clear_pending_damage()
 	return true
 
 func set_destroyed():

@@ -234,6 +234,7 @@ func on_card_simulation_calculated(damage_taken: Array):
 			map_manager.enemy_locs[loc].set_pending_damage(damage)
 
 func on_card_simulation_invalidated():
+	print("on_card_simulation_invalidated")
 	for enemy in enemies_node.get_children():
 		enemy.clear_pending_damage()
 
@@ -540,10 +541,10 @@ func change_state(new_state):
 
 func change_human_turn_state(new_state):
 	if new_state == HumanTurnState.WAITING:
+		card_simulation_manager.stop()
 		hand_ui.disabled = false
 		end_turn_button.disabled = false
 		if human_turn_state in [HumanTurnState.ACTION_TARGET]:
-			card_simulation_manager.stop()
 			hand_ui.unselect()
 			current_card = null
 			target_cursor.queue_free()
@@ -713,6 +714,8 @@ func _on_enemy_death(enemy: Enemy):
 	active_character.add_stat(Stats.Field.ENEMIES_KILLED, 1)
 	var pos = enemy.get_id_position()
 	map_manager.remove_enemy(pos)
+	if enemy_portrait.unit == enemy:
+		enemy_portrait.hide()
 	enemy.queue_free()
 	enemy_died.emit()
 
@@ -775,6 +778,7 @@ func play_card():
 		await hand_ui.animation_finished
 	if map_manager.enemy_locs.is_empty():
 		all_enemies_died.emit()
+	print("switching state to waiting")
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func teleport(character: Character, distance: int):
