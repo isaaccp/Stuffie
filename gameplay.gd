@@ -777,7 +777,6 @@ func play_card():
 		await hand_ui.animation_finished
 	if map_manager.enemy_locs.is_empty():
 		all_enemies_died.emit()
-	print("switching state to waiting")
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func teleport(character: Character, distance: int):
