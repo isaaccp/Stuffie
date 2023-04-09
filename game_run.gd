@@ -54,18 +54,22 @@ func _ready():
 	state.connect_signals(self)
 	relic_list.reset()
 
-func initialize_character(character: Character):
-	var initial_relic = character.initial_relic
-	relic_list.mark_used(initial_relic.name)
+func initialize_character(character: Character, full = true):
 	character.shared_bag = shared_bag
-	character.add_relic(initial_relic, false)
+	character.relic_manager.relic_list = relic_list
 	character.set_canvas(canvas)
+	if full:
+		# Only for new stages, not when loading.
+		var initial_relic = character.initial_relic
+		relic_list.mark_used(initial_relic.name)
+		character.add_relic(initial_relic, false)
+
+		if run_type == RunDef.RunType.TEST_BLACKSMITH:
+			character.deck.cards = character.all_cards.cards
+		elif run_type == RunDef.RunType.TEST_CAMP:
+			character.hit_points -= 30
 	characters.push_back(character)
 	party.add_child(character)
-	if run_type == RunDef.RunType.TEST_BLACKSMITH:
-		character.deck.cards = character.all_cards.cards
-	elif run_type == RunDef.RunType.TEST_CAMP:
-		character.hit_points -= 30
 
 func set_starting_characters(starting_characters: Array[Character]):
 	# Improve this character initialization.
@@ -329,10 +333,7 @@ func load_save_state(run_state: RunSaveState):
 	relic_list = run_state.relic_list
 	for character_data in run_state.characters:
 		var character = CharacterLoader.restore(character_data)
-		print(character.action_points)
-		character.shared_bag = shared_bag
-		characters.push_back(character)
-		party.add_child(character)
+		initialize_character(character, false)
 	match run_state.state:
 		MAP.name:
 			state.change_state(MAP)

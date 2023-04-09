@@ -1,0 +1,99 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=17 format=3 uid="uid://dxtq5l7lereay"]
+
+[ext_resource type="Script" path="res://event_choice_effect.gd" id="1_4ree8"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_qsavn"]
+[ext_resource type="Script" path="res://event_choice.gd" id="2_ujqvx"]
+[ext_resource type="Script" path="res://event_def.gd" id="3_hue4t"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_jgd0l"]
+
+[sub_resource type="Resource" id="Resource_sgdbj"]
+script = ExtResource("2_qsavn")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_7egps"]
+script = ExtResource("3_jgd0l")
+effect_value = SubResource("Resource_sgdbj")
+effect_type = 2
+target_field = 0
+target_status = 0
+effect = 9
+
+[sub_resource type="Resource" id="Resource_sl7wg"]
+script = ExtResource("1_4ree8")
+target_type = 3
+probability = 1
+effects = Array[ExtResource("3_jgd0l")]([SubResource("Resource_7egps")])
+resolution_text = "You dig and find a relic!"
+
+[sub_resource type="Resource" id="Resource_2urvh"]
+script = ExtResource("2_qsavn")
+value_type = 1
+absolute_value = 10
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_l1iud"]
+script = ExtResource("3_jgd0l")
+effect_value = SubResource("Resource_2urvh")
+effect_type = 1
+target_field = 7
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_og6mi"]
+script = ExtResource("1_4ree8")
+target_type = 0
+probability = 3
+effects = Array[ExtResource("3_jgd0l")]([SubResource("Resource_l1iud")])
+resolution_text = "You dig and find a bag of gold!"
+
+[sub_resource type="Resource" id="Resource_501ri"]
+script = ExtResource("2_qsavn")
+value_type = 1
+absolute_value = -5
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_t3bad"]
+script = ExtResource("3_jgd0l")
+effect_value = SubResource("Resource_501ri")
+effect_type = 1
+target_field = 1
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_xxpdy"]
+script = ExtResource("1_4ree8")
+target_type = 0
+probability = 1
+effects = Array[ExtResource("3_jgd0l")]([SubResource("Resource_t3bad")])
+resolution_text = "As you start digging, a rope trap captures you and pulls you high above ground. You manage to cut yourself free, but the fall is painful."
+
+[sub_resource type="Resource" id="Resource_v5i6g"]
+script = ExtResource("2_ujqvx")
+text = "Dig into the ground"
+effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_sl7wg"), SubResource("Resource_og6mi"), SubResource("Resource_xxpdy")])
+
+[sub_resource type="Resource" id="Resource_i43s7"]
+script = ExtResource("2_ujqvx")
+text = "Pass"
+effects = Array[ExtResource("1_4ree8")]([])
+
+[resource]
+script = ExtResource("3_hue4t")
+title = "Disturbed Ground"
+event_text = "While walking through a clear in the forest, you notice some disturbed ground. Looks like someone buried something in a hurry."
+target_type = 0
+choices = Array[ExtResource("2_ujqvx")]([SubResource("Resource_v5i6g"), SubResource("Resource_i43s7")])

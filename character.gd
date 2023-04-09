@@ -25,6 +25,7 @@ var deck: Deck
 var card_upgrades: Dictionary
 var upgrade_scene = preload("res://card_upgrade.tscn")
 var chooser_scene = preload("res://card_collection_chooser.tscn")
+var relic_chooser_scene = preload("res://relic_chooser.tscn")
 
 signal made_active(active: bool)
 signal stage_started(character: Character)
@@ -210,6 +211,21 @@ func duplicate_cards(number: int, metadata: CardEffectMetadata):
 				new_card.apply_card_change(metadata.copied_card_change)
 			deck.add_to_hand(new_card)
 	chooser.queue_free()
+
+func add_random_relic(number: int, metadata: CardEffectMetadata):
+	var relics = relic_manager.relic_list.choose(number)
+	var relic_chooser = relic_chooser_scene.instantiate() as RelicChooser
+	relic_chooser.initialize(relics)
+	canvas.add_child(relic_chooser)
+	get_tree().paused = true
+	await relic_chooser.relic_chosen
+	get_tree().paused = false
+	var relic = relic_chooser.chosen_relic
+	# We are not allowing skipping for now.
+	assert(relic != null)
+	relic_manager.relic_list.mark_used(relic.name)
+	add_relic(relic)
+	relic_chooser.queue_free()
 
 func teleport(distance: int):
 	await gameplay.teleport(self, distance)

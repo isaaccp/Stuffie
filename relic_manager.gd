@@ -4,6 +4,7 @@ class_name RelicManager
 
 @export var relics: Array[Relic]
 @export var temp_relics: Array[Relic]
+var relic_list: RelicList
 
 func connect_signals(character: Character):
 	character.stage_started.connect(_on_start_stage)

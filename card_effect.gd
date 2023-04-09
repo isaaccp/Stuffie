@@ -19,6 +19,7 @@ enum Effect {
 	PICK_ATTACKS,
 	TELEPORT,
 	DUPLICATE_CARD,
+	RANDOM_RELIC,
 }
 
 @export var effect_value: CardEffectValue

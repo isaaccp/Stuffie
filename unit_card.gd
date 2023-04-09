@@ -198,6 +198,8 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 				await target.teleport(value)
 			CardEffect.Effect.DUPLICATE_CARD:
 				await target.duplicate_cards(value, effect.metadata)
+			CardEffect.Effect.RANDOM_RELIC:
+				await target.add_random_relic(value, effect.metadata)
 	elif effect.effect_type == CardEffect.EffectType.FIELD:
 		match effect.target_field:
 			CardEffectValue.Field.ACTION_POINTS: target.action_points += value
@@ -233,6 +235,7 @@ static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 			CardEffect.Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
 			CardEffect.Effect.TELEPORT: effect_text = "teleport up to %s tiles" % value_text
 			CardEffect.Effect.DUPLICATE_CARD: effect_text = "copy %s (%s)\n%s" % [effect.metadata_card_filter(), value_text, effect.metadata_extra_description()]
+			CardEffect.Effect.RANDOM_RELIC: effect_text = "add a random relic out of %s" % value_text
 	elif effect.effect_type == CardEffect.EffectType.FIELD:
 		var prefix_text = "add"
 		if UnitCard.is_negative(effect.effect_value):
