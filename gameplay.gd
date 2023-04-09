@@ -234,7 +234,6 @@ func on_card_simulation_calculated(damage_taken: Array):
 			map_manager.enemy_locs[loc].set_pending_damage(damage)
 
 func on_card_simulation_invalidated():
-	print("on_card_simulation_invalidated")
 	for enemy in enemies_node.get_children():
 		enemy.clear_pending_damage()
 

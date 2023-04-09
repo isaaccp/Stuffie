@@ -1,3 +1,4 @@
+@tool
 extends HBoxContainer
 
 class_name CurrentNextHealthBar
@@ -8,9 +9,9 @@ class_name CurrentNextHealthBar
 
 @export var hide_full = false
 
-var current_health: int
-var max_health: int
-var next_health: int
+var current_health = 20
+var max_health = 40
+var next_health = 10
 
 var is_ready = false
 var tween: Tween
@@ -42,7 +43,7 @@ func update_health():
 			tween.kill()
 		tween = create_tween()
 		tween.set_loops()
-		tween.tween_property(current_hp, "modulate:a", 0.75, 1.0)
+		tween.tween_property(current_hp, "modulate:a", 0.5, 1.0)
 		tween.tween_property(current_hp, "modulate:a", 1, 1.0)
 	else:
 		if tween:

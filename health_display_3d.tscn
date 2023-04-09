@@ -1,34 +1,46 @@
-[gd_scene load_steps=5 format=3 uid="uid://cd4hnivcahq4"]
+[gd_scene load_steps=6 format=3 uid="uid://cd4hnivcahq4"]
 
 [ext_resource type="Script" path="res://health_display_3d.gd" id="2_h06of"]
 [ext_resource type="PackedScene" uid="uid://by52yvso6g4j4" path="res://current_next_hp_bar.tscn" id="2_nub7l"]
+[ext_resource type="Texture2D" uid="uid://chqhphvk6urdd" path="res://resources/skull.png" id="3_4ckc0"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_yq3sm"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8dci0"]
 
-[node name="HealthDisplay3D" type="Node3D" node_paths=PackedStringArray("sprite", "health_display")]
+[node name="HealthDisplay3D" type="Node3D" node_paths=PackedStringArray("sprite", "health_display", "skull")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
 script = ExtResource("2_h06of")
 sprite = NodePath("Sprite3D")
-health_display = NodePath("Sprite3D/SubViewport/HPBar")
+health_display = NodePath("Sprite3D/SubViewport/VBoxContainer/HPBar")
 texture = SubResource("ViewportTexture_yq3sm")
+skull = NodePath("Sprite3D/SubViewport/VBoxContainer/Skull")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_8dci0")
 
 [node name="SubViewport" type="SubViewport" parent="Sprite3D"]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(200, 20)
+size = Vector2i(100, 94)
 
-[node name="HPBar" parent="Sprite3D/SubViewport" instance=ExtResource("2_nub7l")]
-custom_minimum_size = Vector2(200, 20)
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 198.0
-offset_bottom = 18.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite3D/SubViewport"]
+offset_right = 100.0
+offset_bottom = 94.0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="HPBar" parent="Sprite3D/SubViewport/VBoxContainer" instance=ExtResource("2_nub7l")]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
 hide_full = true
+
+[node name="Skull" type="TextureRect" parent="Sprite3D/SubViewport/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_4ckc0")
+expand_mode = 3

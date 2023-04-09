@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://daakui6e41iwv" path="res://resources/ui/bar_horizontal_red.png" id="4_4xqbf"]
 
 [node name="HPBar" type="HBoxContainer" node_paths=PackedStringArray("next_hp", "current_hp", "missing_hp")]
-custom_minimum_size = Vector2(0, 5)
+custom_minimum_size = Vector2(100, 5)
 theme_override_constants/separation = 0
 script = ExtResource("1_uu07y")
 next_hp = NodePath("NextHP")
