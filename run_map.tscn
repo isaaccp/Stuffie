@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cjjdp1q07jr0j"]
+[gd_scene load_steps=31 format=3 uid="uid://cjjdp1q07jr0j"]
 
 [ext_resource type="Script" path="res://run_map.gd" id="1_5k821"]
 [ext_resource type="Texture2D" uid="uid://b2igb4akb82vs" path="res://resources/map/textures/parchmentFoldedCrinkled.png" id="2_7dhdk"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ci1nrkf1cifam" path="res://resources/map/items/houseChimney.png" id="7_64g4j"]
 [ext_resource type="Texture2D" uid="uid://c6es1klumgthb" path="res://resources/map/items/chest.png" id="7_hyvbj"]
 [ext_resource type="Texture2D" uid="uid://bipighsdj78w5" path="res://resources/map/items/graveyard.png" id="8_5g6ec"]
+[ext_resource type="Texture2D" uid="uid://cft2dybtgf3lf" path="res://resources/map/items/ruins.png" id="9_icof4"]
 [ext_resource type="Texture2D" uid="uid://6huqquv0pb88" path="res://resources/map/items/churchLarge.png" id="9_m3al1"]
 [ext_resource type="Texture2D" uid="uid://dkqhyimlxdhxr" path="res://resources/map/items/lake.png" id="10_0knc1"]
 [ext_resource type="Texture2D" uid="uid://boc6pb7nv4wir" path="res://resources/map/items/watchtower.png" id="11_8cuhu"]
@@ -46,6 +47,7 @@ path = ExtResource("4_q8lcq")
 camp = ExtResource("26_lntsw")
 character = ExtResource("23_n5aai")
 card_reward = ExtResource("7_hyvbj")
+event = ExtResource("9_icof4")
 shared_bag_gold_ui = NodePath("PanelContainer/SharedBagGoldUI")
 
 [node name="Panel" type="Panel" parent="."]

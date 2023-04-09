@@ -37,6 +37,10 @@ signal attacked(character: Character)
 func _ready():
 	super()
 
+func character_name():
+	var index = Enum.CharacterId.values().find(character_type)
+	return Enum.CharacterId.keys()[index].capitalize()
+
 func initialize(full=true):
 	relic_manager.connect_signals(self)
 	process_cards()

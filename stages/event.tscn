@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtgot3rtim42s"]
+
+[ext_resource type="Script" path="res://stages/event.gd" id="1_we7vh"]
+[ext_resource type="Resource" uid="uid://ta3m4te10an8" path="res://resources/events/healing_fountain.tres" id="2_d5i6v"]
+[ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_vtdr1"]
+
+[node name="Event" type="Control" node_paths=PackedStringArray("event_text_area", "event_text_label", "event_options", "event_resolution_label", "character_state_ui", "shared_bag_gold_ui", "done_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_we7vh")
+event_text_area = NodePath("MainScreen/EventTextArea")
+event_text_label = NodePath("MainScreen/EventTextArea/EventTextLabel")
+event_options = NodePath("MainScreen/EventTextArea/EventOptions")
+event_resolution_label = NodePath("MainScreen/EventTextArea/EventResolutionLabel")
+character_state_ui = NodePath("MainScreen/MarginContainer/CharacterState")
+shared_bag_gold_ui = NodePath("MainScreen/SharedBagGoldUI")
+done_button = NodePath("MainScreen/EventTextArea/DoneButton")
+events = Array[Resource("res://event_def.gd")]([ExtResource("2_d5i6v")])
+
+[node name="MainScreen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SharedBagGoldUI" parent="MainScreen" instance=ExtResource("2_vtdr1")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = -1.0
+offset_bottom = 23.0
+grow_horizontal = 0
+grow_vertical = 1
+
+[node name="EventTextArea" type="VBoxContainer" parent="MainScreen"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -0.5
+offset_top = 40.0
+offset_right = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="EventTextLabel" type="RichTextLabel" parent="MainScreen/EventTextArea"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="EventOptions" type="VBoxContainer" parent="MainScreen/EventTextArea"]
+layout_mode = 2
+
+[node name="EventResolutionLabel" type="RichTextLabel" parent="MainScreen/EventTextArea"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="DoneButton" type="Button" parent="MainScreen/EventTextArea"]
+visible = false
+layout_mode = 2
+text = "Done"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainScreen"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+
+[node name="CharacterState" type="VBoxContainer" parent="MainScreen/MarginContainer"]
+layout_mode = 2

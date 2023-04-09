@@ -22,6 +22,7 @@ var run_victory = false
 var blacksmith_scene = preload("res://stages/blacksmith.tscn")
 var camp_scene = preload("res://stages/camp.tscn")
 var add_character_scene = preload("res://stages/add_character.tscn")
+var event_scene = preload("res://stages/event.tscn")
 var summary_scene = preload("res://run_summary.tscn")
 var run: RunDef
 var level_number = 0
@@ -110,6 +111,10 @@ func get_character_stage():
 	var stage = add_character_scene.instantiate()
 	return stage
 
+func get_event_stage():
+	var stage = event_scene.instantiate() as EventStage
+	return stage
+
 func _on_within_stage_entered():
 	var stage_def = current_stage_def()
 	rewards_type = stage_def.rewards_type()
@@ -157,6 +162,12 @@ func _on_within_stage_entered():
 			character_stage.character_selected().connect(character_added)
 			stage_parent.add_child(character_stage)
 			stage_impl = character_stage
+		elif stage_def.stage_type == StageDef.StageType.EVENT:
+			var event_stage = get_event_stage()
+			event_stage.initialize(characters, shared_bag, relic_list)
+			event_stage.stage_done.connect(stage_finished.bind(StageDef.StageType.EVENT))
+			stage_parent.add_child(event_stage)
+			stage_impl = event_stage
 
 func _on_within_stage_exited():
 	await TransitionScreen.create(self)

@@ -10,7 +10,7 @@ func _init(unit: Unit, card: Card):
 	self.card = card
 
 func apply_on_play_effects(target: Unit):
-	await apply_effects_target(card.on_play_effects, target)
+	await UnitCard.apply_effects_target(unit, card.on_play_effects, target)
 
 func apply_self():
 	assert(card.target_mode == Enum.TargetMode.SELF or card.target_mode == Enum.TargetMode.SELF_ALLY)
@@ -22,17 +22,17 @@ func apply_self():
 	unit.refresh()
 
 func apply_self_effects():
-	await apply_effects_target(card.on_play_self_effects, unit)
+	await UnitCard.apply_effects_target(unit, card.on_play_self_effects, unit)
 
 func apply_after_effects():
-	await apply_effects_target(card.on_play_after_effects, unit)
+	await UnitCard.apply_effects_target(unit, card.on_play_after_effects, unit)
 
 func apply_next_turn_effects():
-	await apply_effects_target(card.on_next_turn_effects, unit)
+	await UnitCard.apply_effects_target(unit, card.on_next_turn_effects, unit)
 
 func apply_to_ally(ally: Unit):
 	assert(card.target_mode == Enum.TargetMode.SELF_ALLY or card.target_mode == Enum.TargetMode.ALLY)
-	await apply_effects_target(card.on_play_effects, ally)
+	await UnitCard.apply_effects_target(unit, card.on_play_effects, ally)
 
 func apply_to_enemy(enemy: Unit):
 	assert(card.target_mode == Enum.TargetMode.ENEMY or card.target_mode == Enum.TargetMode.AREA)
@@ -46,7 +46,7 @@ func apply_to_enemy(enemy: Unit):
 		await UnitCard.apply_effect_target(unit, effect, enemy)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
-		apply_effects_target(card.on_kill_effects, unit)
+		await UnitCard.apply_effects_target(unit, card.on_kill_effects, unit)
 
 func regular_damage():
 	if card.damage_value:
@@ -258,7 +258,7 @@ static func join_effects_text(unit: Unit, effects: Array[CardEffect]) -> String:
 		effect_texts.push_back(description)
 	return ', '.join(effect_texts)
 
-func apply_effects_target(effects: Array[CardEffect], target: Unit):
+static func apply_effects_target(unit: Unit, effects: Array[CardEffect], target: Unit):
 	for effect in effects:
 		await UnitCard.apply_effect_target(unit, effect, target)
 
@@ -298,10 +298,13 @@ static func get_effect_value_string(unit: Unit, effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE:
 		return "%d" % effect_value.absolute_value
 	if effect_value.value_type == CardEffectValue.ValueType.REFERENCE:
-		var prefix_text = "%dx " % effect_value.reference_fraction
+		var prefix_text = "%.1fx " % effect_value.reference_fraction
 		if effect_value.reference_fraction == 1:
 			prefix_text = ""
-		return "%s%s (%d)" % [prefix_text, effect_value.get_field_name(), UnitCard.get_effect_value(unit, effect_value)]
+		if unit == null:
+			return "%s%s" % [prefix_text, effect_value.get_field_name()]
+		else:
+			return "%s%s (%d)" % [prefix_text, effect_value.get_field_name(), UnitCard.get_effect_value(unit, effect_value)]
 
 static func is_negative(effect_value: CardEffectValue):
 	if effect_value.value_type == CardEffectValue.ValueType.ABSOLUTE and effect_value.absolute_value < 0:

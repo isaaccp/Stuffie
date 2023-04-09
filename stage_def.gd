@@ -8,6 +8,7 @@ enum StageType {
 	CAMP,
 	CARD_REWARD,
 	CHARACTER,
+	EVENT,
 }
 
 enum RewardsType {
@@ -57,4 +58,9 @@ static func camp():
 static func character():
 	var stage_def = StageDef.new()
 	stage_def.stage_type = StageType.CHARACTER
+	return stage_def
+
+static func event():
+	var stage_def = StageDef.new()
+	stage_def.stage_type = StageType.EVENT
 	return stage_def

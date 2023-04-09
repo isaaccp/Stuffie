@@ -16,6 +16,7 @@ var stage_number: int
 @export var camp: Texture
 @export var character: Texture
 @export var card_reward: Texture
+@export var event: Texture
 @export var shared_bag_gold_ui: SharedBagGoldUI
 
 var between_stage_space: float
@@ -67,6 +68,8 @@ func prepare_item(index: int) -> Sprite2D:
 				return get_sprite(card_reward, index)
 			StageDef.StageType.CHARACTER:
 				return get_sprite(character, index)
+			StageDef.StageType.EVENT:
+				return get_sprite(event, index)
 	assert(false)
 	return null
 

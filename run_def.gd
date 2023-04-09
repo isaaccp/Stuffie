@@ -103,6 +103,7 @@ static func get_run(run_type: RunType):
 		RunType.TEST_CAMP:
 			run_def.levels = [
 				RunLevelDef.create([
+					StageDef.event(),
 					StageDef.camp(),
 					StageDef.combat(0),
 				]),
