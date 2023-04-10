@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtgot3rtim42s"]
+[gd_scene load_steps=6 format=3 uid="uid://dtgot3rtim42s"]
 
 [ext_resource type="Script" path="res://stages/event.gd" id="1_we7vh"]
 [ext_resource type="Resource" uid="uid://dxtq5l7lereay" path="res://resources/events/disturbed_ground.tres" id="2_16lsd"]
 [ext_resource type="Resource" uid="uid://ta3m4te10an8" path="res://resources/events/healing_fountain.tres" id="2_d5i6v"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_vtdr1"]
+[ext_resource type="Resource" uid="uid://b0dytqyukonmx" path="res://resources/events/wandering_priest.tres" id="2_yhvs7"]
 
 [node name="Event" type="Control" node_paths=PackedStringArray("event_text_area", "event_text_label", "event_options", "character_selection_label", "event_resolution_label", "character_state_ui", "shared_bag_gold_ui", "done_button")]
 layout_mode = 3
@@ -21,7 +22,7 @@ event_resolution_label = NodePath("MainScreen/EventTextArea/EventResolutionLabel
 character_state_ui = NodePath("MainScreen/MarginContainer/CharacterState")
 shared_bag_gold_ui = NodePath("MainScreen/SharedBagGoldUI")
 done_button = NodePath("MainScreen/EventTextArea/DoneButton")
-events = Array[Resource("res://event_def.gd")]([ExtResource("2_16lsd"), ExtResource("2_d5i6v")])
+events = Array[Resource("res://event_def.gd")]([ExtResource("2_yhvs7"), ExtResource("2_d5i6v"), ExtResource("2_16lsd")])
 
 [node name="MainScreen" type="Control" parent="."]
 layout_mode = 1
@@ -61,12 +62,12 @@ bbcode_enabled = true
 fit_content = true
 scroll_active = false
 
-[node name="EventOptions" type="VBoxContainer" parent="MainScreen/EventTextArea"]
-layout_mode = 2
-
 [node name="CharacterSelectionLabel" type="Label" parent="MainScreen/EventTextArea"]
 layout_mode = 2
 text = "Choose a character to perform the action"
+
+[node name="EventOptions" type="VBoxContainer" parent="MainScreen/EventTextArea"]
+layout_mode = 2
 
 [node name="EventResolutionLabel" type="RichTextLabel" parent="MainScreen/EventTextArea"]
 layout_mode = 2

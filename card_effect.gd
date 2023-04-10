@@ -20,6 +20,7 @@ enum Effect {
 	TELEPORT,
 	DUPLICATE_CARD,
 	RANDOM_RELIC,
+	COLLECTION_REMOVE_CARD,
 }
 
 @export var effect_value: CardEffectValue

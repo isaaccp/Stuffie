@@ -103,6 +103,7 @@ static func get_run(run_type: RunType):
 				]),
 			]
 		RunType.TEST_CAMP:
+			run_def.shared_bag_gold = 18
 			run_def.levels = [
 				RunLevelDef.create([
 					StageDef.event(),

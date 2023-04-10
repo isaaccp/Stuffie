@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c7iir3mgvux8m" path="res://card_collection_chooser.tscn" id="2_drq7e"]
 
 [node name="CardRemoval" type="Control" node_paths=PackedStringArray("chooser")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,3 +16,10 @@ chooser = NodePath("CardCollectionChooser")
 
 [node name="CardCollectionChooser" parent="." instance=ExtResource("2_drq7e")]
 layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_right = 24.0

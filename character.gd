@@ -26,6 +26,7 @@ var card_upgrades: Dictionary
 var upgrade_scene = preload("res://card_upgrade.tscn")
 var chooser_scene = preload("res://card_collection_chooser.tscn")
 var relic_chooser_scene = preload("res://relic_chooser.tscn")
+var removal_scene = preload("res://card_removal.tscn")
 
 signal made_active(active: bool)
 signal stage_started(character: Character)
@@ -226,6 +227,15 @@ func add_random_relic(number: int, metadata: CardEffectMetadata):
 	relic_manager.relic_list.mark_used(relic.name)
 	add_relic(relic)
 	relic_chooser.queue_free()
+
+func collection_remove_cards(number: int):
+	var removal = removal_scene.instantiate() as CardRemoval
+	removal.initialize([self], false)
+	canvas.add_child(removal)
+	get_tree().paused = true
+	await removal.done
+	get_tree().paused = false
+	removal.queue_free()
 
 func teleport(distance: int):
 	await gameplay.teleport(self, distance)

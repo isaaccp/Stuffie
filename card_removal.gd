@@ -6,11 +6,13 @@ class_name CardRemoval
 
 var characters: Array[Character]
 var active_character: Character
+var cancelable: bool
 
 signal done(character: Character)
 signal canceled
 
-func initialize(characters: Array[Character]):
+func initialize(characters: Array[Character], cancelable = true):
+	self.cancelable = cancelable
 	self.characters = characters
 	# Use CharacterChooser when implemented.
 	active_character = characters[0]
@@ -22,5 +24,6 @@ func _on_card_chosen(card: Card):
 	done.emit(active_character)
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		canceled.emit()
+	if cancelable:
+		if event.is_action_pressed("ui_cancel"):
+			canceled.emit()
