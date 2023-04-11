@@ -50,6 +50,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_brspj")
 cost = 0
+playable = true
 texture = ExtResource("5_oltw3")
 target_mode = 0
 target_animation = 0

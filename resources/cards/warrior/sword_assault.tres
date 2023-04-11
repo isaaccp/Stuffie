@@ -39,6 +39,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1
+playable = true
 target_mode = 3
 target_animation = 1
 on_damage_animation = 0

@@ -1,0 +1,83 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=16 format=3 uid="uid://b117umtp8ind1"]
+
+[ext_resource type="Script" path="res://event_choice_effect.gd" id="1_l76a8"]
+[ext_resource type="Script" path="res://event_choice_precondition.gd" id="1_qtrc3"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_qvbed"]
+[ext_resource type="Script" path="res://event_choice.gd" id="1_rqnwg"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_cngnc"]
+[ext_resource type="Script" path="res://event_def.gd" id="2_grk1g"]
+[ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/hold_enemy.tres" id="2_grukn"]
+
+[sub_resource type="Resource" id="Resource_78c1x"]
+script = ExtResource("1_qvbed")
+value_type = 1
+absolute_value = 3
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_cwiqe"]
+script = ExtResource("2_cngnc")
+effect_value = SubResource("Resource_78c1x")
+effect_type = 2
+target_field = 0
+target_status = 0
+effect = 9
+
+[sub_resource type="Resource" id="Resource_lxcmq"]
+script = ExtResource("1_l76a8")
+target_type = 0
+probability = 1
+effects = Array[ExtResource("2_cngnc")]([SubResource("Resource_cwiqe")])
+resolution_text = "As you cast the spell, the bandit turns in shock as his legs stop moving. You reach the paralyzed bandit and recover multiple stolen artifacts. The merchant rewards you with one of your choice."
+
+[sub_resource type="Resource" id="Resource_pg1yo"]
+script = ExtResource("1_qtrc3")
+type = 1
+display = false
+gold = 0
+character_types = Array[int]([2])
+
+[sub_resource type="Resource" id="Resource_pb4wm"]
+script = ExtResource("1_qtrc3")
+type = 2
+display = false
+gold = 0
+character_types = Array[int]([])
+card = ExtResource("2_grukn")
+
+[sub_resource type="Resource" id="Resource_rspeq"]
+script = ExtResource("1_rqnwg")
+text = "Cast Hold Enemy on the running bandit"
+preview_choice_effects = true
+preview_resolution_effects = false
+hide_if_preconditions_fail = false
+preconditions = Array[ExtResource("1_qtrc3")]([SubResource("Resource_pg1yo"), SubResource("Resource_pb4wm")])
+choice_effects = Array[ExtResource("2_cngnc")]([])
+effects = Array[ExtResource("1_l76a8")]([SubResource("Resource_lxcmq")])
+
+[sub_resource type="Resource" id="Resource_lk175"]
+script = ExtResource("1_l76a8")
+target_type = 0
+probability = 1
+effects = Array[ExtResource("2_cngnc")]([])
+resolution_text = "You run towards the bandit, but they were too far ahead. After a while you give up."
+
+[sub_resource type="Resource" id="Resource_lcj5j"]
+script = ExtResource("1_rqnwg")
+text = "Run after the bandit"
+preview_choice_effects = true
+preview_resolution_effects = false
+hide_if_preconditions_fail = false
+preconditions = Array[ExtResource("1_qtrc3")]([])
+choice_effects = Array[ExtResource("2_cngnc")]([])
+effects = Array[ExtResource("1_l76a8")]([SubResource("Resource_lk175")])
+
+[resource]
+script = ExtResource("2_grk1g")
+title = "Mugged!"
+event_text = "Getting to a crossroads, you see someone run away from a merchant. The merchant screams \"Help! Catch the bandit!\". "
+target_type = 2
+choices = Array[ExtResource("1_rqnwg")]([SubResource("Resource_rspeq"), SubResource("Resource_lcj5j")])

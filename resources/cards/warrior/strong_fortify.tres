@@ -37,6 +37,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_fpwhy")
 cost = 3
+playable = true
 texture = ExtResource("3_bgjpn")
 target_mode = 0
 target_animation = 0

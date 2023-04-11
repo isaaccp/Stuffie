@@ -15,6 +15,8 @@ enum AreaType {
 @export var upgrade_level = 0
 @export var base_card: Card
 @export var cost: int
+# If false, card can't be played.
+@export var playable = true
 @export var texture: Texture2D
 @export var target_mode: Enum.TargetMode
 # Should be "on_play_animation".

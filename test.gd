@@ -5,4 +5,4 @@ func test():
 	pass
 
 func _run():
-	print(Enum.CharacterId.get(Enum.CharacterId.WARRIOR))
+	print(Enum.CharacterId.keys()[Enum.CharacterId.WARRIOR])

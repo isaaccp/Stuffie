@@ -8,6 +8,10 @@ class_name CardEffectMetadata
 @export var copied_card_change: CardChange
 # Used in DUPLICATE_CARD to filter selection.
 @export var card_filter: CardFilter
+# Used in ADD_CARD.
+@export var card: Card
+# Used in ADD_RELIC.
+@export var relic: Relic
 
 func card_filter_description():
 	if card_filter:

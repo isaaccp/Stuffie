@@ -49,6 +49,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_kcy7g")
 cost = 1
+playable = true
 target_mode = 3
 target_animation = 1
 on_damage_animation = 0

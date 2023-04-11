@@ -21,6 +21,8 @@ enum Effect {
 	DUPLICATE_CARD,
 	RANDOM_RELIC,
 	COLLECTION_REMOVE_CARD,
+	COLLECTION_ADD_CARD,
+	ADD_RELIC,
 }
 
 @export var effect_value: CardEffectValue

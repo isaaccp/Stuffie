@@ -67,6 +67,7 @@ func initialize_character(character: Character, full = true):
 		if run_type == RunDef.RunType.TEST_BLACKSMITH:
 			character.deck.cards = character.all_cards.cards
 		elif run_type == RunDef.RunType.TEST_CAMP:
+			character.deck.cards = character.all_cards.cards
 			character.hit_points -= 30
 	characters.push_back(character)
 	party.add_child(character)

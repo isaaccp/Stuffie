@@ -18,7 +18,8 @@ class_name EventChoice
 func get_preconditions_description():
 	var precondition_texts: PackedStringArray = []
 	for precondition in preconditions:
-		precondition_texts.push_back(precondition.get_description())
+		if precondition.display:
+			precondition_texts.push_back(precondition.get_description())
 	return ', '.join(precondition_texts)
 
 # Return a random effect based on the proportional weights.

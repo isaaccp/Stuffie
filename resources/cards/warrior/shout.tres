@@ -30,6 +30,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1
+playable = true
 texture = ExtResource("3_t4hqr")
 target_mode = 4
 target_animation = 4

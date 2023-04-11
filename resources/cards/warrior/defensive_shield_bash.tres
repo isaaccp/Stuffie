@@ -42,6 +42,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_jmdm6")
 cost = 1
+playable = true
 texture = ExtResource("5_gahch")
 target_mode = 3
 target_animation = 0

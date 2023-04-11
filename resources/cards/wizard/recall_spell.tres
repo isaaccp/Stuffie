@@ -42,6 +42,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1
+playable = true
 texture = ExtResource("6_sgspy")
 target_mode = 0
 target_animation = 0

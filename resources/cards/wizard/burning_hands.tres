@@ -21,6 +21,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 2
+playable = true
 texture = ExtResource("3_q8085")
 target_mode = 4
 target_animation = 5

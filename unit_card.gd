@@ -202,6 +202,10 @@ static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
 				await target.add_random_relic(value, effect.metadata)
 			CardEffect.Effect.COLLECTION_REMOVE_CARD:
 				await target.collection_remove_cards(value)
+			CardEffect.Effect.COLLECTION_ADD_CARD:
+				await target.collection_add_card(effect.metadata)
+			CardEffect.Effect.ADD_RELIC:
+				await target.add_relic(effect.metadata)
 	elif effect.effect_type == CardEffect.EffectType.FIELD:
 		match effect.target_field:
 			CardEffectValue.Field.ACTION_POINTS: target.action_points += value
@@ -239,6 +243,9 @@ static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 			CardEffect.Effect.DUPLICATE_CARD: effect_text = "copy %s (%s)\n%s" % [effect.metadata_card_filter(), value_text, effect.metadata_extra_description()]
 			CardEffect.Effect.RANDOM_RELIC: effect_text = "add a random relic out of %s" % value_text
 			CardEffect.Effect.COLLECTION_REMOVE_CARD: effect_text = "remove %s cards from your collection" % value_text
+			# TODO: Allow to preview through a url.
+			CardEffect.Effect.COLLECTION_ADD_CARD: effect_text = "add the card '%s' to your collection" % effect.metadata.card.card_name
+			CardEffect.Effect.ADD_RELIC: effect_text = "add the relic '%s'" % effect.metadata.relic.name
 	elif effect.effect_type == CardEffect.EffectType.FIELD:
 		var prefix_text = "add"
 		if UnitCard.is_negative(effect.effect_value):

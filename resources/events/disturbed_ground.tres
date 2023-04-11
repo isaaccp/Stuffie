@@ -84,11 +84,21 @@ resolution_text = "As you start digging, a rope trap captures you and pulls you 
 [sub_resource type="Resource" id="Resource_v5i6g"]
 script = ExtResource("2_ujqvx")
 text = "Dig into the ground"
+preview_choice_effects = true
+preview_resolution_effects = false
+hide_if_preconditions_fail = false
+preconditions = Array[Resource("res://event_choice_precondition.gd")]([])
+choice_effects = Array[ExtResource("3_jgd0l")]([])
 effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_sl7wg"), SubResource("Resource_og6mi"), SubResource("Resource_xxpdy")])
 
 [sub_resource type="Resource" id="Resource_i43s7"]
 script = ExtResource("2_ujqvx")
 text = "Pass"
+preview_choice_effects = true
+preview_resolution_effects = false
+hide_if_preconditions_fail = false
+preconditions = Array[Resource("res://event_choice_precondition.gd")]([])
+choice_effects = Array[ExtResource("3_jgd0l")]([])
 effects = Array[ExtResource("1_4ree8")]([])
 
 [resource]

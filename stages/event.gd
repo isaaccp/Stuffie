@@ -132,6 +132,23 @@ func check_preconditions(characters: Array, choice: EventChoice):
 		if precondition.type == EventChoicePrecondition.Type.GOLD:
 			if characters[0].shared_bag.gold < precondition.gold:
 				return false
+		elif precondition.type == EventChoicePrecondition.Type.CHARACTER_TYPE:
+			var found = false
+			for character in characters:
+				if character.character_type in precondition.character_types:
+					found = true
+					break
+			if not found:
+				return false
+		elif precondition.type == EventChoicePrecondition.Type.CARD:
+			var found = false
+			for character in characters:
+				for card in character.deck.cards:
+					if card.card_name == precondition.card.card_name or card.base_card and card.base_card.card_name == precondition.card.card_name:
+						found = true
+						break
+			if not found:
+				return false
 	return true
 
 func _on_character_selected(character: Character):

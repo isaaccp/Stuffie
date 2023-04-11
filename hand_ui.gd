@@ -192,13 +192,16 @@ func clear():
 		card.queue_free()
 
 func _on_card_pressed(index: int):
-	if not disabled:
-		if selected_index != -1:
-			get_child(selected_index).set_selected(false)
+	if disabled:
+		return
+	var card = character.deck.hand[index]
+	if not card.playable:
+		return
+	if selected_index != -1:
+		get_child(selected_index).set_selected(false)
 
-		var card = character.deck.hand[index]
-		if card.cost <= character.action_points:
-			selected_index = index
-			selected_card= card
-			get_child(index).set_selected(true)
-			card_selected.emit(selected_card)
+	if card.cost <= character.action_points:
+		selected_index = index
+		selected_card= card
+		get_child(index).set_selected(true)
+		card_selected.emit(selected_card)

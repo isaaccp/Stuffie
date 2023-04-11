@@ -50,6 +50,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_j3w0n")
 cost = 1
+playable = true
 texture = ExtResource("4_qnxka")
 target_mode = 0
 target_animation = 3

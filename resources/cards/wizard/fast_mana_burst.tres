@@ -23,6 +23,7 @@ basic = false
 upgrade_level = 1
 base_card = ExtResource("1_3ca82")
 cost = 1
+playable = true
 texture = ExtResource("4_5c6km")
 target_mode = 4
 target_animation = 6

@@ -228,6 +228,9 @@ func add_random_relic(number: int, metadata: CardEffectMetadata):
 	add_relic(relic)
 	relic_chooser.queue_free()
 
+func collection_add_card(card: Card):
+	deck.add_card(card.duplicate(true))
+
 func collection_remove_cards(number: int):
 	var removal = removal_scene.instantiate() as CardRemoval
 	removal.initialize([self], false)

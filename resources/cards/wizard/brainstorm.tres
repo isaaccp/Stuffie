@@ -30,6 +30,7 @@ upgrade_name = ""
 basic = false
 upgrade_level = 0
 cost = 1
+playable = true
 texture = ExtResource("4_imy7l")
 target_mode = 2
 target_animation = 3
