@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EventDef" load_steps=22 format=3 uid="uid://b0dytqyukonmx"]
+[gd_resource type="Resource" script_class="EventDef" load_steps=23 format=3 uid="uid://b0dytqyukonmx"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_qord4"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_bl5ra"]
@@ -127,6 +127,13 @@ preconditions = Array[ExtResource("4_x08im")]([SubResource("Resource_4nis3")])
 choice_effects = Array[ExtResource("2_bl5ra")]([SubResource("Resource_8qe5u")])
 effects = Array[ExtResource("3_dm2vb")]([SubResource("Resource_dq6ig")])
 
+[sub_resource type="Resource" id="Resource_em31r"]
+script = ExtResource("3_dm2vb")
+target_type = 0
+probability = 1
+effects = Array[ExtResource("2_bl5ra")]([])
+resolution_text = "You decline the services of the priest"
+
 [sub_resource type="Resource" id="Resource_hp0xj"]
 script = ExtResource("4_yo1j6")
 text = "Pass"
@@ -135,7 +142,7 @@ preview_resolution_effects = false
 hide_if_preconditions_fail = false
 preconditions = Array[ExtResource("4_x08im")]([])
 choice_effects = Array[ExtResource("2_bl5ra")]([])
-effects = Array[ExtResource("3_dm2vb")]([])
+effects = Array[ExtResource("3_dm2vb")]([SubResource("Resource_em31r")])
 
 [resource]
 script = ExtResource("5_f1q47")

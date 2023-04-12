@@ -16,9 +16,11 @@ class_name EventStage
 
 var event_def: EventDef
 var choice: EventChoice
+var choice_effect: EventChoiceEffect
 
 var characters: Array[Character]
 var chosen_character: Character
+var target_characters: Array
 var shared_bag: SharedBag
 var relic_list: RelicList
 
@@ -26,10 +28,10 @@ var portrait_scene = preload("res://character_portrait.tscn")
 
 var state = StateMachine.new()
 var CHOOSING = state.add("choosing")
+var CHOOSING_TARGET = state.add("choosing_target")
 var RESOLVING = state.add("resolving")
 
 signal stage_done
-signal _character_chosen
 
 func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list: RelicList):
 	event_def = events[randi() % events.size()]
@@ -68,34 +70,41 @@ func _on_choosing_entered():
 func _on_choosing_exited():
 	pass
 
-func _on_resolving_entered():
+func _on_choosing_target_entered():
 	for button in event_options.get_children():
 		button.queue_free()
 	var label = Label.new()
 	label.text = choice.text
 	event_options.add_child(label)
-	var effect = choice.get_effect()
-	event_resolution_label.text = effect.resolution_text
+	choice_effect = choice.get_effect()
+	event_resolution_label.text = choice_effect.resolution_text
 	var target_characters = []
-	match effect.target_type:
+	match choice_effect.target_type:
 		EventChoiceEffect.TargetType.CHOSEN_CHARACTER_OR_ALL_CHARACTERS:
 			if chosen_character == null:
-				target_characters = characters
+				resolve_effect(characters)
 			else:
-				target_characters = [chosen_character]
+				resolve_effect([chosen_character])
 		EventChoiceEffect.TargetType.ALL_CHARACTERS:
-			target_characters = characters
+			resolve_effect(characters)
 		EventChoiceEffect.TargetType.RANDOM_CHARACTER:
-			target_characters = [characters[randi() % characters.size()]]
+			resolve_effect([characters[randi() % characters.size()]])
 		EventChoiceEffect.TargetType.CHOOSE_NEW_CHARACTER:
 			event_resolution_label.text += "\nChoose a character as target for the event resolution"
-			await _character_chosen
-			target_characters = [chosen_character]
-	if effect.effects.size() != 0:
-		event_resolution_label.text = effect.resolution_text
+
+func _on_choosing_target_exited():
+	pass
+
+func resolve_effect(characters: Array):
+	self.target_characters = characters
+	state.change_state(RESOLVING)
+
+func _on_resolving_entered():
+	if choice_effect.effects.size() != 0:
+		event_resolution_label.text = choice_effect.resolution_text
 		for character in target_characters:
-			event_resolution_label.text += "\n%s: %s" % [character.character_name(), UnitCard.join_effects_text(character, effect.effects)]
-			await UnitCard.apply_effects_target(character, effect.effects, character)
+			event_resolution_label.text += "\n%s: %s" % [character.character_name(), UnitCard.join_effects_text(character, choice_effect.effects)]
+			await UnitCard.apply_effects_target(character, choice_effect.effects, character)
 	done_button.show()
 	done_button.pressed.connect(_on_done_pressed)
 
@@ -111,7 +120,6 @@ func refresh_choices(characters: Array):
 		if choice.preconditions.size() != 0:
 			if not check_preconditions(characters, choice):
 				if choice.hide_if_preconditions_fail:
-					hide()
 					continue
 				disabled = true
 			var description = choice.get_preconditions_description()
@@ -157,10 +165,13 @@ func _on_character_selected(character: Character):
 			chosen_character = character
 			character_selection_label.text = "Choose character event: %s currently selected" % chosen_character.character_name()
 			refresh_choices([chosen_character])
+	elif state.is_state(CHOOSING_TARGET):
+		if choice_effect.target_type == EventChoiceEffect.TargetType.CHOOSE_NEW_CHARACTER:
+			resolve_effect([character])
 
 func _on_option_chosen(choice: EventChoice):
 	self.choice = choice
-	state.change_state(RESOLVING)
+	state.change_state(CHOOSING_TARGET)
 
 func _on_done_pressed():
 	stage_done.emit()
