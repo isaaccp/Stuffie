@@ -6,6 +6,7 @@ class_name RunSaveState
 @export var stage_number: int
 @export var gold: int
 @export var relic_list: RelicList
+@export var event_list: EventList
 @export var run_type: RunDef.RunType
 @export var characters: Array[CharacterSaveState]
 @export var stage_type: StageDef.StageType

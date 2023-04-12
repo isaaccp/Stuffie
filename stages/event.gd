@@ -11,9 +11,6 @@ class_name EventStage
 @export var shared_bag_gold_ui: SharedBagGoldUI
 @export var done_button: Button
 
-# Eventually we'll need some fancier way to get events (e.g. depending on level, etc)
-@export var events: Array[EventDef]
-
 var event_def: EventDef
 var choice: EventChoice
 var choice_effect: EventChoiceEffect
@@ -33,8 +30,8 @@ var RESOLVING = state.add("resolving")
 
 signal stage_done
 
-func initialize(characters: Array[Character], shared_bag: SharedBag, relic_list: RelicList):
-	event_def = events[randi() % events.size()]
+func initialize(event: EventDef, characters: Array[Character], shared_bag: SharedBag, relic_list: RelicList):
+	event_def = event
 	self.characters = characters
 	self.shared_bag = shared_bag
 	self.relic_list = relic_list

@@ -44,6 +44,8 @@ var characters: Array[Character]
 var rewards_type = StageDef.RewardsType.NONE
 
 var relic_list = preload("res://resources/relic_list.tres").duplicate()
+var event_list = preload("res://resources/event_list.tres").duplicate()
+
 var all_cards = Dictionary()
 var run_type: RunDef.RunType
 var added_levels = 0
@@ -53,6 +55,7 @@ signal run_finished
 func _ready():
 	state.connect_signals(self)
 	relic_list.reset()
+	event_list.reset()
 
 func initialize_character(character: Character, full = true):
 	character.shared_bag = shared_bag
@@ -169,7 +172,9 @@ func _on_within_stage_entered():
 			stage_impl = character_stage
 		elif stage_def.stage_type == StageDef.StageType.EVENT:
 			var event_stage = get_event_stage()
-			event_stage.initialize(characters, shared_bag, relic_list)
+			var event = event_list.choose()
+			assert(event != null)
+			event_stage.initialize(event_list.choose(), characters, shared_bag, relic_list)
 			event_stage.stage_done.connect(stage_finished.bind(StageDef.StageType.EVENT))
 			stage_parent.add_child(event_stage)
 			stage_impl = event_stage
@@ -307,6 +312,7 @@ func get_save_state():
 	run_state.stage_number = stage_number
 	run_state.gold = shared_bag.gold
 	run_state.relic_list = relic_list
+	run_state.event_list = event_list
 	for character in characters:
 		run_state.characters.push_back(character.get_save_state())
 	if state.is_state(MAP):
@@ -332,6 +338,7 @@ func load_save_state(run_state: RunSaveState):
 	stage_number = run_state.stage_number
 	shared_bag.gold = run_state.gold
 	relic_list = run_state.relic_list
+	event_list = run_state.event_list
 	for character_data in run_state.characters:
 		var character = CharacterLoader.restore(character_data)
 		initialize_character(character, false)

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EventList" load_steps=6 format=3 uid="uid://7pci2gdpo1x0"]
+
+[ext_resource type="Resource" uid="uid://b117umtp8ind1" path="res://resources/events/crossroad_thief.tres" id="1_aelmc"]
+[ext_resource type="Resource" uid="uid://dxtq5l7lereay" path="res://resources/events/disturbed_ground.tres" id="2_olwm0"]
+[ext_resource type="Resource" uid="uid://ta3m4te10an8" path="res://resources/events/healing_fountain.tres" id="3_sttp5"]
+[ext_resource type="Resource" uid="uid://b0dytqyukonmx" path="res://resources/events/wandering_priest.tres" id="4_1s1rj"]
+[ext_resource type="Script" path="res://event_list.gd" id="5_3giwk"]
+
+[resource]
+script = ExtResource("5_3giwk")
+events = Array[Resource("res://event_def.gd")]([ExtResource("1_aelmc"), ExtResource("2_olwm0"), ExtResource("3_sttp5"), ExtResource("4_1s1rj")])
