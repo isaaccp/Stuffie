@@ -66,7 +66,7 @@ func mock():
 	m.total_hit_points = total_hit_points
 	m.status_manager = status_manager.clone()
 	m.relic_manager = relic_manager.duplicate(true)
-	# TODO: Clone hand + deck, necessary for e.g. discard_hand + snapshot_num_cards simulation to work.
+	m.deck = deck.duplicate(true)
 	m.snap()
 	return m
 
