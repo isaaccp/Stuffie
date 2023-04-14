@@ -6,4 +6,4 @@ func _tooltip():
 	return "Don't remove block at beginning of turn"
 
 func _on_start_turn(character: Character):
-	character.block = character.snapshot.block
+	character.set_status(StatusDef.Status.BLOCK, character.snapshot.get_status(StatusDef.Status.BLOCK))

@@ -9,4 +9,4 @@ func _tooltip():
 
 func _on_stats_added(character: Character, field: Stats.Field, value: int):
 	if field == Stats.Field.DISCARDED_CARDS:
-		character.add_block(block_multiplier * value)
+		character.add_status(StatusDef.Status.BLOCK, block_multiplier * value)

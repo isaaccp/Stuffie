@@ -75,6 +75,9 @@ func add_status(status: StatusDef.Status, amount: int):
 		add_stat(metadata.received_stats_field, amount)
 	changed.emit()
 
+func get_status(status: StatusDef.Status) -> int:
+	return status_manager.get_status(status)
+
 # Returns true if any damage was caused.
 func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
