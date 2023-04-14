@@ -51,8 +51,10 @@ func initialize(pos: Vector2i, level: int):
 	action_points = 0
 
 func end_turn():
+	# Do not increase action points if enemy was paralyzed.
+	if get_status(StatusDef.Status.PARALYSIS) == 0:
+		action_points += total_action_points
 	super()
-	action_points += total_action_points
 
 func actions_text():
 	var text = "%s\n" % enemy_name
