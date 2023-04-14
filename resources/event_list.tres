@@ -9,3 +9,4 @@
 [resource]
 script = ExtResource("5_3giwk")
 events = Array[Resource("res://event_def.gd")]([ExtResource("1_aelmc"), ExtResource("2_olwm0"), ExtResource("3_sttp5"), ExtResource("4_1s1rj")])
+remaining_events = Array[Resource("res://event_def.gd")]([])

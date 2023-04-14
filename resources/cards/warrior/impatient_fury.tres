@@ -51,7 +51,7 @@ name = "Fury"
 [resource]
 script = ExtResource("3_goduf")
 card_name = "Impatient Fury"
-upgrade_name = "Eagerexha"
+upgrade_name = "Eager"
 basic = false
 upgrade_level = 1
 base_card = ExtResource("1_m4vov")
