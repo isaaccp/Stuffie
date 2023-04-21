@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://bun2frfcs1cfy"]
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://bun2frfcs1cfy"]
 
+[ext_resource type="Resource" uid="uid://dmbo8vwsm1tht" path="res://resources/cards/warrior/knock_out.tres" id="1_3blt7"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_a6fts"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_01v7d"]
 [ext_resource type="Script" path="res://card.gd" id="3_oms6p"]
@@ -27,7 +28,8 @@ script = ExtResource("3_oms6p")
 card_name = "Long Knock Out"
 upgrade_name = "Long"
 basic = false
-upgrade_level = 0
+upgrade_level = 1
+base_card = ExtResource("1_3blt7")
 cost = 1
 playable = true
 target_mode = 3
