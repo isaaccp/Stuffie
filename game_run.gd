@@ -174,7 +174,7 @@ func _on_within_stage_entered():
 			var event_stage = get_event_stage()
 			var event = event_list.choose()
 			assert(event != null)
-			event_stage.initialize(event_list.choose(), characters, shared_bag, relic_list)
+			event_stage.initialize(event, characters, shared_bag, relic_list)
 			event_stage.stage_done.connect(stage_finished.bind(StageDef.StageType.EVENT))
 			stage_parent.add_child(event_stage)
 			stage_impl = event_stage
