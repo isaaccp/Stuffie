@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://chpfitso2ypin"]
+
+[ext_resource type="Resource" uid="uid://dyxojn7o3mmub" path="res://resources/cards/wizard/initial/mirror_image.tres" id="1_03hmj"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_av0jg"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_arocr"]
+[ext_resource type="Script" path="res://card.gd" id="3_3ayj7"]
+[ext_resource type="Texture2D" uid="uid://bl4ybb8eryeqs" path="res://resources/mirror_image.png" id="4_ci0jp"]
+
+[sub_resource type="Resource" id="Resource_6hwdy"]
+script = ExtResource("1_av0jg")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_aso44"]
+script = ExtResource("2_arocr")
+effect_value = SubResource("Resource_6hwdy")
+effect_type = 3
+target_field = 0
+target_status = 2
+effect = 0
+
+[resource]
+script = ExtResource("3_3ayj7")
+card_name = "Protect Ally Mirror Image"
+upgrade_name = "Protect Ally"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_03hmj")
+cost = 1
+playable = true
+texture = ExtResource("4_ci0jp")
+target_mode = 2
+target_animation = 3
+on_damage_animation = 0
+target_distance = 5
+on_play_self_effects = Array[ExtResource("2_arocr")]([])
+on_play_effects = Array[ExtResource("2_arocr")]([SubResource("Resource_aso44")])
+on_damage_effects = Array[ExtResource("2_arocr")]([])
+on_play_after_effects = Array[ExtResource("2_arocr")]([])
+on_kill_effects = Array[ExtResource("2_arocr")]([])
+on_next_turn_effects = Array[ExtResource("2_arocr")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

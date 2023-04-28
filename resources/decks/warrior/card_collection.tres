@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="CardCollection" load_steps=65 format=3 uid="uid://bs5th5u3mhgdf"]
+
+[ext_resource type="Resource" uid="uid://c3vm0174dnvcx" path="res://resources/cards/warrior/initial/accurate_arterial_strike.tres" id="1_yqdl8"]
+[ext_resource type="Resource" uid="uid://dju5ycnsfdhdd" path="res://resources/cards/warrior/initial/arterial_strike.tres" id="2_ub20b"]
+[ext_resource type="Resource" uid="uid://48tkoexc41yi" path="res://resources/cards/warrior/initial/block_and_plan.tres" id="3_yeiff"]
+[ext_resource type="Resource" uid="uid://qy8mps4hkyur" path="res://resources/cards/warrior/initial/cautious_slash.tres" id="4_7xu3k"]
+[ext_resource type="Resource" uid="uid://cdshftbsr7241" path="res://resources/cards/warrior/initial/deep_lunge.tres" id="5_chnua"]
+[ext_resource type="Resource" uid="uid://c87xh0a8orldv" path="res://resources/cards/warrior/initial/echoing_shout.tres" id="6_ramec"]
+[ext_resource type="Resource" uid="uid://cw0x4lanthbpg" path="res://resources/cards/warrior/initial/hobbling_arterial_strike.tres" id="7_2feg7"]
+[ext_resource type="Resource" uid="uid://4wcd2fljpd7f" path="res://resources/cards/warrior/initial/lasting_rage.tres" id="8_gfjeo"]
+[ext_resource type="Resource" uid="uid://0n0j1moqf5bb" path="res://resources/cards/warrior/initial/lunge.tres" id="9_o62ak"]
+[ext_resource type="Resource" uid="uid://cc1m880hp6tlk" path="res://resources/cards/warrior/initial/rage.tres" id="10_3vuyf"]
+[ext_resource type="Resource" uid="uid://cmtkn1sph0lj6" path="res://resources/cards/warrior/initial/relentless_sword_assault.tres" id="11_67tc0"]
+[ext_resource type="Resource" uid="uid://brlnc2g8pt2io" path="res://resources/cards/warrior/initial/savage_sword_assault.tres" id="12_to2ig"]
+[ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/initial/shield.tres" id="13_vmk2d"]
+[ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/initial/shout.tres" id="14_gfx3u"]
+[ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/initial/slash.tres" id="15_rr1ab"]
+[ext_resource type="Resource" uid="uid://djnbtvfb2efs5" path="res://resources/cards/warrior/initial/slowing_shout.tres" id="16_ku4p1"]
+[ext_resource type="Resource" uid="uid://cmxrjrycyegii" path="res://resources/cards/warrior/initial/strong_lunge.tres" id="17_t02td"]
+[ext_resource type="Resource" uid="uid://dplfqiqipmmlq" path="res://resources/cards/warrior/initial/strong_shield.tres" id="18_wff34"]
+[ext_resource type="Resource" uid="uid://b62kpw0duqn6u" path="res://resources/cards/warrior/initial/strong_slash.tres" id="19_fd27b"]
+[ext_resource type="Resource" uid="uid://baauj7cb1ei5j" path="res://resources/cards/warrior/initial/strong_sweeping_slash.tres" id="20_he0wa"]
+[ext_resource type="Resource" uid="uid://b2cfup10xv7f" path="res://resources/cards/warrior/initial/sweeping_slash.tres" id="21_762ti"]
+[ext_resource type="Resource" uid="uid://bsfgc2h7cavny" path="res://resources/cards/warrior/initial/sword_assault.tres" id="22_6att1"]
+[ext_resource type="Resource" uid="uid://xmmx2myyod2p" path="res://resources/cards/warrior/initial/wide_sweeping_slash.tres" id="23_jcv01"]
+[ext_resource type="Resource" uid="uid://c4igkofn7lu6o" path="res://resources/cards/warrior/initial/wild_rage.tres" id="24_6hxem"]
+[ext_resource type="Script" path="res://card_selection_set.gd" id="25_00jnd"]
+[ext_resource type="Resource" uid="uid://brsdh2a7rnmdu" path="res://resources/cards/warrior/level1/cleave.tres" id="26_n5wcc"]
+[ext_resource type="Resource" uid="uid://cw62s7v5esw2k" path="res://resources/cards/warrior/level1/last_stand.tres" id="27_0jw0d"]
+[ext_resource type="Resource" uid="uid://bpsnyvo00otit" path="res://resources/cards/warrior/level1/new_plan.tres" id="28_858l2"]
+[ext_resource type="Resource" uid="uid://d3etj70kx2c4t" path="res://resources/cards/warrior/level1/plan_and_rush.tres" id="29_fv1vu"]
+[ext_resource type="Resource" uid="uid://dsj8uc8l5ps70" path="res://resources/cards/warrior/level1/power_cleave.tres" id="30_soymt"]
+[ext_resource type="Resource" uid="uid://0bouhw2l5ja7" path="res://resources/cards/warrior/level1/quick_plan.tres" id="31_ifqo7"]
+[ext_resource type="Resource" uid="uid://hwsh6qinhkuf" path="res://resources/cards/warrior/level1/strong_last_stand.tres" id="32_05x16"]
+[ext_resource type="Resource" uid="uid://bfhwdfwipn4lf" path="res://resources/cards/warrior/level1/through_cleave.tres" id="33_r0t71"]
+[ext_resource type="Resource" uid="uid://cxeqxyjwaladg" path="res://resources/cards/warrior/level1/wide_last_stand.tres" id="34_u6fmx"]
+[ext_resource type="Resource" uid="uid://drxdx73mrpvpj" path="res://resources/cards/warrior/level2/armor_plating.tres" id="35_laenf"]
+[ext_resource type="Resource" uid="uid://inrioofqtqtu" path="res://resources/cards/warrior/level2/berserker_charge.tres" id="36_25i3u"]
+[ext_resource type="Resource" uid="uid://cubqk4djiwyk2" path="res://resources/cards/warrior/level2/charge.tres" id="37_hnfbg"]
+[ext_resource type="Resource" uid="uid://bbwgc7cr147a" path="res://resources/cards/warrior/level2/invigorating_armor_plating.tres" id="38_fv6d8"]
+[ext_resource type="Resource" uid="uid://dmbo8vwsm1tht" path="res://resources/cards/warrior/level2/knock_out.tres" id="39_pjtlt"]
+[ext_resource type="Resource" uid="uid://b8wjc80gxaglk" path="res://resources/cards/warrior/level2/knock_out_plan.tres" id="40_bey46"]
+[ext_resource type="Resource" uid="uid://bun2frfcs1cfy" path="res://resources/cards/warrior/level2/long_knock_out.tres" id="41_1x3pj"]
+[ext_resource type="Resource" uid="uid://bvtn62j6bf3pq" path="res://resources/cards/warrior/level2/powerful_charge.tres" id="42_2xfdc"]
+[ext_resource type="Resource" uid="uid://eiqwpaxx7xx5" path="res://resources/cards/warrior/level2/reinforced_armor_plating.tres" id="43_gimkd"]
+[ext_resource type="Resource" uid="uid://cd640snoqbr10" path="res://resources/cards/warrior/level3/defensive_shield_bash.tres" id="44_mdvpd"]
+[ext_resource type="Resource" uid="uid://43jvwvho4c8a" path="res://resources/cards/warrior/level3/fast_improvisation.tres" id="45_hx57j"]
+[ext_resource type="Resource" uid="uid://ca5npfi16uihh" path="res://resources/cards/warrior/level3/improvise.tres" id="46_svy7t"]
+[ext_resource type="Resource" uid="uid://c5d3tmlasaaah" path="res://resources/cards/warrior/level3/quick_shield_bash.tres" id="47_df822"]
+[ext_resource type="Resource" uid="uid://csuscpy874jgu" path="res://resources/cards/warrior/level3/savage_sharp_cut.tres" id="48_lmsqh"]
+[ext_resource type="Resource" uid="uid://xb54vphlw5tv" path="res://resources/cards/warrior/level3/sharp_cut.tres" id="49_5c53d"]
+[ext_resource type="Resource" uid="uid://ck3s5l1c3hyx0" path="res://resources/cards/warrior/level3/sharp_deep_cut.tres" id="50_kcdtc"]
+[ext_resource type="Resource" uid="uid://bdi2htf3fr7we" path="res://resources/cards/warrior/level3/shield_bash.tres" id="51_8bmmh"]
+[ext_resource type="Resource" uid="uid://ctal7t6fx4gpe" path="res://resources/cards/warrior/level3/smart_improvisation.tres" id="52_1nosj"]
+[ext_resource type="Resource" uid="uid://dpmhsv5nb62v5" path="res://resources/cards/warrior/level4/deep_fury.tres" id="53_tktb4"]
+[ext_resource type="Resource" uid="uid://bden6y87foc86" path="res://resources/cards/warrior/level4/fortify.tres" id="54_65f1e"]
+[ext_resource type="Resource" uid="uid://bhrfomakaj0gb" path="res://resources/cards/warrior/level4/fury.tres" id="55_kiyj2"]
+[ext_resource type="Resource" uid="uid://ckhdxpq2h4e0y" path="res://resources/cards/warrior/level4/impatient_fury.tres" id="56_a60he"]
+[ext_resource type="Resource" uid="uid://b4cpdkd74oqih" path="res://resources/cards/warrior/level4/quick_fortify.tres" id="57_1se7c"]
+[ext_resource type="Resource" uid="uid://ivvrpes2yani" path="res://resources/cards/warrior/level4/strong_fortify.tres" id="58_jicul"]
+[ext_resource type="Script" path="res://card_collection.gd" id="59_p2f0t"]
+
+[sub_resource type="Resource" id="Resource_5rafc"]
+script = ExtResource("25_00jnd")
+cards = Array[Resource("res://card.gd")]([ExtResource("1_yqdl8"), ExtResource("2_ub20b"), ExtResource("3_yeiff"), ExtResource("4_7xu3k"), ExtResource("5_chnua"), ExtResource("6_ramec"), ExtResource("7_2feg7"), ExtResource("8_gfjeo"), ExtResource("9_o62ak"), ExtResource("10_3vuyf"), ExtResource("11_67tc0"), ExtResource("12_to2ig"), ExtResource("13_vmk2d"), ExtResource("14_gfx3u"), ExtResource("15_rr1ab"), ExtResource("16_ku4p1"), ExtResource("17_t02td"), ExtResource("18_wff34"), ExtResource("19_fd27b"), ExtResource("20_he0wa"), ExtResource("21_762ti"), ExtResource("22_6att1"), ExtResource("23_jcv01"), ExtResource("24_6hxem")])
+
+[sub_resource type="Resource" id="Resource_t8j1c"]
+script = ExtResource("25_00jnd")
+cards = Array[Resource("res://card.gd")]([ExtResource("26_n5wcc"), ExtResource("27_0jw0d"), ExtResource("28_858l2"), ExtResource("29_fv1vu"), ExtResource("30_soymt"), ExtResource("31_ifqo7"), ExtResource("32_05x16"), ExtResource("33_r0t71"), ExtResource("34_u6fmx")])
+
+[sub_resource type="Resource" id="Resource_jiwgq"]
+script = ExtResource("25_00jnd")
+cards = Array[Resource("res://card.gd")]([ExtResource("35_laenf"), ExtResource("36_25i3u"), ExtResource("37_hnfbg"), ExtResource("38_fv6d8"), ExtResource("39_pjtlt"), ExtResource("40_bey46"), ExtResource("41_1x3pj"), ExtResource("42_2xfdc"), ExtResource("43_gimkd")])
+
+[sub_resource type="Resource" id="Resource_axfa4"]
+script = ExtResource("25_00jnd")
+cards = Array[Resource("res://card.gd")]([ExtResource("44_mdvpd"), ExtResource("45_hx57j"), ExtResource("46_svy7t"), ExtResource("47_df822"), ExtResource("48_lmsqh"), ExtResource("49_5c53d"), ExtResource("50_kcdtc"), ExtResource("51_8bmmh"), ExtResource("52_1nosj")])
+
+[sub_resource type="Resource" id="Resource_5se4d"]
+script = ExtResource("25_00jnd")
+cards = Array[Resource("res://card.gd")]([ExtResource("53_tktb4"), ExtResource("54_65f1e"), ExtResource("55_kiyj2"), ExtResource("56_a60he"), ExtResource("57_1se7c"), ExtResource("58_jicul")])
+
+[resource]
+script = ExtResource("59_p2f0t")
+cards = Array[ExtResource("25_00jnd")]([SubResource("Resource_5rafc"), SubResource("Resource_t8j1c"), SubResource("Resource_jiwgq"), SubResource("Resource_axfa4"), SubResource("Resource_5se4d")])

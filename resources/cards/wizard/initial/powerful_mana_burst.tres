@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://bk0gwqpdnp1uw"]
+
+[ext_resource type="Resource" uid="uid://hqfbc732v1yw" path="res://resources/cards/wizard/initial/mana_burst.tres" id="1_ub4f8"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_kq8yn"]
+[ext_resource type="Script" path="res://card.gd" id="3_t3kv6"]
+[ext_resource type="Texture2D" uid="uid://bngl01vq5o0ox" path="res://resources/mana_burst.png" id="4_8gblx"]
+
+[sub_resource type="Resource" id="Resource_pvkf0"]
+script = ExtResource("2_kq8yn")
+value_type = 2
+absolute_value = null
+reference_fraction = 6.0
+value_field_type = 2
+regular_field = null
+read_only_field = 2
+status = null
+
+[resource]
+script = ExtResource("3_t3kv6")
+card_name = "Powerful Mana Burst"
+upgrade_name = "Powerful"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_ub4f8")
+cost = 2
+playable = true
+texture = ExtResource("4_8gblx")
+target_mode = 4
+target_animation = 6
+on_damage_animation = 0
+target_distance = 5
+damage_value = SubResource("Resource_pvkf0")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_damage_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 3
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

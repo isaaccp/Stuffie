@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://drxdx73mrpvpj"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_rtf7j"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_rhp66"]
+[ext_resource type="Script" path="res://card.gd" id="3_fwysx"]
+
+[sub_resource type="Resource" id="Resource_q6hq4"]
+script = ExtResource("1_rtf7j")
+value_type = 1
+absolute_value = 12
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_6mjpq"]
+script = ExtResource("2_rhp66")
+effect_value = SubResource("Resource_q6hq4")
+effect_type = 3
+target_field = 0
+target_status = 1
+effect = 0
+
+[resource]
+script = ExtResource("3_fwysx")
+card_name = "Armor Plating"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 1
+playable = true
+target_mode = 0
+target_animation = 3
+on_damage_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("2_rhp66")]([])
+on_play_effects = Array[ExtResource("2_rhp66")]([SubResource("Resource_6mjpq")])
+on_damage_effects = Array[ExtResource("2_rhp66")]([])
+on_play_after_effects = Array[ExtResource("2_rhp66")]([])
+on_kill_effects = Array[ExtResource("2_rhp66")]([])
+on_next_turn_effects = Array[ExtResource("2_rhp66")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://dwn6073xrsesh"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_q3nns"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_hnwdr"]
+[ext_resource type="Script" path="res://card.gd" id="3_rfjpx"]
+[ext_resource type="Texture2D" uid="uid://cx8tgjjps24h1" path="res://resources/magic_shield.png" id="4_7xdej"]
+
+[sub_resource type="Resource" id="Resource_wb42i"]
+script = ExtResource("1_q3nns")
+value_type = 1
+absolute_value = 6
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_tgdul"]
+script = ExtResource("2_hnwdr")
+effect_value = SubResource("Resource_wb42i")
+effect_type = 3
+target_field = 0
+target_status = 1
+effect = 0
+
+[resource]
+script = ExtResource("3_rfjpx")
+card_name = "Magic Shield"
+upgrade_name = ""
+basic = true
+upgrade_level = 0
+cost = 1
+playable = true
+texture = ExtResource("4_7xdej")
+target_mode = 2
+target_animation = 3
+on_damage_animation = 0
+target_distance = 6
+on_play_self_effects = Array[ExtResource("2_hnwdr")]([])
+on_play_effects = Array[ExtResource("2_hnwdr")]([SubResource("Resource_tgdul")])
+on_damage_effects = Array[ExtResource("2_hnwdr")]([])
+on_play_after_effects = Array[ExtResource("2_hnwdr")]([])
+on_kill_effects = Array[ExtResource("2_hnwdr")]([])
+on_next_turn_effects = Array[ExtResource("2_hnwdr")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

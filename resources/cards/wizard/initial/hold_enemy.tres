@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://c6koifjk7n8ku"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_5gb4e"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_voyje"]
+[ext_resource type="Script" path="res://card.gd" id="3_xm4r8"]
+[ext_resource type="Texture2D" uid="uid://de55b41p0pm2" path="res://resources/hold_enemy.png" id="4_tve24"]
+
+[sub_resource type="Resource" id="Resource_3xpor"]
+script = ExtResource("1_5gb4e")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_h5ocp"]
+script = ExtResource("2_voyje")
+effect_value = SubResource("Resource_3xpor")
+effect_type = 3
+target_field = 0
+target_status = 5
+effect = 0
+
+[resource]
+script = ExtResource("3_xm4r8")
+card_name = "Hold Enemy"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 1
+playable = true
+texture = ExtResource("4_tve24")
+target_mode = 3
+target_animation = 4
+on_damage_animation = 0
+target_distance = 5
+on_play_self_effects = Array[ExtResource("2_voyje")]([])
+on_play_effects = Array[ExtResource("2_voyje")]([SubResource("Resource_h5ocp")])
+on_damage_effects = Array[ExtResource("2_voyje")]([])
+on_play_after_effects = Array[ExtResource("2_voyje")]([])
+on_kill_effects = Array[ExtResource("2_voyje")]([])
+on_next_turn_effects = Array[ExtResource("2_voyje")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

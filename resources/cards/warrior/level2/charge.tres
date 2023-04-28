@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://cubqk4djiwyk2"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_fgu3m"]
+[ext_resource type="Script" path="res://card.gd" id="2_xemua"]
+
+[sub_resource type="Resource" id="Resource_gw8cf"]
+script = ExtResource("1_fgu3m")
+value_type = 2
+absolute_value = null
+reference_fraction = 1.0
+value_field_type = 2
+regular_field = null
+read_only_field = 3
+status = null
+
+[resource]
+script = ExtResource("2_xemua")
+card_name = "Charge"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 1
+playable = true
+target_mode = 3
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+damage_value = SubResource("Resource_gw8cf")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_damage_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://eiqwpaxx7xx5"]
+
+[ext_resource type="Resource" uid="uid://drxdx73mrpvpj" path="res://resources/cards/warrior/level2/armor_plating.tres" id="1_xg1uj"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_xl15u"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_qw8co"]
+[ext_resource type="Script" path="res://card.gd" id="3_herl5"]
+
+[sub_resource type="Resource" id="Resource_q6hq4"]
+script = ExtResource("1_xl15u")
+value_type = 1
+absolute_value = 12
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_6mjpq"]
+script = ExtResource("2_qw8co")
+effect_value = SubResource("Resource_q6hq4")
+effect_type = 3
+target_field = 0
+target_status = 1
+effect = 0
+
+[sub_resource type="Resource" id="Resource_qw1re"]
+script = ExtResource("1_xl15u")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
+
+[sub_resource type="Resource" id="Resource_vsw1n"]
+script = ExtResource("2_qw8co")
+effect_value = SubResource("Resource_qw1re")
+effect_type = 3
+target_field = 0
+target_status = 3
+effect = 0
+
+[resource]
+script = ExtResource("3_herl5")
+card_name = "Armor Plating"
+upgrade_name = "Invigorating"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_xg1uj")
+cost = 0
+playable = true
+target_mode = 0
+target_animation = 3
+on_damage_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("2_qw8co")]([])
+on_play_effects = Array[ExtResource("2_qw8co")]([SubResource("Resource_6mjpq"), SubResource("Resource_vsw1n")])
+on_damage_effects = Array[ExtResource("2_qw8co")]([])
+on_play_after_effects = Array[ExtResource("2_qw8co")]([])
+on_kill_effects = Array[ExtResource("2_qw8co")]([])
+on_next_turn_effects = Array[ExtResource("2_qw8co")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

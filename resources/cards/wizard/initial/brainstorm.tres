@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cllbtujik6lka"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_w5jiy"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_cjoam"]
+[ext_resource type="Script" path="res://card.gd" id="3_s2sfx"]
+[ext_resource type="Texture2D" uid="uid://cp46mxqemuh4w" path="res://resources/brainstorm.png" id="4_imy7l"]
+
+[sub_resource type="Resource" id="Resource_5y4cf"]
+script = ExtResource("1_w5jiy")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_c1xfw"]
+script = ExtResource("2_cjoam")
+effect_value = SubResource("Resource_5y4cf")
+effect_type = 2
+target_field = 0
+target_status = 0
+effect = 2
+
+[resource]
+script = ExtResource("3_s2sfx")
+card_name = "Brainstorm"
+upgrade_name = ""
+basic = false
+upgrade_level = 0
+cost = 1
+playable = true
+texture = ExtResource("4_imy7l")
+target_mode = 2
+target_animation = 3
+on_damage_animation = 0
+target_distance = 5
+on_play_self_effects = Array[ExtResource("2_cjoam")]([])
+on_play_effects = Array[ExtResource("2_cjoam")]([SubResource("Resource_c1xfw")])
+on_damage_effects = Array[ExtResource("2_cjoam")]([])
+on_play_after_effects = Array[ExtResource("2_cjoam")]([])
+on_kill_effects = Array[ExtResource("2_cjoam")]([])
+on_next_turn_effects = Array[ExtResource("2_cjoam")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

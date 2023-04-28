@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://di14luh8exo83"]
+
+[ext_resource type="Resource" uid="uid://dicil2nu2n7ee" path="res://resources/cards/wizard/initial/multicast.tres" id="1_kmdbg"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_4rarn"]
+[ext_resource type="Script" path="res://card_filter.gd" id="3_6a1xy"]
+[ext_resource type="Script" path="res://card_change.gd" id="4_r2fjm"]
+[ext_resource type="Script" path="res://card_effect_metadata.gd" id="5_ieidd"]
+[ext_resource type="Script" path="res://card_effect.gd" id="6_txf4y"]
+[ext_resource type="Script" path="res://card.gd" id="7_jhlch"]
+[ext_resource type="Texture2D" uid="uid://bj00uixn1flyr" path="res://resources/multicast.png" id="8_aoodb"]
+
+[sub_resource type="Resource" id="Resource_nrhuh"]
+script = ExtResource("2_4rarn")
+value_type = 1
+absolute_value = 2
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_00wvh"]
+script = ExtResource("3_6a1xy")
+property = 1
+
+[sub_resource type="Resource" id="Resource_270he"]
+script = ExtResource("4_r2fjm")
+cost_change = -2
+exhaust = true
+
+[sub_resource type="Resource" id="Resource_qj0ks"]
+script = ExtResource("5_ieidd")
+copied_card_change = SubResource("Resource_270he")
+card_filter = SubResource("Resource_00wvh")
+
+[sub_resource type="Resource" id="Resource_ay3yw"]
+script = ExtResource("6_txf4y")
+effect_value = SubResource("Resource_nrhuh")
+effect_type = 2
+target_field = null
+target_status = 0
+effect = 8
+metadata = SubResource("Resource_qj0ks")
+
+[resource]
+script = ExtResource("7_jhlch")
+card_name = "Powerful Multicast"
+upgrade_name = "High Magic"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_kmdbg")
+cost = 1
+playable = true
+texture = ExtResource("8_aoodb")
+target_mode = 0
+target_animation = 0
+on_damage_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("6_txf4y")]([])
+on_play_effects = Array[ExtResource("6_txf4y")]([SubResource("Resource_ay3yw")])
+on_damage_effects = Array[ExtResource("6_txf4y")]([])
+on_play_after_effects = Array[ExtResource("6_txf4y")]([])
+on_kill_effects = Array[ExtResource("6_txf4y")]([])
+on_next_turn_effects = Array[ExtResource("6_txf4y")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

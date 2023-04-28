@@ -1,0 +1,105 @@
+[gd_resource type="Resource" script_class="Card" load_steps=14 format=3 uid="uid://cfx5lscskmgi2"]
+
+[ext_resource type="Resource" uid="uid://dmykybgjnwx4j" path="res://resources/cards/wizard/initial/haste.tres" id="1_ksqcx"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_t7day"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_uy454"]
+[ext_resource type="Script" path="res://card.gd" id="3_6g614"]
+[ext_resource type="Texture2D" uid="uid://7lfsi6g7b4br" path="res://resources/haste.png" id="5_kjc31"]
+
+[sub_resource type="Resource" id="Resource_nu0mv"]
+script = ExtResource("1_t7day")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_hq2x3"]
+script = ExtResource("2_uy454")
+effect_value = SubResource("Resource_nu0mv")
+effect_type = 1
+target_field = 5
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_0w342"]
+script = ExtResource("1_t7day")
+value_type = 1
+absolute_value = 4
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_055vd"]
+script = ExtResource("2_uy454")
+effect_value = SubResource("Resource_0w342")
+effect_type = 1
+target_field = 3
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_xga0m"]
+script = ExtResource("1_t7day")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_rorcp"]
+script = ExtResource("2_uy454")
+effect_value = SubResource("Resource_xga0m")
+effect_type = 1
+target_field = 5
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_ngm3o"]
+script = ExtResource("1_t7day")
+value_type = 1
+absolute_value = 4
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_m03qq"]
+script = ExtResource("2_uy454")
+effect_value = SubResource("Resource_ngm3o")
+effect_type = 1
+target_field = 3
+target_status = 0
+effect = 0
+
+[resource]
+script = ExtResource("3_6g614")
+card_name = "Double Haste"
+upgrade_name = "Double"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_ksqcx")
+cost = 1
+playable = true
+texture = ExtResource("5_kjc31")
+target_mode = 2
+target_animation = 3
+on_damage_animation = 0
+target_distance = 5
+on_play_self_effects = Array[ExtResource("2_uy454")]([SubResource("Resource_rorcp"), SubResource("Resource_m03qq")])
+on_play_effects = Array[ExtResource("2_uy454")]([SubResource("Resource_hq2x3"), SubResource("Resource_055vd")])
+on_damage_effects = Array[ExtResource("2_uy454")]([])
+on_play_after_effects = Array[ExtResource("2_uy454")]([])
+on_kill_effects = Array[ExtResource("2_uy454")]([])
+on_next_turn_effects = Array[ExtResource("2_uy454")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://bxlxb6qanclms"]
+
+[ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/initial/hold_enemy.tres" id="1_1vsk1"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_yeeup"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_8lko6"]
+[ext_resource type="Script" path="res://card.gd" id="3_7nric"]
+[ext_resource type="Texture2D" uid="uid://de55b41p0pm2" path="res://resources/hold_enemy.png" id="5_y0c7x"]
+
+[sub_resource type="Resource" id="Resource_4oep5"]
+script = ExtResource("1_yeeup")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_ym5qi"]
+script = ExtResource("2_8lko6")
+effect_value = SubResource("Resource_4oep5")
+effect_type = 1
+target_field = 5
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_3xpor"]
+script = ExtResource("1_yeeup")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_h5ocp"]
+script = ExtResource("2_8lko6")
+effect_value = SubResource("Resource_3xpor")
+effect_type = 3
+target_field = 0
+target_status = 5
+effect = 0
+
+[resource]
+script = ExtResource("3_7nric")
+card_name = "Drain Energy"
+upgrade_name = "Drain Energy"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_1vsk1")
+cost = 1
+playable = true
+texture = ExtResource("5_y0c7x")
+target_mode = 3
+target_animation = 4
+on_damage_animation = 0
+target_distance = 5
+on_play_self_effects = Array[ExtResource("2_8lko6")]([])
+on_play_effects = Array[ExtResource("2_8lko6")]([SubResource("Resource_h5ocp")])
+on_damage_effects = Array[ExtResource("2_8lko6")]([])
+on_play_after_effects = Array[ExtResource("2_8lko6")]([SubResource("Resource_ym5qi")])
+on_kill_effects = Array[ExtResource("2_8lko6")]([])
+on_next_turn_effects = Array[ExtResource("2_8lko6")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

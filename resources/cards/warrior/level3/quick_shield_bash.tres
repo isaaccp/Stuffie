@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://c5d3tmlasaaah"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_i5xc0"]
+[ext_resource type="Resource" uid="uid://bdi2htf3fr7we" path="res://resources/cards/warrior/level3/shield_bash.tres" id="1_ud66p"]
+[ext_resource type="Script" path="res://card.gd" id="2_l8co7"]
+[ext_resource type="Texture2D" uid="uid://o5iwt8cflfno" path="res://resources/shield_bash.png" id="4_irnt2"]
+
+[sub_resource type="Resource" id="Resource_5384m"]
+script = ExtResource("1_i5xc0")
+value_type = 2
+absolute_value = null
+reference_fraction = null
+value_field_type = 3
+regular_field = null
+read_only_field = null
+status = 1
+
+[resource]
+script = ExtResource("2_l8co7")
+card_name = "Quick Shield Bash"
+upgrade_name = "Instant Cast"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_ud66p")
+cost = 0
+playable = true
+texture = ExtResource("4_irnt2")
+target_mode = 3
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+damage_value = SubResource("Resource_5384m")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_damage_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false
