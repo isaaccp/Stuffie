@@ -32,6 +32,7 @@ static func get_run(run_type: RunType):
 		["big_bad_skeleton"],
 		["6w_4a"],
 		["first_horde"],
+		["mixed_horde"],
 	]
 	match run_type:
 		RunType.REGULAR:
@@ -56,6 +57,7 @@ static func get_run(run_type: RunType):
 					StageDef.blacksmith(),
 					StageDef.camp(),
 					StageDef.combat(6),
+					StageDef.combat(7),
 				]),
 			]
 		RunType.REGULAR_PARTY:
@@ -99,6 +101,7 @@ static func get_run(run_type: RunType):
 					StageDef.blacksmith(),
 					StageDef.camp(),
 					StageDef.combat(6),
+					StageDef.combat(7),
 				]),
 			]
 		RunType.TEST_BLACKSMITH:

@@ -1,0 +1,18 @@
+KILL_ALL_ENEMIES
+w SKELETON_WARRIOR 1
+a SKELETON_ARCHER 1
+m SKELETON_MAGE 1
+r GOBLIN_REAPER 1
+s GOBLIN_SHARPSHOOTER 2
+-
+######%######
+#...........#
+#....1.2....#
+%...##.##...%
+#.#.......#.#
+#...#.#.#...#
+#...w.r.w...#
+%...r.m.r...%
+#...a.s.a...#
+#...........#
+######%######
