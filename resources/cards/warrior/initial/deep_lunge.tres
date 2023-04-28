@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://cdshftbsr7241"]
+
+[ext_resource type="Resource" uid="uid://0n0j1moqf5bb" path="res://resources/cards/warrior/initial/lunge.tres" id="1_6dgao"]
+[ext_resource type="Script" path="res://card.gd" id="1_hcm6k"]
+[ext_resource type="Texture2D" uid="uid://c52y4ijrrdkuh" path="res://resources/lunge.png" id="2_pkqto"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_we1hm"]
+
+[sub_resource type="Resource" id="Resource_8fknk"]
+script = ExtResource("2_we1hm")
+value_type = 1
+absolute_value = 10
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[resource]
+script = ExtResource("1_hcm6k")
+card_name = "Deep Lunge"
+upgrade_name = "Deep"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_6dgao")
+cost = 2
+playable = true
+texture = ExtResource("2_pkqto")
+target_mode = 4
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+damage_value = SubResource("Resource_8fknk")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_damage_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 0
+area_length = 3
+area_width = 1
+cone_step = 1
+exhaust = false

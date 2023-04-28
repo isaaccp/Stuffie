@@ -15,3 +15,7 @@ class_name CharacterSaveState
 @export var relic_manager: RelicManager
 @export var status_manager: StatusManager
 @export var deck: Deck
+# Saved because cards available may change with extra experience,
+# but they shouldn't change within a run.
+@export var extra_cards: CardSelectionSet
+@export var all_cards: CardSelectionSet

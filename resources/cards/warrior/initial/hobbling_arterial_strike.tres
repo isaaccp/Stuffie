@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cw0x4lanthbpg"]
+
+[ext_resource type="Resource" uid="uid://dju5ycnsfdhdd" path="res://resources/cards/warrior/initial/arterial_strike.tres" id="1_kcy7g"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_538pm"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_0w30g"]
+[ext_resource type="Script" path="res://card.gd" id="4_vrrrp"]
+
+[sub_resource type="Resource" id="Resource_hp0vb"]
+script = ExtResource("2_538pm")
+value_type = 1
+absolute_value = 5
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_gkdhs"]
+script = ExtResource("3_0w30g")
+effect_value = SubResource("Resource_hp0vb")
+effect_type = 3
+target_field = 0
+target_status = 6
+effect = 0
+
+[sub_resource type="Resource" id="Resource_rfpsx"]
+script = ExtResource("2_538pm")
+value_type = 1
+absolute_value = -8
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_4c20a"]
+script = ExtResource("3_0w30g")
+effect_value = SubResource("Resource_rfpsx")
+effect_type = 1
+target_field = 3
+target_status = 0
+effect = 0
+
+[resource]
+script = ExtResource("4_vrrrp")
+card_name = "Hobbling Arterial Strike"
+upgrade_name = "Hobbling"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_kcy7g")
+cost = 1
+playable = true
+target_mode = 3
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+on_play_self_effects = Array[ExtResource("3_0w30g")]([])
+on_play_effects = Array[ExtResource("3_0w30g")]([SubResource("Resource_gkdhs"), SubResource("Resource_4c20a")])
+on_damage_effects = Array[ExtResource("3_0w30g")]([])
+on_play_after_effects = Array[ExtResource("3_0w30g")]([])
+on_kill_effects = Array[ExtResource("3_0w30g")]([])
+on_next_turn_effects = Array[ExtResource("3_0w30g")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

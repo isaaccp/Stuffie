@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://dplfqiqipmmlq"]
+
+[ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/initial/shield.tres" id="1_viuel"]
+[ext_resource type="Script" path="res://card.gd" id="2_gpudr"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_imj6q"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_2bvtr"]
+[ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="3_aveed"]
+
+[sub_resource type="Resource" id="Resource_ytexk"]
+script = ExtResource("2_imj6q")
+value_type = 1
+absolute_value = 11
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_xmbwa"]
+script = ExtResource("3_2bvtr")
+effect_value = SubResource("Resource_ytexk")
+effect_type = 3
+target_field = 0
+target_status = 1
+effect = 0
+
+[resource]
+script = ExtResource("2_gpudr")
+card_name = "Strong Shield"
+upgrade_name = "Solid"
+basic = true
+upgrade_level = 1
+base_card = ExtResource("1_viuel")
+cost = 1
+playable = true
+texture = ExtResource("3_aveed")
+target_mode = 0
+target_animation = 3
+on_damage_animation = 0
+target_distance = 0
+on_play_self_effects = Array[ExtResource("3_2bvtr")]([])
+on_play_effects = Array[ExtResource("3_2bvtr")]([SubResource("Resource_xmbwa")])
+on_damage_effects = Array[ExtResource("3_2bvtr")]([])
+on_play_after_effects = Array[ExtResource("3_2bvtr")]([])
+on_kill_effects = Array[ExtResource("3_2bvtr")]([])
+on_next_turn_effects = Array[ExtResource("3_2bvtr")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

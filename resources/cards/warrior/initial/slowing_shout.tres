@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://djnbtvfb2efs5"]
+
+[ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/initial/shout.tres" id="1_12yct"]
+[ext_resource type="Script" path="res://card.gd" id="3_oeghp"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="3_wf407"]
+[ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="4_2a3hm"]
+[ext_resource type="Script" path="res://card_effect.gd" id="4_7wh4q"]
+
+[sub_resource type="Resource" id="Resource_x80rh"]
+script = ExtResource("3_wf407")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_1w776"]
+script = ExtResource("4_7wh4q")
+effect_value = SubResource("Resource_x80rh")
+effect_type = 3
+target_field = 0
+target_status = 4
+effect = 0
+
+[sub_resource type="Resource" id="Resource_dwjcw"]
+script = ExtResource("3_wf407")
+value_type = 1
+absolute_value = -6
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_1jnia"]
+script = ExtResource("4_7wh4q")
+effect_value = SubResource("Resource_dwjcw")
+effect_type = 1
+target_field = 3
+target_status = 0
+effect = 0
+
+[resource]
+script = ExtResource("3_oeghp")
+card_name = "Slowing Shout"
+upgrade_name = "Slow"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_12yct")
+cost = 1
+playable = true
+texture = ExtResource("4_2a3hm")
+target_mode = 4
+target_animation = 4
+on_damage_animation = 0
+target_distance = 1
+on_play_self_effects = Array[ExtResource("4_7wh4q")]([])
+on_play_effects = Array[ExtResource("4_7wh4q")]([SubResource("Resource_1w776"), SubResource("Resource_1jnia")])
+on_damage_effects = Array[ExtResource("4_7wh4q")]([])
+on_play_after_effects = Array[ExtResource("4_7wh4q")]([])
+on_kill_effects = Array[ExtResource("4_7wh4q")]([])
+on_next_turn_effects = Array[ExtResource("4_7wh4q")]([])
+area_type = 0
+area_length = 3
+area_width = 3
+cone_step = 1
+exhaust = false

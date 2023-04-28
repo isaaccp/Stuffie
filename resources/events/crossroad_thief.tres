@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://event_choice.gd" id="1_rqnwg"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_cngnc"]
 [ext_resource type="Script" path="res://event_def.gd" id="2_grk1g"]
-[ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/hold_enemy.tres" id="2_grukn"]
+[ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/initial/hold_enemy.tres" id="2_grukn"]
 
 [sub_resource type="Resource" id="Resource_78c1x"]
 script = ExtResource("1_qvbed")

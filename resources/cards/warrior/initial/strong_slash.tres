@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://b62kpw0duqn6u"]
+
+[ext_resource type="Resource" uid="uid://bbqowimw5rf1n" path="res://resources/cards/warrior/initial/slash.tres" id="1_2xc24"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_p26db"]
+[ext_resource type="Script" path="res://card.gd" id="2_upcx8"]
+[ext_resource type="Texture2D" uid="uid://lenkjp72qwpm" path="res://resources/slash.png" id="3_63yvy"]
+
+[sub_resource type="Resource" id="Resource_ldvoy"]
+script = ExtResource("2_p26db")
+value_type = 1
+absolute_value = 10
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[resource]
+script = ExtResource("2_upcx8")
+card_name = "Strong Slash"
+upgrade_name = "Vicious"
+basic = true
+upgrade_level = 1
+base_card = ExtResource("1_2xc24")
+cost = 1
+playable = true
+texture = ExtResource("3_63yvy")
+target_mode = 3
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+damage_value = SubResource("Resource_ldvoy")
+on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_effects = Array[Resource("res://card_effect.gd")]([])
+on_damage_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
+on_kill_effects = Array[Resource("res://card_effect.gd")]([])
+on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

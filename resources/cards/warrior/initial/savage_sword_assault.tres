@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://brlnc2g8pt2io"]
+
+[ext_resource type="Script" path="res://card_effect_value.gd" id="1_3x77p"]
+[ext_resource type="Resource" uid="uid://bsfgc2h7cavny" path="res://resources/cards/warrior/initial/sword_assault.tres" id="1_p12lq"]
+[ext_resource type="Script" path="res://card_effect.gd" id="2_06oaf"]
+[ext_resource type="Script" path="res://card.gd" id="3_q3oqk"]
+
+[sub_resource type="Resource" id="Resource_udv6c"]
+script = ExtResource("1_3x77p")
+value_type = 1
+absolute_value = 15
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_fc7v4"]
+script = ExtResource("1_3x77p")
+value_type = 1
+absolute_value = 1
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_jsvk4"]
+script = ExtResource("2_06oaf")
+effect_value = SubResource("Resource_fc7v4")
+effect_type = 2
+target_field = 0
+target_status = 0
+effect = 2
+
+[resource]
+script = ExtResource("3_q3oqk")
+card_name = "Savage Sword Assault"
+upgrade_name = "Savage"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_p12lq")
+cost = 1
+playable = true
+target_mode = 3
+target_animation = 1
+on_damage_animation = 0
+target_distance = 1
+damage_value = SubResource("Resource_udv6c")
+on_play_self_effects = Array[ExtResource("2_06oaf")]([])
+on_play_effects = Array[ExtResource("2_06oaf")]([])
+on_damage_effects = Array[ExtResource("2_06oaf")]([])
+on_play_after_effects = Array[ExtResource("2_06oaf")]([SubResource("Resource_jsvk4")])
+on_kill_effects = Array[ExtResource("2_06oaf")]([])
+on_next_turn_effects = Array[ExtResource("2_06oaf")]([])
+area_type = 0
+area_length = 1
+area_width = 1
+cone_step = 1
+exhaust = false

@@ -17,9 +17,10 @@ var gameplay: Gameplay
 var canvas: CanvasLayer
 
 @export var original_deck: Deck
+@export var card_collection: CardCollection
 var deck: Deck
-@export var extra_cards: CardSelectionSet
-@export var all_cards: CardSelectionSet
+var extra_cards: CardSelectionSet
+var all_cards: CardSelectionSet
 @export var camp_choice: CampChoice
 
 var card_upgrades: Dictionary
@@ -45,7 +46,7 @@ func character_name():
 
 func initialize(full=true):
 	relic_manager.connect_signals(self)
-	process_cards()
+	process_cards(full)
 	# Used when starting a run, but not when loading.
 	if full:
 		deck = original_deck.duplicate()
@@ -81,7 +82,21 @@ func add_stat(field: Stats.Field, value: int):
 func get_stat(level: Enum.StatsLevel, field: Stats.Field):
 	return StatsManager.get_value(level, character_type, field)
 
-func process_cards():
+func process_cards(full: bool):
+	# if full is true, then we are starting a new game and need to
+	# populate all_cards and extra_cards, otherwise it's been loaded
+	# and it's not necessary (and it woudl be wrong as we could have more XP
+	# than when we started.
+	if full:
+		all_cards = CardSelectionSet.new()
+		extra_cards = CardSelectionSet.new()
+		# For now just include all cards like before.
+		for level_cards in card_collection.cards:
+			for card in level_cards.cards:
+				all_cards.cards.push_back(card)
+				if not card.basic and card.upgrade_level == 0:
+					extra_cards.cards.push_back(card)
+
 	for card in all_cards.cards:
 		if card.base_card:
 			if not card_upgrades.has(card.base_card.card_name):
@@ -302,6 +317,8 @@ func get_save_state():
 	save_state.relic_manager = relic_manager
 	save_state.status_manager = status_manager
 	save_state.deck = deck
+	save_state.extra_cards = extra_cards
+	save_state.all_cards = all_cards
 	return save_state
 
 func load_save_state(save_state: CharacterSaveState):
@@ -317,4 +334,6 @@ func load_save_state(save_state: CharacterSaveState):
 	relic_manager = save_state.relic_manager
 	status_manager = save_state.status_manager
 	deck = save_state.deck
+	extra_cards = save_state.extra_cards
+	all_cards = save_state.all_cards
 	initialize(false)

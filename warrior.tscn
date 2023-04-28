@@ -1,11 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://chh0sy5tad4lg"]
+[gd_scene load_steps=13 format=3 uid="uid://chh0sy5tad4lg"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_rghne"]
 [ext_resource type="Resource" uid="uid://dg87ld45td40x" path="res://resources/decks/warrior/deck.tres" id="2_d5bu5"]
 [ext_resource type="Resource" uid="uid://dtnkp2rwqellb" path="res://resources/relics/troll_heart.tres" id="2_i4ij4"]
 [ext_resource type="PackedScene" uid="uid://c0qk7m07no6yd" path="res://resources/kaykit-dungeon/models/characters/gltf/character_barbarian.gltf" id="4_3xu4p"]
-[ext_resource type="Resource" uid="uid://1cwrvs1k8a64" path="res://resources/decks/warrior/extra_cards.tres" id="4_5qc6m"]
-[ext_resource type="Resource" uid="uid://cqmvranirdbgc" path="res://resources/decks/warrior/all_cards.tres" id="5_a61vc"]
+[ext_resource type="Resource" uid="uid://bs5th5u3mhgdf" path="res://resources/decks/warrior/card_collection.tres" id="4_as3ny"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_uruck"]
 [ext_resource type="Script" path="res://card_effect.gd" id="7_0sito"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="7_j2akc"]
@@ -40,8 +39,7 @@ character_type = 1
 cards_per_turn = 5
 initial_relic = ExtResource("2_i4ij4")
 original_deck = ExtResource("2_d5bu5")
-extra_cards = ExtResource("4_5qc6m")
-all_cards = ExtResource("5_a61vc")
+card_collection = ExtResource("4_as3ny")
 camp_choice = SubResource("Resource_gq1ff")
 total_move_points = 14
 total_action_points = 3

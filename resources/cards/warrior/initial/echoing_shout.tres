@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://c87xh0a8orldv"]
+
+[ext_resource type="Resource" uid="uid://cfkn2xw2y3ml0" path="res://resources/cards/warrior/initial/shout.tres" id="1_k2skt"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_y5o5l"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_4cfls"]
+[ext_resource type="Script" path="res://card.gd" id="3_b74jm"]
+[ext_resource type="Texture2D" uid="uid://c7knxdn3fexp0" path="res://resources/shout.png" id="4_d2u6j"]
+
+[sub_resource type="Resource" id="Resource_axop0"]
+script = ExtResource("2_y5o5l")
+value_type = 1
+absolute_value = 2
+reference_fraction = null
+value_field_type = null
+regular_field = null
+read_only_field = null
+status = null
+
+[sub_resource type="Resource" id="Resource_gp3d4"]
+script = ExtResource("3_4cfls")
+effect_value = SubResource("Resource_axop0")
+effect_type = 3
+target_field = 0
+target_status = 4
+effect = 0
+
+[resource]
+script = ExtResource("3_b74jm")
+card_name = "Echoing Shout"
+upgrade_name = "Echo"
+basic = false
+upgrade_level = 1
+base_card = ExtResource("1_k2skt")
+cost = 1
+playable = true
+texture = ExtResource("4_d2u6j")
+target_mode = 4
+target_animation = 4
+on_damage_animation = 0
+target_distance = 1
+on_play_self_effects = Array[ExtResource("3_4cfls")]([])
+on_play_effects = Array[ExtResource("3_4cfls")]([SubResource("Resource_gp3d4")])
+on_damage_effects = Array[ExtResource("3_4cfls")]([])
+on_play_after_effects = Array[ExtResource("3_4cfls")]([])
+on_kill_effects = Array[ExtResource("3_4cfls")]([])
+on_next_turn_effects = Array[ExtResource("3_4cfls")]([])
+area_type = 0
+area_length = 3
+area_width = 3
+cone_step = 1
+exhaust = false
