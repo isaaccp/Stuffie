@@ -56,8 +56,19 @@ func end_turn():
 		action_points += total_action_points
 	super()
 
+func hp_text():
+	var pending_damage_text = ""
+	if pending_damage_set:
+		var lethal_text = ""
+		if pending_damage >= hit_points:
+			lethal_text = "💀"
+		return "HP: %s[color=red]%d[/color]/%d" % [lethal_text, hit_points - pending_damage, total_hit_points]
+	else:
+		return "HP: %d/%d" % [hit_points, total_hit_points]
+
 func actions_text():
 	var text = "%s\n" % enemy_name
+	text += hp_text() + "\n"
 	text += "Actions\n"
 	for unit_card in unit_cards:
 		text += "%d💢 %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]
