@@ -82,6 +82,17 @@ func add_stat(field: Stats.Field, value: int):
 func get_stat(level: Enum.StatsLevel, field: Stats.Field):
 	return StatsManager.get_value(level, character_type, field)
 
+func unlock_threshold(level: int):
+	# TODO: Update those when we have a more clear idea of desired progression,
+	# XP per run, etc.
+	match level:
+		0: return 0
+		1: return 200
+		2: return 400
+		3: return 600
+		4: return 800
+		5: return 1000
+
 func process_cards(full: bool):
 	# if full is true, then we are starting a new game and need to
 	# populate all_cards and extra_cards, otherwise it's been loaded
@@ -90,8 +101,11 @@ func process_cards(full: bool):
 	if full:
 		all_cards = CardSelectionSet.new()
 		extra_cards = CardSelectionSet.new()
-		# For now just include all cards like before.
-		for level_cards in card_collection.cards:
+		var xp = get_stat(Enum.StatsLevel.OVERALL, Stats.Field.XP)
+		for level in card_collection.cards.size():
+			if xp < unlock_threshold(level):
+				break
+			var level_cards = card_collection.cards[level]
 			for card in level_cards.cards:
 				all_cards.cards.push_back(card)
 				if not card.basic and card.upgrade_level == 0:

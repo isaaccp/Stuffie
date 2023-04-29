@@ -260,7 +260,7 @@ func next_stage():
 	state.change_state(WITHIN_STAGE)
 
 func game_over():
-	if not state.is_state(MAP):
+	if not (state.is_state(MAP) or state.is_state(BETWEEN_STAGES)):
 		StatsManager.remove_level(Enum.StatsLevel.STAGE)
 	add_stat(Stats.Field.RUNS_DEFEAT, 1)
 	state.change_state(RUN_SUMMARY)

@@ -2,6 +2,8 @@ extends Resource
 
 class_name RunSaveState
 
+# In Windows, state is saved in:
+# ~/AppData/Roaming/Godot/app_userdata/Stuffie/stuffie_save.tres
 @export var state: String
 @export var stage_number: int
 @export var gold: int
