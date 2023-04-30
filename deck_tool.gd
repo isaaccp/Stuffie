@@ -30,6 +30,7 @@ func load_card_dir(card_collection: CardCollection, base_dir: String, dir_name: 
 # card_collection.tres     # a CardCollection with all the cards split in levels
 func create_card_lists():
 	for character_name in character_names:
+		print("Finding cards for %s" % character_name)
 		var card_collection = CardCollection.new()
 		var dir_path = card_base_path + "/" + character_name
 		var dir = DirAccess.open(dir_path)
@@ -37,6 +38,8 @@ func create_card_lists():
 			dir.list_dir_begin()
 			var dir_name = dir.get_next()
 			while dir_name != "":
+				print("Loading cards from %s" % dir_name)
 				load_card_dir(card_collection, dir_path, dir_name)
 				dir_name = dir.get_next()
+		print("Writing card collection with %d levels" % card_collection.cards.size())
 		ResourceSaver.save(card_collection, deck_base_path + "/" + character_name + "/card_collection.tres")

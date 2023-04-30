@@ -95,7 +95,6 @@ func unlock_threshold(level: int):
 
 func current_unlock_level(xp: int) -> int:
 	var max_level = max_unlock_level()
-	print("max_level: ", max_level)
 	for level in max_level + 1:
 		if xp < unlock_threshold(level):
 			return level - 1
@@ -116,8 +115,7 @@ func process_cards(full: bool):
 		extra_cards = CardSelectionSet.new()
 		var xp = get_stat(Enum.StatsLevel.OVERALL, Stats.Field.XP)
 		var unlocked_level = current_unlock_level(xp)
-		print("unlocked level: ", unlocked_level)
-		for level in unlocked_level:
+		for level in unlocked_level + 1:
 			var level_cards = card_collection.cards[level]
 			for card in level_cards.cards:
 				all_cards.cards.push_back(card)

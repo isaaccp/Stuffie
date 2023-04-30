@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://character.gd" id="1_i4i62"]
 [ext_resource type="Resource" uid="uid://cvsjkf03h2d8e" path="res://resources/decks/wizard/deck.tres" id="2_r0eug"]
 [ext_resource type="Resource" uid="uid://dy2d0a7t3a4sb" path="res://resources/relics/strong_start.tres" id="2_vqogy"]
-[ext_resource type="Resource" uid="uid://djhrfwlbbjmwg" path="res://resources/decks/wizard/card_collection.tres" id="4_bk7tw"]
 [ext_resource type="PackedScene" uid="uid://ddsimr8wumis7" path="res://resources/kaykit-dungeon/models/characters/gltf/character_mage.gltf" id="4_e1b5r"]
+[ext_resource type="Resource" uid="uid://djhrfwlbbjmwg" path="res://resources/decks/wizard/card_collection.tres" id="4_t25x3"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="6_qtq1g"]
 [ext_resource type="Script" path="res://card_effect.gd" id="7_vbhnd"]
 [ext_resource type="Script" path="res://camp_choice.gd" id="8_4cd50"]
@@ -39,7 +39,7 @@ character_type = 2
 cards_per_turn = 5
 initial_relic = ExtResource("2_vqogy")
 original_deck = ExtResource("2_r0eug")
-card_collection = ExtResource("4_bk7tw")
+card_collection = ExtResource("4_t25x3")
 camp_choice = SubResource("Resource_bmlki")
 total_move_points = 12
 total_action_points = 3
