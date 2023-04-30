@@ -29,8 +29,8 @@ func load_card_dir(card_collection: CardCollection, base_dir: String, dir_name: 
 # Given a directory with initial, level1, level2 subdirs, we want:
 # card_collection.tres     # a CardCollection with all the cards split in levels
 func create_card_lists():
-	var card_collection = CardCollection.new()
 	for character_name in character_names:
+		var card_collection = CardCollection.new()
 		var dir_path = card_base_path + "/" + character_name
 		var dir = DirAccess.open(dir_path)
 		if dir:

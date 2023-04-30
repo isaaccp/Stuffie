@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://hwsh6qinhkuf"]
+[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://hwsh6qinhkuf"]
 
 [ext_resource type="Resource" uid="uid://cw62s7v5esw2k" path="res://resources/cards/warrior/level1/last_stand.tres" id="1_plodl"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_2vbsk"]
 [ext_resource type="Script" path="res://card_effect.gd" id="3_jaxvg"]
 [ext_resource type="Script" path="res://card.gd" id="4_up1p5"]
+[ext_resource type="Texture2D" uid="uid://og6mq60e5vxe" path="res://resources/last_stand.png" id="5_uqnuw"]
 
 [sub_resource type="Resource" id="Resource_84ftf"]
 script = ExtResource("2_2vbsk")
@@ -42,6 +43,7 @@ upgrade_level = 1
 base_card = ExtResource("1_plodl")
 cost = 1
 playable = true
+texture = ExtResource("5_uqnuw")
 target_mode = 3
 target_animation = 1
 on_damage_animation = 0

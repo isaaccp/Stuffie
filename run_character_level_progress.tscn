@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://bi6tfcv3yhbli"]
+
+[ext_resource type="Script" path="res://run_character_level_progress.gd" id="1_taois"]
+[ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="2_hctwm"]
+
+[node name="RunCharacterLevelProgress" type="MarginContainer" node_paths=PackedStringArray("portrait", "label", "level_progress_bar", "level_progress_label", "unlocked_cards_label", "unlocked_cards_container")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+script = ExtResource("1_taois")
+portrait = NodePath("VBoxContainer/CharacterPortrait")
+label = NodePath("VBoxContainer/VBoxContainer/Label")
+level_progress_bar = NodePath("VBoxContainer/VBoxContainer/LevelProgressBar")
+level_progress_label = NodePath("VBoxContainer/VBoxContainer/LevelProgressBar/LevelProgressLabel")
+unlocked_cards_label = NodePath("VBoxContainer/VBoxContainer/Unlocks/CardUnlocks/Label")
+unlocked_cards_container = NodePath("VBoxContainer/VBoxContainer/Unlocks/CardUnlocks/MarginContainer/UnlockedCards")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CharacterPortrait" parent="VBoxContainer" instance=ExtResource("2_hctwm")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelProgressBar" type="ProgressBar" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 2
+show_percentage = false
+
+[node name="LevelProgressLabel" type="Label" parent="VBoxContainer/VBoxContainer/LevelProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Unlocks" type="VBoxContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="CardUnlocks" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/Unlocks"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/Unlocks/CardUnlocks"]
+layout_mode = 2
+text = "Unlocked Cards"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/Unlocks/CardUnlocks"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+
+[node name="UnlockedCards" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/Unlocks/CardUnlocks/MarginContainer"]
+layout_mode = 2
+alignment = 1

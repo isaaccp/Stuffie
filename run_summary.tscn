@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://run_summary.gd" id="1_gibbb"]
 [ext_resource type="Texture2D" uid="uid://xjhajn23jk4d" path="res://resources/between_stages.png" id="2_67eb0"]
 
-[node name="Summary" type="Control" node_paths=PackedStringArray("result", "characters_container")]
+[node name="Summary" type="Control" node_paths=PackedStringArray("result", "characters_container", "run_stats", "character_level_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,8 +11,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gibbb")
-result = NodePath("VBoxContainer/Result")
-characters_container = NodePath("VBoxContainer/CharactersStatsContainer")
+result = NodePath("RunStats/Result")
+characters_container = NodePath("RunStats/CharactersStatsContainer")
+run_stats = NodePath("RunStats")
+character_level_container = NodePath("CharacterLevelContainer")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -23,7 +25,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_67eb0")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="RunStats" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,12 +33,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Result" type="Label" parent="VBoxContainer"]
+[node name="Result" type="Label" parent="RunStats"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CharactersStatsContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="CharactersStatsContainer" type="HBoxContainer" parent="RunStats"]
 layout_mode = 2
 alignment = 1
+
+[node name="CharacterLevelContainer" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

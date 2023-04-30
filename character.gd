@@ -93,6 +93,19 @@ func unlock_threshold(level: int):
 		4: return 800
 		5: return 1000
 
+func current_unlock_level(xp: int) -> int:
+	var max_level = max_unlock_level()
+	print("max_level: ", max_level)
+	for level in max_level + 1:
+		if xp < unlock_threshold(level):
+			return level - 1
+	return max_level
+
+func max_unlock_level() -> int:
+	# Collection has N entries, of which the first one is always unlocked.
+	# Last unlock happens when character reaches level N-1.
+	return card_collection.cards.size() - 1
+
 func process_cards(full: bool):
 	# if full is true, then we are starting a new game and need to
 	# populate all_cards and extra_cards, otherwise it's been loaded
@@ -102,9 +115,9 @@ func process_cards(full: bool):
 		all_cards = CardSelectionSet.new()
 		extra_cards = CardSelectionSet.new()
 		var xp = get_stat(Enum.StatsLevel.OVERALL, Stats.Field.XP)
-		for level in card_collection.cards.size():
-			if xp < unlock_threshold(level):
-				break
+		var unlocked_level = current_unlock_level(xp)
+		print("unlocked level: ", unlocked_level)
+		for level in unlocked_level:
 			var level_cards = card_collection.cards[level]
 			for card in level_cards.cards:
 				all_cards.cards.push_back(card)
@@ -147,6 +160,7 @@ func end_stage():
 	clear_pending_damage()
 	stage_ended.emit(self)
 	relic_manager.clear_temp_relics()
+	snap()
 	changed.emit()
 
 func begin_turn():

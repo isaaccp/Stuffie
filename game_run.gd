@@ -263,7 +263,7 @@ func game_over():
 	if not (state.is_state(MAP) or state.is_state(BETWEEN_STAGES)):
 		StatsManager.remove_level(Enum.StatsLevel.STAGE)
 	add_stat(Stats.Field.RUNS_DEFEAT, 1)
-	state.change_state(RUN_SUMMARY)
+	state.change_state.call_deferred(RUN_SUMMARY)
 
 func finish_run():
 	run_finished.emit()
@@ -295,8 +295,7 @@ func _on_abandon_run_pressed():
 	var stage = stage_parent.get_child(0)
 	if stage:
 		stage.cleanup()
-	menu.hide()
-	get_tree().paused = false
+	hide_menu()
 	game_over()
 
 func _on_save_quit_pressed():

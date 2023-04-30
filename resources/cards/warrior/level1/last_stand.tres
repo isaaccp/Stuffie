@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://cw62s7v5esw2k"]
+[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://cw62s7v5esw2k"]
 
 [ext_resource type="Script" path="res://card_effect_value.gd" id="1_ub1ol"]
 [ext_resource type="Script" path="res://card_effect.gd" id="2_ircsu"]
 [ext_resource type="Script" path="res://card.gd" id="3_qpv02"]
+[ext_resource type="Texture2D" uid="uid://og6mq60e5vxe" path="res://resources/last_stand.png" id="4_6wdri"]
 
 [sub_resource type="Resource" id="Resource_84ftf"]
 script = ExtResource("1_ub1ol")
@@ -40,6 +41,7 @@ basic = false
 upgrade_level = 0
 cost = 1
 playable = true
+texture = ExtResource("4_6wdri")
 target_mode = 3
 target_animation = 1
 on_damage_animation = 0
