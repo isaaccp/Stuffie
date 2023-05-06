@@ -38,7 +38,8 @@ func set_mode(mode: PortraitMode):
 func set_character(unit: Unit):
 	if self.unit == unit:
 		return
-	self.unit.changed.disconnect(_update_unit)
+	if self.unit:
+		self.unit.changed.disconnect(_update_unit)
 	self.unit = unit
 	unit.changed.connect(_update_unit)
 	_update_unit()
