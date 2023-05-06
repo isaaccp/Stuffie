@@ -14,7 +14,6 @@ var turn_stats:
 	get: return stack[Enum.StatsLevel.TURN]
 
 func _init():
-	super()
 	add_level(Enum.StatsLevel.OVERALL)
 
 func add_level(level: Enum.StatsLevel):
