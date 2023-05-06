@@ -38,8 +38,9 @@ func set_mode(mode: PortraitMode):
 func set_character(unit: Unit):
 	if self.unit == unit:
 		return
-	if self.unit:
-		self.unit.changed.disconnect(_update_unit)
+	# If enemy was destroyed, instance may have been freed.
+	if self.unit and is_instance_valid(self.unit):
+			self.unit.changed.disconnect(_update_unit)
 	self.unit = unit
 	unit.changed.connect(_update_unit)
 	_update_unit()
