@@ -78,7 +78,7 @@ func get_damage_description():
 	else:
 		damage_text = "%d ([color=red]%d[/color])" % [damage, effective_damage]
 	if card.damage_value.value_type == CardEffectValue.ValueType.REFERENCE:
-		description_text = "%s (%s)" % [get_effect_value_string(unit, card.damage_value), damage_text]
+		description_text = "%s (%s)" % [UnitCard.get_effect_value_string(unit, card.damage_value), damage_text]
 	else:
 		description_text = damage_text
 	return description_text

@@ -62,8 +62,6 @@ var camera_rotation_speed = 100
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 2
-var half_tile2 = Vector2(tile_size/2, tile_size/2)
-var half_tile3 = Vector3(tile_size/2, 0, tile_size/2)
 var enemy_moving = false
 var card_simulation_manager = CardSimulationManager.new()
 var enemy_turn_manager = EnemyTurnManager.new()
@@ -360,7 +358,7 @@ func offsets_within_distance(distance: int) -> Array[Vector2i]:
 	return tiles
 
 func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
-	var attack_positions: Dictionary
+	var attack_positions = {}
 	var offsets = offsets_within_distance(enemy.max_attack_distance())
 	for pos in positions:
 		var visible_tiles = map_manager.fov.get_fov(pos)
@@ -579,7 +577,6 @@ func handle_move():
 		return
 	change_human_turn_state(HumanTurnState.MOVING)
 	# Save positions as they change.
-	var original_pos = active_character.get_id_position()
 	var final_pos = tile_map_pos
 	await active_character.move(map_manager, final_pos)
 	var move_cost = path_cost(current_path)
@@ -850,8 +847,7 @@ func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
 	# distance from plane
 	var d = -2
 	var t = - (n.dot(p) + d) / n.dot(v)
-	var position = p + t * v
-	return position
+	return p + t * v
 
 func plane_pos_to_tile_pos(plane_pos: Vector3) -> Vector2i:
 	return Vector2i(floor(plane_pos.x / tile_size), floor(plane_pos.z / tile_size))

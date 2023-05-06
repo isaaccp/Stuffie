@@ -65,6 +65,7 @@ func initialize_from_upgrades_to_card(character: Character, card: Card):
 func initialize_from_cards(character: Character, cards: Array):
 	reset()
 	self.cards = cards
+	@warning_ignore("integer_division")
 	var rows = ((cards.size()-1)/cards_per_row)+1
 	var card_idx = 0
 	for i in range(rows):

@@ -6,7 +6,7 @@ class_name CardChange
 @export var exhaust: bool
 
 func get_description():
-	var effects_text: PackedStringArray
+	var effects_text: PackedStringArray = []
 	if cost_change < 0:
 		effects_text.push_back("reduce cost by %d💢" % -cost_change)
 	elif cost_change > 0:

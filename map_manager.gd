@@ -234,7 +234,7 @@ func curve_from_path(path: PackedVector2Array) -> Curve3D:
 
 func _flood_fill(cell: Vector2i, move_points: int) -> Array:
 	# This is a dictionary of reachable tiles with their current cost.
-	var reachable_cost: Dictionary
+	var reachable_cost = {}
 	# The way we implemented the flood fill here is by using a stack. In that stack, we store every
 	# cell we want to apply the flood fill algorithm to.
 	var stack := [[cell, 0]]

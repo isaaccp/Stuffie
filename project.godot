@@ -23,6 +23,10 @@ StatusMetadata="*res://status_metadata.tscn"
 [debug]
 
 file_logging/enable_file_logging=true
+gdscript/warnings/shadowed_variable=0
+gdscript/warnings/unused_parameter=0
+gdscript/warnings/assert_always_true=0
+gdscript/warnings/assert_always_false=0
 
 [display]
 

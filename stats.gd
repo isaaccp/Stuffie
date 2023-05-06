@@ -87,7 +87,7 @@ func get_value(character_type: Enum.CharacterId, field: Field):
 		return 0
 	return character_stats[field]
 
-func print():
+func print_stats():
 	for character_type in stats:
 		var character_stats = stats[character_type]
 		for field in character_stats:

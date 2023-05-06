@@ -30,9 +30,9 @@ func _ready():
 func set_id_position(id_pos: Vector2i):
 	id_position = id_pos
 	position = Vector3(
-		id_position[0] * tile_size + tile_size/2,
+		id_position[0] * tile_size + tile_size/2.0,
 		1.5,
-		id_position[1] * tile_size + tile_size/2)
+		id_position[1] * tile_size + tile_size/2.0)
 
 func get_id_position() -> Vector2i:
 	return id_position

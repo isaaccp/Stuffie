@@ -57,7 +57,6 @@ func end_turn():
 	super()
 
 func hp_text():
-	var pending_damage_text = ""
 	if pending_damage_set:
 		var lethal_text = ""
 		if pending_damage >= hit_points:
@@ -75,7 +74,6 @@ func actions_text():
 	return text
 
 func move(curve: Curve3D, to: Vector2i):
-	var from = get_id_position()
 	if not is_mock:
 		await move_path(curve)
 	set_id_position(to)

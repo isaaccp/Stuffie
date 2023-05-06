@@ -49,6 +49,6 @@ func get_value(level: Enum.StatsLevel, character: Enum.CharacterId, field: Stats
 		return 0
 	return stack[level].get_value(character, field)
 
-func print(level: Enum.StatsLevel):
+func print_stats(level: Enum.StatsLevel):
 	assert(level <= stack.size())
-	stack[level].print()
+	stack[level].print_stats()

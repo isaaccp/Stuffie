@@ -18,7 +18,6 @@ var turn_stats:
 signal stats_added(character: Enum.CharacterId, field: Stats.Field, value: int)
 
 func _init():
-	super()
 	stack = StatsStack.new()
 
 func add_level(level: Enum.StatsLevel):
@@ -37,5 +36,5 @@ func remove(character: Enum.CharacterId, field: Stats.Field, value: int):
 func get_value(level: Enum.StatsLevel, character: Enum.CharacterId, field: Stats.Field) -> int:
 	return stack.get_value(level, character, field)
 
-func print(level: Enum.StatsLevel):
-	stack.print(level)
+func print_stats(level: Enum.StatsLevel):
+	stack.print_stats(level)

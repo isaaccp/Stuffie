@@ -150,7 +150,6 @@ func get_card_count():
 	return get_child_count() - removed
 
 func calculate_new_card_positions():
-	var center = 0
 	var card_count = get_card_count()
 	var total_x = card_count * card_size.x + (card_count - 1) * separator
 	var start_x = -float(total_x)/2.0
