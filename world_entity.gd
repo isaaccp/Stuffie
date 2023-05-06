@@ -40,7 +40,7 @@ func get_id_position() -> Vector2i:
 func move_path(curve: Curve3D):
 	# Moving 1 "baked point" per 0.01 seconds, each point being
 	# at a distance of 0.2 from each other.
-	for point in curve.get_baked_points():
+	for point in curve.get_baked_points().slice(1):
 		look_at(point)
 		position = point
 		# Set timer to not pass time during pause.

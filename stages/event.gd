@@ -75,7 +75,6 @@ func _on_choosing_target_entered():
 	event_options.add_child(label)
 	choice_effect = choice.get_effect()
 	event_resolution_label.text = choice_effect.resolution_text
-	var target_characters = []
 	match choice_effect.target_type:
 		EventChoiceEffect.TargetType.CHOSEN_CHARACTER_OR_ALL_CHARACTERS:
 			if chosen_character == null:

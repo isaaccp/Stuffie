@@ -79,12 +79,12 @@ func move(curve: Curve3D, to: Vector2i):
 	set_id_position(to)
 
 func max_attack_distance() -> int:
-	var max = 0
+	var max_distance = 0
 	for card in cards:
 		if card.is_attack():
 			if card.target_distance > max:
-				max = card.target_distance
-	return max
+				max_distance = card.target_distance
+	return max_distance
 
 # Nothing to do as the health bar is managed separately.
 func refresh():

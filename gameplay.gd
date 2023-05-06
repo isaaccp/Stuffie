@@ -925,7 +925,7 @@ func get_save_state():
 		combat_state.treasures.push_back(treasure.get_save_state())
 	for loc in map_manager.door_locs:
 		var door = map_manager.door_locs[loc]
-		var door_def = DoorDef.create(loc, door.state, 0)
+		var door_def = DoorDef.create(loc, door.state, DoorDef.WallType.NORMAL)
 		combat_state.doors.push_back(door_def)
 	return combat_state
 

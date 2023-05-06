@@ -203,6 +203,7 @@ func _on_between_stages_entered():
 	else:
 		shared_bag.add_gold(GOLD_PER_STAGE)
 		for character in characters:
+			@warning_ignore("integer_division")
 			StatsManager.add(character.character_type, Stats.Field.GOLD_EARNED, GOLD_PER_STAGE/characters.size())
 		var between_stages = between_stages_scene.instantiate()
 		between_stages.initialize(characters, shared_bag)

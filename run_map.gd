@@ -44,11 +44,11 @@ func _ready():
 		panel.add_child(path)
 		i += 1
 
-func get_sprite(texture: Texture, index: int, rotation_degrees=0, offset=Vector2.ZERO) -> Sprite2D:
+func get_sprite(texture: Texture, index: int, degrees=0, offset=Vector2.ZERO) -> Sprite2D:
 	var sprite = Sprite2D.new()
 	sprite.texture = texture
 	sprite.scale = Vector2(1.5, 1.5)
-	sprite.rotation_degrees = rotation_degrees
+	sprite.rotation_degrees = degrees
 	var pos = Vector2(between_stage_space * (index+1), vertical_center)
 	sprite.set_position(pos + offset)
 	return sprite

@@ -45,7 +45,6 @@ func _process(delta):
 			return
 		var character = characters[current_character]
 		character_portrait.set_character(character)
-		var i = 0
 		# TODO: Have a base choice for all characters (rest) and make other choices per
 		# character.
 		for choice in camp_choices:

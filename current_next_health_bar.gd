@@ -19,10 +19,10 @@ func _ready():
 	is_ready = true
 	update_health()
 
-func set_health(current: int, max: int, next: int):
-	current_health = current
-	max_health = max
-	next_health = next
+func set_health(current_hp: int, max_hp: int, next_hp: int):
+	current_health = current_hp
+	max_health = max_hp
+	next_health = next_hp
 	if next_health < 0:
 		next_health = 0
 	update_health()

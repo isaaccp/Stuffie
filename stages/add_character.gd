@@ -7,7 +7,6 @@ func initialize(current_characters: Array):
 	var new_characters = []
 	for character in current_characters:
 		current_character_ids[character.character_type] = true
-	var characters_to_create = []
 	for character_id in Enum.CharacterId.values():
 		if character_id == Enum.CharacterId.NO_CHARACTER:
 			continue

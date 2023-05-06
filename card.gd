@@ -72,6 +72,7 @@ func apply_card_change(change: CardChange):
 func effect_area(direction: Vector2):
 	var tiles = []
 	if area_type == AreaType.RECTANGLE:
+		@warning_ignore("integer_division")
 		var width_idx = (area_width-1)/2
 		for i in range(area_length):
 			for j in range(-width_idx, width_idx+1):
@@ -82,6 +83,7 @@ func effect_area(direction: Vector2):
 			Vector2i(-1, -1), Vector2i(-1, 1)
 		]
 	elif area_type == AreaType.CONE:
+		@warning_ignore("integer_division")
 		var width_idx = (area_width-1)/2
 		for i in range(area_length):
 			for j in range(-width_idx, width_idx+1):

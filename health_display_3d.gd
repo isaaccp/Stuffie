@@ -12,6 +12,6 @@ func _ready():
 	# but even without the errors it doesn't seem to work.
 	sprite.texture = $SubViewport.get_texture()
 
-func set_health(current: int, max: int, next: int):
-	health_display.set_health(current, max, next)
-	skull.visible = next <= 0
+func set_health(current_hp: int, max_hp: int, next_hp: int):
+	health_display.set_health(current_hp, max_hp, next_hp)
+	skull.visible = next_hp <= 0
