@@ -36,6 +36,9 @@ func set_mode(mode: PortraitMode):
 		status_effects.show()
 
 func set_character(unit: Unit):
+	if self.unit == unit:
+		return
+	self.unit.changed.disconnect(_update_unit)
 	self.unit = unit
 	unit.changed.connect(_update_unit)
 	_update_unit()
