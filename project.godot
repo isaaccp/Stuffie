@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 StatsManager="*res://stats_manager.gd"
 StatusMetadata="*res://status_metadata.tscn"
 
+[debug]
+
+file_logging/enable_file_logging=true
+
 [display]
 
 window/size/viewport_width=1920
