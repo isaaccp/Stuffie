@@ -15,12 +15,11 @@ var half_tile: Vector2
 var highlight3d_scene = preload("res://highlight.tscn")
 
 func _init(map_manager: MapManager):
-	super()
 	half_tile = Vector2(map_manager.cell_size.x, map_manager.cell_size.z)/2
 	map = map_manager
 	highlight3d = highlight3d_scene.instantiate() as Highlight3D
-	highlight3d.set_size(map.map_rect.size * map.cell_size.x)
 	add_child(highlight3d)
+	highlight3d.set_size(map.map_rect.size * map.cell_size.x)
 
 func set_width(w: float):
 	width = w

@@ -82,7 +82,7 @@ func max_attack_distance() -> int:
 	var max_distance = 0
 	for card in cards:
 		if card.is_attack():
-			if card.target_distance > max:
+			if card.target_distance > max_distance:
 				max_distance = card.target_distance
 	return max_distance
 
