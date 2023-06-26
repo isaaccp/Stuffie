@@ -201,9 +201,12 @@ func pick_cards_condition(number: int, metadata: CardEffectMetadata, condition: 
 	assert(number == 1)
 	# Shuffle discard into deck before choosing.
 	deck.shuffle_discard()
+	print("instantiating chooser_scene")
 	var chooser = chooser_scene.instantiate() as CardCollectionChooser
+	print("initializing chooser")
 	chooser.initialize_from_character(self, CardCollectionChooser.Filter.DECK, condition)
 	chooser.set_skippable()
+	print("adding chooser to canvas")
 	canvas.add_child(chooser)
 	get_tree().paused = true
 	await chooser.card_chosen

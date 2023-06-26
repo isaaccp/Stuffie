@@ -246,7 +246,7 @@ func stage_finished(stage_type: StageDef.StageType):
 	StatsManager.remove_level(Enum.StatsLevel.STAGE)
 	if stage_type == StageDef.StageType.COMBAT:
 		add_stat(Stats.Field.COMBAT_STAGES_FINISHED, 1)
-	StatsManager.run_stats.print()
+	StatsManager.run_stats.print_stats()
 	if stage_number + 1 == run.get_level(level_number).stages.size():
 		if level_number + 1 == run.levels.size():
 			add_stat(Stats.Field.RUNS_VICTORY, 1)
