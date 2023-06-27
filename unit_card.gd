@@ -251,7 +251,7 @@ static func get_effect_description(unit: Unit, effect: CardEffect) -> String:
 			CardEffect.Effect.PICK_ATTACKS: effect_text = "shuffle discard into deck and pick %s attack cards" % value_text
 			CardEffect.Effect.COLLECTION_UPGRADE: effect_text = "upgrade %s cards" % value_text
 			CardEffect.Effect.TELEPORT: effect_text = "teleport up to %s tiles" % value_text
-			CardEffect.Effect.DUPLICATE_CARD: effect_text = "copy %s (%s)\n%s" % [effect.metadata_card_filter(), value_text, effect.metadata_extra_description()]
+			CardEffect.Effect.DUPLICATE_CARD: effect_text = "copy %s (%s times)\n%s" % [effect.metadata_card_filter(), value_text, effect.metadata_extra_description()]
 			CardEffect.Effect.RANDOM_RELIC: effect_text = "add a random relic out of %s" % value_text
 			CardEffect.Effect.COLLECTION_REMOVE_CARD: effect_text = "remove %s cards from your collection" % value_text
 			# TODO: Allow to preview through a url.
