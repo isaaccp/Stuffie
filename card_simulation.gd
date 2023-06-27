@@ -15,6 +15,7 @@ func _init(map: MapManager, character_pos: Vector2i, card: Card, target_tile: Ve
 	self.map = map.clone(true, true)
 	var character = self.map.character_locs[character_pos]
 	self.unit_card = UnitCard.new(character, card)
+	self.unit_card.set_simulation()
 	self.target_tile = target_tile
 	self.direction = direction
 	aborted = false

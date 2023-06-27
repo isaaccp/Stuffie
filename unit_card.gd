@@ -4,13 +4,18 @@ class_name UnitCard
 
 var unit: Unit
 var card: Card
+var simulation: bool
 
 func _init(unit: Unit, card: Card):
 	self.unit = unit
 	self.card = card
+	self.simulation = false
+
+func set_simulation():
+	self.simulation = true
 
 func apply_on_play_effects(target: Unit):
-	await UnitCard.apply_effects_target(unit, card.on_play_effects, target)
+	await UnitCard.apply_effects_target(unit, card.on_play_effects, target, simulation)
 
 func apply_self():
 	assert(card.target_mode == Enum.TargetMode.SELF or card.target_mode == Enum.TargetMode.SELF_ALLY)
@@ -22,17 +27,17 @@ func apply_self():
 	unit.refresh()
 
 func apply_self_effects():
-	await UnitCard.apply_effects_target(unit, card.on_play_self_effects, unit)
+	await UnitCard.apply_effects_target(unit, card.on_play_self_effects, unit, simulation)
 
 func apply_after_effects():
-	await UnitCard.apply_effects_target(unit, card.on_play_after_effects, unit)
+	await UnitCard.apply_effects_target(unit, card.on_play_after_effects, unit, simulation)
 
 func apply_next_turn_effects():
-	await UnitCard.apply_effects_target(unit, card.on_next_turn_effects, unit)
+	await UnitCard.apply_effects_target(unit, card.on_next_turn_effects, unit, simulation)
 
 func apply_to_ally(ally: Unit):
 	assert(card.target_mode == Enum.TargetMode.SELF_ALLY or card.target_mode == Enum.TargetMode.ALLY)
-	await UnitCard.apply_effects_target(unit, card.on_play_effects, ally)
+	await UnitCard.apply_effects_target(unit, card.on_play_effects, ally, simulation)
 
 func apply_to_enemy(enemy: Unit):
 	assert(card.target_mode == Enum.TargetMode.ENEMY or card.target_mode == Enum.TargetMode.AREA)
@@ -41,12 +46,12 @@ func apply_to_enemy(enemy: Unit):
 	var damaged = enemy.apply_damage(attack_damage)
 	if damaged:
 		for effect in card.on_damage_effects:
-			await UnitCard.apply_effect_target(unit, effect, enemy)
+			await UnitCard.apply_effect_target(unit, effect, enemy, simulation)
 	for effect in card.on_play_effects:
-		await UnitCard.apply_effect_target(unit, effect, enemy)
+		await UnitCard.apply_effect_target(unit, effect, enemy, simulation)
 	enemy.refresh()
 	if enemy.hit_points <= 0:
-		await UnitCard.apply_effects_target(unit, card.on_kill_effects, unit)
+		await UnitCard.apply_effects_target(unit, card.on_kill_effects, unit, simulation)
 
 func regular_damage():
 	if card.damage_value:
@@ -173,12 +178,18 @@ func get_description() -> String:
 
 # All stats are updated inside the character methods. That way objects like relics that don't use
 # CardEffect will still update stats easily.
-static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit):
+static func apply_effect_target(unit: Unit, effect: CardEffect, target: Unit, simulation: bool = false):
 	var value = 0
 	# Some effects don't need a value, so allow that.
 	if effect.effect_value:
 		value = UnitCard.get_effect_value(unit, effect.effect_value)
 	if effect.effect_type == CardEffect.EffectType.EFFECT:
+		# If we are simulating for damage calculation, don't run
+		# any of those effects as some of them display dialogs.
+		# If some of those are needed for damage calculation somehow and
+		# need to be simulated, we can do something more sophisticated.
+		if simulation:
+			return
 		match effect.effect:
 			CardEffect.Effect.DISCARD_HAND:
 				target.discard_hand()
@@ -271,9 +282,9 @@ static func join_effects_text(unit: Unit, effects: Array[CardEffect]) -> String:
 		effect_texts.push_back(description)
 	return ', '.join(effect_texts)
 
-static func apply_effects_target(unit: Unit, effects: Array[CardEffect], target: Unit):
+static func apply_effects_target(unit: Unit, effects: Array[CardEffect], target: Unit, simulation: bool = false):
 	for effect in effects:
-		await UnitCard.apply_effect_target(unit, effect, target)
+		await UnitCard.apply_effect_target(unit, effect, target, simulation)
 
 # CardEffectValue
 

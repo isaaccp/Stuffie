@@ -213,7 +213,7 @@ func pick_cards_condition(number: int, metadata: CardEffectMetadata, condition: 
 	get_tree().paused = false
 	var card = chooser.chosen_card
 	if card != null:
-		if metadata.original_card_change:
+		if metadata != null and metadata.original_card_change:
 			card.apply_card_change(metadata.original_card_change)
 		deck.add_to_hand_from_deck(card)
 		add_stat(Stats.Field.EXTRA_CARDS_DRAWN, number)
