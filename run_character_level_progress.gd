@@ -35,9 +35,14 @@ func _ready():
 func tween_xp(delay=0.0):
 	if current_level == character.max_unlock_level():
 		label.text = "All Unlocks Acquired"
-		var last_level_xp = character.unlock_threshold(current_level) - (character.unlock_threshold(current_level - 1))
-		level_progress_bar.max_value = last_level_xp
-		level_progress_bar.value = last_level_xp
+		if current_level != 0:
+			var last_level_xp = character.unlock_threshold(current_level) - (character.unlock_threshold(current_level - 1))
+			level_progress_bar.max_value = last_level_xp
+			level_progress_bar.value = last_level_xp
+		else:
+			# Fallback case for when a character doesn't have proper unlocks implemented yet.
+			level_progress_bar.max_value = 1
+			level_progress_bar.value = 1
 	else:
 		label.text = "Unlock Level: %d" % current_level
 		# First tween should start with a half second delay.
