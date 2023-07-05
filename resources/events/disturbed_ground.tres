@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EventDef" load_steps=17 format=3 uid="uid://dxtq5l7lereay"]
+[gd_resource type="Resource" script_class="EventDef" load_steps=18 format=3 uid="uid://dxtq5l7lereay"]
 
 [ext_resource type="Script" path="res://event_choice_effect.gd" id="1_4ree8"]
 [ext_resource type="Script" path="res://card_effect_value.gd" id="2_qsavn"]
@@ -91,6 +91,13 @@ preconditions = Array[Resource("res://event_choice_precondition.gd")]([])
 choice_effects = Array[ExtResource("3_jgd0l")]([])
 effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_sl7wg"), SubResource("Resource_og6mi"), SubResource("Resource_xxpdy")])
 
+[sub_resource type="Resource" id="Resource_8yuhq"]
+script = ExtResource("1_4ree8")
+target_type = 0
+probability = 1
+effects = Array[ExtResource("3_jgd0l")]([])
+resolution_text = "You continue on your way"
+
 [sub_resource type="Resource" id="Resource_i43s7"]
 script = ExtResource("2_ujqvx")
 text = "Pass"
@@ -99,7 +106,7 @@ preview_resolution_effects = false
 hide_if_preconditions_fail = false
 preconditions = Array[Resource("res://event_choice_precondition.gd")]([])
 choice_effects = Array[ExtResource("3_jgd0l")]([])
-effects = Array[ExtResource("1_4ree8")]([])
+effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_8yuhq")])
 
 [resource]
 script = ExtResource("3_hue4t")
