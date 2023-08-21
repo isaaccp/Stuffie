@@ -23,13 +23,17 @@ func get_enemy_walkable_cells(enemy: Enemy) -> Array:
 	return calculation_map.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
 
 func calculate() -> bool:
-	calculate_moves()
-	if aborted:
-		return false
 	var characters = []
 	# Save characters in case they die.
 	for character in execution_map.character_locs.values():
 		characters.push_back(character)
+	# Trigger end turn as e.g. some relics may have effects that will impact
+	# results (e.g. auto shield).
+	for character in characters:
+		character.end_turn()
+	calculate_moves()
+	if aborted:
+		return false
 	play_attacks()
 	if aborted:
 		return false

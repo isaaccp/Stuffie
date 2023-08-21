@@ -66,7 +66,9 @@ func mock():
 	m.hit_points = hit_points
 	m.total_hit_points = total_hit_points
 	m.status_manager = status_manager.clone()
+	# Duplicate relic manager and connect signals to this mock.
 	m.relic_manager = relic_manager.duplicate(true)
+	m.relic_manager.connect_signals(m)
 	m.deck = deck.duplicate(true)
 	m.snap()
 	return m
