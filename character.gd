@@ -9,7 +9,7 @@ var pending_action_cost: int = -1
 var pending_move_cost: int = -1
 var relic_manager = RelicManager.new()
 var shared_bag: SharedBag
-var is_mock = false
+
 # TODO: Remove this. As of now, this is required because character.teleport()
 # needs access to the gameplay to e.g. display a cursor for the move, etc.
 # Figure out a cleaner way.

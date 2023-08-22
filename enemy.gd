@@ -14,8 +14,6 @@ var unit_cards: Array[UnitCard]
 var level: int
 var done: bool
 
-var is_mock = false
-
 @export var enemy_type: Enum.EnemyId
 @export var enemy_name: String
 

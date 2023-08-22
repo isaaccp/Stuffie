@@ -76,6 +76,7 @@ var card_player: CardPlayer
 # Enemies are under this node.
 @export var enemies_node: Node
 @export var doors_node: Node
+@export var damage_labels_node: Node
 @export var hand_ui: HandUI
 @export var deck_ui: Control
 @export var discard_ui: Control
@@ -171,8 +172,10 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 					break
 		assert(updated_doors == combat_state.doors.size())
 	for character in party.get_children():
+		character.set_damage_labels_node(damage_labels_node)
 		character.destroyed.connect(handle_character_death.bind(character))
 	for enemy in enemies_node.get_children():
+		enemy.set_damage_labels_node(damage_labels_node)
 		enemy.destroyed.connect(_on_enemy_death.bind(enemy))
 	enemy_died.connect(stage.enemy_died_handler)
 	character_moved.connect(stage.character_moved_handler)

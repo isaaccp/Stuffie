@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcs0f6a1wm4xq"]
+
+[ext_resource type="Script" path="res://floating_damage_label.gd" id="1_57g85"]
+
+[node name="FloatingDamageLabel" type="Node3D" node_paths=PackedStringArray("container", "label")]
+script = ExtResource("1_57g85")
+container = NodePath("LabelContainer")
+label = NodePath("LabelContainer/Label3D")
+
+[node name="LabelContainer" type="Node3D" parent="."]
+
+[node name="Label3D" type="Label3D" parent="LabelContainer"]
+pixel_size = 0.025
+billboard = 1
+text = "123"

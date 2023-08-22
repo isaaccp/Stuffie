@@ -11,10 +11,15 @@ var pending_damage_set = false
 var pending_damage: int = 0
 
 var health_bar: HealthDisplay3D
-var health_bar_scene = preload("res://health_display_3d.tscn")
+const health_bar_scene = preload("res://health_display_3d.tscn")
+const floating_damage_scene = preload("res://floating_damage_label.tscn")
 
 var status_manager = StatusManager.new()
 var is_destroyed = false
+var is_mock = false
+
+# Node to add damage labels to.
+var damage_labels_node: Node
 
 signal health_changed
 signal changed
@@ -36,6 +41,9 @@ func set_id_position(id_pos: Vector2i):
 
 func get_id_position() -> Vector2i:
 	return id_position
+
+func set_damage_labels_node(node: Node):
+	damage_labels_node = node
 
 func move_path(curve: Curve3D):
 	# Moving 1 "baked point" per 0.01 seconds, each point being
@@ -104,6 +112,8 @@ func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 			add_stat(Stats.Field.DAMAGE_BLOCKED, blocked_damage)
 	if damage == 0:
 		return false
+	if not is_mock:
+		display_damage(damage)
 	add_stat(Stats.Field.DAMAGE_TAKEN, damage)
 	hit_points -= damage
 	if hit_points <= 0:
@@ -111,6 +121,13 @@ func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 	# This clears pending damage, as it's no longer valid, and also causes a refresh.
 	clear_pending_damage()
 	return true
+
+func display_damage(damage: int):
+	var floating_damage_label = floating_damage_scene.instantiate() as FloatingDamageLabel
+	floating_damage_label.set_damage(damage)
+	damage_labels_node.add_child(floating_damage_label)
+	floating_damage_label.global_position = global_position
+	floating_damage_label.float_and_disappear()
 
 func set_destroyed():
 	if not is_destroyed:

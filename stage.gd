@@ -37,6 +37,7 @@ func _ready():
 	# TODO: I was unable to save the gridmap as a exported node path in the stage importer,
 	# so need to set it here.
 	gridmap = $GridMap
+	gridmap.show()
 
 	var torches_node = Node3D.new()
 	add_child(torches_node)
