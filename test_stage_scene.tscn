@@ -1,0 +1,77 @@
+[gd_scene load_steps=14 format=3 uid="uid://dr53chwyrv3n4"]
+
+[ext_resource type="Script" path="res://stage.gd" id="1_0j40m"]
+[ext_resource type="Script" path="res://enemy_position.gd" id="2_lyu5u"]
+[ext_resource type="Script" path="res://torch_def.gd" id="3_tqxgu"]
+[ext_resource type="Script" path="res://stage_trigger.gd" id="4_0hajy"]
+[ext_resource type="MeshLibrary" uid="uid://d38atikp62fhy" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="5_0pta6"]
+
+[sub_resource type="Resource" id="Resource_ruy0r"]
+script = ExtResource("2_lyu5u")
+enemy_id = 0
+position = Vector2i(6, 5)
+level = 1
+
+[sub_resource type="Resource" id="Resource_aapln"]
+script = ExtResource("2_lyu5u")
+enemy_id = 1
+position = Vector2i(4, 7)
+level = 0
+
+[sub_resource type="Resource" id="Resource_h6et6"]
+script = ExtResource("2_lyu5u")
+enemy_id = 1
+position = Vector2i(8, 7)
+level = 0
+
+[sub_resource type="Resource" id="Resource_xjguw"]
+script = ExtResource("3_tqxgu")
+pos = Vector2i(6, 1)
+orientation = Vector2i(0, -1)
+
+[sub_resource type="Resource" id="Resource_4dn8q"]
+script = ExtResource("3_tqxgu")
+pos = Vector2i(1, 5)
+orientation = Vector2i(-1, 0)
+
+[sub_resource type="Resource" id="Resource_an2kk"]
+script = ExtResource("3_tqxgu")
+pos = Vector2i(11, 5)
+orientation = Vector2i(1, 0)
+
+[sub_resource type="Resource" id="Resource_efm1a"]
+script = ExtResource("3_tqxgu")
+pos = Vector2i(6, 9)
+orientation = Vector2i(0, 1)
+
+[sub_resource type="Resource" id="Resource_mrl8a"]
+script = ExtResource("4_0hajy")
+trigger_type = 0
+turn = 2
+enemies_killed = 0
+switch_pos = Vector2i(0, 0)
+effect_type = 0
+door_pos = Vector2i(0, 0)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Stage" type="Node" parent="."]
+script = ExtResource("1_0j40m")
+enemies = Array[ExtResource("2_lyu5u")]([SubResource("Resource_ruy0r"), SubResource("Resource_aapln"), SubResource("Resource_h6et6")])
+torches = Array[ExtResource("3_tqxgu")]([SubResource("Resource_xjguw"), SubResource("Resource_4dn8q"), SubResource("Resource_an2kk"), SubResource("Resource_efm1a")])
+starting_positions = Array[Vector2i]([Vector2i(5, 2), Vector2i(7, 2)])
+triggers = Array[ExtResource("4_0hajy")]([SubResource("Resource_mrl8a")])
+solid_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(0, 1), Vector2i(12, 1), Vector2i(0, 2), Vector2i(8, 2), Vector2i(12, 2), Vector2i(0, 3), Vector2i(8, 3), Vector2i(12, 3), Vector2i(0, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(12, 4), Vector2i(0, 5), Vector2i(9, 5), Vector2i(12, 5), Vector2i(0, 6), Vector2i(12, 6), Vector2i(0, 7), Vector2i(12, 7), Vector2i(0, 8), Vector2i(12, 8), Vector2i(0, 9), Vector2i(12, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10)])
+view_blocking_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(0, 1), Vector2i(12, 1), Vector2i(0, 2), Vector2i(12, 2), Vector2i(0, 3), Vector2i(12, 3), Vector2i(0, 4), Vector2i(12, 4), Vector2i(0, 5), Vector2i(12, 5), Vector2i(0, 6), Vector2i(12, 6), Vector2i(0, 7), Vector2i(12, 7), Vector2i(0, 8), Vector2i(12, 8), Vector2i(0, 9), Vector2i(12, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10)])
+rect = Rect2i(0, 0, 13, 11)
+
+[node name="GridMap" type="GridMap" parent="Stage"]
+rotation_order = 0
+mesh_library = ExtResource("5_0pta6")
+cell_size = Vector3(2, 1, 2)
+data = {
+"cells": PackedInt32Array(0, 0, 153, 65536, 0, 1048737, 1, 0, 153, 65537, 0, 160, 2, 0, 153, 65538, 0, 160, 3, 0, 153, 65539, 0, 160, 4, 0, 153, 65540, 0, 160, 5, 0, 153, 65541, 0, 160, 6, 0, 153, 65542, 0, 160, 7, 0, 153, 65543, 0, 160, 8, 0, 153, 65544, 0, 160, 9, 0, 153, 65545, 0, 160, 10, 0, 153, 65546, 0, 160, 11, 0, 153, 65547, 0, 160, 12, 0, 153, 65548, 0, 161, 0, 1, 153, 65536, 1, 1048736, 1, 1, 153, 2, 1, 153, 3, 1, 153, 4, 1, 153, 5, 1, 153, 6, 1, 153, 7, 1, 153, 8, 1, 153, 9, 1, 153, 10, 1, 153, 11, 1, 153, 12, 1, 153, 65548, 1, 1048736, 0, 2, 153, 65536, 2, 1048736, 1, 2, 153, 2, 2, 153, 3, 2, 153, 4, 2, 153, 5, 2, 153, 6, 2, 153, 7, 2, 153, 8, 2, 153, 65544, 2, 655379, 9, 2, 153, 10, 2, 153, 11, 2, 153, 12, 2, 153, 65548, 2, 1048736, 0, 3, 153, 65536, 3, 1048736, 1, 3, 153, 2, 3, 153, 3, 3, 153, 4, 3, 153, 5, 3, 153, 6, 3, 153, 7, 3, 153, 8, 3, 153, 65544, 3, 1048593, 9, 3, 153, 10, 3, 153, 11, 3, 153, 12, 3, 153, 65548, 3, 1048736, 0, 4, 153, 65536, 4, 1048736, 1, 4, 153, 2, 4, 153, 3, 4, 153, 65539, 4, 655380, 4, 4, 153, 65540, 4, 1441808, 5, 4, 153, 6, 4, 153, 7, 4, 153, 8, 4, 153, 9, 4, 153, 10, 4, 153, 11, 4, 153, 12, 4, 153, 65548, 4, 1048736, 0, 5, 153, 65536, 5, 1048736, 1, 5, 153, 2, 5, 153, 3, 5, 153, 4, 5, 153, 5, 5, 153, 6, 5, 153, 7, 5, 153, 8, 5, 153, 9, 5, 153, 65545, 5, 655504, 10, 5, 153, 11, 5, 153, 12, 5, 153, 65548, 5, 1048736, 0, 6, 153, 65536, 6, 1048736, 1, 6, 153, 2, 6, 153, 3, 6, 153, 4, 6, 153, 5, 6, 153, 6, 6, 153, 7, 6, 153, 8, 6, 153, 9, 6, 153, 10, 6, 153, 11, 6, 153, 12, 6, 153, 65548, 6, 1048736, 0, 7, 153, 65536, 7, 1048736, 1, 7, 153, 2, 7, 153, 3, 7, 153, 4, 7, 153, 5, 7, 153, 6, 7, 153, 7, 7, 153, 8, 7, 153, 9, 7, 153, 10, 7, 153, 11, 7, 153, 12, 7, 153, 65548, 7, 1048736, 0, 8, 153, 65536, 8, 1048736, 1, 8, 153, 2, 8, 153, 3, 8, 153, 4, 8, 153, 5, 8, 153, 6, 8, 153, 7, 8, 153, 8, 8, 153, 9, 8, 153, 10, 8, 153, 11, 8, 153, 12, 8, 153, 65548, 8, 1048736, 0, 9, 153, 65536, 9, 1048736, 1, 9, 153, 2, 9, 153, 3, 9, 153, 4, 9, 153, 5, 9, 153, 6, 9, 153, 7, 9, 153, 8, 9, 153, 9, 9, 153, 10, 9, 153, 11, 9, 153, 12, 9, 153, 65548, 9, 1048736, 0, 10, 153, 65536, 10, 655521, 1, 10, 153, 65537, 10, 160, 2, 10, 153, 65538, 10, 160, 3, 10, 153, 65539, 10, 160, 4, 10, 153, 65540, 10, 160, 5, 10, 153, 65541, 10, 160, 6, 10, 153, 65542, 10, 160, 7, 10, 153, 65543, 10, 160, 8, 10, 153, 65544, 10, 160, 9, 10, 153, 65545, 10, 160, 10, 10, 153, 65546, 10, 160, 11, 10, 153, 65547, 10, 160, 12, 10, 153, 65548, 10, 1441953)
+}
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.654055, 0, -0.756447, 0.298542, 0.918826, 0.258132, 0.695043, -0.394664, 0.600962, 0, 11.7711, 25.9627)
