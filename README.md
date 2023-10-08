@@ -14,7 +14,8 @@ Alternatively, you can just go to: https://isaaccp.github.io/stuffie/ where an H
 
 The game is playable for about 1-2 hours.
 
-There are two classes: warrior and wizard.
+There are two classes: [warrior](docs/characters/warrior.md) and [wizard](
+docs/characters/wizard.md).
 
 The warrior has the most cards, including unlocking of cards based on game progress.
 The wizard has a few less cards but enough to be playable. Cards are not organized in tiers yet for the wizard, so you get everything from the beginning.
