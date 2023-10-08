@@ -44,6 +44,13 @@ func create_card_lists():
 		ResourceSaver.save(card_collection, deck_base_path + "/" + character_name + "/card_collection.tres")
 		write_character_doc(character_name, card_collection)
 
+func format_description(description: String):
+	var regex = RegEx.new()
+	regex.compile("\\[.*?\\]")
+	var no_new_lines = description.replace("\n", " ")
+	var no_urls = regex.sub(no_new_lines, "*", true)
+	return no_urls
+
 func write_character_doc(character_name: String, card_collection: CardCollection):
 	var file = FileAccess.open("res://docs/characters/%s.md" % character_name, FileAccess.WRITE)
 	file.store_line("# %s" % character_name.to_upper())
@@ -81,10 +88,10 @@ func write_character_doc(character_name: String, card_collection: CardCollection
 			if card.texture:
 				image = "<img alt='%s' src='../../%s' width='128'/>" % [name, card.texture.resource_path.trim_prefix("res://")]
 			var action_cost = card.cost
-			var description = unit_card.get_description().replace("\n", " ")
+			var description = format_description(unit_card.get_description())
 			var upgrades_text = []
 			for upgrade in card_upgrades:
 				var unit_upgrade_card = UnitCard.new(null, upgrade)
-				var upgrade_text = "*%s* Cost: %d Description: %s" % [upgrade.upgrade_name, upgrade.cost, unit_upgrade_card.get_description().replace("\n", " ")]
+				var upgrade_text = "**%s** Cost: %d Description: %s" % [upgrade.upgrade_name, upgrade.cost, format_description(unit_upgrade_card.get_description())]
 				upgrades_text.append(upgrade_text)
 			file.store_line("| %s | %s | %s | %s | %s |" % [name, image, action_cost, description, "<br/>".join(upgrades_text)])
