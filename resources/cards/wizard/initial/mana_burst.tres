@@ -7,12 +7,12 @@
 [sub_resource type="Resource" id="Resource_vm32w"]
 script = ExtResource("1_gmm6c")
 value_type = 2
-absolute_value = null
+absolute_value = 0
 reference_fraction = 4.0
 value_field_type = 2
-regular_field = null
+regular_field = 0
 read_only_field = 2
-status = null
+status = 0
 
 [resource]
 script = ExtResource("2_j8uhy")

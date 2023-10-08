@@ -9,11 +9,11 @@
 script = ExtResource("1_whso7")
 value_type = 1
 absolute_value = 7
-reference_fraction = null
-value_field_type = null
-regular_field = null
-read_only_field = null
-status = null
+reference_fraction = 1.0
+value_field_type = 0
+regular_field = 0
+read_only_field = 0
+status = 0
 
 [sub_resource type="Resource" id="Resource_gkdhs"]
 script = ExtResource("2_toqa3")

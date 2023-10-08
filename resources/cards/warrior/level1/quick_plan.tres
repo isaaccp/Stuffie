@@ -16,12 +16,12 @@ effect = 1
 [sub_resource type="Resource" id="Resource_6swlr"]
 script = ExtResource("3_qi6w6")
 value_type = 2
-absolute_value = null
-reference_fraction = null
+absolute_value = 0
+reference_fraction = 1.0
 value_field_type = 2
-regular_field = null
+regular_field = 0
 read_only_field = 1
-status = null
+status = 0
 
 [sub_resource type="Resource" id="Resource_eu354"]
 script = ExtResource("1_yc4d0")

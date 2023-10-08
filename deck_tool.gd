@@ -1,5 +1,4 @@
 @tool
-
 extends EditorScript
 
 var card_base_path = "res://resources/cards"
@@ -43,3 +42,32 @@ func create_card_lists():
 				dir_name = dir.get_next()
 		print("Writing card collection with %d levels" % card_collection.cards.size())
 		ResourceSaver.save(card_collection, deck_base_path + "/" + character_name + "/card_collection.tres")
+		write_character_doc(character_name, card_collection)
+
+func write_character_doc(character_name: String, card_collection: CardCollection):
+	var file = FileAccess.open("res://docs/characters/%s.md" % character_name, FileAccess.WRITE)
+	file.store_line("# %s" % character_name.to_upper())
+	file.store_line("")
+
+	for i in range(card_collection.cards.size()):
+		var card_level = card_collection.cards[i]
+		if i == 0:
+			file.store_line("## Base collection")
+		else:
+			file.store_line("## Unlock Level %d" % i)
+		file.store_line("| Name | Image | Energy | Description |")
+		file.store_line("| ---- | ----- | ------ | ----------- |")
+		for card in card_level.cards:
+			if card.upgrade_level != 0:
+				continue
+			var card_unit = UnitCard.new(null, card)
+			var name = card.card_name
+			var image = "<missing>"
+			if card.texture:
+				image = "[!%s](%s)" % [name, card.texture.resource_path.trim_prefix("res://")]
+			var energy = card.cost
+			var description = card_unit.get_description().replace("\n", " ")
+
+			file.store_line("| %s | %s | %s | %s |" % [name, image, energy, description])
+
+		file.store_line("")

@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 @export var status_defs: Array[StatusDef]

@@ -1,3 +1,4 @@
+@tool
 extends RefCounted
 
 class_name UnitCard
@@ -55,7 +56,10 @@ func apply_to_enemy(enemy: Unit):
 
 func regular_damage():
 	if card.damage_value:
-		return UnitCard.get_effect_value(unit, card.damage_value) + unit.extra_damage
+		var extra_damage = 0
+		if unit:
+			extra_damage = unit.extra_damage
+		return UnitCard.get_effect_value(unit, card.damage_value) + extra_damage
 	return 0
 
 func effective_damage():
@@ -63,11 +67,11 @@ func effective_damage():
 	if regular_damage() == 0:
 		return 0
 	var new_damage = regular_damage()
-	if unit.has_method("apply_relic_damage_change"):
+	if unit and unit.has_method("apply_relic_damage_change"):
 		new_damage = unit.apply_relic_damage_change(new_damage)
-	if unit.status_manager.get_status(StatusDef.Status.POWER) > 0:
+	if unit and unit.status_manager.get_status(StatusDef.Status.POWER) > 0:
 		new_damage *= 1.5
-	if unit.status_manager.get_status(StatusDef.Status.WEAKNESS) > 0:
+	if unit and unit.status_manager.get_status(StatusDef.Status.WEAKNESS) > 0:
 		new_damage *= 0.5
 	return int(new_damage)
 
