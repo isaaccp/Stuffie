@@ -55,8 +55,8 @@ func write_character_doc(character_name: String, card_collection: CardCollection
 			file.store_line("## Base collection")
 		else:
 			file.store_line("## Unlock Level %d" % i)
-		file.store_line("| Name | Image | Action Cost | Description |")
-		file.store_line("| ---- | ----- | ----------- | ----------- |")
+		file.store_line("| Name | Image | Action Cost | Description | Upgrades |")
+		file.store_line("| ---- | ----- | ----------- | ----------- |----------|")
 		var upgrades = {}
 		for card in card_level.cards:
 			if card.upgrade_level != 0:
