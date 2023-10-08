@@ -64,7 +64,7 @@ func write_character_doc(character_name: String, card_collection: CardCollection
 			var name = card.card_name
 			var image = "<missing>"
 			if card.texture:
-				image = "[!%s](%s)" % [name, card.texture.resource_path.trim_prefix("res://")]
+				image = "[!%s](../../%s)" % [name, card.texture.resource_path.trim_prefix("res://")]
 			var energy = card.cost
 			var description = card_unit.get_description().replace("\n", " ")
 
