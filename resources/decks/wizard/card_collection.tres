@@ -37,10 +37,10 @@
 [ext_resource type="Script" path="res://card_selection_set.gd" id="34_sdsnx"]
 [ext_resource type="Script" path="res://card_collection.gd" id="35_wq3rb"]
 
-[sub_resource type="Resource" id="Resource_lccgg"]
+[sub_resource type="Resource" id="Resource_2agvp"]
 script = ExtResource("34_sdsnx")
 cards = Array[Resource("res://card.gd")]([ExtResource("1_clrx8"), ExtResource("2_0f1ru"), ExtResource("3_8q5lh"), ExtResource("4_5e8e0"), ExtResource("5_bow1v"), ExtResource("6_dudvp"), ExtResource("7_2as24"), ExtResource("8_bekea"), ExtResource("9_5da86"), ExtResource("10_ykjo2"), ExtResource("11_tl45v"), ExtResource("12_a426x"), ExtResource("13_q1jou"), ExtResource("14_huqp7"), ExtResource("15_aevkt"), ExtResource("16_31aam"), ExtResource("17_3kn5f"), ExtResource("18_v4ad2"), ExtResource("19_qkds2"), ExtResource("20_xsi30"), ExtResource("21_mosw1"), ExtResource("22_tmqh5"), ExtResource("23_wxj7l"), ExtResource("24_vtuq7"), ExtResource("25_eibdt"), ExtResource("26_gk1ja"), ExtResource("27_2vgix"), ExtResource("28_b2by6"), ExtResource("29_w0xsd"), ExtResource("30_gwyyj"), ExtResource("31_8kip8"), ExtResource("32_3qv6v"), ExtResource("32_b50qm"), ExtResource("33_5vhss")])
 
 [resource]
 script = ExtResource("35_wq3rb")
-cards = Array[ExtResource("34_sdsnx")]([SubResource("Resource_lccgg")])
+cards = Array[ExtResource("34_sdsnx")]([SubResource("Resource_2agvp")])
