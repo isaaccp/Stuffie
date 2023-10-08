@@ -88,21 +88,3 @@ func write_character_doc(character_name: String, card_collection: CardCollection
 				var upgrade_text = "*%s* Cost: %d Description: %s" % [upgrade.upgrade_name, upgrade.cost, unit_upgrade_card.get_description().replace("\n", " ")]
 				upgrades_text.append(upgrade_text)
 			file.store_line("| %s | %s | %s | %s | %s |" % [name, image, action_cost, description, "<br/>".join(upgrades_text)])
-			# create_card_doc(character_name, card, card_upgrades)
-
-func create_card_doc(character_name: String, card: Card, upgrades: Array[Card]):
-		var unit_card = UnitCard.new(null, card)
-		var name = card.card_name
-		var file = FileAccess.open("res://docs/characters/%s/%s.md" % [character_name, name.to_snake_case()], FileAccess.WRITE)
-		file.store_line("# %s\n" % name)
-		var image = "missing"
-		if card.texture:
-			image = "<img alt='%s' src='../../../%s' width='128'/>" % [name, card.texture.resource_path.trim_prefix("res://")]
-		file.store_line("%s\n" % [image])
-		file.store_line("Action Cost: %d\n" % [card.cost])
-		file.store_line("Description: %s\n" % [unit_card.get_description().replace("\n", " ")])
-		for upgrade in upgrades:
-			file.store_line("## Upgrade: %s\n" % upgrade.upgrade_name)
-			file.store_line("Action Cost: %d\n" % [upgrade.cost])
-			var unit_upgrade_card = UnitCard.new(null, upgrade)
-			file.store_line("Description: %s\n" % [unit_upgrade_card.get_description().replace("\n", " ")])
