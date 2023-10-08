@@ -1,8 +1,8 @@
 # WIZARD
 
 ## Base collection
-| Name | Image | Action Cost | Description |
-| ---- | ----- | ----------- | ----------- |
+| Name | Image | Action Cost | Description | Upgrades |
+| ---- | ----- | ----------- | ----------- |----------|
 | Brainstorm | <img alt='Brainstorm' src='../../resources/brainstorm.png' width='128'/> | 1 | Self or Ally:  (range 5) Draw 1 cards  | *Instant* Cost: 0 Description: Self or Ally:  (range 5) Draw 1 cards <br/>*Thorough* Cost: 1 Description: Self or Ally:  (range 5) Draw 2 cards  |
 | Burning Hands | <img alt='Burning Hands' src='../../resources/burning_hands.png' width='128'/> | 2 | Attack (melee) enemies in area (4 tiles) for 8 dmg  | *Fiery* Cost: 2 Description: Attack (melee) enemies in area (4 tiles) for 13 dmg <br/>*Wide* Cost: 2 Description: Attack (melee) enemies in area (8 tiles) for 8 dmg  |
 | Fireball | <img alt='Fireball' src='../../resources/fireball.png' width='128'/> | 2 | Attack (range 5) enemies in area (5 tiles) for 8 dmg  | *Massive* Cost: 2 Description: Attack (range 5) enemies in area (13 tiles) for 8 dmg <br/>*Nova* Cost: 2 Description: Attack (range 5) enemies in area (5 tiles) for 13 dmg  |

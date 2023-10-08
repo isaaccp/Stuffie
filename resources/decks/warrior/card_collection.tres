@@ -60,26 +60,26 @@
 [ext_resource type="Resource" uid="uid://ivvrpes2yani" path="res://resources/cards/warrior/level4/strong_fortify.tres" id="58_jicul"]
 [ext_resource type="Script" path="res://card_collection.gd" id="59_p2f0t"]
 
-[sub_resource type="Resource" id="Resource_tm4km"]
+[sub_resource type="Resource" id="Resource_h3aos"]
 script = ExtResource("25_00jnd")
 cards = Array[Resource("res://card.gd")]([ExtResource("1_yqdl8"), ExtResource("2_ub20b"), ExtResource("3_yeiff"), ExtResource("4_7xu3k"), ExtResource("5_chnua"), ExtResource("6_ramec"), ExtResource("7_2feg7"), ExtResource("8_gfjeo"), ExtResource("9_o62ak"), ExtResource("10_3vuyf"), ExtResource("11_67tc0"), ExtResource("12_to2ig"), ExtResource("13_vmk2d"), ExtResource("14_gfx3u"), ExtResource("15_rr1ab"), ExtResource("16_ku4p1"), ExtResource("17_t02td"), ExtResource("18_wff34"), ExtResource("19_fd27b"), ExtResource("20_he0wa"), ExtResource("21_762ti"), ExtResource("22_6att1"), ExtResource("23_jcv01"), ExtResource("24_6hxem")])
 
-[sub_resource type="Resource" id="Resource_k0of8"]
+[sub_resource type="Resource" id="Resource_e5ajf"]
 script = ExtResource("25_00jnd")
 cards = Array[Resource("res://card.gd")]([ExtResource("26_n5wcc"), ExtResource("27_0jw0d"), ExtResource("28_858l2"), ExtResource("29_fv1vu"), ExtResource("30_soymt"), ExtResource("31_ifqo7"), ExtResource("32_05x16"), ExtResource("33_r0t71"), ExtResource("34_u6fmx")])
 
-[sub_resource type="Resource" id="Resource_0mxmu"]
+[sub_resource type="Resource" id="Resource_t7kj7"]
 script = ExtResource("25_00jnd")
 cards = Array[Resource("res://card.gd")]([ExtResource("35_laenf"), ExtResource("36_25i3u"), ExtResource("37_hnfbg"), ExtResource("38_fv6d8"), ExtResource("39_pjtlt"), ExtResource("40_bey46"), ExtResource("41_1x3pj"), ExtResource("42_2xfdc"), ExtResource("43_gimkd")])
 
-[sub_resource type="Resource" id="Resource_7qciy"]
+[sub_resource type="Resource" id="Resource_6dwd7"]
 script = ExtResource("25_00jnd")
 cards = Array[Resource("res://card.gd")]([ExtResource("44_mdvpd"), ExtResource("45_hx57j"), ExtResource("46_svy7t"), ExtResource("47_df822"), ExtResource("48_lmsqh"), ExtResource("49_5c53d"), ExtResource("50_kcdtc"), ExtResource("51_8bmmh"), ExtResource("52_1nosj")])
 
-[sub_resource type="Resource" id="Resource_puwv6"]
+[sub_resource type="Resource" id="Resource_pmmvq"]
 script = ExtResource("25_00jnd")
 cards = Array[Resource("res://card.gd")]([ExtResource("53_tktb4"), ExtResource("54_65f1e"), ExtResource("55_kiyj2"), ExtResource("56_a60he"), ExtResource("57_1se7c"), ExtResource("58_jicul")])
 
 [resource]
 script = ExtResource("59_p2f0t")
-cards = Array[ExtResource("25_00jnd")]([SubResource("Resource_tm4km"), SubResource("Resource_k0of8"), SubResource("Resource_0mxmu"), SubResource("Resource_7qciy"), SubResource("Resource_puwv6")])
+cards = Array[ExtResource("25_00jnd")]([SubResource("Resource_h3aos"), SubResource("Resource_e5ajf"), SubResource("Resource_t7kj7"), SubResource("Resource_6dwd7"), SubResource("Resource_pmmvq")])
