@@ -43,7 +43,6 @@ var reverse_field_lookup: Dictionary
 @export var stats: Dictionary
 
 func _init():
-	super()
 	for key in Field.keys():
 		reverse_field_lookup[Field[key]] = key
 
