@@ -93,7 +93,7 @@ func duplicate_a_star():
 # Think about something better once it's clear how we'll use it.
 func initialize_a_star():
 	a_star.clear()
-	a_star.size = map_rect.size
+	a_star.region = map_rect
 	a_star.cell_size = Vector2(cell_size.x, cell_size.z)
 	a_star.diagonal_mode = a_star.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE
 	a_star.update()
