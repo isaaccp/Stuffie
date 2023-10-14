@@ -100,10 +100,10 @@ func execute_moves(map: MapManager, effects_node: Node):
 				target_character = map.character_locs[target]
 				break
 		# If there is a target, try to find an attack.
+		var chosen_card = null
 		if chosen_target != null:
 			if not simulation:
 				enemy.look_at(target_character.global_position)
-			var chosen_card = null
 			for unit_card in enemy.unit_cards:
 				if unit_card.card.cost > enemy.action_points:
 					continue
@@ -124,7 +124,6 @@ func execute_moves(map: MapManager, effects_node: Node):
 				continue
 		# If we didn't find a target or didn't find a card that could be used,
 		# try to play a self-card.
-		var chosen_card = null
 		for unit_card in enemy.unit_cards:
 			if unit_card.card.cost > enemy.action_points:
 					continue
