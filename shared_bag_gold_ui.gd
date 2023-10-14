@@ -13,4 +13,4 @@ func _on_gold_changed(gold: int):
 	set_gold(gold)
 
 func set_gold(gold: int):
-	set_text("%d🪙" % gold)
+	set_text("%dG" % gold)

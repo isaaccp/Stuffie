@@ -34,7 +34,7 @@ const field_name = {
 	Field.TOTAL_MOVE_POINTS: "total MP",
 	Field.ACTION_POINTS: "AP",
 	Field.TOTAL_ACTION_POINTS: "total AP",
-	Field.GOLD: "🪙",
+	Field.GOLD: "G",
 }
 
 enum ReadOnlyField {

@@ -480,6 +480,10 @@ func apply_undo():
 		var undo_state = undo_states[character]
 		map_manager.move_character(character.get_id_position(), undo_state.position)
 		character.set_id_position(undo_state.position)
+		# If no move to undo for this character, move on to next. Otherwise
+		# it could crash if there are no stats for this character in the stage.
+		if undo_state.move_points == character.move_points:
+			continue
 		var reverted_move_points = undo_state.move_points - character.move_points
 		character.move_points = undo_state.move_points
 		StatsManager.remove(character.character_type, Stats.Field.MP_USED, reverted_move_points)

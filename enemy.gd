@@ -58,7 +58,7 @@ func hp_text():
 	if pending_damage_set:
 		var lethal_text = ""
 		if pending_damage >= hit_points:
-			lethal_text = "💀"
+			lethal_text = "(K)"
 		return "HP: %s[color=red]%d[/color]/%d" % [lethal_text, hit_points - pending_damage, total_hit_points]
 	else:
 		return "HP: %d/%d" % [hit_points, total_hit_points]
@@ -68,7 +68,7 @@ func actions_text():
 	text += hp_text() + "\n"
 	text += "Actions\n"
 	for unit_card in unit_cards:
-		text += "%d💢 %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]
+		text += "%dAP %s: %s\n" % [unit_card.card.cost, unit_card.card.card_name, unit_card.get_description()]
 	return text
 
 func move(curve: Curve3D, to: Vector2i):

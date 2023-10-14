@@ -103,7 +103,7 @@ func _set_hit_points(pending_damage_set: bool, pending_damage: int, hit_points: 
 		if pending_damage_set:
 			var lethal_text = ""
 			if pending_damage >= hit_points:
-				lethal_text = "💀"
+				lethal_text = "(K)"
 			pending_damage_text = "HP after enemy turn: %s%d" % [lethal_text, hit_points - pending_damage]
 		else:
 			pending_damage_text = "HP after enemy turn: ?"
