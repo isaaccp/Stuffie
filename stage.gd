@@ -34,7 +34,10 @@ var torch_scene = preload("res://wall_torch.tscn")
 signal stage_completed
 
 func _ready():
-	gridmap.show()
+	# Should always be defined in-game, but otherwise it will complain in-editor
+	# as it's marked as 'tool' (don't remember why).
+	if gridmap:
+		gridmap.show()
 
 	var torches_node = Node3D.new()
 	add_child(torches_node)
