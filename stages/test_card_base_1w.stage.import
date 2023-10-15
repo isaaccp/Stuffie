@@ -1,0 +1,14 @@
+[remap]
+
+importer="text_stage_importer"
+type="PackedScene"
+uid="uid://bmnrym4rkl1uj"
+path="res://.godot/imported/test_card_base_1w.stage-2ffab1967d5c459cbf4c9c06ff0483a7.tscn"
+
+[deps]
+
+source_file="res://stages/test_card_base_1w.stage"
+dest_files=["res://.godot/imported/test_card_base_1w.stage-2ffab1967d5c459cbf4c9c06ff0483a7.tscn"]
+
+[params]
+

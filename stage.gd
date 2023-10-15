@@ -11,7 +11,7 @@ enum StageCompletionType {
 	SURVIVE_N_TURNS,
 }
 
-var gridmap: GridMap
+@export var gridmap: GridMap
 @export var enemies: Array[EnemyPosition]
 @export var doors: Array[DoorDef]
 @export var torches: Array[TorchDef]
@@ -34,9 +34,6 @@ var torch_scene = preload("res://wall_torch.tscn")
 signal stage_completed
 
 func _ready():
-	# TODO: I was unable to save the gridmap as a exported node path in the stage importer,
-	# so need to set it here.
-	gridmap = $GridMap
 	gridmap.show()
 
 	var torches_node = Node3D.new()

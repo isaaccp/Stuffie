@@ -209,6 +209,9 @@ class StageLoader:
 		gridmap.owner = stage
 		gridmap.mesh_library = mesh_lib
 		gridmap.cell_size = CELL_SIZE
+		# This doesn't actually work. For some reason node references like this
+		# are not saved properly when packing a scene from a script :/
+		stage.gridmap = gridmap
 		# This order of iteration matters as this way we go down line by
 		# line, which is the order used for doors, etc in triggers.
 		for y in range(max_y):

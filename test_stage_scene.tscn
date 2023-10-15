@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://enemy_position.gd" id="2_lyu5u"]
 [ext_resource type="Script" path="res://torch_def.gd" id="3_tqxgu"]
 [ext_resource type="Script" path="res://stage_trigger.gd" id="4_0hajy"]
-[ext_resource type="MeshLibrary" uid="uid://d38atikp62fhy" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="5_0pta6"]
+[ext_resource type="MeshLibrary" uid="uid://uk6yfj46bxar" path="res://resources/kaykit-dungeon/kaykit_dungeon.meshlib" id="5_0pta6"]
 
 [sub_resource type="Resource" id="Resource_ruy0r"]
 script = ExtResource("2_lyu5u")

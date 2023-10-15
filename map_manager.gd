@@ -300,3 +300,14 @@ func remove_treasure(pos: Vector2i):
 	var treasure = treasure_locs[pos]
 	treasure_locs.erase(pos)
 	treasure.queue_free()
+
+func _notification(what):
+	# When cloning map_manager we duplicate characters and enemies and those
+	# would be leaked if not freed explicitly. Given that we clone map_manager
+	# very frequently, that would be a significant leak.
+	if what == NOTIFICATION_PREDELETE:
+		if is_overlay:
+			for character in character_locs.values():
+				character.free()
+			for enemy in enemy_locs.values():
+				enemy.free()
