@@ -8,7 +8,7 @@ To play:
 - Import the project in Godot
 - Press play
 
-Alternatively, you can just go to: https://isaaccp.github.io/stuffie/ where an HTML5 version is uploaded. It has some trouble displaying 'emojis' that I was using for things like 'gold' and 'action points', but otherwise should work.
+Alternatively, you can just go to: https://isaaccp.itch.io/dungeoncrawler where an HTML5 version is uploaded.
 
 ## Gameplay
 
