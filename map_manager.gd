@@ -155,7 +155,11 @@ func close_door(pos: Vector2i):
 
 func get_path(from: Vector2i, to: Vector2i):
 	if a_star.is_in_boundsv(to):
-		return a_star.get_id_path(from, to)
+		var was_solid = a_star.is_point_solid(from)
+		a_star.set_point_solid(from, false)
+		var path = a_star.get_id_path(from, to)
+		a_star.set_point_solid(from, was_solid)
+		return path
 	return []
 
 func set_enemies_solid(solid=true):

@@ -903,7 +903,7 @@ func update_position_direction(mouse_position: Vector2):
 
 func _unhandled_input(event):
 	if state == GameState.HUMAN_TURN:
-		if state == HumanTurnState.MOVING or state == HumanTurnState.PLAYING_CARD:
+		if human_turn_state == HumanTurnState.MOVING or human_turn_state == HumanTurnState.PLAYING_CARD:
 			return
 		if event is InputEventMouseButton:
 			var mouse_event = event as InputEventMouseButton
