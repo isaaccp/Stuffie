@@ -1,19 +1,14 @@
-[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cw0x4lanthbpg"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://cw0x4lanthbpg"]
 
 [ext_resource type="Resource" uid="uid://dju5ycnsfdhdd" path="res://resources/cards/warrior/initial/arterial_strike.tres" id="1_kcy7g"]
-[ext_resource type="Script" path="res://card_effect_value.gd" id="2_538pm"]
-[ext_resource type="Script" path="res://card_effect.gd" id="3_0w30g"]
-[ext_resource type="Script" path="res://card.gd" id="4_vrrrp"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="2_538pm"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="3_0w30g"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="4_vrrrp"]
 
 [sub_resource type="Resource" id="Resource_hp0vb"]
 script = ExtResource("2_538pm")
 value_type = 1
 absolute_value = 5
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_gkdhs"]
 script = ExtResource("3_0w30g")
@@ -27,11 +22,6 @@ effect = 0
 script = ExtResource("2_538pm")
 value_type = 1
 absolute_value = -8
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_4c20a"]
 script = ExtResource("3_0w30g")

@@ -1,18 +1,13 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dp4jksfadh7u2"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://dp4jksfadh7u2"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_peebo"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_wqmji"]
-[ext_resource type="Script" path="res://card.gd" id="3_ythdk"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_peebo"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_wqmji"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_ythdk"]
 
 [sub_resource type="Resource" id="Resource_1iqml"]
 script = ExtResource("1_peebo")
 value_type = 1
 absolute_value = 6
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_oshod"]
 script = ExtResource("2_wqmji")

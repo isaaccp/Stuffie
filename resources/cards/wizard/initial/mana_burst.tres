@@ -1,18 +1,16 @@
-[gd_resource type="Resource" script_class="Card" load_steps=5 format=3 uid="uid://hqfbc732v1yw"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://hqfbc732v1yw"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_gmm6c"]
-[ext_resource type="Script" path="res://card.gd" id="2_j8uhy"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_gmm6c"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="2_j8uhy"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_ulx7b"]
 [ext_resource type="Texture2D" uid="uid://bngl01vq5o0ox" path="res://resources/mana_burst.png" id="3_0j6cr"]
 
 [sub_resource type="Resource" id="Resource_vm32w"]
 script = ExtResource("1_gmm6c")
 value_type = 2
-absolute_value = 0
 reference_fraction = 4.0
 value_field_type = 2
-regular_field = 0
 read_only_field = 2
-status = 0
 
 [resource]
 script = ExtResource("2_j8uhy")
@@ -28,12 +26,12 @@ target_animation = 6
 on_damage_animation = 0
 target_distance = 5
 damage_value = SubResource("Resource_vm32w")
-on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_effects = Array[Resource("res://card_effect.gd")]([])
-on_damage_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
-on_kill_effects = Array[Resource("res://card_effect.gd")]([])
-on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_self_effects = Array[ExtResource("2_ulx7b")]([])
+on_play_effects = Array[ExtResource("2_ulx7b")]([])
+on_damage_effects = Array[ExtResource("2_ulx7b")]([])
+on_play_after_effects = Array[ExtResource("2_ulx7b")]([])
+on_kill_effects = Array[ExtResource("2_ulx7b")]([])
+on_next_turn_effects = Array[ExtResource("2_ulx7b")]([])
 area_type = 3
 area_length = 1
 area_width = 1

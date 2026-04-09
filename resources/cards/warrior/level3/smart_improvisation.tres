@@ -1,20 +1,15 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://ctal7t6fx4gpe"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://ctal7t6fx4gpe"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_1r0r5"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_1r0r5"]
 [ext_resource type="Resource" uid="uid://ca5npfi16uihh" path="res://resources/cards/warrior/level3/improvise.tres" id="1_hqb5o"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_0twgu"]
-[ext_resource type="Script" path="res://card.gd" id="3_68r5l"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_0twgu"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_68r5l"]
 [ext_resource type="Texture2D" uid="uid://dlxiy5hbuev16" path="res://resources/improvise.png" id="5_hjrkb"]
 
 [sub_resource type="Resource" id="Resource_qg5pt"]
 script = ExtResource("1_1r0r5")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_7dv1t"]
 script = ExtResource("2_0twgu")

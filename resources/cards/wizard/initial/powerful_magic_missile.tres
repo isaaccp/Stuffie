@@ -1,19 +1,15 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dkti3wvg3r08v"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://dkti3wvg3r08v"]
 
 [ext_resource type="Resource" uid="uid://dfuxoy21you0f" path="res://resources/cards/wizard/initial/magic_missile.tres" id="1_8eo8m"]
-[ext_resource type="Script" path="res://card_effect_value.gd" id="2_qa3tb"]
-[ext_resource type="Script" path="res://card.gd" id="3_pobbl"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="2_qa3tb"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="3_grooe"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_pobbl"]
 [ext_resource type="Texture2D" uid="uid://65ksrh2l7fwr" path="res://resources/magic_missile.jpg" id="4_mu5my"]
 
 [sub_resource type="Resource" id="Resource_72sy0"]
 script = ExtResource("2_qa3tb")
 value_type = 1
 absolute_value = 10
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [resource]
 script = ExtResource("3_pobbl")
@@ -30,12 +26,12 @@ target_animation = 6
 on_damage_animation = 0
 target_distance = 5
 damage_value = SubResource("Resource_72sy0")
-on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_effects = Array[Resource("res://card_effect.gd")]([])
-on_damage_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
-on_kill_effects = Array[Resource("res://card_effect.gd")]([])
-on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_self_effects = Array[ExtResource("3_grooe")]([])
+on_play_effects = Array[ExtResource("3_grooe")]([])
+on_damage_effects = Array[ExtResource("3_grooe")]([])
+on_play_after_effects = Array[ExtResource("3_grooe")]([])
+on_kill_effects = Array[ExtResource("3_grooe")]([])
+on_next_turn_effects = Array[ExtResource("3_grooe")]([])
 area_type = 0
 area_length = 1
 area_width = 1

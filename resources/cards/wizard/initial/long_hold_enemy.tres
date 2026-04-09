@@ -1,20 +1,15 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://ciukn6t74lny0"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://ciukn6t74lny0"]
 
 [ext_resource type="Resource" uid="uid://c6koifjk7n8ku" path="res://resources/cards/wizard/initial/hold_enemy.tres" id="1_hi3us"]
-[ext_resource type="Script" path="res://card_effect_value.gd" id="2_eh8ys"]
-[ext_resource type="Script" path="res://card_effect.gd" id="3_dkdkh"]
-[ext_resource type="Script" path="res://card.gd" id="4_djuob"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="2_eh8ys"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="3_dkdkh"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="4_djuob"]
 [ext_resource type="Texture2D" uid="uid://de55b41p0pm2" path="res://resources/hold_enemy.png" id="5_cyl2l"]
 
 [sub_resource type="Resource" id="Resource_3xpor"]
 script = ExtResource("2_eh8ys")
 value_type = 1
 absolute_value = 2
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_h5ocp"]
 script = ExtResource("3_dkdkh")

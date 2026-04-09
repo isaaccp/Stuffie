@@ -1,20 +1,18 @@
-[gd_resource type="Resource" script_class="EventDef" load_steps=12 format=3 uid="uid://ta3m4te10an8"]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://ta3m4te10an8"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_gmnm2"]
-[ext_resource type="Script" path="res://event_choice_effect.gd" id="2_4vuje"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_l7nt7"]
-[ext_resource type="Script" path="res://event_choice.gd" id="3_lpshq"]
-[ext_resource type="Script" path="res://event_def.gd" id="4_qj51m"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_gmnm2"]
+[ext_resource type="Script" uid="uid://bkv2mtys6fvt" path="res://event_choice_effect.gd" id="2_4vuje"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_l7nt7"]
+[ext_resource type="Script" uid="uid://dy6621c7y704b" path="res://event_choice.gd" id="3_lpshq"]
+[ext_resource type="Script" uid="uid://c1mcukpudjvca" path="res://event_def.gd" id="4_qj51m"]
+[ext_resource type="Script" uid="uid://b5kid8cocjk6x" path="res://event_choice_precondition.gd" id="5_21ly2"]
 
 [sub_resource type="Resource" id="Resource_0jdcv"]
 script = ExtResource("1_gmnm2")
 value_type = 2
-absolute_value = 0
 reference_fraction = 0.2
 value_field_type = 1
 regular_field = 2
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_gvf6m"]
 script = ExtResource("2_l7nt7")
@@ -26,41 +24,25 @@ effect = 0
 
 [sub_resource type="Resource" id="Resource_q20p6"]
 script = ExtResource("2_4vuje")
-target_type = 0
-probability = 1
 effects = Array[ExtResource("2_l7nt7")]([SubResource("Resource_gvf6m")])
 resolution_text = "You drink some of the water and immediately feel a healing energy through your body."
 
 [sub_resource type="Resource" id="Resource_q1omt"]
 script = ExtResource("3_lpshq")
 text = "Drink"
-preview_choice_effects = true
-preview_resolution_effects = false
-hide_if_preconditions_fail = false
-preconditions = Array[Resource("res://event_choice_precondition.gd")]([])
-choice_effects = Array[ExtResource("2_l7nt7")]([])
 effects = Array[ExtResource("2_4vuje")]([SubResource("Resource_q20p6")])
 
 [sub_resource type="Resource" id="Resource_a5i6l"]
 script = ExtResource("2_4vuje")
-target_type = 0
-probability = 1
-effects = Array[ExtResource("2_l7nt7")]([])
 resolution_text = "You decide it would be reckless to drink from the fountain."
 
 [sub_resource type="Resource" id="Resource_rww8w"]
 script = ExtResource("3_lpshq")
 text = "Pass"
-preview_choice_effects = true
-preview_resolution_effects = false
-hide_if_preconditions_fail = false
-preconditions = Array[Resource("res://event_choice_precondition.gd")]([])
-choice_effects = Array[ExtResource("2_l7nt7")]([])
 effects = Array[ExtResource("2_4vuje")]([SubResource("Resource_a5i6l")])
 
 [resource]
 script = ExtResource("4_qj51m")
 title = "Secluded Fountain"
 event_text = "You find a beautiful fountain in a quiet area of the forest. The clear water trickles down from the cliffside behind."
-target_type = 0
 choices = Array[ExtResource("3_lpshq")]([SubResource("Resource_q1omt"), SubResource("Resource_rww8w")])

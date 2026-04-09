@@ -1,19 +1,14 @@
-[gd_resource type="Resource" script_class="Card" load_steps=7 format=3 uid="uid://dwn6073xrsesh"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://dwn6073xrsesh"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_q3nns"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_hnwdr"]
-[ext_resource type="Script" path="res://card.gd" id="3_rfjpx"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_q3nns"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_hnwdr"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_rfjpx"]
 [ext_resource type="Texture2D" uid="uid://cx8tgjjps24h1" path="res://resources/magic_shield.png" id="4_7xdej"]
 
 [sub_resource type="Resource" id="Resource_wb42i"]
 script = ExtResource("1_q3nns")
 value_type = 1
 absolute_value = 6
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_tgdul"]
 script = ExtResource("2_hnwdr")

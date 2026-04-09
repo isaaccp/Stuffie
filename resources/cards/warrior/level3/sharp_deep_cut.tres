@@ -1,30 +1,20 @@
-[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://ck3s5l1c3hyx0"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://ck3s5l1c3hyx0"]
 
 [ext_resource type="Resource" uid="uid://xb54vphlw5tv" path="res://resources/cards/warrior/level3/sharp_cut.tres" id="1_b5o01"]
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_d7pc8"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_fxrn0"]
-[ext_resource type="Script" path="res://card.gd" id="3_fvhi5"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_d7pc8"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_fxrn0"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_fvhi5"]
 [ext_resource type="Texture2D" uid="uid://dm15wwnlts6f1" path="res://resources/sharp_cut.png" id="5_2f88t"]
 
 [sub_resource type="Resource" id="Resource_umena"]
 script = ExtResource("1_d7pc8")
 value_type = 1
 absolute_value = 6
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_r0h5r"]
 script = ExtResource("1_d7pc8")
 value_type = 1
 absolute_value = 4
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_lqi5k"]
 script = ExtResource("2_fxrn0")

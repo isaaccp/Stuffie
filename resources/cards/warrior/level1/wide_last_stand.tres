@@ -1,30 +1,21 @@
-[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://cxeqxyjwaladg"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://cxeqxyjwaladg"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_58872"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_58872"]
 [ext_resource type="Resource" uid="uid://cw62s7v5esw2k" path="res://resources/cards/warrior/level1/last_stand.tres" id="1_i0rvi"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_y6e6m"]
-[ext_resource type="Script" path="res://card.gd" id="3_75uv8"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_y6e6m"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_75uv8"]
 [ext_resource type="Texture2D" uid="uid://og6mq60e5vxe" path="res://resources/last_stand.png" id="5_6flqo"]
 
 [sub_resource type="Resource" id="Resource_84ftf"]
 script = ExtResource("1_58872")
 value_type = 2
-absolute_value = 0
 reference_fraction = 5.0
 value_field_type = 2
-regular_field = 0
 read_only_field = 1
-status = 0
 
 [sub_resource type="Resource" id="Resource_8m6kr"]
 script = ExtResource("1_58872")
 value_type = 1
-absolute_value = 0
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_5yhv8"]
 script = ExtResource("2_y6e6m")

@@ -1,19 +1,14 @@
-[gd_resource type="Resource" script_class="Card" load_steps=9 format=3 uid="uid://dmykybgjnwx4j"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://dmykybgjnwx4j"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_eb5xj"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_dnl1j"]
-[ext_resource type="Script" path="res://card.gd" id="3_8pumf"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_eb5xj"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_dnl1j"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_8pumf"]
 [ext_resource type="Texture2D" uid="uid://7lfsi6g7b4br" path="res://resources/haste.png" id="4_4lrgu"]
 
 [sub_resource type="Resource" id="Resource_nu0mv"]
 script = ExtResource("1_eb5xj")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_hq2x3"]
 script = ExtResource("2_dnl1j")
@@ -27,11 +22,6 @@ effect = 0
 script = ExtResource("1_eb5xj")
 value_type = 1
 absolute_value = 4
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_055vd"]
 script = ExtResource("2_dnl1j")

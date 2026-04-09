@@ -1,21 +1,16 @@
-[gd_resource type="Resource" script_class="EventDef" load_steps=23 format=3 uid="uid://b0dytqyukonmx"]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://b0dytqyukonmx"]
 
-[ext_resource type="Script" path="res://card_effect_value.gd" id="1_qord4"]
-[ext_resource type="Script" path="res://card_effect.gd" id="2_bl5ra"]
-[ext_resource type="Script" path="res://event_choice_effect.gd" id="3_dm2vb"]
-[ext_resource type="Script" path="res://event_choice_precondition.gd" id="4_x08im"]
-[ext_resource type="Script" path="res://event_choice.gd" id="4_yo1j6"]
-[ext_resource type="Script" path="res://event_def.gd" id="5_f1q47"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="1_qord4"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_bl5ra"]
+[ext_resource type="Script" uid="uid://bkv2mtys6fvt" path="res://event_choice_effect.gd" id="3_dm2vb"]
+[ext_resource type="Script" uid="uid://b5kid8cocjk6x" path="res://event_choice_precondition.gd" id="4_x08im"]
+[ext_resource type="Script" uid="uid://dy6621c7y704b" path="res://event_choice.gd" id="4_yo1j6"]
+[ext_resource type="Script" uid="uid://c1mcukpudjvca" path="res://event_def.gd" id="5_f1q47"]
 
 [sub_resource type="Resource" id="Resource_g24g3"]
 script = ExtResource("1_qord4")
 value_type = 1
 absolute_value = -20
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_t83ot"]
 script = ExtResource("2_bl5ra")
@@ -28,12 +23,9 @@ effect = 0
 [sub_resource type="Resource" id="Resource_51jhm"]
 script = ExtResource("1_qord4")
 value_type = 2
-absolute_value = 0
 reference_fraction = 0.3
 value_field_type = 1
 regular_field = 2
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_uafgm"]
 script = ExtResource("2_bl5ra")
@@ -45,24 +37,17 @@ effect = 0
 
 [sub_resource type="Resource" id="Resource_ql0nj"]
 script = ExtResource("3_dm2vb")
-target_type = 0
-probability = 1
 effects = Array[ExtResource("2_bl5ra")]([SubResource("Resource_uafgm")])
-resolution_text = ""
 
 [sub_resource type="Resource" id="Resource_f0tjr"]
 script = ExtResource("4_x08im")
-type = 0
 display = false
 gold = 20
-character_types = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_0vquy"]
 script = ExtResource("4_yo1j6")
 text = "Heal"
-preview_choice_effects = true
 preview_resolution_effects = true
-hide_if_preconditions_fail = false
 preconditions = Array[ExtResource("4_x08im")]([SubResource("Resource_f0tjr")])
 choice_effects = Array[ExtResource("2_bl5ra")]([SubResource("Resource_t83ot")])
 effects = Array[ExtResource("3_dm2vb")]([SubResource("Resource_ql0nj")])
@@ -71,11 +56,6 @@ effects = Array[ExtResource("3_dm2vb")]([SubResource("Resource_ql0nj")])
 script = ExtResource("1_qord4")
 value_type = 1
 absolute_value = -15
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_8qe5u"]
 script = ExtResource("2_bl5ra")
@@ -89,11 +69,6 @@ effect = 0
 script = ExtResource("1_qord4")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_ks8c3"]
 script = ExtResource("2_bl5ra")
@@ -105,43 +80,28 @@ effect = 10
 
 [sub_resource type="Resource" id="Resource_dq6ig"]
 script = ExtResource("3_dm2vb")
-target_type = 0
-probability = 1
 effects = Array[ExtResource("2_bl5ra")]([SubResource("Resource_ks8c3")])
-resolution_text = ""
 
 [sub_resource type="Resource" id="Resource_4nis3"]
 script = ExtResource("4_x08im")
-type = 0
 display = false
 gold = 15
-character_types = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_f1a4b"]
 script = ExtResource("4_yo1j6")
 text = "Purify"
-preview_choice_effects = true
 preview_resolution_effects = true
-hide_if_preconditions_fail = false
 preconditions = Array[ExtResource("4_x08im")]([SubResource("Resource_4nis3")])
 choice_effects = Array[ExtResource("2_bl5ra")]([SubResource("Resource_8qe5u")])
 effects = Array[ExtResource("3_dm2vb")]([SubResource("Resource_dq6ig")])
 
 [sub_resource type="Resource" id="Resource_em31r"]
 script = ExtResource("3_dm2vb")
-target_type = 0
-probability = 1
-effects = Array[ExtResource("2_bl5ra")]([])
 resolution_text = "You decline the services of the priest"
 
 [sub_resource type="Resource" id="Resource_hp0xj"]
 script = ExtResource("4_yo1j6")
 text = "Pass"
-preview_choice_effects = true
-preview_resolution_effects = false
-hide_if_preconditions_fail = false
-preconditions = Array[ExtResource("4_x08im")]([])
-choice_effects = Array[ExtResource("2_bl5ra")]([])
 effects = Array[ExtResource("3_dm2vb")]([SubResource("Resource_em31r")])
 
 [resource]

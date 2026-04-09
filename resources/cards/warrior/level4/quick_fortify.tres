@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://b4cpdkd74oqih"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://b4cpdkd74oqih"]
 
-[ext_resource type="Script" path="res://power/permanent_block.gd" id="1_2rcl1"]
+[ext_resource type="Script" uid="uid://dy61pfcdusg4f" path="res://power/permanent_block.gd" id="1_2rcl1"]
 [ext_resource type="Resource" uid="uid://bden6y87foc86" path="res://resources/cards/warrior/level4/fortify.tres" id="1_nlr5b"]
-[ext_resource type="Script" path="res://card.gd" id="2_g5e0f"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="2_g5e0f"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_o424j"]
 [ext_resource type="Texture2D" uid="uid://oqhc0o0wad5e" path="res://resources/fortify.png" id="3_hi3gg"]
 
 [sub_resource type="Resource" id="Resource_mt0wy"]
@@ -23,12 +24,12 @@ target_mode = 0
 target_animation = 0
 on_damage_animation = 0
 target_distance = 0
-on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_effects = Array[Resource("res://card_effect.gd")]([])
-on_damage_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
-on_kill_effects = Array[Resource("res://card_effect.gd")]([])
-on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_self_effects = Array[ExtResource("2_o424j")]([])
+on_play_effects = Array[ExtResource("2_o424j")]([])
+on_damage_effects = Array[ExtResource("2_o424j")]([])
+on_play_after_effects = Array[ExtResource("2_o424j")]([])
+on_kill_effects = Array[ExtResource("2_o424j")]([])
+on_next_turn_effects = Array[ExtResource("2_o424j")]([])
 area_type = 0
 area_length = 1
 area_width = 1

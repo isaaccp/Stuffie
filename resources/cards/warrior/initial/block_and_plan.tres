@@ -1,20 +1,15 @@
-[gd_resource type="Resource" script_class="Card" load_steps=10 format=3 uid="uid://48tkoexc41yi"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://48tkoexc41yi"]
 
 [ext_resource type="Resource" uid="uid://bguqs4y4l4oe5" path="res://resources/cards/warrior/initial/shield.tres" id="1_nqysc"]
-[ext_resource type="Script" path="res://card_effect_value.gd" id="3_vxxsd"]
-[ext_resource type="Script" path="res://card.gd" id="3_weqv3"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="3_vxxsd"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="3_weqv3"]
 [ext_resource type="Texture2D" uid="uid://dt1gjjn16npw0" path="res://resources/shield.png" id="4_huxwc"]
-[ext_resource type="Script" path="res://card_effect.gd" id="4_too3r"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="4_too3r"]
 
 [sub_resource type="Resource" id="Resource_mcdck"]
 script = ExtResource("3_vxxsd")
 value_type = 1
 absolute_value = 8
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_grl1p"]
 script = ExtResource("4_too3r")
@@ -28,11 +23,6 @@ effect = 0
 script = ExtResource("3_vxxsd")
 value_type = 1
 absolute_value = 1
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_8nref"]
 script = ExtResource("4_too3r")

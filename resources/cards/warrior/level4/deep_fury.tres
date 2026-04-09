@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="Card" load_steps=6 format=3 uid="uid://dpmhsv5nb62v5"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://dpmhsv5nb62v5"]
 
-[ext_resource type="Script" path="res://power/add_damage_attacks_played.gd" id="1_m754a"]
+[ext_resource type="Script" uid="uid://bx1mloe6m7yrd" path="res://power/add_damage_attacks_played.gd" id="1_m754a"]
 [ext_resource type="Resource" uid="uid://bhrfomakaj0gb" path="res://resources/cards/warrior/level4/fury.tres" id="1_n5xdq"]
-[ext_resource type="Script" path="res://card.gd" id="2_cw8jw"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="2_cw8jw"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="2_kb2wi"]
 [ext_resource type="Texture2D" uid="uid://t8osakyq4ctj" path="res://resources/fury.png" id="4_n26rx"]
 
 [sub_resource type="Resource" id="Resource_5oavm"]
@@ -24,12 +25,12 @@ target_mode = 0
 target_animation = 0
 on_damage_animation = 0
 target_distance = 0
-on_play_self_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_effects = Array[Resource("res://card_effect.gd")]([])
-on_damage_effects = Array[Resource("res://card_effect.gd")]([])
-on_play_after_effects = Array[Resource("res://card_effect.gd")]([])
-on_kill_effects = Array[Resource("res://card_effect.gd")]([])
-on_next_turn_effects = Array[Resource("res://card_effect.gd")]([])
+on_play_self_effects = Array[ExtResource("2_kb2wi")]([])
+on_play_effects = Array[ExtResource("2_kb2wi")]([])
+on_damage_effects = Array[ExtResource("2_kb2wi")]([])
+on_play_after_effects = Array[ExtResource("2_kb2wi")]([])
+on_kill_effects = Array[ExtResource("2_kb2wi")]([])
+on_next_turn_effects = Array[ExtResource("2_kb2wi")]([])
 area_type = 0
 area_length = 1
 area_width = 1

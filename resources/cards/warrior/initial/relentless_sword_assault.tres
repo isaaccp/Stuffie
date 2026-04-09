@@ -1,29 +1,19 @@
-[gd_resource type="Resource" script_class="Card" load_steps=8 format=3 uid="uid://cmtkn1sph0lj6"]
+[gd_resource type="Resource" script_class="Card" format=3 uid="uid://cmtkn1sph0lj6"]
 
 [ext_resource type="Resource" uid="uid://bsfgc2h7cavny" path="res://resources/cards/warrior/initial/sword_assault.tres" id="1_6htst"]
-[ext_resource type="Script" path="res://card_effect_value.gd" id="2_qus8p"]
-[ext_resource type="Script" path="res://card_effect.gd" id="3_l4u03"]
-[ext_resource type="Script" path="res://card.gd" id="4_j3v5v"]
+[ext_resource type="Script" uid="uid://dbjlhye7mei6l" path="res://card_effect_value.gd" id="2_qus8p"]
+[ext_resource type="Script" uid="uid://civvv26qpb615" path="res://card_effect.gd" id="3_l4u03"]
+[ext_resource type="Script" uid="uid://dri300lnl25qo" path="res://card.gd" id="4_j3v5v"]
 
 [sub_resource type="Resource" id="Resource_udv6c"]
 script = ExtResource("2_qus8p")
 value_type = 1
 absolute_value = 10
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_fc7v4"]
 script = ExtResource("2_qus8p")
 value_type = 1
 absolute_value = 2
-reference_fraction = 1.0
-value_field_type = 0
-regular_field = 0
-read_only_field = 0
-status = 0
 
 [sub_resource type="Resource" id="Resource_jsvk4"]
 script = ExtResource("3_l4u03")
