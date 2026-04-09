@@ -1,17 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://b2jwb32qeaom4"]
+[gd_scene format=3 uid="uid://b2jwb32qeaom4"]
 
-[ext_resource type="Script" path="res://gameplay.gd" id="1_bqe1h"]
+[ext_resource type="Script" uid="uid://cacgg677b8i81" path="res://gameplay.gd" id="1_bqe1h"]
 [ext_resource type="PackedScene" uid="uid://d11yk2ddbsa6n" path="res://shared_bag_gold_ui.tscn" id="2_0tvjl"]
 [ext_resource type="Texture2D" uid="uid://ckax411180mts" path="res://resources/card_back.jpg" id="3_ciuq7"]
 [ext_resource type="PackedScene" uid="uid://qvfnlxs8t6m8" path="res://hand_ui.tscn" id="3_hp4xe"]
 [ext_resource type="PackedScene" uid="uid://dlafd5e0038cv" path="res://character_portrait.tscn" id="5_lw23g"]
+[ext_resource type="Script" uid="uid://cv6r4k3m2jdcb" path="res://camera_controller.gd" id="6_cam"]
 
 [sub_resource type="Environment" id="Environment_su8w0"]
 background_mode = 1
 ambient_light_source = 1
 reflected_light_source = 1
 
-[node name="gameplay" type="Node3D" node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "damage_labels_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera", "camera_pivot", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_portrait", "treasure_info", "shared_bag_gold_ui", "move_path")]
+[node name="gameplay" type="Node3D" unique_id=2022452191 node_paths=PackedStringArray("world", "effects", "enemies_node", "doors_node", "damage_labels_node", "hand_ui", "deck_ui", "discard_ui", "character_state_ui", "camera_controller", "end_turn_button", "undo_button", "treasures", "stage_info", "objective_info", "turn_state_info", "enemy_portrait", "treasure_info", "shared_bag_gold_ui", "move_path")]
 script = ExtResource("1_bqe1h")
 world = NodePath("World")
 effects = NodePath("World/Effects")
@@ -22,8 +23,7 @@ hand_ui = NodePath("UI/Control/HandUI")
 deck_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Deck")
 discard_ui = NodePath("UI/PanelContainer/MarginContainer/DeckArea/Discard")
 character_state_ui = NodePath("UI/MarginContainer/CharacterState")
-camera = NodePath("Pivot/Camera3D")
-camera_pivot = NodePath("Pivot")
+camera_controller = NodePath("Pivot")
 end_turn_button = NodePath("UI/InfoPanel/VBox/EndTurnButton")
 undo_button = NodePath("UI/InfoPanel/VBox/UndoButton")
 treasures = NodePath("World/Treasures")
@@ -35,32 +35,32 @@ treasure_info = NodePath("UI/InfoPanel/VBox/TreasureInfo")
 shared_bag_gold_ui = NodePath("UI/InfoPanel/VBox/SharedBagGoldUI")
 move_path = NodePath("World/Path")
 
-[node name="World" type="Node" parent="."]
+[node name="World" type="Node" parent="." unique_id=154636244]
 
-[node name="Enemies" type="Node" parent="World"]
+[node name="Enemies" type="Node" parent="World" unique_id=610668247]
 
-[node name="Path" type="Line2D" parent="World"]
+[node name="Path" type="Line2D" parent="World" unique_id=1846021674]
 
-[node name="Treasures" type="Node" parent="World"]
+[node name="Treasures" type="Node" parent="World" unique_id=880775675]
 
-[node name="Effects" type="Node" parent="World"]
+[node name="Effects" type="Node" parent="World" unique_id=513180939]
 
-[node name="Doors" type="Node" parent="World"]
+[node name="Doors" type="Node" parent="World" unique_id=1302809501]
 
-[node name="DamageLabels" type="Node" parent="World"]
+[node name="DamageLabels" type="Node" parent="World" unique_id=1599486777]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1363978994]
 
-[node name="MarginContainer" type="MarginContainer" parent="UI"]
+[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=847606131]
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 
-[node name="CharacterState" type="VBoxContainer" parent="UI/MarginContainer"]
+[node name="CharacterState" type="VBoxContainer" parent="UI/MarginContainer" unique_id=2146054744]
 layout_mode = 2
 
-[node name="InfoPanel" type="PanelContainer" parent="UI"]
+[node name="InfoPanel" type="PanelContainer" parent="UI" unique_id=1336701217]
 custom_minimum_size = Vector2(300, 0)
 anchors_preset = 1
 anchor_left = 1.0
@@ -69,35 +69,35 @@ offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
 
-[node name="VBox" type="VBoxContainer" parent="UI/InfoPanel"]
+[node name="VBox" type="VBoxContainer" parent="UI/InfoPanel" unique_id=255888647]
 layout_mode = 2
 
-[node name="Stage" type="Label" parent="UI/InfoPanel/VBox"]
+[node name="Stage" type="Label" parent="UI/InfoPanel/VBox" unique_id=1701863694]
 layout_mode = 2
 
-[node name="Objective" type="Label" parent="UI/InfoPanel/VBox"]
+[node name="Objective" type="Label" parent="UI/InfoPanel/VBox" unique_id=1533398979]
 layout_mode = 2
 
-[node name="TurnState" type="Label" parent="UI/InfoPanel/VBox"]
+[node name="TurnState" type="Label" parent="UI/InfoPanel/VBox" unique_id=720344935]
 layout_mode = 2
 
-[node name="SharedBagGoldUI" parent="UI/InfoPanel/VBox" instance=ExtResource("2_0tvjl")]
+[node name="SharedBagGoldUI" parent="UI/InfoPanel/VBox" unique_id=1060795307 instance=ExtResource("2_0tvjl")]
 layout_mode = 2
 
-[node name="TreasureInfo" type="RichTextLabel" parent="UI/InfoPanel/VBox"]
+[node name="TreasureInfo" type="RichTextLabel" parent="UI/InfoPanel/VBox" unique_id=1572297595]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="UndoButton" type="Button" parent="UI/InfoPanel/VBox"]
+[node name="UndoButton" type="Button" parent="UI/InfoPanel/VBox" unique_id=1520099372]
 layout_mode = 2
 text = "Undo"
 
-[node name="EndTurnButton" type="Button" parent="UI/InfoPanel/VBox"]
+[node name="EndTurnButton" type="Button" parent="UI/InfoPanel/VBox" unique_id=357009779]
 layout_mode = 2
 text = "End Turn"
 
-[node name="Control" type="Control" parent="UI"]
+[node name="Control" type="Control" parent="UI" unique_id=198433806]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -111,7 +111,7 @@ offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="HandUI" parent="UI/Control" instance=ExtResource("3_hp4xe")]
+[node name="HandUI" parent="UI/Control" unique_id=630761330 instance=ExtResource("3_hp4xe")]
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
@@ -121,7 +121,7 @@ offset_bottom = -345.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="UI"]
+[node name="PanelContainer" type="PanelContainer" parent="UI" unique_id=517760945]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -132,25 +132,25 @@ offset_top = -684.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/PanelContainer" unique_id=2112942984]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="DeckArea" type="VBoxContainer" parent="UI/PanelContainer/MarginContainer"]
+[node name="DeckArea" type="VBoxContainer" parent="UI/PanelContainer/MarginContainer" unique_id=1873265339]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Discard" type="PanelContainer" parent="UI/PanelContainer/MarginContainer/DeckArea"]
+[node name="Discard" type="PanelContainer" parent="UI/PanelContainer/MarginContainer/DeckArea" unique_id=1012447454]
 custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Deck" type="MarginContainer" parent="UI/PanelContainer/MarginContainer/DeckArea"]
+[node name="Deck" type="MarginContainer" parent="UI/PanelContainer/MarginContainer/DeckArea" unique_id=1052937404]
 custom_minimum_size = Vector2(220, 320)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -158,12 +158,12 @@ size_flags_vertical = 4
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="CardBack" type="TextureRect" parent="UI/PanelContainer/MarginContainer/DeckArea/Deck"]
+[node name="CardBack" type="TextureRect" parent="UI/PanelContainer/MarginContainer/DeckArea/Deck" unique_id=411130618]
 layout_mode = 2
 texture = ExtResource("3_ciuq7")
 expand_mode = 3
 
-[node name="EnemyPortrait" parent="UI" instance=ExtResource("5_lw23g")]
+[node name="EnemyPortrait" parent="UI" unique_id=1124521042 instance=ExtResource("5_lw23g")]
 visible = false
 anchors_preset = 5
 anchor_left = 0.5
@@ -173,10 +173,11 @@ offset_right = 84.0
 offset_bottom = 181.0
 grow_horizontal = 2
 
-[node name="Pivot" type="Node3D" parent="."]
+[node name="Pivot" type="Node3D" parent="." unique_id=1213897414]
 transform = Transform3D(-0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, 0.40558, -0.579228, 20, 10, -5)
+script = ExtResource("6_cam")
 
-[node name="Camera3D" type="Camera3D" parent="Pivot"]
+[node name="Camera3D" type="Camera3D" parent="Pivot" unique_id=1750129354]
 transform = Transform3D(1, 0, 0, 0, 0.910684, 0.413104, 0, -0.413104, 0.910684, 3, 8, 21)
 environment = SubResource("Environment_su8w0")
 current = true

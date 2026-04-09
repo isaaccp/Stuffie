@@ -57,9 +57,6 @@ var enemy_move_area: TilesHighlight
 var enemy_attack_area: TilesHighlight
 var objective_highlight: TilesHighlight
 
-var camera_panning_speed = 15
-var camera_rotation_speed = 100
-
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 2
 var enemy_moving = false
@@ -81,8 +78,7 @@ var card_player: CardPlayer
 @export var deck_ui: Control
 @export var discard_ui: Control
 @export var character_state_ui: Control
-@export var camera: Camera3D
-@export var camera_pivot: Node3D
+@export var camera_controller: CameraController
 @export var end_turn_button: Button
 @export var undo_button: Button
 @export var treasures: Node
@@ -120,6 +116,10 @@ signal game_over
 func _ready():
 	undo_button.hide()
 	hand_ui.card_selected.connect(_on_card_selected)
+	camera_controller.camera_moved.connect(_on_camera_moved)
+
+func _on_camera_moved():
+	update_position_direction(get_viewport().get_mouse_position())
 
 func initialize(stage: Stage, character_party: Node, shared_bag: SharedBag, combat_state: CombatSaveState = null):
 	self.shared_bag = shared_bag
@@ -335,7 +335,7 @@ func create_single_cursor(pos: Vector2i):
 	world.add_child(single_cursor)
 
 func add_unprojected_point(line: Line2D, world_pos: Vector3):
-	var unprojected = camera.unproject_position(world_pos)
+	var unprojected = camera_controller.camera.unproject_position(world_pos)
 	line.add_point(unprojected)
 
 func create_target_area(pos: Vector2i, distance: int):
@@ -422,41 +422,6 @@ func calculate_path(tile_map_pos):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var camera_move = delta * camera_panning_speed
-	var camera_rotate = delta * camera_rotation_speed
-	var camera_forward = -camera_pivot.transform.basis.z
-	camera_forward.y = 0
-	var forward = camera_forward.normalized() * camera_move
-	var camera_modified = false
-	if Input.is_action_pressed("ui_right"):
-		camera_pivot.position += forward.cross(Vector3.UP)
-		camera_modified = true
-	if Input.is_action_pressed("ui_left"):
-		camera_pivot.position -= forward.cross(Vector3.UP)
-		camera_modified = true
-	if Input.is_action_pressed("ui_up"):
-		camera_pivot.position += forward
-		camera_modified = true
-	if Input.is_action_pressed("ui_down"):
-		camera_pivot.position -= forward
-		camera_modified = true
-	if Input.is_action_pressed("ui_rotate_left"):
-		camera_pivot.rotate_y(-camera_rotate*delta)
-		camera_modified = true
-	if Input.is_action_pressed("ui_rotate_right"):
-		camera_pivot.rotate_y(camera_rotate*delta)
-		camera_modified = true
-	if Input.is_action_just_released("ui_zoom_in"):
-		camera.fov -= 1
-		if camera.fov < 10:
-			camera.fov = 10
-	if Input.is_action_just_released("ui_zoom_out"):
-		camera.fov += 1
-		# Update if needed to zoom out more.
-		if camera.fov > 100:
-			camera.fov = 100
-	if camera_modified:
-		update_position_direction(get_viewport().get_mouse_position())
 	if state == GameState.CPU_TURN:
 		if enemy_turn_manager.fresh and not enemy_moving:
 			# Consider adding a CpuTurnState if needed.
@@ -846,8 +811,8 @@ func snap_to_direction(vector: Vector2) -> Vector2:
 	return direction
 
 func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
-	var camera_from = camera.project_ray_origin(mouse_pos)
-	var camera_to = camera.project_ray_normal(mouse_pos)
+	var camera_from = camera_controller.camera.project_ray_origin(mouse_pos)
+	var camera_to = camera_controller.camera.project_ray_normal(mouse_pos)
 	var n = Vector3(0, 1, 0) # plane normal
 	var p = camera_from
 	var v = camera_to
