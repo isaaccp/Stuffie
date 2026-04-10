@@ -1,0 +1,101 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://event_choice_effect.gd" id="1_4ree8"]
+[ext_resource type="Script" path="res://card_effect_value.gd" id="2_qsavn"]
+[ext_resource type="Script" path="res://event_choice.gd" id="2_ujqvx"]
+[ext_resource type="Script" path="res://event_def.gd" id="3_hue4t"]
+[ext_resource type="Script" path="res://card_effect.gd" id="3_jgd0l"]
+[ext_resource type="Script" path="res://event_choice_precondition.gd" id="5_lk68l"]
+
+[sub_resource type="Resource" id="Resource_val1"]
+script = ExtResource("2_qsavn")
+value_type = 1
+absolute_value = 1
+reference_fraction = 1.0
+
+[sub_resource type="Resource" id="Resource_eff1"]
+script = ExtResource("3_jgd0l")
+effect_value = SubResource("Resource_val1")
+effect_type = 2
+target_field = 0
+target_status = 0
+effect = 4
+
+[sub_resource type="Resource" id="Resource_ce1"]
+script = ExtResource("1_4ree8")
+target_type = 0
+effects = Array[ExtResource("3_jgd0l")]([SubResource("Resource_eff1")])
+resolution_text = "You study the dusty manuals and learn new techniques."
+
+[sub_resource type="Resource" id="Resource_c1"]
+script = ExtResource("2_ujqvx")
+text = "Study the combat manuals"
+effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_ce1")])
+preview_resolution_effects = true
+
+[sub_resource type="Resource" id="Resource_prec1"]
+script = ExtResource("5_lk68l")
+type = 0
+display = true
+gold = 10
+
+[sub_resource type="Resource" id="Resource_val2"]
+script = ExtResource("2_qsavn")
+value_type = 1
+absolute_value = 2
+reference_fraction = 1.0
+
+[sub_resource type="Resource" id="Resource_eff2"]
+script = ExtResource("3_jgd0l")
+effect_value = SubResource("Resource_val2")
+effect_type = 2
+target_field = 0
+target_status = 0
+effect = 9
+
+[sub_resource type="Resource" id="Resource_val2_cost"]
+script = ExtResource("2_qsavn")
+value_type = 1
+absolute_value = -10
+reference_fraction = 1.0
+
+[sub_resource type="Resource" id="Resource_eff2_cost"]
+script = ExtResource("3_jgd0l")
+effect_value = SubResource("Resource_val2_cost")
+effect_type = 1
+target_field = 7
+target_status = 0
+effect = 0
+
+[sub_resource type="Resource" id="Resource_ce2"]
+script = ExtResource("1_4ree8")
+target_type = 0
+effects = Array[ExtResource("3_jgd0l")]([SubResource("Resource_eff2")])
+resolution_text = "You spend some gold searching through the magical artifacts and find something useful."
+
+[sub_resource type="Resource" id="Resource_c2"]
+script = ExtResource("2_ujqvx")
+text = "Search for magical artifacts"
+preconditions = Array[ExtResource("5_lk68l")]([SubResource("Resource_prec1")])
+choice_effects = Array[ExtResource("3_jgd0l")]([SubResource("Resource_eff2_cost")])
+effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_ce2")])
+preview_resolution_effects = true
+
+[sub_resource type="Resource" id="Resource_ce3"]
+script = ExtResource("1_4ree8")
+target_type = 0
+effects = Array[ExtResource("3_jgd0l")]([])
+resolution_text = "You decide the library is too creepy and leave."
+
+[sub_resource type="Resource" id="Resource_c3"]
+script = ExtResource("2_ujqvx")
+text = "Leave"
+effects = Array[ExtResource("1_4ree8")]([SubResource("Resource_ce3")])
+preview_resolution_effects = false
+
+[resource]
+script = ExtResource("3_hue4t")
+title = "Abandoned Library"
+event_text = "You discover a dusty library. Ancient tomes line the walls..."
+target_type = 2
+choices = Array[ExtResource("2_ujqvx")]([SubResource("Resource_c1"), SubResource("Resource_c2"), SubResource("Resource_c3")])
