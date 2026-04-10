@@ -57,7 +57,6 @@ var objective_highlight: TilesHighlight
 var enemy_info_overlay: EnemyInfoOverlay
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
-var tile_size: int = 2
 var enemy_moving = false
 var card_simulation_manager = CardSimulationManager.new()
 var enemy_turn_manager = EnemyTurnManager.new()
@@ -333,9 +332,6 @@ func create_single_cursor(pos: Vector2i):
 	single_cursor.refresh()
 	world.add_child(single_cursor)
 
-func add_unprojected_point(line: Line2D, world_pos: Vector3):
-	var unprojected = camera_controller.camera.unproject_position(world_pos)
-	line.add_point(unprojected)
 
 func create_target_area(pos: Vector2i, distance: int):
 	# TODO: Optionally (parameter) respect line-of-sight here.
@@ -380,7 +376,7 @@ func calculate_path(tile_map_pos):
 	if valid_path:
 		for point in current_path:
 			var location = map_manager.get_world_position(point)
-			add_unprojected_point(move_path, location)
+			camera_controller.add_unprojected_point(move_path, location)
 		if too_long_path:
 			move_path.default_color = Color(1, 0, 0, 1)
 			player_move_area.hide()
@@ -701,33 +697,7 @@ func update_target(new_tile_map_pos: Vector2i, new_direction: Vector2):
 			target_cursor.set_color(Color(1, 0, 0, 1))
 			valid_target = true
 
-func snap_to_direction(vector: Vector2) -> Vector2:
-	var min_distance = null
-	var direction = null
-	for v in [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT]:
-		var distance = vector.distance_squared_to(v)
-		if min_distance == null:
-			min_distance = distance
-			direction = v
-		else:
-			if distance < min_distance:
-				min_distance = distance
-				direction = v
-	return direction
 
-func mouse_pos_to_plane_pos(mouse_pos: Vector2) -> Vector3:
-	var camera_from = camera_controller.camera.project_ray_origin(mouse_pos)
-	var camera_to = camera_controller.camera.project_ray_normal(mouse_pos)
-	var n = Vector3(0, 1, 0) # plane normal
-	var p = camera_from
-	var v = camera_to
-	# distance from plane
-	var d = -2
-	var t = - (n.dot(p) + d) / n.dot(v)
-	return p + t * v
-
-func plane_pos_to_tile_pos(plane_pos: Vector3) -> Vector2i:
-	return Vector2i(floor(plane_pos.x / tile_size), floor(plane_pos.z / tile_size))
 
 func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	var tile_changed = tile_map_pos != new_tile_map_pos
@@ -762,10 +732,10 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 					card_simulation_manager.stop()
 
 func update_position_direction(mouse_position: Vector2):
-	var plane_pos = mouse_pos_to_plane_pos(mouse_position)
-	var new_tile_map_pos = plane_pos_to_tile_pos(plane_pos)
+	var plane_pos = camera_controller.mouse_pos_to_plane_pos(mouse_position)
+	var new_tile_map_pos = camera_controller.plane_pos_to_tile_pos(plane_pos)
 	var offset = plane_pos - active_character.get_position()
-	var new_direction = snap_to_direction(Vector2(offset.x, offset.z))
+	var new_direction = camera_controller.snap_to_direction(Vector2(offset.x, offset.z))
 	if new_tile_map_pos != tile_map_pos or new_direction != direction:
 		handle_tile_change(new_tile_map_pos, new_direction)
 	tile_map_pos = new_tile_map_pos
