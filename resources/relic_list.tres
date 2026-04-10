@@ -7,7 +7,11 @@
 [ext_resource type="Resource" uid="uid://dy2d0a7t3a4sb" path="res://resources/relics/strong_start.tres" id="4_0cdgd"]
 [ext_resource type="Resource" uid="uid://dadxxp5315kdb" path="res://resources/relics/wrench.tres" id="5_7jwv6"]
 [ext_resource type="Resource" uid="uid://cxrbh1q2aqvtb" path="res://resources/relics/barricade.tres" id="6_y7hvu"]
+[ext_resource type="Resource" path="res://resources/relics/vampiric_blade.tres" id="7_vblade"]
+[ext_resource type="Resource" path="res://resources/relics/adrenaline_rush.tres" id="8_arush"]
+[ext_resource type="Resource" path="res://resources/relics/spellbook.tres" id="9_sbook"]
+[ext_resource type="Resource" path="res://resources/relics/scouts_map.tres" id="10_smap"]
 
 [resource]
 script = ExtResource("3_ctgw1")
-relics = Array[Resource("res://relic/relic.gd")]([ExtResource("1_42ts0"), ExtResource("2_8kfux"), ExtResource("3_m0lin"), ExtResource("4_0cdgd"), ExtResource("5_7jwv6"), ExtResource("6_y7hvu")])
+relics = Array[Resource("res://relic/relic.gd")]([ExtResource("1_42ts0"), ExtResource("2_8kfux"), ExtResource("3_m0lin"), ExtResource("4_0cdgd"), ExtResource("5_7jwv6"), ExtResource("6_y7hvu"), ExtResource("7_vblade"), ExtResource("8_arush"), ExtResource("9_sbook"), ExtResource("10_smap")])
