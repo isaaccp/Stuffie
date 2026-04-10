@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://resources/icons/debuffs/poisoned.png" id="1_lipqt"]
+[ext_resource type="Script" path="res://status_def.gd" id="2_qywd2"]
+
+[resource]
+script = ExtResource("2_qywd2")
+status = 7
+name = "poison"
+tooltip = "If unit has poison, lose that much HP at beginning of turn. This damage can't be blocked or dodged.\nPoison does not wear off over time."
+icon = ExtResource("1_lipqt")
+received_stats_field = 0
+applied_stats_field = 31

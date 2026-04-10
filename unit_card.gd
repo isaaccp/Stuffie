@@ -44,7 +44,7 @@ func apply_to_enemy(enemy: Unit):
 	assert(card.target_mode == Enum.TargetMode.ENEMY or card.target_mode == Enum.TargetMode.AREA)
 	var attack_damage = effective_damage()
 	unit.add_stat(Stats.Field.DAMAGE_DEALT, attack_damage)
-	var damaged = enemy.apply_damage(attack_damage)
+	var damaged = enemy.apply_damage(attack_damage, true, true, unit)
 	if damaged:
 		for effect in card.on_damage_effects:
 			await UnitCard.apply_effect_target(unit, effect, enemy, simulation)

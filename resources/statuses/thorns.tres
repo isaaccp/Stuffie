@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://resources/icons/buffs/defense_boost.png" id="1_lipqt"]
+[ext_resource type="Script" path="res://status_def.gd" id="2_qywd2"]
+
+[resource]
+script = ExtResource("2_qywd2")
+status = 8
+name = "thorns"
+tooltip = "When unit is attacked, attacker receives damage equal to thorns.\nRemove 1 thorns at the end of turn."
+icon = ExtResource("1_lipqt")
+received_stats_field = 32
+applied_stats_field = 0

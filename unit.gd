@@ -46,6 +46,10 @@ func begin_turn():
 		# Not blockable or dodgeble.
 		apply_damage(bleed, false, false)
 		status_manager.decrement_status(StatusDef.Status.BLEED)
+	var poison = status_manager.get_status(StatusDef.Status.POISON)
+	if poison > 0:
+		# Not blockable or dodgeble. Poison does NOT decrement.
+		apply_damage(poison, false, false)
 	# Remove block/dodge after damage effects, so if some of the damage is
 	# preventable, block from previous turn can be used.
 	super()
@@ -59,6 +63,7 @@ func end_turn():
 	status_manager.decrement_status(StatusDef.Status.POWER)
 	status_manager.decrement_status(StatusDef.Status.WEAKNESS)
 	status_manager.decrement_status(StatusDef.Status.PARALYSIS)
+	status_manager.decrement_status(StatusDef.Status.THORNS)
 
 func add_next_turn_card(card: Card):
 	next_turn_cards.push_back(card)

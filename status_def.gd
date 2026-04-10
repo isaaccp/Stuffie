@@ -10,6 +10,8 @@ enum Status {
 	WEAKNESS,
 	PARALYSIS,
 	BLEED,
+	POISON,
+	THORNS,
 }
 
 @export var status: Status

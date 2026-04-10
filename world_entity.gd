@@ -87,7 +87,7 @@ func get_status(status: StatusDef.Status) -> int:
 	return status_manager.get_status(status)
 
 # Returns true if any damage was caused.
-func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
+func apply_damage(damage: int, blockable=true, dodgeable=true, attacker: WorldEntity = null) -> bool:
 	add_stat(Stats.Field.ATTACKS_RECEIVED, 1)
 	# Handle dodge.
 	if dodgeable:
@@ -120,6 +120,9 @@ func apply_damage(damage: int, blockable=true, dodgeable=true) -> bool:
 		set_destroyed()
 	# This clears pending damage, as it's no longer valid, and also causes a refresh.
 	clear_pending_damage()
+	var thorns = status_manager.get_status(StatusDef.Status.THORNS)
+	if thorns > 0 and attacker != null:
+		attacker.apply_damage(thorns, false, false)
 	return true
 
 func display_damage(damage: int):
