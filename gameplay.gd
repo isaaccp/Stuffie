@@ -53,9 +53,8 @@ var target_cursor: CardTargetHighlight
 var single_cursor: SingleCursorHighlight
 var target_area: AreaDistanceHighlight
 var player_move_area: TilesHighlight
-var enemy_move_area: TilesHighlight
-var enemy_attack_area: TilesHighlight
 var objective_highlight: TilesHighlight
+var enemy_info_overlay: EnemyInfoOverlay
 
 # Move somewhere where it can be used from anywhere or figure out how to pass.
 var tile_size: int = 2
@@ -100,8 +99,7 @@ var shared_bag: SharedBag
 var teleport_distance: int
 signal teleport_finished
 
-var enemy_walkable_cache: Dictionary
-var enemy_attackable_cache: Dictionary
+
 var restored_from_save = false
 
 signal enemy_died
@@ -198,13 +196,14 @@ func initialize_stage(stage: Stage, combat_state: CombatSaveState):
 	enemy_turn_manager.invalidated.connect(on_enemy_turn_invalidated)
 	enemy_turn_manager.calculated.connect(on_enemy_turn_calculated)
 	player_move_area = TilesHighlight.new(map_manager)
-	enemy_move_area = TilesHighlight.new(map_manager)
-	enemy_attack_area = TilesHighlight.new(map_manager)
+	var enemy_move_area = TilesHighlight.new(map_manager)
+	var enemy_attack_area = TilesHighlight.new(map_manager)
 	enemy_move_area.set_color(Color(1, 0, 0, 1))
 	enemy_attack_area.set_color(Color(1, 1, 1, 1))
 	world.add_child(player_move_area)
 	world.add_child(enemy_move_area)
 	world.add_child(enemy_attack_area)
+	enemy_info_overlay = EnemyInfoOverlay.new(map_manager, enemies_node, enemy_move_area, enemy_attack_area, enemy_portrait)
 	if stage.stage_completion_type == stage.StageCompletionType.REACH_POSITION:
 		objective_highlight = TilesHighlight.new(map_manager, [stage.reach_position_target])
 		objective_highlight.set_color(Color(0, 0, 1, 1))
@@ -346,36 +345,7 @@ func create_target_area(pos: Vector2i, distance: int):
 	target_area.refresh()
 	world.add_child(target_area)
 
-func offsets_within_distance(distance: int) -> Array[Vector2i]:
-	var tiles: Array[Vector2i] = []
-	var zero = Vector2i(0, 0)
-	var i = -distance
-	while i <= distance:
-		var j = -distance
-		while j <= distance:
-			var tile = Vector2i(i, j)
-			if map_manager.distance(zero, tile) <= distance:
-				tiles.push_back(tile)
-			j += 1
-		i += 1
-	return tiles
 
-func get_attack_cells(enemy: Enemy, positions: Array) -> Array:
-	var attack_positions = {}
-	var offsets = offsets_within_distance(enemy.max_attack_distance())
-	for pos in positions:
-		var visible_tiles = map_manager.fov.get_fov(pos)
-		for offset in offsets:
-			var tile = pos + offset
-			if map_manager.in_bounds(tile) and not map_manager.is_solid(tile, false, false, false) and tile in visible_tiles:
-				attack_positions[tile] = true
-	return attack_positions.keys()
-
-func update_move_area(move_positions: Array, attack_positions: Array):
-	enemy_move_area.set_tiles(move_positions)
-	enemy_move_area.visible = true
-	enemy_attack_area.set_tiles(attack_positions)
-	enemy_attack_area.visible = true
 
 func path_cost(path: PackedVector2Array) -> int:
 	var cost = 0
@@ -459,7 +429,7 @@ func apply_undo():
 func begin_turn():
 	for enemy in enemies_node.get_children():
 		enemy.end_turn()
-	clear_enemy_info_cache()
+	enemy_info_overlay.clear_cache()
 	turn_number += 1
 	for character in party.get_children():
 		character.begin_turn()
@@ -556,7 +526,7 @@ func handle_move():
 	StatsManager.add(active_character.character_type, Stats.Field.MP_USED, move_cost)
 	await handle_after_move()
 	character_moved.emit(final_pos)
-	clear_enemy_info_cache()
+	enemy_info_overlay.clear_cache()
 	change_human_turn_state(HumanTurnState.WAITING)
 
 func handle_teleport():
@@ -573,7 +543,7 @@ func handle_teleport():
 		active_character.set_id_position(tile_map_pos)
 		await handle_after_move()
 		character_moved.emit(tile_map_pos)
-		clear_enemy_info_cache()
+		enemy_info_overlay.clear_cache()
 	target_area.queue_free()
 	single_cursor.queue_free()
 	change_human_turn_state(HumanTurnState.PLAYING_CARD)
@@ -603,80 +573,15 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 				change_human_turn_state(HumanTurnState.WAITING)
 	if Input.is_action_pressed("ui_showenemymove"):
-		show_enemy_moves()
+		enemy_info_overlay.show_enemy_moves()
 	if Input.is_action_just_released("ui_showenemymove"):
-		clear_enemy_info()
+		enemy_info_overlay.clear_enemy_info()
 	if Input.is_action_just_released("ui_focus_next"):
 		if state == GameState.HUMAN_TURN and human_turn_state in [HumanTurnState.WAITING, HumanTurnState.ACTION_TARGET]:
 			if live_characters().size() > 1:
 				set_active_character(next_live_character_index())
 
-func show_enemy_moves():
-	var final_walkable_cells = Dictionary()
-	var final_attackable_cells = Dictionary()
-	for enemy in enemies_node.get_children():
-		var walkable_cells = get_enemy_walkable_cells(enemy)
-		for cell in walkable_cells:
-			if cell not in final_attackable_cells:
-				final_walkable_cells[cell] = true
-		var attackable_cells = get_enemy_attackable_cells(enemy)
-		for cell in attackable_cells:
-			if not cell in final_attackable_cells:
-				final_attackable_cells[cell] = 0
-			final_attackable_cells[cell] += 1
-			if final_walkable_cells.has(cell):
-				final_walkable_cells.erase(cell)
-	enemy_move_area.set_tiles(final_walkable_cells.keys())
-	enemy_move_area.visible = true
-	enemy_attack_area.set_labeled_tiles(final_attackable_cells)
-	enemy_attack_area.visible = true
 
-func get_enemy_walkable_cells(enemy: Enemy):
-	if enemy_walkable_cache.has(enemy):
-		return enemy_walkable_cache[enemy]
-	var walkable_cells = map_manager.get_walkable_cells(enemy.get_id_position(), enemy.move_points)
-	enemy_walkable_cache[enemy] = walkable_cells
-	return walkable_cells
-
-func get_enemy_attackable_cells(enemy: Enemy):
-	if enemy_attackable_cache.has(enemy):
-		return enemy_attackable_cache[enemy]
-	var walkable_cells = get_enemy_walkable_cells(enemy)
-	var attackable_cells = get_attack_cells(enemy, walkable_cells)
-	enemy_attackable_cache[enemy] = attackable_cells
-	return attackable_cells
-
-func get_enemy_attackable_not_walkable_cells(enemy: Enemy):
-	var walkable_cells = get_enemy_walkable_cells(enemy)
-	var walkable = {}
-	for cell in walkable_cells:
-		walkable[cell] = true
-	var attackable_cells = get_attack_cells(enemy, walkable_cells)
-	var attackable_not_walkable = []
-	for cell in attackable_cells:
-		if not walkable.has(cell):
-			attackable_not_walkable.push_back(cell)
-	return attackable_not_walkable
-
-func clear_enemy_info_cache():
-	enemy_walkable_cache.clear()
-	enemy_attackable_cache.clear()
-
-func update_enemy_info(enemy: Enemy):
-	if Input.is_action_pressed("ui_showenemymove"):
-		return
-	enemy_portrait.set_character(enemy)
-	enemy_portrait.set_mode(CharacterPortrait.PortraitMode.COMBAT)
-	enemy_portrait.show()
-	var walkable_cells = get_enemy_walkable_cells(enemy)
-	var attackable_cells = get_enemy_attackable_not_walkable_cells(enemy)
-	update_move_area(walkable_cells, attackable_cells)
-
-func clear_enemy_info():
-	if Input.is_action_pressed("ui_showenemymove"):
-		return
-	enemy_move_area.visible = false
-	enemy_attack_area.visible = false
 
 func _on_enemy_death(enemy: Enemy):
 	active_character.add_stat(Stats.Field.ENEMIES_KILLED, 1)
@@ -739,7 +644,7 @@ func play_card():
 	target_cursor.queue_free()
 	active_character.clear_pending_action_cost()
 	reset_undo()
-	clear_enemy_info_cache()
+	enemy_info_overlay.clear_cache()
 	draw_deck()
 	current_card = null
 	if not hand_ui.animation_finished.is_null():
@@ -833,9 +738,9 @@ func handle_tile_change(new_tile_map_pos: Vector2i, new_direction: Vector2):
 	# direction_changed signal and have them react to that on their own.
 	if tile_changed:
 		if map_manager.enemy_locs.has(new_tile_map_pos):
-			update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
+			enemy_info_overlay.update_enemy_info(map_manager.enemy_locs[new_tile_map_pos])
 		else:
-			clear_enemy_info()
+			enemy_info_overlay.clear_enemy_info()
 		if map_manager.treasure_locs.has(new_tile_map_pos):
 			var treasure = map_manager.treasure_locs[new_tile_map_pos]
 			var description = UnitCard.join_effects_text(active_character, treasure.def.effects)
